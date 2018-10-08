@@ -18,6 +18,10 @@ msgid "Location and logistics services for NKO"
 msgstr "Картографирование на службе НКО"
 
 #: class/shmapper.php:1
+msgid "Double"
+msgstr "Дублировать"
+
+#: class/shmapper.php:1
 msgid "Adress"
 msgstr "Адрес"
 
@@ -103,7 +107,7 @@ msgstr "Легенда присутствует"
 
 #: class/shmapper.php:1
 msgid "Filters exists"
-msgstr "Панель фильтров"
+msgstr "Панель фильтров присутствует"
 
 #: class/shmapper.php:1
 msgid "Export csv"
@@ -363,7 +367,7 @@ msgstr "Используется в Картах: "
 
 #: class/ShMap.class.php:1
 msgid "Notify owner of Map"
-msgstr "Оповещать владельца Карты"
+msgstr "Присылать уведомления о новых картах автору"
 
 #: class/ShMap.class.php:1
 msgid "Approve"
@@ -454,6 +458,10 @@ msgid "Drag choosed icon and place it to map."
 msgstr "Перетащите выбранную иконку в нужное место Карты"
 
 #: class/ShMap.class.php:1
+msgid "Drag icon and place it to map."
+msgstr "Перетащите иконку в нужное место Карты"
+
+#: class/ShMap.class.php:1
 msgid "Send request"
 msgstr "Отправить информацию"
 
@@ -520,3 +528,159 @@ msgstr "Укажите свой e-mail пожалуйста"
 #: class/ShMap.class.php:1
 msgid "Whrite description"
 msgstr "Напишите комментарий"
+
+#: class/ShMap.class.php:1
+msgid "Close wizzard"
+msgstr "Закрыть навсегда"
+
+#: class/ShMap.class.php:1
+msgid "Next step"
+msgstr "Следующий шаг"
+
+#: class/ShMap.class.php:1
+msgid "Go to current page"
+msgstr "На текущую страницу"
+
+#: class/ShMap.class.php:1
+msgid "1.1. Pan map and choose zoom"
+msgstr "1.1. Отцентрируйте карту и выберите масштаб"
+
+#: class/ShMap.class.php:1
+msgid "1.2. Set size for map's div (per pixels)"
+msgstr "1.2. Установите размер окна карты (в пикселях)"
+
+#: class/ShMap.class.php:1
+msgid "1.3. Include interface"
+msgstr "1.3. Какие элементы управления картой должны присутствовать?"
+
+#: class/ShMap.class.php:1
+msgid "Map search"
+msgstr "Поиск по карте"
+
+#: class/ShMap.class.php:1
+msgid "Map zoom slider enabled"
+msgstr "Ползунок масштаба"
+
+#: class/ShMap.class.php:1
+msgid "Map layer switcher"
+msgstr "Переключатель слоев карты"
+
+#: class/ShMap.class.php:1
+msgid "Map full screen"
+msgstr "Полноэкранный режим"
+
+#: class/ShMap.class.php:1
+msgid "Formating Marker to cluster"
+msgstr "Укладывать маркеры карты в кластеры"
+
+#: class/ShMap.class.php:1
+msgid "Lock zoom and drag"
+msgstr "Заблокировать перетаскивание карты и изменение размера средним колёсиком мышы"
+
+#: class/ShMap.class.php:1
+msgid "1.4. May User download data in *.csv?"
+msgstr "1.4. Можно ли скачать данные карты в формате .csv?"
+
+#: class/ShMap.class.php:1
+msgid "Empty for "
+msgstr "Оставьте пустым, чтобы было "
+
+#: class/ShMap.class.php:1
+msgid "1.5. Will the legend be displayed?"
+msgstr "1.5. Будет ли отображаться легенда?"
+
+#: class/ShMap.class.php:1
+msgid "1.6. Will Marker type filter be displayed?"
+msgstr "1.6. Будет ли отображаться панель фильтрации по типам Маркеров?"
+
+#: class/ShMap.class.php:1
+msgid "1.7. Default Marker icon"
+msgstr "1.7. Иконка маркера по умолчанию"
+
+#: class/ShMap.class.php:1
+msgid "Recommended size is 64х64 px, format is .png"
+msgstr "Рекомендуемый размер: 64х64 pxб формат .png"
+
+#: class/ShMap.class.php:1
+msgid "Default Marker icon"
+msgstr "Иконка маркера по умолчанию"
+
+#: class/ShMap.class.php:1
+msgid "Step 1. Set up your map."
+msgstr "Шаг 1. Настройте Вашу карту"
+
+#: class/ShMap.class.php:1
+msgid "Step 2. May anover Users add information for Map."
+msgstr "Шаг 2. Смогут ли другие пользователи добавлять информацию на Вашу карту?"
+
+#: class/ShMap.class.php:1
+msgid "Enable crowdsourcing function (free add Users new Markers)"
+msgstr "Включить функцию краудсорсинга (свободного добавления Пользователями новых Маркеров) "
+
+#: class/ShMap.class.php:1
+msgid "2.1. What is the name of your information form?"
+msgstr "2.1. Как называется Ваша форма сбора информации?"
+
+#: class/ShMap.class.php:1
+msgid "For example &laquo;All beaches by the river&raquo;"
+msgstr "Например «Все пляжи у реки»"
+
+#: class/ShMap.class.php:1
+msgid "2.2. Will I notify the author about new posts?"
+msgstr "2.2. Оповещать ли автора Карты о новых сообщениях?"
+
+#: class/ShMap.class.php:1
+msgid "2.3. What information can users enter?"
+msgstr "2.3. Какую информацию могут вводить пользователи?"
+
+#: class/ShMap.class.php:1
+msgid "2.4. Can users leave their contact information?"
+msgstr "2.4. Могут ли пользователи оставлять свою контактную информацию?"
+
+#: class/ShMap.class.php:1
+msgid "Users can leave their contact details for feedback."
+msgstr "Пользователи могут оставлять свои контактные данные для обратной связи"
+
+#: class/ShMap.class.php:1
+msgid "2.5. What data users will have to put?"
+msgstr "2.5. Какие данные пользователи должны будут ставить?"
+
+#: class/ShMap.class.php:1
+msgid "Personal name"
+msgstr "Имя"
+
+#: class/ShMap.class.php:1
+msgid "Personal email"
+msgstr "Адрес электронной почты"
+
+#: class/ShMap.class.php:1
+msgid "Personal phone"
+msgstr "Телефон"
+
+#: class/ShMap.class.php:1
+msgid "Include"
+msgstr "Включать"
+
+#: class/ShMap.class.php:1
+msgid "Required"
+msgstr "Обязателен"
+
+#: class/ShMap.class.php:1
+msgid "Element is required"
+msgstr "Элемент обязателен к заполнению"
+
+#: class/ShMap.class.php:1
+msgid "Placemark types"
+msgstr "Типы маркеров"
+
+#: class/ShMap.class.php:1
+msgid "Including Map to post"
+msgstr "Вставка карты в звпись"
+
+#: class/ShMap.class.php:1
+msgid "You can insert a card into a post or page by copying this shortcode."
+msgstr "Вы сможете вставить карту в запись или страницу скопировав этот шорткод"
+
+#: class/ShMap.class.php:1
+msgid "You can create your own forms using form elements: & laquo; Text line & raquo;, & laquo; Text field & raquo;, & laquo; Upload files & raquo;, & laquo; Categories of Markers & raquo;"
+msgstr "Вы можете создавать собственные формы, используя элементы формы: &laquo;Строка текста&raquo;, &laquo;Поле текста&raquo;, &laquo;Загрузка файлов&raquo;, &laquo;Категории Маркеров&raquo;"

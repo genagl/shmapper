@@ -98,12 +98,14 @@ class ShMapper_ajax
 				
 			}
 		}
+		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );
 		$answer = [
-			'res'			=> $res,
+			//'res'			=> $res,
 			'data'			=> $data,
 			"msg"			=> $msg,
+			//"form"		=> $form,
 			"grec"			=> $grec,
-			"attach_id"		=> $attach_id,
+			//"attach_id"	=> $attach_id,
 			'grecaptcha'	=> ShMapper::$options['shm_settings_captcha']
 		];
 		wp_die( json_encode( $answer ) );
@@ -148,17 +150,40 @@ class ShMapper_ajax
 						"text"		=> 'testing',
 					)
 				);
+				break;			
+			case "shm_doubled":	
+				$map_id = $params[1];
+				$map	= ShmMap::get_instance( $map_id );
+				$new_map = $map->doubled();
+				$d = array(	
+					$params[0],
+					array( 
+						"text"		=> 'shm_doubled',
+					)
+				);
 				break;		
 			case "shm_wnext":	
 				$step	= (int)get_option("shm_wizard_step");
 				$step++;
-				$stepData = ShMapper::get_wizzard_lst()[$step];
+				if($step < count(ShMapper::get_wizzard_lst()))
+				{
+					$stepData 	= ShMapper::get_wizzard_lst()[$step];
+					$messge		= __("Next step", SHMAPPER);
+				}
+				else
+				{
+					ShMapper::$options["wizzard"] = 0;
+					ShMapper::update_options();
+					$step = 0;
+					$messge		= __("Congratulation! That's all!", SHMAPPER);
+				}
 				update_option("shm_wizard_step", $step);
 				$d = array(	
 					$params[0],
 					array( 
 						"href"		=> $stepData['href'],
-						"msg"		=> __("Next step", SHMAPPER)
+						'a_alert'	=> $step . '. ' . $stepData['href'],
+						"msg"		=> $messge
 					)
 				);
 				break;			
@@ -176,6 +201,7 @@ class ShMapper_ajax
 			case "shm_wrestart":	
 				ShMapper::$options["wizzard"] = 1;
 				ShMapper::update_options();
+				update_option("shm_wizard_step", 0);
 				$d = array(	
 					$params[0],
 					array( 

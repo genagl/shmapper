@@ -60,8 +60,11 @@
 				if($key 		== "t") continue;
 				$metas[$key]	= $this->get_meta($key);
 			}
-			return static::insert($metas);
-			return  $metas;
+			$metas = apply_filters("smc_before_doubled_post", $metas, $this);
+			$metas['post_author'] = $this->get("post_author");
+			$post =  static::insert($metas);	
+			do_action("smc_after_doubled_post", $post, $this);
+			return  $post;
 		}
 		static function delete($id)
 		{
@@ -335,7 +338,7 @@
 			//bulk actions
 			add_filter("bulk_actions-edit-{$typee}", 			array(get_called_class(), "register_my_bulk_actions"));
 			add_filter("handle_bulk_actions-edit-{$typee}",  	array(get_called_class(), 'my_bulk_action_handler'), 10, 3 );
-			add_action('admin_notices', 						array(get_called_class(), 'my_bulk_action_admin_notice' ));
+			//add_action('admin_notices', 						array(get_called_class(), 'my_bulk_action_admin_notice' ));
 			add_action("bulk_edit_custom_box", 					array(get_called_class(), 'my_bulk_edit_custom_box'), 2, 2 );
 			//add_action("quick_edit_custom_box", 				array(get_called_class(), 'my_bulk_edit_custom_box'), 2, 2 );
 			add_action("wp_ajax_save_bulk_edit", 				array(get_called_class(), 'save_bulk_edit_book') );
@@ -476,7 +479,7 @@
 		//bulk actions
 		static function register_my_bulk_actions( $bulk_actions )
 		{
-			$bulk_actions['double'] = __("Double");
+			$bulk_actions['double'] = __("Double", SHMAPPER);
 			return $bulk_actions;
 		}
 		
@@ -487,7 +490,8 @@
 				return $redirect_to;
 			foreach( $post_ids as $post_id )
 			{			
-				// действие для каждого поста
+				$ppost = static::get_instance($post_id);
+				$ppost->doubled();
 			}
 			$redirect_to = add_query_arg( 'my_bulk_action_done', count( $post_ids ), $redirect_to );
 			return $redirect_to;
@@ -496,7 +500,7 @@
 		{
 			if( empty( $_GET['my_bulk_action_done'] ) )		return;
 			$data = $_GET['my_bulk_action_done'];
-			$msg = sprintf( 'Doubled: %d.', intval($data) );
+			$msg = sprintf( 'Doubled: %s.', $data );
 			echo '<div id="message" class="updated"><p>'. $msg .'</p></div>';
 		}
 		static function my_bulk_edit_custom_box( $column_name, $post_type ) 
@@ -611,7 +615,10 @@
 		}
 		
 		
-		
+		static function get_extra_fields_title()
+		{
+			return __('Parameters', SHMAPPER);
+		}
 		
 		static function my_extra_fields() 
 		{

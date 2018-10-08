@@ -3,16 +3,31 @@ class ShmMap extends SMC_Post
 {
 	static function init()
 	{
+		$typee = static::get_type();
 		add_action('init',					array(__CLASS__, 'add_class'), 14 );
-		add_action('admin_menu',			array(__CLASS__, 'my_form_fields'), 20);
+		add_action('admin_menu',			array(__CLASS__, 'my_form_fields'), 11);
+		add_action('admin_menu',			array(__CLASS__, 'shortcode_fields'), 11);
 		add_filter("the_content",			array(__CLASS__, "the_content"));
+		add_filter( 'post_row_actions', 		[__CLASS__, 'post_row_actions'], 10, 2 );
+		add_action("smc_before_doubled_post",	[__CLASS__, "smc_before_doubled_post"], 10, 2);
+		add_action("smc_after_doubled_post",	[__CLASS__, "smc_after_doubled_post"], 10, 2);
+		add_filter("bulk_actions-edit-{$typee}",[__CLASS__, "register_my_bulk_actions"]);
 		parent::init();
+	}
+	static function register_my_bulk_actions( $bulk_actions )
+	{
+		unset($bulk_actions['trash']);
+		$bulk_actions = parent::register_my_bulk_actions( $bulk_actions );
+		return $bulk_actions;
 	}
 	static function get_type()
 	{
 		return SHM_MAP;
 	}
-	
+	static function get_extra_fields_title()
+	{
+		return __("Step 1. Set up your map.", SHMAPPER);
+	}
 	static function add_class()
 	{
 		$labels = array(
@@ -75,6 +90,7 @@ class ShmMap extends SMC_Post
 		$_columns['author']			= __("Author");
 		return $_columns;
 	}
+	
 	static function fill_views_column($column_name, $post_id) 
 	{
 		$obj = static::get_instance($post_id);
@@ -93,7 +109,7 @@ class ShmMap extends SMC_Post
 						__("include all (map and request form)", SHMAPPER) .
 					"</div>
 					<div class='shm-12 shm-md-12'>
-						<input type='text' disabled  class='sh-form' value='[shmMap id=\"" . $post_id . "\" ]' />
+						<input type='text' disabled  class='sh-form' value='[shmMap id=\"" . $post_id . "\"]' />
 					</div>
 				</div>
 				<div class='shm-row'>
@@ -101,7 +117,7 @@ class ShmMap extends SMC_Post
 						__("only map", SHMAPPER) .
 					"</div>
 					<div class='shm-12 shm-md-12'>
-						<input type='text' disabled  class='sh-form' value='[shmMap id=\"" . $post_id . "\" map]' />
+						<input type='text' disabled  class='sh-form' value='[shmMap id=\"" . $post_id . "\" map=\"true\"]' />
 					</div>
 				</div>
 				</div>
@@ -110,7 +126,7 @@ class ShmMap extends SMC_Post
 						__("only request form", SHMAPPER) .
 					"</div>
 					<div class='shm-12 shm-md-12'>
-						<input type='text' disabled  class='sh-form' value='[shmMap id=\"" . $post_id . "\" form]' />
+						<input type='text' disabled  class='sh-form' value='[shmMap id=\"" . $post_id . "\" form=\"true\"]' />
 					</div>
 				</div>
 				";
@@ -121,71 +137,172 @@ class ShmMap extends SMC_Post
 		}
 	}
 	
+	static function shortcode_fields() 
+	{
+		add_meta_box( 'shortcode_fields', __('Including Map to post', SHMAPPER), [__CLASS__, 'shortcode_fields_box_func'], static::get_type(), 'side', 'low'  );		
+	}
+	
+	static function shortcode_fields_box_func( $post )
+	{	
+		$lt = static::get_instance( $post );
+		echo static::shortcode_fields_edit($lt);			
+	}
+	static function shortcode_fields_edit($obj)
+	{
+		$html = "
+		<p class='description'>" .
+			__("You can insert a card into a post or page by copying this shortcode.", SHMAPPER).
+		"</p>
+		<input type='text' disabled class='sh-form' value='[shmMap id=\"" . $obj->id . "\"]' />";
+		 
+		return $html;
+	}
+	
 	static function my_extra_fields() 
 	{
-		add_meta_box( 'map_fields', __('Map', SHMAPPER), [__CLASS__, 'extra_fields_box_func'], static::get_type(), 'normal', 'high'  );
+		add_meta_box( 'map_fields', static::get_extra_fields_title(), [__CLASS__, 'extra_fields_box_func'], static::get_type(), 'normal', 'high'  );
 		
 	}
 	static function my_form_fields() 
 	{
-		add_meta_box( 'form_fields', __('Request form', SHMAPPER), [__CLASS__, 'form_fields_box_func'], static::get_type(), 'normal', 'low'  );
+		add_meta_box( 'form_fields', __('Step 2. May anover Users add information for Map.', SHMAPPER), [__CLASS__, 'form_fields_box_func'], static::get_type(), 'normal', 'high'  );
 		
 	}
-	static function form_fields_box_func( $post )
-	{	
-		$lt = static::get_instance( $post );
-		echo static::view_form_fields_edit($lt);			
-		//wp_nonce_field( basename( __FILE__ ), static::get_type().'_metabox_nonce' );
-	}
-	static function view_form_fields_edit($obj)
-	{
-		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
-		$SMC_Object_type	= SMC_Object_Type::get_instance();
-		$bb				= $SMC_Object_type->object [static::get_type()];
-		$html = "<section post_id='$obj->id'><div>";
-		foreach($bb as $key=>$value)
-		{
-			if($key == 't' || $key == 'class' || $value['distination'] != "form") continue;
-			$meta = get_post_meta( $obj->id, $key, true);			
-			$$key = $meta;
-			switch( $value['type'] )
-			{
-				case "text":
-					$h = "<textarea name='$key' id='$key' class='sh-form' rows='6' placeholder='".$value['placeholder']."'>$meta</textarea>";
-					break;
-				case "number":
-					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'  placeholder='".$value['placeholder']."'/>";
-					break;
-				case "form_editor":
-					//ob_start();
-					//var_dump($meta);
-					//$v = ob_get_contents();
-					//ob_end_clean();
-					$meta = $meta ? $meta : ShmForm::get_default();
-				
-					$h = $v . static::formEditor( $meta );
-					break;
-				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "  /><label for='$key'></label>
-					<div class='spacer-10'></div>";
-					break;
-				default:
-					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'  placeholder='".$value['placeholder']."'/>";
-			}
-			$html .="<div class='shm-row' $opacity>
-				<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
-				<div class='shm-9 shm-md-12'>
-					$h
-				</div>
-			</div>
-			<div class='spacer-5'></div>";
-		}
-		$html 	.= "</div>			
-		</section>";
-		echo $html;
-	}
+	
 	static function view_admin_edit($obj)
 	{
+		require_once( SHM_REAL_PATH . "tpl/input_file_form.php" );
+		$height 		= $obj->get_meta("height") ? $obj->get_meta("height") : 400;
+		$latitude 		= $obj->get_meta("latitude");
+		$longitude 		= $obj->get_meta("longitude");
+		$zoom 			= $obj->get_meta("zoom");
+		$width 			= $obj->get_meta("width");
+		$is_search 		= $obj->get_meta("is_search");
+		$is_zoomer 		= $obj->get_meta("is_zoomer");
+		$is_layer_switcher = $obj->get_meta("is_layer_switcher");
+		$is_fullscreen 	= $obj->get_meta("is_fullscreen");
+		$is_csv 		= $obj->get_meta("is_csv");
+		$is_legend 		= $obj->get_meta("is_legend");
+		$is_filtered 	= $obj->get_meta("is_filtered");
+		$default_icon_id = $obj->get_meta("default_icon_id");
+		$is_clustered 	= $obj->get_meta("is_clustered");
+		$is_lock 		= $obj->get_meta("is_lock");
+		$form_title		= $obj->get_meta("form_title");
+		$html 	.= "
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.1. Pan map and choose zoom", SHMAPPER). "</h3>
+				<div class='shm-12'>".
+					$obj->draw().
+				"</div>
+				<div class='shm-12'>
+					<input type='hidden' value='". $latitude ."' name='latitude' />
+					<input type='hidden' value='". $longitude ."' name='longitude' />
+					<input type='hidden' value='". $zoom ."' name='zoom' />
+				</div>
+			</div>
+			<div class='spacer-15'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.2. Set size for map's div (per pixels)", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<div class='shm-admin-block'>
+						<label>" . __("Height") . "</albel> 
+						<input type='number' value='". $height ."' name='height' />
+						<p class='description'>" . __("Empty for ", SHMAPPER) . "400px</p>
+					</div>
+					<div class='shm-admin-block'>
+						<label>" . __("Width") . "</albel> 
+						<input type='number' value='". $width ."' name='width' />	
+						<p class='description'>" . __("Empty for ", SHMAPPER) . "100%</p>					
+					</div>
+					<div class='shm-admin-block'>					
+					</div>
+				</div>
+			</div>
+			<div class='spacer-5'></div>
+			<hr/>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.3. Include interface", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_search, false) ."' name='is_search' id='is_search'/>
+						<label for='is_search'>" . __("Map search", SHMAPPER) . "</albel> 
+					</div>					
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_zoomer, false) ."' name='is_zoomer' id='is_zoomer'/>
+						<label for='is_zoomer'>" . __("Map zoom slider enabled", SHMAPPER) . "</albel> 					
+					</div>
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_layer_switcher, false) ."' name='is_layer_switcher' id='is_layer_switcher'/>
+						<label for='is_layer_switcher'>" . __("Map layer switcher", SHMAPPER) . "</albel> 				
+					</div>
+				</div>
+				<div class='shm-12'>
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_fullscreen, false) ."' name='is_fullscreen' id='is_fullscreen'/>
+						<label for='is_fullscreen'>" . __("Map full screen", SHMAPPER) . "</albel> 	
+					</div>
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_clustered, false) ."' name='is_clustered' id='is_clustered'/>
+						<label for='is_clustered'>" . __("Formating Marker to cluster", SHMAPPER) . "</albel> 	
+					</div>
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_lock, false) ."' name='is_lock' id='is_lock'/>
+						<label for='is_lock'>" . __("Lock zoom and drag", SHMAPPER) . "</albel> 	
+					</div>
+				</div>
+			</div>
+			
+			<div class='spacer-5'></div>
+			<hr/>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.4. May User download data in *.csv?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<input type='checkbox' value='1' ". checked(1, $is_csv, false) ."' name='is_csv' id='is_csv'/>
+					<label for='is_csv'>" . __("Export csv", SHMAPPER) . "</albel> 
+					
+				</div>
+			</div>			
+			<div class='spacer-5'></div>
+			<hr/>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.5. Will the legend be displayed?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<input type='checkbox' value='1' ". checked(1, $is_legend, false) ."' name='is_legend' id='is_legend'/>
+					<label for='is_legend'>" . __("Legend exists", SHMAPPER) . "</albel> 
+					
+				</div>
+			</div>
+			<div class='spacer-5'></div>
+			<hr/>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.6. Will Marker type filter be displayed?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<input type='checkbox' value='1' ". checked(1, $is_filtered, false) ."' name='is_filtered' id='is_filtered'/>
+					<label for='is_filtered'>" . __("Filters exists", SHMAPPER) . "</albel> 
+					
+				</div>
+			</div>
+			<div class='spacer-5'></div>
+			<hr/>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.7. Default Marker icon", SHMAPPER). "</h3>
+				<div class='shm-12'>".
+					get_input_file_form2( "" , $default_icon_id, "default_icon_id").
+				"</div>
+				<p class='description shm-12'>".
+					__("Recommended size is 64х64 px, format is .png", SHMAPPER) . 
+				"</p>
+			</div>
+			
+			";
+			
+			return $html;
+		/*
 		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
 		$SMC_Object_type	= SMC_Object_Type::get_instance();
 		$bb				= $SMC_Object_type->object [static::get_type()];
@@ -244,25 +361,245 @@ class ShmMap extends SMC_Post
 			";
 		$html 	.= "</div>";
 		echo $html;
+		*/
+	}
+	static function form_fields_box_func( $post )
+	{	
+		$lt = static::get_instance( $post );
+		echo static::view_form_fields_edit($lt);			
+		//wp_nonce_field( basename( __FILE__ ), static::get_type().'_metabox_nonce' );
+	}
+	static function view_form_fields_edit($obj)
+	{
+		$is_form = $obj->get_meta("is_form") ? 1 : 0;
+		$is_filtered = $obj->get_meta("is_filtered") ? 1 : 0;
+		$form_title = $obj->get_meta("form_title");
+		$notify_owner = $obj->get_meta("notify_owner") ?  1 : 0;
+		$form_forms = $obj->get_meta("form_forms");
+		$is_personal_data = $obj->get_meta("is_personal_data");
+		$is_name_iclude = $obj->get_meta("is_name_iclude");
+		$personal_name = $obj->get_meta("personal_name");
+		$is_name_required = $obj->get_meta("is_name_required");
+		$is_email_iclude = $obj->get_meta("is_email_iclude");
+		$personal_email = $obj->get_meta("personal_email");
+		$is_email_required = $obj->get_meta("is_email_required");
+		$is_phone_iclude = $obj->get_meta("is_phone_iclude");
+		$personal_phone = $obj->get_meta("personal_phone");
+		$is_phone_required = $obj->get_meta("is_phone_required");
+		$html 	.= "
+			<div class='shm-row'>
+				<div class='shm-12'>
+					<input type='checkbox' value='1' name='is_form' id='is_form' " . checked(1, $is_form, 0) . " /> 
+					<label for='is_form'>". __("Enable crowdsourcing function (free add Users new Markers)", SHMAPPER). "</label>
+				</div>				
+			</div>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("2.1. What is the name of your information form?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<input type='text' value='".$form_title . "' name='form_title' id='form_title' class='shmw-100 shm-form'/>
+					<p class='description'>" .
+						__("For example &laquo;All beaches by the river&raquo;", SHMAPPER) .
+					"</p>
+				</div>
+			</div>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("2.2. Will I notify the author about new posts?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<input type='checkbox' value='1' ". checked(1, $notify_owner, false) ."' name='notify_owner' id='notify_owner'/>
+					<label for='notify_owner'>" . __("Notify owner of Map", SHMAPPER) . "</label>
+				</div>
+			</div>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("2.3. What information can users enter?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<p class='description'>" .
+						__("You can create your own forms using form elements: & laquo; Text line & raquo;, & laquo; Text field & raquo;, & laquo; Upload files & raquo;, & laquo; Categories of Markers & raquo;", SHMAPPER) .
+					"</p>
+				</div>
+				<div class='shm-12'>".			
+					static::formEditor( $form_forms ? $form_forms : ShmForm::get_default() ).
+				"</div>
+			</div>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("2.4. Can users leave their contact information?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<input type='checkbox' value='1' ". checked(1, $is_personal_data, false) ."' name='is_personal_data' id='is_personal_data'/>
+					<label for='is_personal_data'>" . __("Users can leave their contact details for feedback.", SHMAPPER) . "</label>
+				</div>
+			</div>
+			<div class='spacer-5'></div>
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("2.5. What data users will have to put?", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<div class='shm-incblock sh-center'>
+						<label for='is_name_iclude'>" . __("Include", SHMAPPER) . "</label><br>
+						<input type='checkbox' value='1' ". checked(1, $is_name_iclude, false) ."' name='is_name_iclude' id='is_name_iclude'/>
+					</div>
+					
+					<div class='shm-incblock'>
+						<label for='personal_name'>" . __("Personal name", SHMAPPER) . "</label><br>
+						<input type='text' value='$personal_name' name='personal_name' id='personal_name' class='shm-admin-block'/>
+					</div>
+					
+					<div class='shm-incblock'>
+						<label for='is_name_required'>" . __("Required", SHMAPPER) . "</label><br>
+						<input type='checkbox' value='1' ". checked(1, $is_name_required, false) ."' name='is_name_required' id='is_name_required'/>
+					</div>
+				</div>
+				<div class='shm-12'>
+					<div class='shm-incblock sh-center'>
+						<label for='is_email_iclude'>" . __("Include", SHMAPPER) . "</label><br>
+						<input type='checkbox' value='1' ". checked(1, $is_email_iclude, false) ."' name='is_email_iclude' id='is_email_iclude'/>
+					</div>
+					
+					<div class='shm-incblock'>
+						<label for='personal_email'>" . __("Personal email", SHMAPPER) . "</label><br>
+						<input type='text' value='$personal_email' name='personal_email' id='personal_email' class='shm-admin-block'/>
+					</div>
+					
+					<div class='shm-incblock'>
+						<label for='is_email_required'>" . __("Required", SHMAPPER) . "</label><br>
+						<input type='checkbox' value='1' ". checked(1, $is_email_required, false) ."' name='is_email_required' id='is_email_required'/>
+					</div>
+				</div>
+				<div class='shm-12'>
+					<div class='shm-incblock sh-center'>
+						<label for='is_phone_iclude'>" . __("Include", SHMAPPER) . "</label><br>
+						<input type='checkbox' value='1' ". checked(1, $is_phone_iclude, false) ."' name='is_phone_iclude' id='is_phone_iclude'/>
+					</div>
+					
+					<div class='shm-incblock'>
+						<label for='personal_phone'>" . __("Personal phone", SHMAPPER) . "</label><br>
+						<input type='text' value='$personal_phone' name='personal_phone' id='personal_phone' class='shm-admin-block'/>
+					</div>
+					
+					<div class='shm-incblock'>
+						<label for='is_phone_required'>" . __("Required", SHMAPPER) . "</label><br>
+						<input type='checkbox' value='1' ". checked(1, $is_phone_required, false) ."' name='is_phone_required' id='is_phone_required'/>
+					</div>
+				</div>
+			</div>";
+		
+		
+		
+		return $html;
+		/*
+		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
+		$SMC_Object_type	= SMC_Object_Type::get_instance();
+		$bb				= $SMC_Object_type->object [static::get_type()];
+		$html = "<section post_id='$obj->id'><div>";
+		foreach($bb as $key=>$value)
+		{
+			if($key == 't' || $key == 'class' || $value['distination'] != "form") continue;
+			$meta = get_post_meta( $obj->id, $key, true);			
+			$$key = $meta;
+			switch( $value['type'] )
+			{
+				case "text":
+					$h = "<textarea name='$key' id='$key' class='sh-form' rows='6' placeholder='".$value['placeholder']."'>$meta</textarea>";
+					break;
+				case "number":
+					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'  placeholder='".$value['placeholder']."'/>";
+					break;
+				case "form_editor":
+					//ob_start();
+					//var_dump($meta);
+					//$v = ob_get_contents();
+					//ob_end_clean();
+					$meta = $meta ? $meta : ShmForm::get_default();
+				
+					$h = $v . static::formEditor( $meta );
+					break;
+				case "boolean":
+					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "  /><label for='$key'></label>
+					<div class='spacer-10'></div>";
+					break;
+				default:
+					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'  placeholder='".$value['placeholder']."'/>";
+			}
+			$html .="<div class='shm-row' $opacity>
+				<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
+				<div class='shm-9 shm-md-12'>
+					$h
+				</div>
+			</div>
+			<div class='spacer-5'></div>";
+		}
+		$html 	.= "</div>			
+		</section>";
+		echo $html;
+		*/	
 	}
 	static function save_admin_edit($obj)
 	{
 		return [
-			"latitude"		=> $_POST['latitude'],
-			"longitude"		=> $_POST['longitude'],
-			"zoom"			=> $_POST['zoom'],
-			"is_legend"		=> $_POST['is_legend'] ? 1 : 0,
-			"is_filtered"	=> $_POST['is_filtered'] ? 1 : 0,
-			"is_csv"		=> $_POST['is_csv'] ? 1 : 0,
-			"is_lock"		=> $_POST['is_lock'] ? 1 : 0,
-			"is_clustered"	=> $_POST['is_clustered'] ? 1 : 0,
+			"latitude"			=> $_POST['latitude'],
+			"longitude"			=> $_POST['longitude'],
+			"zoom"				=> $_POST['zoom'],
+			"is_legend"			=> $_POST['is_legend'] ? 1 : 0,
+			"is_filtered"		=> $_POST['is_filtered'] ? 1 : 0,
+			"is_csv"			=> $_POST['is_csv'] ? 1 : 0,
+			"is_lock"			=> $_POST['is_lock'] ? 1 : 0,
+			"is_clustered"		=> $_POST['is_clustered'] ? 1 : 0,
+			"is_search"			=> $_POST['is_search'] ? 1 : 0,
+			"is_zoomer"			=> $_POST['is_zoomer'] ? 1 : 0,
+			"is_layer_switcher"	=> $_POST['is_layer_switcher'] ? 1 : 0,
+			"is_fullscreen"		=> $_POST['is_fullscreen'] ? 1 : 0,
+			"default_icon_id"	=> $_POST['default_icon_id'],
+			"width"				=> $_POST['width'],
+			"height"			=> $_POST['height'],
 			
-			"is_form"		=> $_POST['is_form'] ? 1 : 0,
-			"form_title"	=> $_POST['form_title'],
-			"form_contents"	=> $_POST['form_contents'],			
-			"notify_owner"	=> $_POST['notify_owner'] ? 1: 0,			
-			"form_forms"	=> $_POST['form_forms']			
+			"is_form"			=> $_POST['is_form'] ? 1 : 0,
+			"form_title"		=> $_POST['form_title'],
+			"form_contents"		=> $_POST['form_contents'],			
+			"notify_owner"		=> $_POST['notify_owner'] ? 1: 0,			
+			"form_forms"		=> $_POST['form_forms'],			
+			"is_personal_data"	=> $_POST['is_personal_data'],			
+			"is_name_iclude"	=> $_POST['is_name_iclude'],			
+			"personal_name"		=> $_POST['personal_name'],			
+			"is_name_required"	=> $_POST['is_name_required'],			
+			"is_email_iclude"	=> $_POST['is_email_iclude'],			
+			"personal_email"	=> $_POST['personal_email'],			
+			"is_email_required"	=> $_POST['is_email_required'],			
+			"is_phone_iclude"	=> $_POST['is_phone_iclude'],			
+			"personal_phone"	=> $_POST['personal_phone'],			
+			"is_phone_required"	=> $_POST['is_phone_required'],			
 		];
+	}
+	static function post_row_actions($actions, $post)
+	{
+		if($post->post_type !== static::get_type()) return $actions;
+		$actions['doubled'] = "<a href class='shm_doubled' post_id='$post->ID'>".__("Double", SHMAPPER)."</a>";
+		return $actions;
+	}
+	static function smc_before_doubled_post($metas, $smc_post)
+	{
+		
+		if($smc_post->get("post_type") !== ShmPoint::get_type())	return $metas;
+		
+		$types 	= get_the_terms($smc_post->id, SHM_POINT_TYPE);
+		$maps	= $smc_post->get_owners();
+		$metas['type'] 		= $types[0]->term_id;
+		$metas['map_id'] 	= $maps[0]->ID;
+		return $metas;
+	}
+	static function smc_after_doubled_post($new_smc_post, $origin_smc_post)
+	{
+		global $wpdb;
+		if($origin_smc_post->get("post_type") !== static::get_type()) return;
+		$old_points		= $origin_smc_post->get_points();
+		
+		foreach($old_points as $point)
+		{
+			$p = ShmPoint::get_instance($point);
+			$new_point = $p->doubled();
+			$new_point->remove_from_map($origin_smc_post->id);
+			$new_point->add_to_map($new_smc_post->id);
+		}
 	}
 	static function formEditor($data)
 	{

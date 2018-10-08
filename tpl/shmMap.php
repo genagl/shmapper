@@ -3,14 +3,19 @@
 function draw_shMap($map, $args )
 {
 	$id 		= $map->id;
-	$uniq		= "ShmMap$id".$args['uniq'];
+	$muniq		= $args['uniq'];
+	$uniq		= "ShmMap$id$muniq";
 	$title		= $map->get("post_title");
 	$latitude	= $map->get_meta("latitude");
 	$longitude	= $map->get_meta("longitude");
 	$is_lock	= $map->get_meta("is_lock");
+	$is_layer_switcher	= $map->get_meta("is_layer_switcher");
+	$is_zoomer	= $map->get_meta("is_zoomer");
+	$is_search	= $map->get_meta("is_search");
 	$is_clustered= $map->get_meta("is_clustered");
 	$is_legend 	= $map->get_meta("is_legend");
 	$is_filtered = $map->get_meta("is_filtered");
+	$is_fullscreen = $map->get_meta("is_fullscreen");
 	$zoom		= $map->get_meta("zoom");
 	$latitude	= $latitude		? $latitude	 : 55;
 	$longitude	= $longitude	? $longitude : 55;
@@ -42,7 +47,6 @@ function draw_shMap($map, $args )
 	}
 	if($is_csv  = $map->get_meta("is_csv"))
 	{
-		//$csv	= "<a class='shm-csv-href small' href='' map_id='$id'>" . sprintf(__("download  %s.csv", SHMAPPER), " data", $map->get("post_title")) . "</a>";
 		$csv	= "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download  %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
 	}
 	$points		= $map->get_map_points();
@@ -54,11 +58,10 @@ function draw_shMap($map, $args )
 			</div>";
 	}
 	$html 		.= "
-	<div class='shm_container' id='$uniq' shm_map_id='$id' style='height:" . $args['height'] . "px;'>
-		
+	<div class='shm_container' id='$uniq' shm_map_id='$id' style='height:" . $args['height'] . "px; width:100%;'>
 	</div>$legend";
 	$p = "";
-		$str = ["
+	$str = ["
 ","
 
 "];
@@ -68,8 +71,9 @@ function draw_shMap($map, $args )
 	{
 		$p .= " 
 			var p = {}; 
+			p.post_id 	= '" . $point->ID . "';
 			p.post_title 	= '" . $point->post_title . "';
-			p.post_content 	= '" . $point->post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"><span class=\"dashicons dashicons-location\"></span></a>';
+			p.post_content 	= '" . $point->post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $point->location . "</div>';
 			p.latitude 		= '" . $point->latitude . "'; 
 			p.longitude 	= '" . $point->longitude . "'; 
 			p.location 		= '" . $point->location . "'; 
@@ -89,222 +93,36 @@ function draw_shMap($map, $args )
 	$is_admin = "";
 	if(is_admin())
 	{
-		$is_admin = "
-				myMap.controls.add('zoomControl', 
-				{
-					float: 'none',
-					position: {
-						right: 5,
-						top: 5
-					}
-				});
-				
-				myMap.events.add( 'boundschange', function(event)
-				{
-					 coords = myMap.getCenter();
-					 zoom = myMap.getZoom();
-					 $('[name=latitude]').val(parseInt(coords[0]*1000)/1000);
-					 $('[name=longitude]').val(parseInt(coords[1]*1000)/1000);
-					 $('[name=zoom]').val(zoom);
-				});
-				myMap.events.add('contextmenu', function (e) 
-				{
-					if (!myMap.balloon.isOpen()) 
-					{
-						var coords = e.get('coords');
-						shm_send(['shm_add_point_prepaire', [$map->id, coords[0].toPrecision(7), coords[1].toPrecision(7)]]);
-					}
-					else 
-					{
-						myMap.balloon.close();
-					}
-				});
-				";
+		$is_admin = " is_admin( myMap, $map->id );";
 	}
-	
+	$default_icon_id 	= $map->get_meta("default_icon_id");
+	$icon				= wp_get_attachment_image_src($default_icon_id, [60, 60])[0];
 	$html 		.= "
 	<script type='text/javascript'>
-		jQuery(document).ready(function($)
+		jQuery(document).ready( function($)
 		{
 			var points 		= []; 
 			$p
+			var mData = {
+				uniq 			: '$uniq',
+				muniq			: '$id$muniq',
+				latitude		: $latitude,
+				longitude		: $longitude,
+				zoom			: $zoom,
+				map_id			: $map->id,
+				isClausterer	: ". ($is_clustered ? 1 : 0). ",
+				isLayerSwitcher	: ". ($is_layer_switcher ? 1 : 0). ",
+				isFullscreen	: ". ($is_fullscreen ? 1 : 0). ",
+				isDesabled		: ". ($is_lock ? 1 : 0). ",
+				isSearch		: ". ($is_search ? 1 : 0). ",
+				isZoomer		: ". ($is_zoomer ? 1 : 0). ",
+				isAdmin			: ". (is_admin() ? 1 : 0). ",
+				default_icon	: '$icon',
+			};
 			if(map_type == 1)
-			{
-				ymaps.ready(function () 
-				{
-					var myMap = new ymaps.Map('$uniq', 
-					{
-					  center: [ $latitude, $longitude],
-					  controls: [ ],
-					  zoom: $zoom
-					});
-					shm_maps['$uniq'] = myMap;
-					
-					$desabled
-					
-					
-					//is admin	
-					$is_admin					
-					
-					// Создаем собственный макет с информацией о выбранном геообъекте.
-					var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
-						// Флаг 'raw' означает, что данные вставляют 'как есть' без экранирования html.
-						'<div class=ballon_header>{{ properties.balloonContentHeader|raw }}</div>' +
-							'<div class=ballon_body>{{ properties.balloonContentBody|raw }}</div>' +
-							'<div class=ballon_footer>{{ properties.balloonContentFooter|raw }}</div>'
-					);
-					
-					" .
-				/**/
-				( $is_clustered ?				
-					"
-					var clusterer = new ymaps.Clusterer({	
-						gridSize: 128,
-						hasHint: true,
-						minClusterSize: 3,
-						clusterIconLayout: 'default#pieChart',
-						clusterIconPieChartRadius: 40,
-						clusterIconPieChartCoreRadius: 30,
-						clusterIconPieChartStrokeWidth: 0,
-						clusterNumbers: [10],
-						//clusterIconContentLayout: null,
-						//groupByCoordinates: false,
-						clusterBalloonContentLayout: 'cluster#balloonCarousel',
-						clusterBalloonItemContentLayout: customItemContentLayout,
-						clusterBalloonPanelMaxMapArea: 0,
-						clusterBalloonContentLayoutWidth: 270,
-						clusterBalloonContentLayoutHeight: 100,
-						clusterBalloonPagerSize: 5,
-						clusterOpenBalloonOnClick: true,
-						clusterDisableClickZoom: true,
-						clusterHideIconOnBalloonOpen: false,
-						geoObjectHideIconOnBalloonOpen: false,
-						type:'clusterer'
-					});
-					clusterer.hint = '';
-					var clusters = [];
-					var i=0, paramet;"
-				: "" ) .	
-				
-					"
-					points.forEach( elem =>
-					{
-						if( elem.icon )
-						{
-							paramet = {
-								balloonMaxWidth: 250,
-								hideIconOnBalloonOpen: false,
-								iconColor:elem.color,
-								iconLayout: 'default#image',
-								iconImageHref: elem.icon,
-								iconImageSize:[elem.height, elem.height], //[50,50], 
-								iconImageOffset: [-elem.height/2, -elem.height/2],
-								term_id:elem.term_id,
-								type:'point'
-							};
-						}
-						else
-						{
-							paramet = {
-								balloonMaxWidth: 250,
-								hideIconOnBalloonOpen: false,
-								iconColor: elem.color ? elem.color : '#FF0000',
-								preset: 'islands#dotIcon',
-								term_id:elem.term_id,
-								type:'point',
-							}
-						}
-						
-							var myPlacemark = new ymaps.Placemark(
-								[elem.latitude, elem.longitude],
-								{
-									geometry: 
-									{
-										type: 'Point', // тип геометрии - точка
-										coordinates: [elem.latitude, elem.longitude] // координаты точки
-									},
-									balloonContentHeader: elem.post_title,
-									balloonContentBody: elem.post_content,
-									balloonContentFooter: elem.location,
-									hintContent: elem.post_title
-								}, 
-								paramet
-							);
-						" .
-				( $is_clustered ?				
-						"	
-							if(!clusters[elem.term_id])
-							{
-								clusters[elem.term_id] =  new ymaps.Clusterer({						 
-									clusterIconLayout: 'default#pieChart',
-									clusterIconPieChartRadius: 50,
-									clusterIconPieChartCoreRadius: 20,
-									clusterIconPieChartStrokeWidth: 3,
-									clusterNumbers: [10],
-									clusterIconContentLayout: null,
-									groupByCoordinates: false,
-									clusterDisableClickZoom: true,
-									clusterHideIconOnBalloonOpen: false,
-									geoObjectHideIconOnBalloonOpen: false
-								});	
-							}
-							//clusters[elem.term_id].add(myPlacemark);
-							clusterer.add(myPlacemark);
-							
-						});
-						//clusters.forEach(elem => myMap.geoObjects.add(elem));
-						myMap.geoObjects.add(clusterer);
-						"
-						: "myMap.geoObjects.add(myPlacemark);
-					})
-				" 
-				).
-				"})
-			}
+				ymaps.ready(() => init_map( mData, points ));
 			else if (map_type == 2)
-			{
-				var map = L.map('$uniq', 
-				{
-					center: [$latitude, $longitude],
-					zoom: $zoom,
-					 renderer: L.svg(),
-					attributionControl:false,
-					zoomControl:false,
-					//dragging:false,
-					boxZoom:false
-				});
-				
-				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'
-				}).addTo(map);
-			
-				var icons=[];
-				
-				//
-				points.forEach( elem =>
-				{
-					/**/
-					if( !icons[elem.term_id] && elem.icon )
-					{
-						icons[elem.term_id] = L.icon({
-							iconUrl: elem.icon,
-							shadowUrl: '',
-							iconSize:     [elem.height, elem.height], // size of the icon
-							shadowSize:   [elem.height, elem.height], // size of the shadow
-							iconAnchor:   [elem.height/2, elem.height/2], // point of the icon which will correspond to marker's location
-							shadowAnchor: [0, elem.height],  // the same for the shadow
-							popupAnchor:  [-elem.height/4, -elem.height/2] // point from which the popup should open relative to the iconAnchor
-						});
-					}
-					var shoptions = elem.icon != '' ? {icon: icons[elem.term_id]} : {};
-					
-					var marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
-						.addTo(map)
-							.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
-				});
-				//
-				
-			}
+				init_map( mData, points );
 		});
 	</script>";
 	return $html;

@@ -7,9 +7,6 @@ class ShmPoint extends SMC_Post
 		add_action('init',									array(__CLASS__, 'add_class'), 14 );
 		add_action('admin_menu',							array(__CLASS__, 'owner_fields'), 20);
 		//bulk-actions
-		add_filter("bulk_actions-edit-{$typee}", 			array(__CLASS__, "register_my_bulk_actions"));
-		add_filter("handle_bulk_actions-edit-{$typee}",  	array(__CLASS__, 'my_bulk_action_handler'), 10, 3 );
-		add_action('admin_notices', 						array(__CLASS__, 'my_bulk_action_admin_notice' ));
 		add_action("bulk_edit_custom_box", 					array(__CLASS__, 'my_bulk_edit_custom_box'), 2, 2 );
 		add_action("wp_ajax_save_bulk_edit", 				array(__CLASS__, 'save_bulk_edit_book') );
 		
@@ -110,7 +107,8 @@ class ShmPoint extends SMC_Post
 				$h = ShMapPointType::get_ganre_swicher([
 					'selected' 	=> $term_id,
 					'prefix'	=> "point_type",
-					'col_width'	=> 3
+					'col_width'	=> 3,
+					"default_none" => true,
 				], 'radio' ).
 			"</div>
 		</div>
@@ -232,7 +230,8 @@ class ShmPoint extends SMC_Post
 	}
 	static function save_admin_edit($obj)
 	{
-		wp_set_object_terms($obj->id, (int)$_POST['point_type'], SHM_POINT_TYPE);
+		//if($_POST['point_type'] != 0)
+			wp_set_object_terms($obj->id, (int)$_POST['point_type'], SHM_POINT_TYPE);
 		static::update_map_owners($obj);
 		return [
 			"latitude"		=> $_POST['latitude'],
@@ -286,7 +285,7 @@ class ShmPoint extends SMC_Post
 		</div>";
 		return $html;
 	}
-	static function bulk_owner_fields_edit( $type="checkbox")
+	static function bulk_owner_fields_edit( $params=-1, $type="radio")
 	{
 		$all = ShmMap::get_all(-1, -1, 0, 'title', 'ASC' );
 		$html = "
@@ -297,7 +296,7 @@ class ShmPoint extends SMC_Post
 			$html .= "
 				<li class='popular-category'>
 					<label class='selectit'>
-						<input value='$map->ID' type=' $type' name='owner_id[]' $selected />
+						<input value='$map->ID' type='$type' name='owner_id[]' $selected />
 						$map->post_title
 					</label>
 				</li>
@@ -394,6 +393,13 @@ class ShmPoint extends SMC_Post
 		$query = $point->add_to_map( $map_id );
 		wp_set_object_terms( $point->id, (int)$type, SHM_POINT_TYPE );
 		return $point;
+	}
+	function remove_from_map($map_id)
+	{
+		global $wpdb;
+		$query = "DELETE FROM " . $wpdb->prefix . "point_map 
+		WHERE map_id=$map_id AND point_id=$this->id;";
+		$wpdb->query($query);
 	}
 	function add_to_map($map_id)
 	{
@@ -532,30 +538,6 @@ class ShmPoint extends SMC_Post
 		return $content;
 		
 	}
-	static function register_my_bulk_actions( $bulk_actions )
-	{
-		$bulk_actions['my_action'] = 'Моё действие';
-		return $bulk_actions;
-	}
-	static  function my_bulk_action_handler( $redirect_to, $doaction, $post_ids )
-	{
-		// ничего не делаем если это не наше действие
-		if( $doaction !== 'my_action' )
-			return $redirect_to;
-		foreach( $post_ids as $post_id )
-		{			
-			// действие для каждого поста
-		}
-		$redirect_to = add_query_arg( 'my_bulk_action_done', count( $post_ids ), $redirect_to );
-		return $redirect_to;
-	}
-	static  function my_bulk_action_admin_notice()
-	{
-		if( empty( $_GET['my_bulk_action_done'] ) )		return;
-		$data = $_GET['my_bulk_action_done'];
-		$msg = sprintf( 'Моё действие обработало записей: %d.', intval($data) );
-		echo '<div id="message" class="updated"><p>'. $msg .'</p></div>';
-	}
 	static function my_bulk_edit_custom_box( $column_name, $post_type ) 
 	{ 
 		if($post_type != static::get_type())	return;
@@ -567,7 +549,7 @@ class ShmPoint extends SMC_Post
 		}
 		*/
 		?>
-		<fieldset class="inline-edit-col-center inline-edit-shm_point">
+		<fieldset class="inline-edit-col-left inline-edit-shm_point">
 		  <div class="inline-edit-col column-<?php echo $column_name; ?>">
 			<?php 
 			// Например здесь получить ID записи ... ?

@@ -4,7 +4,8 @@ class ShMapperRequest extends SMC_Post
 {
 	static function init()
 	{
-		add_action('init',				array(__CLASS__, 'add_class'), 15 );
+		add_action('init',					array(__CLASS__, 'add_class'), 15 );
+		add_action('before_delete_post', 	array(__CLASS__, 'before_delete_post')); 
 		parent::init();
 	}
 	static function get_type()
@@ -96,7 +97,8 @@ class ShMapperRequest extends SMC_Post
 				echo $obj->get_notified_form();
 				break;
 			case "thumb":
-				echo "<div class='shm_type_icon2' style='background-image:url(" . get_the_post_thumbnail_url( $post_id, [75, 75] ) .");'></div>" ;
+				$img = get_the_post_thumbnail_url( $post_id, [75, 75] );
+				echo "<div class='shm_type_icon2' style='background-image:url($img);' title='$img'></div>" ;
 				break;
 			default:
 				parent::fill_views_column($column_name, $post_id);
@@ -306,5 +308,58 @@ class ShMapperRequest extends SMC_Post
 			set_post_thumbnail($point->id, (int)$attach_id);
 		}
 		return $point;
+	}
+	static function before_delete_post( $post_id )
+	{
+		$obj = static::get_instance($post_id);
+		if($obj->get("post_type") !== static::get_type()) return;
+		if( has_post_thumbnail( $post_id ) ) 
+		{
+				$attachment_id = get_post_thumbnail_id( $post_id );
+				if (
+					empty ( 
+						get_posts([
+							'post_type' => 'any', 
+							'post_status' => 'any', 
+							'fields' => 'ids', 
+							'no_found_rows' => true, 
+							'posts_per_page' => -1, 
+							'meta_key' => '_thumbnail_id', 
+							'meta_value' => $attachment_id, 
+							'post__not_in' => array( $post_id )
+						]) 
+					)  
+				) 
+				{
+					$attachment_urls = array( wp_get_attachment_url( $attachment_id ) );
+					foreach ( get_intermediate_image_sizes() as $size ) 
+					{
+						$intermediate = image_get_intermediate_size( $attachment_id, $size );
+						if ( $intermediate )
+						{
+							$attachment_urls[] = $intermediate['url'];
+						}
+					}			  
+					$used = array();
+					foreach ( $attachment_urls as $attachment_url ) 
+					{
+						$used = array_merge( 
+							$used, 
+							get_posts( [ 
+								'post_type' => 'any',
+								'post_status' => 'any', 
+								'fields' => 'ids', 
+								'no_found_rows' => true, 
+								'posts_per_page' => -1, 
+								's' => $attachment_url, 
+								'post__not_in' => array( $post_id )
+							] ) 
+						);
+					}			  
+					if ( empty( $used ) )
+						wp_delete_attachment( $attachment_id, true );
+				}
+		 }
+		return $post_id;
 	}
 }

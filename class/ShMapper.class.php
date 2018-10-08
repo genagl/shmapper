@@ -69,12 +69,40 @@ class ShMapper
 		$map['is_legend']			= ['type'=>'boolean', "distination" => "map", "name" => __("Legend exists", SHMAPPER)];
 		$map['is_filtered']			= ['type'=>'boolean', "distination" => "map", "name" => __("Filters exists", SHMAPPER)];
 		$map['is_csv']				= ['type'=>'boolean', "distination" => "map", "name" => __("Export csv", SHMAPPER)];	
-		$map['is_lock']				= ['type'=>'boolean', "distination" => "map", "name" => __("Lock zoom and drag", SHMAPPER)];	
-		$map['is_clustered']		= ['type'=>'boolean', "distination" => "map", "name" => __("Formating Marker to cluster", SHMAPPER)];	
+		$map['width']				= ['type'=>'number', "distination" => "map", "name" => __("Width")];	
+		$map['height']				= ['type'=>'number', "distination" => "map", "name" => __("Height")];	
+		$map['is_search']			= ['type'=>'boolean', "distination" => "map", "name" => __("Map search", SHMAPPER)];	
+		$map['is_fullscreen']		= ['type'=>'boolean', "distination" => "map", "name" => __("Map full screen", SHMAPPER)];	
+		$map['is_zoomer']			= ['type'=>'boolean', "distination" => "map", "name" => __("Map zoom slider", SHMAPPER)];	
+		$map['is_layer_switcher']	= ['type'=>'boolean',"distination"=>"map","name"=>__("Map layer switcher",SHMAPPER)];	
+		$map['is_lock']				= ['type'=>'boolean',"distination"=>"map","name"=>__("Lock zoom and drag",SHMAPPER)];	
+		$map['is_clustered']		= ['type'=>'boolean',"distination"=>"map","name"=>__("Formating Marker to cluster", SHMAPPER)];	
+		$map['default_icon_id']		= ['type'=>'boolean',"distination"=>"map","name"=>__("Default Marker icon", SHMAPPER)];	
+		
 		$map['is_form']				= ['type'=>'boolean', "distination" => "form", "name" => __("Form exists", SHMAPPER)];
 		$map['notify_owner']		= ['type'=>'boolean', "distination" => "form", "name" => __("Notify owner of Map", SHMAPPER)];
 		$map['form_title']			= ['type'=>'string',  "distination" => "form", "name" => __("Form Title", SHMAPPER)];
 		$map['form_forms']			= ['type'=>'form_editor',  "distination" => "form", "name" => __("Form generator", SHMAPPER)];
+		$map['is_personal_data']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Users can leave their contact details for feedback.", SHMAPPER)];
+		
+		$map['is_name_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal name", SHMAPPER)];
+		
+		$map['personal_name']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal name", SHMAPPER)];
+		
+		$map['is_name_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal name", SHMAPPER)];
+		
+		$map['is_email_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal e-mail",SHMAPPER)];
+		
+		$map['personal_email']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal e-mail", SHMAPPER)];
+		
+		$map['is_email_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal e-mail", SHMAPPER)];
+		
+		$map['is_phone_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal phone", SHMAPPER)];
+		
+		$map['personal_phone']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal phone", SHMAPPER)];
+		
+		$map['is_phone_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal phone", SHMAPPER)];
+		
 		//$location['location_type'] = ['type'=>'id', 	'object'=>"location_type"];
 		$init_object[SHM_MAP]		= $map;
 		
@@ -122,15 +150,39 @@ class ShMapper
 		{
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?load=package.full&lang=ru_RU", array());
 			wp_enqueue_script("api-maps");	
+			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
+			wp_enqueue_script("ShMapper.yandex");
 		}
 		else if(  static::$options['map_api'] == 2 )
 		{
 			//css
+			wp_register_style("easyGeocoder", SHM_URLPATH . 'assets/css/easyGeocoder.css', array());
+			wp_enqueue_style( "easyGeocoder");
 			wp_register_style("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css", array());
 			wp_enqueue_style( "leaflet");
+			wp_register_style("MarkerCluster", SHM_URLPATH . 'assets/css/MarkerCluster.css', array());
+			wp_enqueue_style( "MarkerCluster");
+			wp_register_style("MarkerClusterD", SHM_URLPATH . 'assets/css/MarkerCluster.Default.css', array());
+			wp_enqueue_style( "MarkerClusterD");
+			wp_register_style("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css", array());
+			wp_enqueue_style( "esri-leaflet-geocoder");
 			//js
 			wp_register_script("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js", array());
 			wp_enqueue_script("leaflet");
+			wp_register_script("esri-leaflet", "https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js", array());
+			wp_enqueue_script("esri-leaflet");
+			wp_register_script("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js", array());
+			wp_enqueue_script("esri-leaflet-geocoder");	
+			wp_register_script("leaflet.markercluster", plugins_url( '../assets/js/leaflet.markercluster-src.js', __FILE__ ), array());
+			wp_enqueue_script("leaflet.markercluster");	
+			
+			wp_register_script("easyGeocoder", plugins_url( '../assets/js/easyGeocoder.js', __FILE__ ), array());
+			wp_enqueue_script("easyGeocoder");	
+			
+			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
+			wp_enqueue_script("Leaflet.fs");
+			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper.osm.js', __FILE__ ), array());
+			wp_enqueue_script("ShMapper.osm");	
 		}
 		wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
 		
@@ -181,18 +233,38 @@ class ShMapper
 		if( static::$options['map_api'] == 1 )
 		{
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?load=package.full&lang=ru_RU", array());
-			wp_enqueue_script("api-maps");				
-			//wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
-			//wp_enqueue_script("ShMapper.yandex");
+			wp_enqueue_script("api-maps");			
+			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
+			wp_enqueue_script("ShMapper.yandex");
 		}
 		else if(  static::$options['map_api'] == 2 )
 		{
 			//css
-			//wp_register_style("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css", array());
-			//wp_enqueue_style( "leaflet");
+			wp_register_style("easyGeocoder", SHM_URLPATH . 'assets/css/easyGeocoder.css', array());
+			wp_enqueue_style( "easyGeocoder");
+			wp_register_style("MarkerCluster", SHM_URLPATH . 'assets/css/MarkerCluster.css', array());
+			wp_enqueue_style( "MarkerCluster");
+			wp_register_style("MarkerClusterD", SHM_URLPATH . 'assets/css/MarkerCluster.Default.css', array());
+			wp_enqueue_style( "MarkerClusterD");
+			wp_register_style("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css", array());
+			wp_enqueue_style( "leaflet");
+			wp_register_style("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css", array());
+			wp_enqueue_style( "esri-leaflet-geocoder");
 			//js
-			//wp_register_script("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js", array());
-			//wp_enqueue_script("leaflet");	
+			wp_register_script("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js", array());
+			wp_enqueue_script("leaflet");	
+			wp_register_script("esri-leaflet", "https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js", array());
+			wp_enqueue_script("esri-leaflet");
+			wp_register_script("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js", array());
+			wp_enqueue_script("esri-leaflet-geocoder");	
+			wp_register_script("easyGeocoder", plugins_url( '../assets/js/easyGeocoder.js', __FILE__ ), array());
+			wp_enqueue_script("easyGeocoder");	
+			wp_register_script("leaflet.markercluster", plugins_url( '../assets/js/leaflet.markercluster-src.js', __FILE__ ), array());
+			wp_enqueue_script("leaflet.markercluster");	
+			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
+			wp_enqueue_script("Leaflet.fs");		
+			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper.osm.js', __FILE__ ), array());
+			wp_enqueue_script("ShMapper.osm");			
 			
 		}
 		wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
@@ -223,14 +295,7 @@ class ShMapper
 	}
 	static function set_styles()
 	{
-		if(  static::$options['map_api'] == 2 )
-		{
-			echo "
-			<link rel='stylesheet' href='https://unpkg.com/leaflet@1.3.4/dist/leaflet.css' integrity='sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==' crossorigin=''/>	
-			<!-- Make sure you put this AFTER Leaflet's CSS -->
-			<script src='https://unpkg.com/leaflet@1.3.4/dist/leaflet.js' integrity='sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==' crossorigin=''>
-			</script>";
-		}
+		
 	}
 	static function admin_page_handler()
 	{
@@ -432,10 +497,15 @@ class ShMapper
 				$text
 			</div>
 			<div class='shm_wizzard_footer'>
-				<a class='dashicons dashicons-controls-back' title='" . __("Prevous step", SHMAPPER) . "'></a>
+				<a name='shm_wclose'>" . __("Close wizzard", SHMAPPER) . "</a>
+				<a name='shm_wcurrent'>" . __("Go to current page", SHMAPPER) . "</a>".
+				(
+					$stepData["alt_selector"] ? "" : 
+					"<a class='dashicons dashicons-controls-play' title='" . __("Next step", SHMAPPER) . "' name='shm_wnext'></a>"
+				).
+				"<!--a class='dashicons dashicons-controls-back' title='" . __("Prevous step", SHMAPPER) . "'></a>
 				<a class='dashicons dashicons-edit' title='" . __("Go to current page", SHMAPPER) . "'></a>
-				<a class='dashicons dashicons-controls-play' title='" . __("Next step", SHMAPPER) . "' name='shm_wnext'></a>
-				<a class='dashicons dashicons-no' title='" . __("Close wizzard", SHMAPPER) . "' name='shm_wclose'></a>
+				<a class='dashicons dashicons-no' title='" . __("Close wizzard", SHMAPPER) . "' name='shm_wclose'></a-->
 			</div>
 		</div>
 		<div class='shm_wizzard_closed' id='shm_wizzard_closed' onclick='shm_show_wizz()'>
@@ -454,7 +524,6 @@ class ShMapper
 			}
 			jQuery(document).ready(function($)
 			{	
-				console.log('" . $stepData["selector"] . "');
 				jQuery('" . $stepData["selector"] . "').addClass('shm_wizzard_current');
 				var loc = jQuery('" . $stepData["selector"] . "').offset();
 				if( loc.top < 0 )
@@ -463,6 +532,19 @@ class ShMapper
 				}
 				jQuery('#shm_wizzard').appendTo('#adminmenu').hide().fadeIn('slow').css({top: loc.top - 15});
 				jQuery('#shm_wizzard_closed').appendTo('#adminmenu').hide().css({top: loc.top - 28});
+				jQuery('" . $stepData["alt_selector"] . "').each((num, elem) => {
+					var ofset = $(elem).offset();
+					var poss = ofset.left < window.innerWidth/2 ? 1 : 2;
+					var arr	= poss == 1 ? '<div class=\"shm_warrow\" id=\"shm_warrow'+ num +'\"></div>' : '<div class=\"shm_warrow2\" id=\"shm_warrow'+ num +'\"></div>';
+					var lpos =  poss == 1 ? ofset.left +  $(elem).width() + 20 : ofset.left - 50;
+					$(arr)
+						.appendTo('body')
+							.offset({top:ofset.top - 8, left:lpos})
+					$(elem).live({click:evt =>
+					{
+						shm_send(['shm_wnext']);	
+					}});
+				});
 			});
 		</script>";
 		echo $html;
@@ -473,28 +555,29 @@ class ShMapper
 			[
 				"title"				=> "Приветствуем Вас в Мастере конфигурации Shmapper",
 				"text"				=> "Сначала необходимо указать общие настройки. Нажмите на кнопку <span class='dashicons dashicons-controls-play'></span> чтобы перейти в нужный раздел",
-				"selector"			=> 'a[href="admin.php?page=shm_page"]',
+				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
 				"parent_selector"	=> '#toplevel_page_shm_page',
 				"href"				=> "/wp-admin/admin.php?page=shm_page"
 			],
 			[
 				"title"				=> "Настройте Shmapper",
 				"text"				=> "Измените настройки, которые Вас не устраивают. Для подключения reCAPTCHA необходимо создать учётную запись на Google.com",
-				"selector"			=> 'a[href="admin.php?page=shm_page"]',
-				"parent_selector"	=> '.toplevel_page_shm_page',
+				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
+				"parent_selector"	=> '#toplevel_page_shm_page',
 				"href"				=> '/wp-admin/admin.php?page=shm_page',
 			],
 			[
 				"title"				=> "Создайте вашу первую карту",
 				"text"				=> "Нажмите кнопку  \"Добавить карту\" в самом верху страницы",
 				"selector"			=> 'a[href=\"edit.php?post_type=shm_map\"]',
-				"parent_selector"	=> '.toplevel_page_shm_page',
+				"alt_selector"		=> "body.post-type-shm_map .page-title-action" ,
 				"href"				=> '/wp-admin/edit.php?post_type=shm_map',
 			],
 			[
 				"title"				=> "Новая карта",
-				"text"				=> "На карте выберите видимую область. <p> Создайте первый Маркер указав на нужное место карты правой кнопкой мыши. Заполните поля и нажмите \"Создать\". ",
+				"text"				=> "На карте выберите видимую область. <p> Создайте первый Маркер указав на нужное место карты правой кнопкой мыши. <p> Заполните поля и нажмите \"Создать\". ",
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
+				"alt_selector"		=> 'body.post-type-shm_map #publish',
 				"parent_selector"	=> '#adminmenuwrap .toplevel_page_shm_page',
 				"href"				=> '/wp-admin/post-new.php?post_type=shm_map',
 			],
@@ -503,7 +586,7 @@ class ShMapper
 				"text"				=> "Последовательно заполните предлаженные поля. В разделе \"Форма запроса\" создайте простейшую форму обратной связи, по которой Посетители смогут информировать Вас о предлагаемых Вам новых Маркерах. По окончании нажмите кнопку \"Опубликовать\"",
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"parent_selector"	=> '#adminmenuwrap .toplevel_page_shm_page',
-				"href"				=> '/wp-admin/post-new.php?post_type=shm_map',
+				"href"				=> '',
 			],
 		];
 	}

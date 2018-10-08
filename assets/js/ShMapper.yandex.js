@@ -1,124 +1,312 @@
+var init_map=function(){}, is_admin=function(){}
+jQuery(function () 
+{
+	ymaps.ready(init);
+	
+});
 
-	jQuery(function () {
-		ymaps.ready(init);
-	});
-
-	function init () 
-	{		
-		var marker = "<div id='marker'></div>";
-		jQuery("#"+uniq).parent().append(marker);
-		jQuery("#marker").css({
-			backgroundImage:"url('https://sandbox.api.maps.yandex.net/examples/ru/2.1/dragger/images/pin_food.png')", 
-			width: "33px",
-			height: "36px",
-			position: "absolute",
-			top:0,
-			left:0,
-			zIndex:10000
+function init () 
+{		
+	
+}
+jQuery(document).ready(function($)
+{
+	//new point creating engine
+	addAdress = function($this, new_mark_coords)
+	{	
+		ymaps.geocode(new_mark_coords).then(function (res) 
+		{
+			var firstGeoObject = res.geoObjects.get(0);
+			var getAdministrativeAreas = firstGeoObject.getAdministrativeAreas().join(", ");
+			var getLocalities = firstGeoObject.getLocalities().join(", ");
+			var getThoroughfare = firstGeoObject.getThoroughfare();
+			var getPremise = firstGeoObject.getPremise();
+			var address = [
+				getAdministrativeAreas,
+				getLocalities,
+				getThoroughfare
+			];
+			if(getPremise)
+				address.push(getPremise);
+			shm_address = address.join(", ");
+			//заполняем формы отправки 
+			var lat = $this.parents("form.shm-form-request").find("[name=shm_point_lat]");
+			var lon = $this.parents("form.shm-form-request").find("[name=shm_point_lon]");
+			var type = $this.parents("form.shm-form-request").find("[name=shm_point_type]");
+			var loc = $this.parents("form.shm-form-request").find("[name=shm_point_loc]");
+			lat.val(new_mark_coords[0]);
+			lon.val(new_mark_coords[1]);
+			loc.val(shm_address).removeClass("hidden").hide().fadeIn("slow");
+			type.val($this.attr("shm_type_id"));
+		})			
+	}
+	if($(".shm-type-icon").size())
+	{
+		$(".shm-type-icon").draggable(
+		{
+			revert: false,
+			start: (evt, ui) => 
+			{
+				$this = $(ui.helper);
+				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
+				
+			},
+			stop: (evt, ui) =>
+			{
+				$this = $(ui.helper);
+				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
+				map = shm_maps[$map_id];
+				//
+				//console.log(evt.clientX, evt.clientY + window.scrollY);
+				var globalPixelPoint = map.converter.pageToGlobal( [evt.clientX, evt.clientY + window.scrollY] );
+				new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
+				map.geoObjects.remove(shm_placemark);
+				var bg = $this.css('background-image');
+				if( bg !== "none")
+				{
+					bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+					shm_paramet = {
+						balloonMaxWidth: 250,
+						hideIconOnBalloonOpen: false,
+						iconLayout: 'default#imageWithContent',
+						iconShadow:true,
+						iconImageHref: bg,
+						iconImageSize:[50,50], 
+						iconImageOffset: [-25, -25],
+						draggable:true,
+						term_id:$this.attr("shm_type_id"),
+						type:'point',
+						fill:true,
+						fillColor: "#FF0000",
+						opacity:0.22
+					};
+				}
+				else
+				{
+					shm_paramet = {
+						balloonMaxWidth: 250,
+						hideIconOnBalloonOpen: false,
+						iconColor: $this.attr("shm_clr") ? $this.attr("shm_clr"):'#FF0000',
+						preset: 'islands#dotIcon',
+						draggable:true,
+						term_id:$this.attr("shm_type_id"),
+						type:'point',
+						fill:true,
+						fillColor: "#FF0000",
+						iconShadow:true,
+						opacity:0.22
+					}
+				}
+				
+				shm_placemark = new ymaps.GeoObject({
+					geometry: 
+					{
+						type: 'Point',
+						coordinates: new_mark_coords,
+					}
+				} , 
+				shm_paramet);
+				
+				shm_placemark.events.add("dragend", evt =>
+				{
+					var pos = evt.get("position");
+					var globalPixelPoint = map.converter.pageToGlobal( [pos[0], pos[1]] );
+					new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
+					//console.log(pos);
+					//console.log( evt.originalEvent.target.options.get("type") );
+					addAdress( $this, new_mark_coords );
+				});
+				addAdress( $this, new_mark_coords );
+				map.geoObjects.add(shm_placemark); 
+				$this.css({left:0, top:0}).hide().fadeIn("slow");
+				$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
+			}
+		});	
+	}
+	//
+	init_map = function(mData, points)
+	{
+		var i=0, paramet;
+		var myMap = new ymaps.Map(mData.uniq, 
+		{
+		  center: [ mData.latitude, mData.longitude],
+		  controls: [ ],
+		  zoom: mData.zoom
 		});
 		
-		var map = new ymaps.Map(uniq, {
-			center: [55.819543, 37.611619],
-			controls: [ ],
-			zoom: 10
-		}, {
-			//searchControlProvider: 'yandex#search'
-		}),
+		//search 
+		if(mData.isSearch)
+		{
+			var searchControl = new ymaps.control.SearchControl({
+				options: {
+					provider: 'yandex#search'
+				}
+			});
+			myMap.controls.add(searchControl);
+		}
 		
+		//fullscreen 
+		if(mData.isFullscreen)
+		{
+			var fsControl = new ymaps.control.FullscreenControl({
+				options: {
+					provider: 'yandex#search'
+				}
+			});
+			myMap.controls.add(fsControl);
+		}
 		
-		markerElement = jQuery("#marker"),
-		dragger = new ymaps.util.Dragger({
-			// Драггер будет автоматически запускаться при нажатии на элемент 'marker'.
-			autoStartElement: markerElement[0]
-		}),
-		// Смещение маркера относительно курсора.
-		markerOffset,
-		markerPosition;
-		dragger.events
-			.add('start', onDraggerStart)
-			//.add('move', onDraggerMove)
-			//.add('stop', onDraggerEnd);
-
-		function onDraggerStart(event) {   
-			var offset = markerElement.offset(),
-				position = event.get('position');
-			// Сохраняем смещение маркера относительно точки начала драга.	
-			markerOffset = [
-				position[0] - offset.left,
-				position[1] - offset.top
-			];
-			markerPosition = [
-				position[0] - markerOffset[0],
-				position[1] - markerOffset[1]
-			];
-			console.log(offset);
-			console.log(position);
-			//applyMarkerPosition();
+		//layer switcher 
+		if(mData.isLayerSwitcher)
+		{
+			myMap.controls.add(new ymaps.control.TypeSelector(['yandex#map', 'yandex#hybrid']));
 		}
-		/*
-		function onDraggerMove(event) {
-			applyDelta(event);
-		}
-
-		function onDraggerEnd(event) {
-			applyDelta(event);
-			markerPosition[0] += markerOffset[0];
-			markerPosition[1] += markerOffset[1];
-			// Переводим координаты страницы в глобальные пиксельные координаты.
-			var markerGlobalPosition = map.converter.pageToGlobal(markerPosition),
-				// Получаем центр карты в глобальных пиксельных координатах.
-				mapGlobalPixelCenter = map.getGlobalPixelCenter(),
-				// Получением размер контейнера карты на странице.
-				mapContainerSize = map.container.getSize(),
-				mapContainerHalfSize = [mapContainerSize[0] / 2, mapContainerSize[1] / 2],
-				// Вычисляем границы карты в глобальных пиксельных координатах.
-				mapGlobalPixelBounds = [
-					[mapGlobalPixelCenter[0] - mapContainerHalfSize[0], mapGlobalPixelCenter[1] - mapContainerHalfSize[1]],
-					[mapGlobalPixelCenter[0] + mapContainerHalfSize[0], mapGlobalPixelCenter[1] + mapContainerHalfSize[1]]
-				];
-			// Проверяем, что завершение работы драггера произошло в видимой области карты.
-			if (containsPoint(mapGlobalPixelBounds, markerGlobalPosition)) {
-				// Теперь переводим глобальные пиксельные координаты в геокоординаты с учетом текущего уровня масштабирования карты.
-				var geoPosition = map.options.get('projection').fromGlobalPixels(markerGlobalPosition, map.getZoom()),
-				// Получаем уровень зума карты.
-					zoom = map.getZoom(),
-				// Получаем координаты тайла.
-					tileCoordinates = getTileCoordinate(markerGlobalPosition, zoom, 256);
-				alert([
-					'Координаты: ' + geoPosition,
-					'Уровень зума: ' + zoom,
-					'Глобальные пиксельные координаты: ' + markerGlobalPosition,
-					'Координаты тайла: ' + tileCoordinates
-				].join(' '));
-			}
-		}
-
-		function applyDelta (event) {
-			// Поле 'delta' содержит разницу между положениями текущего и предыдущего события драггера.
-			var delta = event.get('delta');
-			markerPosition[0] += delta[0];
-			markerPosition[1] += delta[1];
-			applyMarkerPosition();
-		}
-
-		function applyMarkerPosition () {
-			markerElement.css({
-				left: markerPosition[0],
-				top: markerPosition[1]
+		
+		//zoom slider 
+		if(mData.isZoomer)
+		{
+			myMap.controls.add('zoomControl', 
+			{
+				float: 'none'
 			});
 		}
-
-		function containsPoint (bounds, point) {
-			return point[0] >= bounds[0][0] && point[0] <= bounds[1][0] &&
-				   point[1] >= bounds[0][1] && point[1] <= bounds[1][1];
+		
+		//config map behaviors
+		if(mData.isDesabled)
+		{
+			myMap.behaviors.disable('scrollZoom');
+			myMap.behaviors.disable('drag');
+		}	
+		// add to global array
+		shm_maps[mData.uniq] = myMap;
+		
+		// Hand-made Boolon
+		var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
+			// Флаг 'raw' означает, что данные вставляют 'как есть' без экранирования html.
+			'<div class=ballon_header>{{ properties.balloonContentHeader|raw }}</div>' +
+				'<div class=ballon_body>{{ properties.balloonContentBody|raw }}</div>' +
+				'<div class="ballon_footer shm_ya_footer">{{ properties.balloonContentFooter|raw }}</div>'
+		);
+		if( mData.isClausterer )
+		{
+			var clusterer = new ymaps.Clusterer({	
+				gridSize: 128,
+				hasHint: true,
+				minClusterSize: 3,
+				clusterIconLayout: 'default#pieChart',
+				clusterIconPieChartRadius: 40,
+				clusterIconPieChartCoreRadius: 30,
+				clusterIconPieChartStrokeWidth: 0,
+				clusterNumbers: [10],
+				//clusterIconContentLayout: null,
+				//groupByCoordinates: false,
+				clusterBalloonContentLayout: 'cluster#balloonCarousel',
+				clusterBalloonItemContentLayout: customItemContentLayout,
+				clusterBalloonPanelMaxMapArea: 0,
+				clusterBalloonContentLayoutWidth: 270,
+				clusterBalloonContentLayoutHeight: 100,
+				clusterBalloonPagerSize: 5,
+				clusterOpenBalloonOnClick: true,
+				clusterDisableClickZoom: true,
+				clusterHideIconOnBalloonOpen: false,
+				geoObjectHideIconOnBalloonOpen: false,
+				type:'clusterer'
+			});
+			clusterer.hint = '';
 		}
-
-		function getTileCoordinate(coords, zoom, tileSize){
-			return [
-				Math.floor(coords[0] * zoom / tileSize),
-				Math.floor(coords[1] * zoom / tileSize)
-			];
-		}
-		*/
+		points.forEach( elem =>
+		{
+			if( elem.icon )
+			{
+				paramet = {
+					balloonMaxWidth: 250,
+					balloonItemContentLayout: customItemContentLayout,
+					hideIconOnBalloonOpen: false,
+					iconColor:elem.color,
+					iconLayout: 'default#image',
+					iconImageHref: elem.icon,
+					iconImageSize:[elem.height, elem.height], //[50,50], 
+					iconImageOffset: [-elem.height/2, -elem.height/2],
+					term_id:elem.term_id,
+					type:'point'
+				};
+			}
+			else if( mData.default_icon && !elem.color)
+			{
+				paramet = {
+					balloonMaxWidth: 250,
+					balloonItemContentLayout: customItemContentLayout,
+					hideIconOnBalloonOpen: false,
+					iconLayout: 'default#image',
+					iconImageHref: mData.default_icon,
+					iconImageSize: [40,40], 
+					iconImageOffset: [-20, -20],
+					term_id:-1,
+					type:'point'
+				};
+				
+			}
+			else
+			{
+				paramet = {
+					balloonMaxWidth: 250,
+					balloonItemContentLayout: customItemContentLayout,
+					hideIconOnBalloonOpen: false,
+					iconColor: elem.color ? elem.color : '#FF0000',
+					preset: 'islands#dotIcon',
+					term_id:elem.term_id,
+					type:'point',
+				}
+			}
+			
+			var myPlacemark = new ymaps.Placemark(
+				[elem.latitude, elem.longitude],
+				{
+					geometry: 
+					{
+						type: 'Point', // тип геометрии - точка
+						coordinates: [elem.latitude, elem.longitude] // координаты точки
+					},
+					balloonContentHeader: elem.post_title,
+					balloonContentBody: elem.post_content,
+					balloonContentFooter: '',
+					hintContent: elem.post_title
+				}, 
+				paramet
+			);
+			if( mData.isClausterer )
+			{
+				clusterer.add(myPlacemark);
+			}			
+			else
+				myMap.geoObjects.add(myPlacemark);
+		})
+		if( mData.isClausterer )	myMap.geoObjects.add(clusterer);
+		if(mData.isAdmin)
+			is_admin(myMap, mData.map_id);	
 	}
+	is_admin = function(myMap, mapData_id)
+	{
+		myMap.events.add( 'boundschange', function(event)
+		{
+			 coords = myMap.getCenter();
+			 zoom = myMap.getZoom();
+			 $('[name=latitude]').val(coords[0].toPrecision(7));
+			 $('[name=longitude]').val(coords[1].toPrecision(7));
+			 $('[name=zoom]').val(zoom);
+		});
+		myMap.events.add('contextmenu', function (e) 
+		{
+			if (!myMap.balloon.isOpen()) 
+			{
+				var coords = e.get('coords');
+				shm_send( ['shm_add_point_prepaire', [ mapData_id, coords[0].toPrecision(7), coords[1].toPrecision(7)] ] );
+			}
+			else 
+			{
+				myMap.balloon.close();
+			}
+		});
+	}
+})
 	

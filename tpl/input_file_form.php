@@ -42,9 +42,9 @@ function get_input_file_form()
 function get_input_file_form2($image_input_name = "image-file", $media_id='-1', $prefix='user_ava', $id='')
 {
 	return "
-	<div class='button my_image_upload' style='padding:10px; height:150px; margin:3px 3px 3px 0; float:left;' image_id='".$id."'  prefix='$prefix'>
-		<div class='pictogramm ' id='$prefix$id' style='position:relative; display:inline-block; height:128px; overflow:hidden;'>".
-			_get_media($media_id, 128).
+	<div class='button my_image_upload' style='padding:10px; height:80px; margin:3px 3px 3px 0; float:left;' image_id='".$id."'  prefix='$prefix'>
+		<div class='pictogramm ' id='$prefix$id' style='position:relative; display:inline-block; height:68px; overflow:hidden;'>".
+			_get_media($media_id, 68).
 		"</div>
 	</div>
 	<input type='hidden' id='".$prefix."_media_id$id' name='$prefix$id' value='$media_id'/>";

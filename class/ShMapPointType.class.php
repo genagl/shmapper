@@ -244,6 +244,7 @@ class ShMapPointType
 		foreach($ganres as $ganre)
 		{
 			if( is_array($includes) && !in_array( $ganre->term_id, $includes ) ) continue;
+						
 			$icon 		= get_term_meta($ganre->term_id, "icon", true);
 			$color 		= get_term_meta($ganre->term_id, "color", true);
 			$d 			= wp_get_attachment_image_src($icon, array(100, 100));
@@ -284,6 +285,27 @@ class ShMapPointType
 				"/>
 				$after";
 		}
+		
+		if( $params['default_none']	)
+		{
+			$html .= "
+			<div class='$col_width'>
+				<input 
+					type='$type' 
+					name='" . $params['prefix'] . ($type == "checkbox" ?  "[]'" : "'").
+					"id='" . $params['prefix'] . "_" . 0 . "'
+					term_id='" . 0 . "'
+					class='$class'
+					value='" . 0 . "' ".
+					checked(1, in_array( 0, $selected) ? 1 : 0, false).
+				"/>
+				<label for='" . $params['prefix'] . "_" . 0 . "'>" . 
+					__("None", SHMAPPER) . 
+					"<div class='shm-clr' style='background:#ffffff;'></div>" .
+				"</label>
+			</div>";
+		}	
+		
 		$html .= "
 			<input type='hidden' id='" . $params['prefix'] . "pointtype' name='" . $params['name'] . "' point='' value='" . $params['selected'] . "' />
 		</div>";

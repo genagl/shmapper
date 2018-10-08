@@ -35,9 +35,11 @@ function shmMap($args)
 				<form class='shm-form-request' id='form$id' form_id='ShmMap$id$uniq' map_id='$id'>					
 					<div class='shm-title'>
 						$form_title
-					</div>".
-						ShmForm::form( $form_forms ).
-					"<div class='shm-form-element'>
+					</div>
+					<div id='form_forms'>".
+						ShmForm::form( $form_forms, $map ).
+					"</div>
+					<div class='shm-form-element'>
 						<input type='submit' class='shm-request' value='" . __("Send request", SHMAPPER) . "'/>
 					</div>					
 				</form>

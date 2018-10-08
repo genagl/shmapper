@@ -30,6 +30,11 @@ jQuery(document).ready(function($)
 	{
 		shm_send(['shm_wnext']);	
 	}});
+	$(".shm_doubled[post_id]").live({click:evt =>
+	{
+		evt.preventDefault();
+		shm_send(['shm_doubled', $(evt.currentTarget).attr("post_id")]);	
+	}});
 	$("[name='shm_wclose']").live({click:evt =>
 	{
 		shm_send(['shm_wclose']);	
@@ -161,6 +166,32 @@ jQuery(document).ready(function($)
 	{
 		if(map_type == 1)
 		{
+			var paramet;
+			if( elem.icon )
+			{
+				paramet = {
+					balloonMaxWidth: 250,
+					hideIconOnBalloonOpen: false,
+					iconColor:elem.color,
+					iconLayout: 'default#image',
+					iconImageHref: elem.icon,
+					iconImageSize:[elem.height, elem.height], //[50,50], 
+					iconImageOffset: [-elem.height/2, -elem.height/2],
+					term_id:elem.term_id,
+					type:'point'
+				};
+			}
+			else
+			{
+				paramet = {
+					balloonMaxWidth: 250,
+					hideIconOnBalloonOpen: false,
+					iconColor: elem.color ? elem.color : '#FF0000',
+					preset: 'islands#dotIcon',
+					term_id:elem.term_id,
+					type:'point',
+				}
+			}
 			var myPlacemark = new ymaps.Placemark(
 				[elem.latitude, elem.longitude],
 				{
@@ -172,26 +203,43 @@ jQuery(document).ready(function($)
 					balloonContentHeader: elem.post_title,
 					balloonContentBody: elem.post_content,
 					hintContent: elem.post_title
-				}, 
-				{
-					balloonMaxWidth: 250,
-					hideIconOnBalloonOpen: false,
-					iconColor:elem.color,
-					iconLayout: 'default#image',
-					iconImageHref: elem.icon,
-					iconImageSize:[elem.height, elem.height],
-					iconImageOffset: [-elem.height/2, -elem.height/2],
-					draggable: true,
-					term_id:elem.term_id,
-					type:'point'
-					/**/
-				}
+				}, paramet
 			);
 			shm_maps[elem.mapid].geoObjects.add(myPlacemark);
 		}
 		else
 		{
-			alert("shm_map_add_point type 2");
+			var icons=[];
+			if( !icons[elem.term_id] && elem.icon )
+			{
+				icons[elem.term_id] = L.icon({
+					iconUrl: elem.icon,
+					shadowUrl: '',
+					iconSize:     [elem.height, elem.height], // size of the icon
+					shadowSize:   [elem.height, elem.height], // size of the shadow
+					iconAnchor:   [elem.height/2, elem.height/2], // point of the icon which will correspond to marker's location
+					shadowAnchor: [0, elem.height],  // the same for the shadow
+					popupAnchor:  [-elem.height/4, -elem.height/2] // point from which the popup should open relative to the iconAnchor
+				});
+				var shoptions = elem.icon != '' ? {icon: icons[elem.term_id]} : {};		
+				var marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
+					.addTo(shm_maps[elem.mapid])
+						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
+			
+			}
+			else
+			{
+				var clr = elem.color ? elem.color : '#FF0000'
+				var style = document.createElement('style');
+				style.type = 'text/css';
+				style.innerHTML = '.__class'+ elem.post_id + ' { color:' + clr + '; }';
+				document.getElementsByTagName('head')[0].appendChild(style);
+				var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
+				var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40) });//
+				L.marker([ elem.latitude, elem.longitude ], {icon: myIcon})
+					.addTo(shm_maps[elem.mapid])
+						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
+			}
 		}
 	}
 	
@@ -257,10 +305,11 @@ jQuery(document).ready(function($)
 		{
 			//alert(json.id);
 			$( "#" + prefix +"_media_id" + cur_upload_id ).val(json.id);
+			$( "#" + prefix +"_media_id" + cur_upload_id ).attr("value", json.id);
 			downloadingImage.onload = function()
 			{								
-				$("#" + prefix + this.cur_upload_id).empty().append("<img src=\'"+this.src+"\' width='auto' height='200'>");
-				$("#" + prefix + this.cur_upload_id).css({"height":"200px", "width":"400px"});
+				$("#" + prefix + this.cur_upload_id).empty().append("<img src=\'"+this.src+"\' width='auto' height='68'>");
+				$("#" + prefix + this.cur_upload_id).css({"height":"68px", "width":"68px"});
 				
 			};
 			downloadingImage.src = json.url;		
@@ -373,6 +422,10 @@ var shm_send = (params, type=-1) =>
 					break;
 				case "shm_wclose":
 					$(".shm_wizzard").detach();
+					$(".shm_wizzard_current").removeClass("shm_wizzard_current");
+					break;
+				case "shm_doubled":
+					window.location.reload(window.location.href);
 					break;
 				case "shm_wrestart":
 					window.location.reload(window.location.href);
@@ -414,7 +467,10 @@ var shm_send = (params, type=-1) =>
 					);
 					break;
 				case "shm_wnext":
-					window.location.href = datas['href'];
+					if(datas['href'])
+						window.location.href = datas['href'];
+					$(".shm_wizzard").detach();
+					$(".shm_wizzard_current").removeClass("shm_wizzard_current");
 					break;	
 				case "shm_delete_map_hndl":
 					shm_close_modal();

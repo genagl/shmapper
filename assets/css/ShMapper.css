@@ -1,4 +1,59 @@
-
+.shm-flex
+{
+	display:flex;
+}
+.shm-admin-block
+{
+	min-width:270px;
+	display: inline-block;
+	margin-right:10px;
+}
+.shm-incblock
+{
+	position:relative;
+	float:left;
+	margin-right:20px;
+}
+.shmw-100
+{
+	width:100%;
+}
+.osm-point
+{
+	position:absolute;
+	width:25px!important;
+	height:25px!important;
+	margin-top:-10px!important;
+	margin-left:-10px!important;
+	background: -webkit-canvas(circles); 
+	background-color:#FF0000;
+}
+.shm-size-40
+{
+	font-size:40px;
+}
+.leaflet-osm-point
+{
+	position:absolute;
+	width:25px!important;
+	height:30px!important;
+	margin-top:-10px!important;
+	margin-left:-10px!important;
+	background-image:url(../img/pin.svg);
+	background-size:cover;
+}
+.leaflet-osm-point:after
+{
+    content: "";
+    width: 35px;
+    height: 35px;
+    background-image: url(../img/marker-shadow.png);
+    background-size: cover;
+    position: absolute;
+    top: -5px;
+    left: 5px;
+    z-index: -100;
+}
 @keyframes wobblehor 
 {
 	0% 
@@ -17,6 +72,33 @@
 		-ms-transform: translateX(0px) translateY(0px);
 		transform: translateX(0px) translateY(0px);
 	} 
+}
+@keyframes roll 
+{
+	0% 
+	{
+		-moz-transform: translateX(-10px) translateY(0px);
+		-webkit-transform: translateX(-10px) translateY(0px);
+		-o-transform: translateX(-10px) translateY(0px);
+		-ms-transform: translateX(-10px) translateY(0px);
+		transform: translateX(-10px) translateY(0px);
+	}
+	50% 
+	{
+		-moz-transform: translateX(0px) translateY(0px);
+		-webkit-transform: translateX(0px) translateY(0px);
+		-o-transform: translateX(0px) translateY(0px);
+		-ms-transform: translateX(0px) translateY(0px);
+		transform: translateX(0px) translateY(0px);
+	} 
+	100% 
+	{
+		-moz-transform: translateX(-10px) translateY(0px);
+		-webkit-transform: translateX(-10px) translateY(0px);
+		-o-transform: translateX(-10px) translateY(0px);
+		-ms-transform: translateX(-10px) translateY(0px);
+		transform: translateX(-10px) translateY(0px);
+	}
 }
 .shm_wizzard_closed
 {
@@ -64,7 +146,7 @@
     z-index: 20000;
     top: 17px;
     right: -297px;
-    padding: 20px 20px 10px 20px;
+    padding: 20px 20px 35px 20px;
     --border-right: 6px solid #0073aa;
     background: #0073aa;
     color: #ddf1fb;
@@ -93,17 +175,18 @@
 }
 .shm_wizzard:after
 {
-	z-index:-1;
-    left: -24px;
-    border: 12px solid transparent;
+	z-index: -1;
+    left: 50%;
+    bottom: -20px;
     content: " ";
-    height: 0;
-    width: 0;
+    height: 60px;
+    width: 60px;
+    background: #0073aa;
     position: absolute;
     pointer-events: none;
-    border-right-color: transparent;
-    top: 25px;
-    margin-top: -12px;
+    margin-left: -30px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
 }
 .shm_wizzard_close
 {
@@ -143,9 +226,30 @@
 	display: inline-block!important;
 	padding:2px!important;
 }
+.shm_wizzard_footer a[name='shm_wclose']
+{
+	position: absolute;
+    text-align: right;
+    right: 25px;
+}
+.shm_wizzard_footer a[name='shm_wcurrent']
+{
+	position: absolute;
+    text-align: right;
+    left: 25px;
+}
+.shm_wizzard_footer a.dashicons-controls-play
+{
+    font-size: 2rem;
+    position: absolute;
+    left: 50%;
+    margin-left: -15px;
+    margin-top: 15px;
+}
 .shm_wizzard_current
 {
 	position: relative;
+	background-color:#d54e21;
 }
 .shm_wizzard_current:before
 {
@@ -154,9 +258,10 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 50%;
+    width: 40%;
     border-bottom: 4px solid#0073aa!important
 }
+
 .shm_wizzard_line
 {
 	display: flex;
@@ -206,6 +311,43 @@
 {
     color: #0073aa;
 }
+.shm_warrow, .shm_warrow2
+{
+    overflow: visible;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    line-height: 1;
+    font-family: dashicons;
+    text-decoration: inherit;
+    font-weight: 400;
+    font-style: normal;
+    vertical-align: top;
+    text-align: center;
+    transition: color .1s ease-in;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    background-color: #EEE;
+    padding: 5px;
+    color: #0073aa;
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+	animation-name: roll;
+    animation-duration: 1s;
+	animation-iteration-count:infinite;
+	text-shadow: 0px 2px 3px #4A4A4A;
+	animation-timing-function: ease-out;
+}
+.shm_warrow:before
+{
+	content: "\f340";	
+}
+.shm_warrow2:before
+{
+	content: "\f344";
+}
+
 .shm-camera
 {
 	position:relative;
@@ -244,9 +386,10 @@
 	width: 20px;
     height: 20px;
     background: #777;
-    position: absolute;
-    top: 6px;
-    left: 6px;
+    --position: absolute;
+    --top: 6px;
+    --left: 6px;
+	margin: 6px;
     -webkit-border-radius: 20px;
     border-radius: 20px;
 }
@@ -622,12 +765,14 @@
 .shm-form,
 .sh-form
 {
-	padding:3px 5px;
-	width:100%;
-	margin-bottom:3px;
-	flex-direction: column;
+    width: 100%;
+    margin-bottom: 3px;
+    flex-direction: column;
     display: flex;
     justify-content: center;
+    background-color: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.025);
+    padding: 7px;
 }
 .sh-form:disabled 
 {
@@ -701,12 +846,13 @@ ul.shm-card
 }
 ul.shm-card li
 {
-	padding:15px;
-	border-bottom:1px solid rgba(0,0,0,0.05);
-	flex-direction: column;
+	padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
-	margin: 0;
+    margin: 0;
 }
 
 ul.shm-card li:nth-of-type(even)
@@ -716,6 +862,10 @@ ul.shm-card li:nth-of-type(even)
 .sh-right
 {
 	text-align:right;
+}
+.sh-center
+{
+	text-align:center;
 }
 .sh-align-middle
 {
@@ -833,7 +983,7 @@ tfoot .shm-notify2:after
 	background-size:28px;
 	cursor:pointer;
 	opacity:0.85;
-	z-index: 2;
+	z-index: 1000;
 }
 .shm-type-icon:hover
 {
@@ -1275,10 +1425,18 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 {
 	font-weight:700;
 }
-
+.shm_ya_footer
+{
+	font-size:11px;
+	margin-left:20px;
+	line-height:1.1;
+	margin-top:6px;
+	color:#444;
+}
 /**/
-#wpfooter {
-    position: inherit!important;
+.leaflet-pane 
+{
+    z-index: 1!important;
 }
 #tagsdiv-shm_point_type
 {
@@ -1302,6 +1460,63 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 {
 	display:none;
 }
+
+/* 
+	FULLSCREEN FOR LEAFLET 
+	https://github.com/brunob/leaflet.fullscreen  
+*/
+.leaflet-control-fullscreen a {
+  background:#fff url(../img/fullscreen.png) no-repeat 0 0;
+  background-size:26px 52px;
+  }
+  .leaflet-touch .leaflet-control-fullscreen a {
+    background-position: 2px 2px;
+    }
+  .leaflet-fullscreen-on .leaflet-control-fullscreen a {
+    background-position:0 -26px;
+    }
+  .leaflet-touch.leaflet-fullscreen-on .leaflet-control-fullscreen a {
+    background-position: 2px -24px;
+    }
+
+/* Do not combine these two rules; IE will break. */
+.leaflet-container:-webkit-full-screen 
+{
+  width:100%!important;
+  height:100%!important;
+}
+.leaflet-container.leaflet-fullscreen-on 
+{
+  width:100%!important;
+  height:100%!important;
+}
+
+.leaflet-pseudo-fullscreen 
+{
+  position:fixed!important;
+  width:100%!important;
+  height:100%!important;
+  top:0!important;
+  left:0!important;
+  z-index:99999;
+}
+
+@media
+  (-webkit-min-device-pixel-ratio:2),
+  (min-resolution:192dpi) 
+  {
+    .leaflet-control-fullscreen a 
+	{
+      background-image:url(../img/fullscreen@2x.png);
+    }
+  }
+/*
+	END FULLSCREEN 
+*/
+
+
+
+
 @media screen and (max-width: 782px)
 {
 	.wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.check-column) 
