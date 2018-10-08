@@ -1,0 +1,256 @@
+/* easyGeocoder */
+
+/* general */
+.easyGeocoder 
+{
+	--color: rgb(46, 52, 54);
+	--color-hover: rgb(0, 0, 0);
+	--bg: rgb(255, 255, 255);
+	--bg-hover: rgb(237, 237, 237);
+	--box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+	--b-radius: 4px;
+	--min-w: 26px;
+	--min-h: 26px;
+	-webkit-transition: all 400ms ease-out;
+	-moz-transition: all 400ms ease-out;
+	-ms-transition: all 400ms ease-out;
+	-o-transition: all 400ms ease-out;
+	transition: all 400ms ease-out;
+}
+.easyGeocoder-ol {
+	--color: rgb(255, 255, 255);
+	--color-hover: rgb(255, 255, 255);
+	--bg: rgba(0, 60, 136, 0.5);
+	--bg-collapsed: rgba(255, 255, 255, 0.3);
+	--bg-hover: rgba(0, 60, 136, 0.7);
+	--box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+	--box-shadow-hover: 0 0 0 3px rgba(255, 255, 255, 0.3);
+	--b-radius: 2px;
+	--min-w: 25px;
+	--min-h: 25px;
+	}
+.leaflet-touch .easyGeocoder {
+	--min-w: 30px;
+	--min-h: 30px;
+	}
+.ol-touch .easyGeocoder {
+	--min-w: 33px;
+	--min-h: 33px;
+	}
+.easyGeocoder {
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	box-shadow: var(--box-shadow);
+	border-radius: var(--b-radius);
+	min-width: var(--min-w);
+	min-height: var(--min-h);
+	}
+.easyGeocoder-ol {
+	position: absolute;
+	top: .5em;
+	right: .5em;
+	margin: 5px;
+	}
+.leaflet-touch .easyGeocoder {
+	box-shadow: none;
+	border: 2px solid rgba(0, 0, 0, 0.2);
+	background-clip: padding-box;
+	}
+.easyGeocoder,
+.easyGeocoder a {
+	color: var(--color);
+	background: var(--bg);
+	}
+.easyGeocoder-ol:not([class $= 'expanded']) {
+	background: var(--bg-collapsed);
+	}
+.easyGeocoder ::placeholder {
+	color: var(--color);
+	opacity: 0.7;
+	}
+.easyGeocoder *:focus {
+	outline: none;
+	}
+.easyGeocoder [class $= 'alternatives-minimized'],
+[class *= 'easyGeocoder-form'] {
+	display: none;
+	}
+.easyGeocoder-form,
+.easyGeocoder-button {
+	vertical-align: middle;
+	}
+.easyGeocoder-form input {
+	font-size: 1.4em;
+	width: 254px;
+	padding: 1px 1px 1px 3px;
+	background: inherit;
+	border: 0;
+	color: var(--color);
+	}
+.easyGeocoder-button,
+.easyGeocoder-expanded [class $= 'form'],
+.easyGeocoder-result-icon {
+	display: inline-block;
+	}
+.easyGeocoder-button,
+.easyGeocoder li {
+	cursor: pointer;
+	}
+.easyGeocoder li,
+.easyGeocoder-result,
+.easyGeocoder-error {
+	display: block;
+	}
+.easyGeocoder-error {
+	margin: 8px 8px 3px;
+	text-align: center;
+	}
+
+/* button */
+.easyGeocoder-button {
+	--button-w: 26px;
+	--button-h: 26px;
+	}
+.easyGeocoder-ol [class $= 'button'] {
+	--bg-hover: rgba(0, 60, 136, 0.7);
+	--button-w: 25px;
+	--button-h: 25px;
+	}
+.leaflet-touch .easyGeocoder-button {
+	--button-w: 30px;
+	--button-h: 30px;
+	}
+.ol-touch .easyGeocoder-button {
+	--button-w: 33px;
+	--button-h: 33px;
+	}
+.easyGeocoder-button {
+	width: var(--button-w);
+	height: var(--button-h);
+	border-radius: inherit;
+	}
+.easyGeocoder-searchIcon,
+.easyGeocoder-throbber {
+	stroke: var(--color);
+	}
+.easyGeocoder-button:hover .easyGeocoder-searchIcon {
+	stroke: var(--color-hover);
+	}
+.easyGeocoder:not([class $= 'expanded']) .easyGeocoder-button {
+	background: var(--bg);
+	}
+.easyGeocoder:not([class $= 'expanded']) .easyGeocoder-button:hover {
+	background: var(--bg-hover);
+	}
+.easyGeocoder-ol:not([class $= 'expanded']) .easyGeocoder-button:hover {
+	box-shadow: var(--box-shadow-hover);
+	}
+
+/* alternatives */
+.easyGeocoder-alternatives {
+	--alt-b-radius: 0 0 4px 4px;
+	--alt-max-w: 284px;
+	}
+.easyGeocoder-ol .easyGeocoder-alternatives {
+	--alt-b-radius: 0 0 2px 2px;
+	--alt-max-w: 283px;
+	}
+.leaflet-touch .easyGeocoder-alternatives {
+	--alt-max-w: 288px;
+	}
+.ol-touch .easyGeocoder-alternatives {
+	--alt-max-w: 291px;
+	}
+.easyGeocoder-alternatives {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	max-width: var(--alt-max-w);
+	}
+.easyGeocoder li {
+	white-space: nowrap;
+	border-bottom: 1px solid rgb(204, 204, 204);
+	}
+.easyGeocoder li:last-child {
+	border-radius: var(--alt-b-radius);
+	border: none;
+	overflow: hidden;
+	}
+.easyGeocoder li a:hover,
+.easyGeocoder-selected a {
+	color: var(--color-hover);
+	background: var(--bg-hover);
+	}
+
+/* marker */
+.easyGeocoder-marker {
+	width: 26px;
+	height: 39px;
+	background: url('../img/easyGeocoder-marker.svg') no-repeat center bottom;
+	background-size: contain;
+	}
+
+/* result */
+.easyGeocoder-result {
+	padding: 8px 8px 5px;
+	}
+.easyGeocoder-result,
+.easyGeocoder-result span {
+	line-height: 120%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
+.easyGeocoder-defaultResultIcon {
+	stroke: var(--color);
+	}
+.easyGeocoder li a:hover .easyGeocoder-defaultResultIcon,
+.easyGeocoder-selected .easyGeocoder-defaultResultIcon {
+	stroke: var(--color-hover);
+	}
+
+/* result: custom */
+.easyGeocoder-result,
+.easyGeocoder-popup {
+	--res-2-color: rgb(102, 102, 102);
+	}
+.easyGeocoder-ol .easyGeocoder-result {
+	--res-2-color: rgb(202, 202, 202);
+	}
+.easyGeocoder-result span,
+.easyGeocoder-popup span {
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+	font-weight: bold;
+	font-size: 16px;
+	}
+.easyGeocoder-result span:nth-of-type(2),
+.easyGeocoder-popup span:nth-of-type(2) {
+	font-weight: normal;
+	font-size: 12px;
+	color: var(--res-2-color);
+	}
+
+/* result: custom + icon */
+.easyGeocoder-result-icon span {
+	--res-icon-span-w: 240px;
+	}
+.easyGeocoder-ol [class $= 'icon'] span {
+	--res-icon-span-w: 239px;
+	}
+.leaflet-touch .easyGeocoder-result-icon span {
+	--res-icon-span-w: 244px;
+	}
+.ol-touch .easyGeocoder-result-icon span {
+	--res-icon-span-w: 247px;
+	}
+.easyGeocoder-result-icon span {
+	text-align: left;
+	width: var(--res-icon-span-w);
+	}
+.easyGeocoder-display-icons {
+	width: 20px;
+	height: 20px;
+	float: left;
+	margin: 0 8px 5px 0;
+	}
+

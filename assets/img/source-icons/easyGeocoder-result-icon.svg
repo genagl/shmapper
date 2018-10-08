@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="125" height="125" viewBox="0 0 4 4" preserveaspectratio="xMidYMid meet">
+<title>easyGeocoder result icon</title>
+<g style="fill:none;stroke:rgb(0,0,0);stroke-width:2" transform="matrix(0.15285513,-0.15285513,0.15285513,0.15285513,-0.44568202,2)">
+<circle cx="8" cy="8" r="7" />
+<path d="M 8,1 V 15 Z M 1,8 h 14 z" />
+</g>
+</svg>
+
