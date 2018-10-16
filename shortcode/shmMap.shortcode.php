@@ -11,7 +11,7 @@ function shmMap($args)
 	), $args, 'shmMap' );
 	
 	$id				= $args['id'];
-	$args['uniq']	= $args['uniq'] ? $args['uniq'] : substr( MD5(rand(0, 100000000), 0, 8) );
+	$args['uniq']	= $args['uniq'] ? $args['uniq'] : substr( MD5(rand(0, 100000000)), 0, 8 );
 	$uniq			= $args['uniq'];
 	$map 			= ShmMap::get_instance($args['id']);
 	if(!$map->is_enabled() || $map->get("post_type") !== SHM_MAP)
@@ -25,7 +25,7 @@ function shmMap($args)
 	{
 		$html 	.= $map->draw($args);		
 	}
-	if( $form_enb && $map->get_meta("is_form"))
+	//if( $form_enb && $map->get_meta("is_form") && ShMapper::$options['shm_map_is_crowdsourced'])
 	{
 		$form_title = $map->get_meta("form_title");
 		$form_forms = $map->get_meta("form_forms");

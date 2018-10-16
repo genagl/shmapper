@@ -5,7 +5,8 @@ class ShMapper
 	static function activate()
 	{
 		global $wpdb;
-		$wpdb->query("CREATE TABLE IF NOT EXISTS `shmp_point_map` (
+		init_textdomain_shmapper();
+		$wpdb->query("CREATE TABLE IF NOT EXISTS `".$wpdb->prefix."point_map` (
 			`ID` int(255) unsigned NOT NULL AUTO_INCREMENT,
 			`point_id` int(255) unsigned NOT NULL,
 			`map_id` int(255) unsigned NOT NULL,
@@ -18,9 +19,16 @@ class ShMapper
 				update_option(SHMAPPER,[
 			"map_api"	=> 1,
 			"shm_map_is_crowdsourced"	=> 0,
-			"shm_map_marker_premoderation"	=> 0,
-			"wizzard" => 1
+			"shm_map_marker_premoderation"	=> 1,
+			"wizzard" => 1,
+			"shm_personal_text" => __("We give a guarantee of the full confidentiality of your data, in accordance with Federal Law No. 152-FZ of July 27, 2006. By clicking send you consent to the processing of personal data contained in the request and the attached documents.", SHMAPPER),
+			"shm_succ_request_text" => __("Your request has been successfully registered.", SHMAPPER),
+			"shm_error_request_text" => __("Unknown error.", SHMAPPER),
 		]);
+		$upload = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/shmapper';
+		wp_mkdir_p( $upload_dir );
 	}
 	static function deactivate()
 	{
@@ -46,10 +54,66 @@ class ShMapper
 		add_action( "wp_head",						[__CLASS__, "set_styles"]);
 		add_filter( "smc_add_post_types",	 		[__CLASS__, "init_obj"], 10);
 		add_action( 'admin_menu',					[__CLASS__, 'admin_page_handler'], 9);
+		add_action( 'admin_menu',					[__CLASS__, 'admin_page_handler2'], 99);
 		add_action( 'admin_enqueue_scripts', 		[__CLASS__, 'add_admin_js_script'], 99 );
 		add_action( 'wp_enqueue_scripts', 			[__CLASS__, 'add_frons_js_script'], 99 );
 		add_action( "admin_footer", 				[__CLASS__, "add_wizzard"]);
+		add_action( 'wp_before_admin_bar_render', 	[__CLASS__, 'my_admin_bar_render'], 11);
 	}
+	
+	
+
+	static function my_admin_bar_render()
+	{
+		global $wp_admin_bar, $shm_all_maps;
+		if(!current_user_can("manage_options")) return;
+		
+		$wp_admin_bar->add_menu( array(
+			'parent' => false,
+			'id' => 'shmapper_panel', 
+			'title' => __('Shmapper', SHMAPPER), 
+			'href' => "/wp-admin/admin.php?page=shm_settings_page" 	
+		));
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'shmapper_panel',
+			'id' => 'shmapper_add_map', 
+			'title' => __('add Map', SHMAPPER), 
+			'href' => "/wp-admin/post-new.php?post_type=shm_map" 	
+		));
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'shmapper_panel',
+			'id' => 'shmapper_maps', 
+			'title' => __('Maps', SHMAPPER), 
+			'href' => "/wp-admin/edit.php?post_type=shm_map" 	
+		));
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'shmapper_panel',
+			'id' => 'shmapper_edit_maps', 
+			'title' => __('edit Maps in page', SHMAPPER), 
+			'href' => "#" 	
+		));
+		if(is_array($shm_all_maps))
+		{
+			foreach($shm_all_maps as $mid)
+			{
+				$map = ShmMap::get_instance($mid);
+				$wp_admin_bar->add_menu( [
+					'parent' => 'shmapper_edit_maps',
+					'id' => 'shmapper_edit_map'.$mid, 
+					'title' => $map->get("post_title"), 
+					'href' => "/wp-admin/post.php?post=$mid&action=edit" 
+				] );
+			}
+		}
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'shmapper_panel',
+			'id' => 'shmapper_map_req', 
+			'title' => __("all Map Requests", SHMAPPER), 
+			'href' => "/wp-admin/edit.php?post_type=shm_request" 	
+		));
+	}
+	
+	
 	static function init_obj($init_object)
 	{
 		if(!is_array($init_object)) $init_object = [];
@@ -83,27 +147,16 @@ class ShMapper
 		$map['notify_owner']		= ['type'=>'boolean', "distination" => "form", "name" => __("Notify owner of Map", SHMAPPER)];
 		$map['form_title']			= ['type'=>'string',  "distination" => "form", "name" => __("Form Title", SHMAPPER)];
 		$map['form_forms']			= ['type'=>'form_editor',  "distination" => "form", "name" => __("Form generator", SHMAPPER)];
-		$map['is_personal_data']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Users can leave their contact details for feedback.", SHMAPPER)];
-		
-		$map['is_name_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal name", SHMAPPER)];
-		
-		$map['personal_name']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal name", SHMAPPER)];
-		
-		$map['is_name_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal name", SHMAPPER)];
-		
-		$map['is_email_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal e-mail",SHMAPPER)];
-		
-		$map['personal_email']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal e-mail", SHMAPPER)];
-		
-		$map['is_email_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal e-mail", SHMAPPER)];
-		
-		$map['is_phone_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal phone", SHMAPPER)];
-		
-		$map['personal_phone']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal phone", SHMAPPER)];
-		
-		$map['is_phone_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal phone", SHMAPPER)];
-		
-		//$location['location_type'] = ['type'=>'id', 	'object'=>"location_type"];
+		$map['is_personal_data']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Users can leave their contact details for feedback.", SHMAPPER)];		
+		$map['is_name_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal name", SHMAPPER)];		
+		$map['personal_name']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal name", SHMAPPER)];		
+		$map['is_name_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal name", SHMAPPER)];		
+		$map['is_email_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal e-mail",SHMAPPER)];		
+		$map['personal_email']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal e-mail", SHMAPPER)];		
+		$map['is_email_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal e-mail", SHMAPPER)];		
+		$map['is_phone_iclude']		= ['type'=>'boolean',  "distination" => "form", "name" => __("Unclude Personal phone", SHMAPPER)];		
+		$map['personal_phone']		= ['type'=>'string',  "distination" => "form", "name" => __("Personal phone", SHMAPPER)];		
+		$map['is_phone_required']	= ['type'=>'boolean',  "distination" => "form", "name" => __("Required Personal phone", SHMAPPER)];	
 		$init_object[SHM_MAP]		= $map;
 		
 		
@@ -160,6 +213,8 @@ class ShMapper
 			wp_enqueue_style( "easyGeocoder");
 			wp_register_style("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css", array());
 			wp_enqueue_style( "leaflet");
+			wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
+			wp_enqueue_style( "layerSwitcher");
 			wp_register_style("MarkerCluster", SHM_URLPATH . 'assets/css/MarkerCluster.css', array());
 			wp_enqueue_style( "MarkerCluster");
 			wp_register_style("MarkerClusterD", SHM_URLPATH . 'assets/css/MarkerCluster.Default.css', array());
@@ -175,6 +230,8 @@ class ShMapper
 			wp_enqueue_script("esri-leaflet-geocoder");	
 			wp_register_script("leaflet.markercluster", plugins_url( '../assets/js/leaflet.markercluster-src.js', __FILE__ ), array());
 			wp_enqueue_script("leaflet.markercluster");	
+			wp_register_script("layerSwitcher", plugins_url( '../assets/js/Leaflet.layerSwitcher.js', __FILE__ ), array());
+			wp_enqueue_script("layerSwitcher");	
 			
 			wp_register_script("easyGeocoder", plugins_url( '../assets/js/easyGeocoder.js', __FILE__ ), array());
 			wp_enqueue_script("easyGeocoder");	
@@ -213,6 +270,7 @@ class ShMapper
 				'Attantion' => __( "Attantion", SHMAPPER ),
 				'Send' => __( "Send" ),
 				'Close' => __( "Close" ),
+				'Error: no map' => __( "Error: no map", SHMAPPER ),
 			)
 		);	
 	}
@@ -224,10 +282,15 @@ class ShMapper
 		wp_enqueue_style( "ShMapper");
 		
 		//js			
-		wp_register_script("jquery-ui", "https://code.jquery.com/ui/1.12.1/jquery-ui.js", array());
+		//wp_register_script("jquery-ui", "https://code.jquery.com/ui/1.12.1/jquery-ui.js", array());
+		wp_register_script("jquery-ui", plugins_url( '../assets/js/jquery-ui.min.js', __FILE__ ), array());
 		wp_enqueue_script("jquery-ui");	
+		wp_register_script("touchpunch", plugins_url( '../assets/js/touchpunch.js', __FILE__ ), array());
+		wp_enqueue_script("touchpunch");	
 		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array());
 		wp_enqueue_script("ShMapper");	
+		wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
+		wp_enqueue_style( "layerSwitcher");
 		wp_register_script("ShMapper.front", plugins_url( '../assets/js/ShMapper.front.js', __FILE__ ), array());
 		wp_enqueue_script("ShMapper.front");	
 		if( static::$options['map_api'] == 1 )
@@ -261,6 +324,8 @@ class ShMapper
 			wp_enqueue_script("easyGeocoder");	
 			wp_register_script("leaflet.markercluster", plugins_url( '../assets/js/leaflet.markercluster-src.js', __FILE__ ), array());
 			wp_enqueue_script("leaflet.markercluster");	
+			wp_register_script("layerSwitcher", plugins_url( '../assets/js/Leaflet.layerSwitcher.js', __FILE__ ), array());
+			wp_enqueue_script("layerSwitcher");	
 			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
 			wp_enqueue_script("Leaflet.fs");		
 			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper.osm.js', __FILE__ ), array());
@@ -292,6 +357,16 @@ class ShMapper
 			)
 		);	
 		wp_localize_script( 'jquery', 'shm_maps', [] );
+		wp_localize_script( 
+			'jquery', 
+			'voc', 
+			array(
+				'Attantion' => __( "Attantion", SHMAPPER ),
+				'Send' => __( "Send" ),
+				'Close' => __( "Close" ),
+				'Error: no map' => __( "Error: no map", SHMAPPER ),
+			)
+		);	
 	}
 	static function set_styles()
 	{
@@ -299,16 +374,19 @@ class ShMapper
 	}
 	static function admin_page_handler()
 	{
+		/**/
 		add_menu_page( 
 			__('Shmapper', SHMAPPER), 
 			__('Shmapper', SHMAPPER),
 			'manage_options', 
 			'shm_page', 
 			[ __CLASS__, 'setting_pages' ], 
-			"dashicons-admin-site", // icon url  
+			SHM_URLPATH . "assets/img/shmapper_32x32_white.svg",//"dashicons-admin-site", // icon url  
 			'19.123456'
 		);
-		return;
+	}
+	static function admin_page_handler2()
+	{
 		add_submenu_page(
 			'shm_page',
 			__("Settings"),
@@ -323,9 +401,12 @@ class ShMapper
 		//var_dump(static::$options);
 		echo "<div class='shm-container shm-padding-20'>
 			<div class='shm-row'>
-				<h1 class='wp-heading-inline shm-color-grey'>".
-					__("Settings") .
-				"</h1>
+				<div class='shm-12'>
+					<div class='shm_logo'></div>
+					<h1 class='wp-heading-inline shm-color-grey shm_no_margin'>".
+						__("Settings") .
+					"</h1>
+				</div>
 			</div>
 			<div class='spacer-30'></div>
 			<ul class='shm-card'>
@@ -335,15 +416,18 @@ class ShMapper
 							__("Map API", SHMAPPER) . 
 						"</div>
 						<div class='shm-10'>
-							<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" . 
-								checked(1, (int)static::$options['map_api'], 0) . 
-							"/>
-							<label for='radio_Yandex'>".__("Yandex Map", SHMAPPER) ."</label>
-						
-							<input type='radio' class='radio' value='2' name='map_api' id='radio_OSM'" . 
-								checked(2, (int)static::$options['map_api'], 0) . 
-							"/>
-							<label for='radio_OSM'>".__("Open Street Map", SHMAPPER) ."</label>
+							<div class='shm-admin-block'>
+								<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" . 
+									checked(1, (int)static::$options['map_api'], 0) . 
+								"/>
+								<label for='radio_Yandex'>".__("Yandex Map", SHMAPPER) ."</label>
+							</div>
+							<div class='shm-admin-block'>
+								<input type='radio' class='radio' value='2' name='map_api' id='radio_OSM'" . 
+									checked(2, (int)static::$options['map_api'], 0) . 
+								"/>
+								<label for='radio_OSM'>".__("Open Street Map", SHMAPPER) ."</label>
+							</div>
 							<div class='spacer-10'></div>
 							<div><small class='shm-color-grey'>Short description label</small></div>
 						</div>
@@ -448,7 +532,7 @@ class ShMapper
 							
 						</div>	
 					</div>				
-				</li>	
+				</li>
 				<li>
 					<div class='shm-row' id='shm_vocabulary_cont'>
 						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3 '>".

@@ -47,6 +47,9 @@ function get_input_file_form2($image_input_name = "image-file", $media_id='-1', 
 			_get_media($media_id, 68).
 		"</div>
 	</div>
+	<div class='button my_image_delete' prefix='$prefix' default='" . _get_default() . "'>
+		<span class='dashicons dashicons-no'></span>
+	</div>
 	<input type='hidden' id='".$prefix."_media_id$id' name='$prefix$id' value='$media_id'/>";
 }
 

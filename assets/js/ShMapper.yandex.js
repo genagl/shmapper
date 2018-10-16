@@ -11,6 +11,54 @@ function init ()
 }
 jQuery(document).ready(function($)
 {
+	//filter	
+	document.documentElement.addEventListener("shm_filter", function(e) 
+	{	
+		var dat = e.detail;	
+		var geos = dat.map.geoObjects;
+		for(var ii = 0, ll = geos.getLength(); ii < ll; ii++)
+		{
+			switch(geos.get([ii]).options.get("type"))
+			{
+				case "clusterer":
+					var clusterer  	= geos.get([ii]);
+					var mrks 		= clusterer.getGeoObjects();
+					for(var i=0, l = mrks.length; i<l; i++ )
+					{
+						if(dat.term_id == mrks[i].options.get("term_id"))
+							mrks[i].options.set({visible : dat.$this.is(":checked")});
+					}
+					break;
+				case "point":
+				default:
+					if(dat.term_id == geos.get([ii]).options.get("term_id"))
+							geos.get([ii]).options.set({visible : dat.$this.is(":checked")});
+					break;
+			}
+		}
+	});
+	initAddress = function(new_mark_coords)
+	{
+		ymaps.geocode(new_mark_coords).then(function (res) 
+		{
+			var firstGeoObject = res.geoObjects.get(0);
+			var getAdministrativeAreas = firstGeoObject.getAdministrativeAreas().join(", ");
+			var getLocalities = firstGeoObject.getLocalities().join(", ");
+			var getThoroughfare = firstGeoObject.getThoroughfare();
+			var getPremise = firstGeoObject.getPremise();
+			var address = [
+				getAdministrativeAreas,
+				getLocalities,
+				getThoroughfare
+			];
+			if(getPremise)
+				address.push(getPremise);
+			shm_address = address.join(", ");
+			var dat = { adress: shm_address };
+			var initAddress = new CustomEvent("initAddress", {bubbles : true, cancelable : true, detail : dat});
+			document.documentElement.dispatchEvent(initAddress);
+		});
+	}
 	//new point creating engine
 	addAdress = function($this, new_mark_coords)
 	{	
@@ -71,8 +119,8 @@ jQuery(document).ready(function($)
 						iconLayout: 'default#imageWithContent',
 						iconShadow:true,
 						iconImageHref: bg,
-						iconImageSize:[50,50], 
-						iconImageOffset: [-25, -25],
+						iconImageSize:[40,40], 
+						iconImageOffset: [-20, -20],
 						draggable:true,
 						term_id:$this.attr("shm_type_id"),
 						type:'point',
@@ -126,12 +174,14 @@ jQuery(document).ready(function($)
 	//
 	init_map = function(mData, points)
 	{
+		console.log( 'yandex#satellite', 'yandex#' + mData.mapType );
 		var i=0, paramet;
 		var myMap = new ymaps.Map(mData.uniq, 
 		{
 		  center: [ mData.latitude, mData.longitude],
 		  controls: [ ],
-		  zoom: mData.zoom
+		  zoom: mData.zoom,
+		  type: 'yandex#' + mData.mapType
 		});
 		
 		//search 
@@ -159,7 +209,7 @@ jQuery(document).ready(function($)
 		//layer switcher 
 		if(mData.isLayerSwitcher)
 		{
-			myMap.controls.add(new ymaps.control.TypeSelector(['yandex#map', 'yandex#hybrid']));
+			myMap.controls.add(new ymaps.control.TypeSelector(['yandex#map', 'yandex#hybrid', 'yandex#satellite']));
 		}
 		
 		//zoom slider 
@@ -218,6 +268,9 @@ jQuery(document).ready(function($)
 		{
 			if( elem.icon )
 			{
+				var h = parseInt(elem.height);
+				var w = elem.width ? parseInt(elem.width) : h;
+				console.log( w, h );
 				paramet = {
 					balloonMaxWidth: 250,
 					balloonItemContentLayout: customItemContentLayout,
@@ -225,10 +278,11 @@ jQuery(document).ready(function($)
 					iconColor:elem.color,
 					iconLayout: 'default#image',
 					iconImageHref: elem.icon,
-					iconImageSize:[elem.height, elem.height], //[50,50], 
-					iconImageOffset: [-elem.height/2, -elem.height/2],
+					iconImageSize:[w, h], //[50,50], 
+					iconImageOffset: [-w/2, -h/2],
 					term_id:elem.term_id,
-					type:'point'
+					type:'point',
+					draggable: true
 				};
 			}
 			else if( mData.default_icon && !elem.color)
@@ -242,13 +296,15 @@ jQuery(document).ready(function($)
 					iconImageSize: [40,40], 
 					iconImageOffset: [-20, -20],
 					term_id:-1,
-					type:'point'
+					type:'point',
+					draggable: true
 				};
 				
 			}
 			else
 			{
 				paramet = {
+					draggable: true,
 					balloonMaxWidth: 250,
 					balloonItemContentLayout: customItemContentLayout,
 					hideIconOnBalloonOpen: false,
@@ -256,6 +312,7 @@ jQuery(document).ready(function($)
 					preset: 'islands#dotIcon',
 					term_id:elem.term_id,
 					type:'point',
+					draggable: true
 				}
 			}
 			
@@ -267,13 +324,31 @@ jQuery(document).ready(function($)
 						type: 'Point', // тип геометрии - точка
 						coordinates: [elem.latitude, elem.longitude] // координаты точки
 					},
+					draggable: true,
 					balloonContentHeader: elem.post_title,
 					balloonContentBody: elem.post_content,
 					balloonContentFooter: '',
 					hintContent: elem.post_title
+					
 				}, 
 				paramet
 			);
+			if(!mData.isMap)
+			{				
+				document.documentElement.addEventListener("initAddress", function(e) 
+				{
+					$("[name='location']").val(e.detail.adress);
+				})
+				myPlacemark.events.add("dragend", evt =>
+				{
+					var pos = evt.get("position");
+					var globalPixelPoint = myMap.converter.pageToGlobal( [pos[0], pos[1]] );
+					var new_mark_coords = myMap.options.get('projection').fromGlobalPixels(globalPixelPoint, myMap.getZoom());
+					$("[name='latitude']").val(new_mark_coords[0].toFixed(6));
+					$("[name='longitude']").val(new_mark_coords[1].toFixed(6));
+					initAddress(new_mark_coords);
+				});
+			}
 			if( mData.isClausterer )
 			{
 				clusterer.add(myPlacemark);
@@ -283,30 +358,39 @@ jQuery(document).ready(function($)
 		})
 		if( mData.isClausterer )	myMap.geoObjects.add(clusterer);
 		if(mData.isAdmin)
-			is_admin(myMap, mData.map_id);	
+			is_admin(myMap, mData);	
 	}
-	is_admin = function(myMap, mapData_id)
+	is_admin = function(myMap, mData)
 	{
-		myMap.events.add( 'boundschange', function(event)
+		if(mData.isMap)
 		{
-			 coords = myMap.getCenter();
-			 zoom = myMap.getZoom();
-			 $('[name=latitude]').val(coords[0].toPrecision(7));
-			 $('[name=longitude]').val(coords[1].toPrecision(7));
-			 $('[name=zoom]').val(zoom);
-		});
-		myMap.events.add('contextmenu', function (e) 
+			myMap.events.add( 'boundschange', function(event)
+			{
+				 coords = myMap.getCenter();
+				 zoom = myMap.getZoom();
+				 $('[name=latitude]').val(coords[0].toPrecision(7));
+				 $('[name=longitude]').val(coords[1].toPrecision(7));
+				 $('[name=zoom]').val(zoom);
+			});
+			myMap.events.add('contextmenu', function (e) 
+			{
+				if (!myMap.balloon.isOpen()) 
+				{
+					var coords = e.get('coords');
+					shm_send( 
+						['shm_add_point_prepaire', [ mData.map_id, coords[0].toPrecision(7), coords[1].toPrecision(7)] ] 
+					);
+				}
+				else 
+				{
+					myMap.balloon.close();
+				}
+			});
+		}
+		else
 		{
-			if (!myMap.balloon.isOpen()) 
-			{
-				var coords = e.get('coords');
-				shm_send( ['shm_add_point_prepaire', [ mapData_id, coords[0].toPrecision(7), coords[1].toPrecision(7)] ] );
-			}
-			else 
-			{
-				myMap.balloon.close();
-			}
-		});
+			
+		}
 	}
 })
 	

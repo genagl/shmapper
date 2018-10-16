@@ -115,7 +115,8 @@ jQuery(document).ready(function($)
 			longitude: $("[name='shm_y']").val(), 
 			post_title: $("[name='shm-new-point-title']").val(), 
 			post_content: $("[name='shm-new-point-content']").val(), 
-			type: $("[name='shm-new-point-type']").val()
+			type: $("[name='shm-new-point-type']").val(),
+			location: $("[name='shm-new-point-location']").val(),
 		}]);
 	}
 	shm_delete_map_hand = id =>
@@ -136,6 +137,16 @@ jQuery(document).ready(function($)
 		var uniq = $this.parents("[for]").attr("for");
 		var map = shm_maps[uniq];
 		var term_id = $this.attr("term_id");
+		
+		var dat = {
+			uniq 	: uniq,
+			term_id	: term_id,
+			$this	: $this,
+			map		: map
+		}
+		var customEvent = new CustomEvent("shm_filter", {bubbles : true, cancelable : true, detail : dat})
+		document.documentElement.dispatchEvent(customEvent);		
+		/*
 		//yandex map doing	
 		var geos = map.geoObjects;
 		for(var ii = 0, ll = geos.getLength(); ii < ll; ii++)
@@ -158,6 +169,7 @@ jQuery(document).ready(function($)
 					break;
 			}
 		}
+		*/
 		
 	}});
 	
@@ -322,6 +334,17 @@ jQuery(document).ready(function($)
 		prefix = $(this).attr("prefix");// "pic_example";
 		$( elem ).height( $("#" + prefix  + $(elem).attr("image_id")).height() + 0);
 	})
+	$(".my_image_delete").click(evt=>
+	{
+		var $prefix = $(evt.currentTarget).attr("prefix");
+		var $default = $(evt.currentTarget).attr("default");
+		var $targ = $("#" + $prefix + " > img");
+		var $input = $("#" + $prefix + "_media_id");
+		$targ.attr("src", $default);
+		$input.val("");
+	});
+	
+	
 	// input file
 	$(".shm-form-file > input[type='file']").each((num, elem) =>
 	{
@@ -429,6 +452,16 @@ var shm_send = (params, type=-1) =>
 					break;
 				case "shm_wrestart":
 					window.location.reload(window.location.href);
+					break;
+				case "shm_csv":
+					var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(datas['text']);
+					var link = document.createElement("a");
+					link.setAttribute("href", datas['text']);
+					link.setAttribute("download", datas['name'] + ".csv");
+					link.innerHTML= "Download";
+					document.body.appendChild(link);
+					link.click();
+					//link.parentNode.removeChild(link);
 					break;
 				case "shm_set_req":
 					if(datas['grecaptcha'] == 1)

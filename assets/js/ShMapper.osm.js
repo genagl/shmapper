@@ -1,7 +1,26 @@
-var init_map=function(){}, is_admin=function(){alert("AAAA")}, map, $this, geocodeService, eclectMarker, eclectCoords;
+var init_map=function(){}, is_admin=function(){alert("AAAA")}, map, all_markers = [], $this, geocodeService, eclectMarker, eclectCoords, myMap;
+var changeBasemap = function(){}, setBasemap=function(){}, layer, layerLabels, lG;
 
 jQuery(document).ready(function($)
 {
+	//filter	
+	document.documentElement.addEventListener("shm_filter", function(e) 
+	{	
+		var dat = e.detail;	
+		all_markers[dat.uniq].forEach(elem =>
+		{
+			if(elem.options.term_id == dat.term_id )
+			{
+				if(dat.$this.is(":checked"))
+					//elem._icon.classList.remove("hidden");
+					$(elem._icon).css("opacity",1);
+				else
+					//elem._icon.classList.add("hidden");
+					$(elem._icon).css("opacity", 0.125);
+			}
+		});
+	});
+	
 	//remove eclectMarker
 	document.documentElement.addEventListener("clear_form", function(e) 
 	{	
@@ -52,16 +71,46 @@ jQuery(document).ready(function($)
 						loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
 					});
 			
+					//set marker
+					var bg = $this.css('background-image');
+					if( bg !== "none")
+					{
+						bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+						s_style = {draggable:true};
+						s_style.icon = L.icon({
+							iconUrl: bg,
+							shadowUrl: '',
+							iconSize:     [40, 40], // size of the icon
+							iconAnchor:   [20, 40], // point of the icon which will correspond to marker's location
+						});
+					}
+					else if($this.attr("shm_clr"))
+					{
+						var clr = $this.attr("shm_clr");
+						var style = document.createElement('style');
+						var iid = $this.attr("shm_type_id");
+						style.type = 'text/css';
+						style.innerHTML = '.__class'+ iid + ' { color:' + clr + '; }';
+						document.getElementsByTagName('head')[0].appendChild(style);
+						var classes = 'dashicons dashicons-location shm-size-40 __class'+ iid;
+						var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40), iconAnchor: [20, 30] });//
+						s_style = { draggable:true, icon: myIcon };
+					}
+					else
+					{
+						s_style = {draggable:true};
+						
+					}
 					
 					if(eclectMarker)
 					{
 						eclectMarker.remove(map);
 					}
-					eclectMarker = L.marker(eclectCoords,{draggable:true}).addTo(map);
+					eclectMarker = L.marker(eclectCoords,s_style).addTo(map);
 					map.mp.disable();
-					eclectMarker.on("dragend", evt=>
+					eclectMarker.on("dragend touchend", evt=>
 					{
-						console.log(evt.target._latlng);
+						//console.log(evt.target._latlng);
 						eclectCoords = [evt.target._latlng.lat, evt.target._latlng.lng]
 						//заполняем формы отправки 
 						var lat = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lat]");
@@ -87,76 +136,72 @@ jQuery(document).ready(function($)
 	//
 	init_map = function(mData, points)
 	{	
-		if(mData.isAdmin) 
+		if( mData.isMap )
 		{
-			L.ContextMenuClicker = L.Handler.extend({
+			if( mData.isAdmin ) 
+			{
+				L.ContextMenuClicker = L.Handler.extend({
+					addHooks: function() 
+					{
+						L.DomEvent.on(myMap, 'contextmenu', this.onClicker, this);
+					},
+					removeHooks: function() 
+					{
+						L.DomEvent.off(myMap, 'contextmenu', this.onClicker, this);
+					},
+					onClicker: evt=>
+					{
+						geocodeService.reverse().latlng(evt.latlng).run(function(error, result) 
+						{
+							shm_send( [
+							'shm_add_point_prepaire', 
+							[ mData.map_id, evt.latlng.lat.toPrecision(7), evt.latlng.lng .toPrecision(7), result.address.Match_addr] 
+						] );	
+						});
+						
+					}
+				});
+				L.Map.addInitHook('addHandler', 'tilt', L.ContextMenuClicker);	
+			}		
+			L.MousePosit = L.Handler.extend({
 				addHooks: function() 
 				{
-					L.DomEvent.on(myMap, 'contextmenu', this.onClicker, this);
+					L.DomEvent.on(myMap, 'mousemove', this.onmousemove, this);
+					L.DomEvent.on(myMap, 'touchmove', this.onmousemove, this);
+					L.DomEvent.on(myMap, 'touchstart', this.ontouchstart, this);
 				},
 				removeHooks: function() 
 				{
-					L.DomEvent.off(myMap, 'contextmenu', this.onClicker, this);
+					L.DomEvent.off(myMap, 'mousemove', this.onmousemove, this);
+					L.DomEvent.off(myMap, 'touchmove', this.onmousemove, this);
 				},
-				onClicker: evt=>
+				onmousemove: evt=>
 				{
-					shm_send( [
-						'shm_add_point_prepaire', 
-						[ mData.map_id, evt.latlng.lat.toPrecision(7), evt.latlng.lng .toPrecision(7)] 
-					] );
+					eclectCoords = [
+						L.Util.formatNum(evt.latlng.lat, 7), 
+						L.Util.formatNum(evt.latlng.lng, 7)
+					];
+						
+					$("[name='latitude']").val( L.Util.formatNum(myMap.getCenter().lat ));
+					$("[name='longitude']").val( L.Util.formatNum(myMap.getCenter().lng ));
+					$("[name='zoom']").val( myMap.getZoom() );	
+				},
+				ontouchstart: evt=>
+				{
+					
 				}
 			});
-			L.Map.addInitHook('addHandler', 'tilt', L.ContextMenuClicker);	
-		}		
-		L.MousePosit = L.Handler.extend({
-			addHooks: function() 
-			{
-				L.DomEvent.on(myMap, 'mousemove', this.onmousemove, this);
-			},
-			removeHooks: function() 
-			{
-				L.DomEvent.off(myMap, 'mousemove', this.onmousemove, this);
-			},
-			onmousemove: evt=>
-			{
-				eclectCoords = [
-					L.Util.formatNum(evt.latlng.lat, 7), 
-					L.Util.formatNum(evt.latlng.lng, 7)
-				];
-					
-				$("[name='latitude']").val( L.Util.formatNum(myMap.getCenter().lat ));
-				$("[name='longitude']").val( L.Util.formatNum(myMap.getCenter().lng ));
-				$("[name='zoom']").val( myMap.getZoom() );	
-			}
-		});
-		L.Map.addInitHook('addHandler', 'mp', L.MousePosit);	
-		
-		var shmLayer1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
-		{
-			attribution: '<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'
-		});	
-		
-		if(mData.isLayerSwitcher)
-		{	
-			var shmLayer2 = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', 
-			{
-				attribution: '<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'
-			});
-			var shmLayer3 = L.tileLayer("http://{s}.sm.mapstack.stamen.com/" +
-				"(toner-lite,$fff[difference],$fff[@23],$fff[hsl-saturation@20])/" +
-				"{z}/{x}/{y}.png", 
-			{
-				attribution: '<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'
-			});
-			var shmLayer4 = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="http://cartodb.com/attributions">CartoDB</a>',
-				subdomains: 'abcd',
-				maxZoom: 19
-			});
+			L.Map.addInitHook('addHandler', 'mp', L.MousePosit);	
 		}
-		var myMap = L.map(mData.uniq, 
+		var shmLayer1 = mData.mapType && "OpenStreetMap" !== mData.mapType 
+			? L.esri.basemapLayer( mData.mapType) : 
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+			{
+				attribution: '<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'
+			});
+		myMap = L.map(mData.uniq, 
 		{
-			layers: mData.isLayerSwitcher ? [ shmLayer1, shmLayer2, shmLayer3 , shmLayer4 ] : [shmLayer1],
+			layers: [shmLayer1],
 			center: [mData.latitude, mData.longitude],
 			zoom: mData.zoom,
 			renderer: L.svg(),
@@ -168,9 +213,18 @@ jQuery(document).ready(function($)
 			zoomControl:mData.isZoomer,
 			dragging:!mData.isDesabled,
 			//boxZoom:true,
-		});		
-		shm_maps[mData.uniq] = myMap;	
-		myMap.mp.disable();	
+		});			
+		shm_maps[mData.uniq] = myMap;
+		all_markers[mData.uniq]	= [];	
+		
+		//layer switcher 
+		if(mData.isLayerSwitcher)
+		{
+			var layerControl = L.control.layerSwitcher({});
+			layerControl.addTo(myMap);
+		}
+		
+		if(mData.isMap) myMap.mp.disable();	
 		//https://esri.github.io/esri-leaflet/examples/reverse-geocoding.html
 		geocodeService = L.esri.Geocoding.geocodeService();
 		//L.esri.basemapLayer("Topographic").addTo(myMap);
@@ -187,54 +241,61 @@ jQuery(document).ready(function($)
 			easyGeocoder({ map: myMap });
 		}
 		
-		if(mData.isAdmin) 
-			myMap.tilt.enable();
+		if( mData.isMap) 
+		{
+			if(mData.isAdmin) 
+				myMap.tilt.enable();
 			myMap.mp.enable();
-		
+		}
 		//clusters
 		if( mData.isClausterer )
 		{
 			var markers = new L.MarkerClusterGroup();
 			var dist = markers;//myMap;
-			myMap.addLayer(markers);
+			myMap.addLayer(dist);
 		}
 		else
 			var dist = myMap;
 		
-		var icons = [];
+		var icons = [], marker;
 		points.forEach( elem =>
 		{
 			if(  elem.icon )
 			{
+				var h = parseInt(elem.height);
+				var w = elem.width ? parseInt(elem.width) : h;
 				if(!icons[elem.term_id])
 				{
 					icons[elem.term_id] = L.icon({
-						iconUrl: elem.icon,
-						shadowUrl: '',
-						iconSize:     [elem.height, elem.height], // size of the icon
-						shadowSize:   [elem.height, elem.height], // size of the shadow
-						iconAnchor:   [elem.height/2, elem.height/2], // point of the icon which will correspond to marker's location
-						shadowAnchor: [0, elem.height],  // the same for the shadow
-						popupAnchor:  [-elem.height/4, -elem.height/2] // point from which the popup should open relative to the iconAnchor
+						iconUrl		: elem.icon,
+						draggable	: elem.draggable,
+						shadowUrl	: '',
+						iconSize	: [w, h], // size of the icon
+						shadowSize	: [w, h], // size of the shadow
+						iconAnchor	: [w/2, h/2], // point of the icon which will correspond to marker's location
+						shadowAnchor: [0, h],  // the same for the shadow
+						popupAnchor	: [-w/4, -w/2] // point from which the popup should open relative to the iconAnchor
 					});
 				}
 				
 				if(elem.icon != '')
 				{
-					shoptions = {icon: icons[elem.term_id]};
+					shoptions = { draggable: elem.draggable, icon: icons[elem.term_id], term_id: elem.term_id};
 				}	
 				else
 				{
-					shoptions = {};
+					shoptions = { term_id: elem.term_id };
 				}	
-				var marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
+				marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
 					.addTo(dist)
 						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
+				
 			}					
-			else if( mData.default_icon && !elem.color)
+			else if( mData.default_icon && !elem.color )
 			{
 				shoptions = {
 					icon: L.icon({
+						draggable : elem.draggable,
 						iconUrl: mData.default_icon,
 						shadowUrl: '',
 						iconSize:     [40, 40], // size of the icon
@@ -242,7 +303,7 @@ jQuery(document).ready(function($)
 						popupAnchor:  [-10, -20] // point from which the popup should open relative to the iconAnchor
 					})
 				};
-				var marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
+				marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
 					.addTo(dist)
 						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');			
 				
@@ -256,24 +317,32 @@ jQuery(document).ready(function($)
 				document.getElementsByTagName('head')[0].appendChild(style);
 				var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
 				var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40) });//
-				var marker = L.marker([ elem.latitude, elem.longitude ], {icon: myIcon})
-					.addTo(dist)
-						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
+				marker = L.marker(
+					[ elem.latitude, elem.longitude ], 
+					{draggable	: elem.draggable,icon: myIcon, term_id: elem.term_id}
+				)
+				.addTo(dist)
+					.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
 			}
-			
-				
-			
+			all_markers[mData.uniq].push(marker);
+			if(elem.draggable)
+			{
+				marker.on('dragend', function (e) 
+				{
+					$('[name="latitude"]').val(marker.getLatLng().lat);
+					$('[name="longitude"]').val(marker.getLatLng().lng);
+					geocodeService.reverse().latlng(marker.getLatLng()).run(function(error, result)
+					{
+						$('[name="location"]').val(result.address.Match_addr);
+					});
+				});
+			}		
 		});
-		//layer switcher 
-		if(mData.isLayerSwitcher)
-		{
-			var layerControl = L.control.layers({
-				"standart" 	: shmLayer1,
-				"light"		: shmLayer2,
-				"grey"		: shmLayer3,
-				"dark"		: shmLayer4
-			});
-			layerControl.addTo(myMap);
-		}
+		
+		
 	}
 });
+
+
+
+  

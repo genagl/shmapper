@@ -9,6 +9,7 @@ class ShMapPointType
 		add_action( 'admin_menu', 		array(__CLASS__, 'tax_add_admin_menus'), 11);
 		add_filter("manage_edit-".SHM_POINT_TYPE."_columns", array( __CLASS__,'ctg_columns')); 
 		add_filter("manage_".SHM_POINT_TYPE."_custom_column",array( __CLASS__,'manage_ctg_columns'), 11.234, 3);
+		add_action( SHM_POINT_TYPE.'_add_form_fields', 		array( __CLASS__, 'new_ctg'), 10, 2 );
 		add_action( SHM_POINT_TYPE.'_edit_form_fields', 	array( __CLASS__, 'add_ctg'), 2, 2 );
 		add_action( 'edit_'.SHM_POINT_TYPE, 				array( __CLASS__, 'save_ctg'), 10);  
 		add_action( 'create_'.SHM_POINT_TYPE, 				array( __CLASS__, 'save_ctg'), 10);
@@ -41,7 +42,7 @@ class ShMapPointType
 			'new_item_name'     => __("new Map marker type name", SHMAPPER),
 			'menu_name'         => __("Map marker type", SHMAPPER),
 		);
-		register_taxonomy(SHM_POINT_TYPE, [ SHM_POINT ], 
+		register_taxonomy(SHM_POINT_TYPE, [ ], 
 		[
 			'label'                 => '', // определяется параметром $labels->name
 			'labels'                => $labels,
@@ -107,6 +108,43 @@ class ShMapPointType
 		}
 		return $out;    
 	}
+	static function new_ctg( $tax_name )
+	{
+		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
+		?>
+		<div class="form-field term-description-wrap">
+			<label for="color">
+				<?php echo __("Color", SHMAPPER);  ?>
+			</label> 
+			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
+			</div>
+			<input type="color" name="color" value="<?php echo $color ?>" />
+		</div>
+		<div class="form-field term-description-wrap">
+			<label for="height">
+				<?php echo __("Height", SHMAPPER);  ?>
+			</label> 
+			<input type="number" name="height" value="<?php echo $height ?>" />
+		</div>
+		<div class="form-field term-description-wrap">
+			<label for="width">
+				<?php echo __("Width", SHMAPPER);  ?>
+			</label> 
+			<input type="number" name="width" value="<?php echo $width ?>" />
+		</div>
+		<div class="form-field term-description-wrap">
+			<label for="icon">
+				<?php echo __("Icon", SHMAPPER);  ?>
+			</label> 
+			<div class='shm-flex'>
+			<?php
+				echo get_input_file_form2( "icon", $icon, "icon", 0 );
+			?>
+			</div>
+		</div>
+		
+		<?php
+	}
 	static function add_ctg( $term, $tax_name )
 	{
 		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
@@ -116,7 +154,9 @@ class ShMapPointType
 			$icon = get_term_meta($term_id, "icon", true);
 			$color = get_term_meta($term_id, "color", true);
 			$height = get_term_meta($term_id, "height", true);
-			$height = !$height ? 50 : $height;
+			$height = !$height ? 30 : $height;
+			$width = get_term_meta($term_id, "width", true);
+			$width = !$width ? 30 : $width;
 		}
 		?>
 		<tr class="form-field">
@@ -143,6 +183,16 @@ class ShMapPointType
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
+				<label for="width">
+					<?php echo __("Width", SHMAPPER);  ?>
+				</label> 
+			</th>
+			<td>
+				<input type="number" name="width" value="<?php echo $width ?>" />
+			</td>
+		</tr>
+		<tr class="form-field">
+			<th scope="row" valign="top">
 				<label for="icon">
 					<?php echo __("Icon", SHMAPPER);  ?>
 				</label> 
@@ -160,6 +210,7 @@ class ShMapPointType
 		update_term_meta($term_id, "icon", 	$_POST['icon0']);
 		update_term_meta($term_id, "color", $_POST['color']);
 		update_term_meta($term_id, "height", $_POST['height']);
+		update_term_meta($term_id, "width", $_POST['width']);
 	}
 	static function get_icon($term, $is_locked=false)
 	{
@@ -217,8 +268,8 @@ class ShMapPointType
 			$params = ["prefix" =>"ganre" ];
 		$selected = is_array($params['selected']) ?  $params['selected'] : explode(",", $params['selected']);
 		$includes = $params['includes'] ;
-		$row_class = $params['row_class'] ;
-		$row_style = $params['row_style'] ;
+		$row_class = isset($params['row_class']) ? $params['row_class'] : "" ;
+		$row_style = isset($params['row_style']) ? $params['row_style'] : ""; ;
 		$ganres	= get_terms(["taxonomy" => SHM_POINT_TYPE, 'hide_empty' => false ]);
 		$html 	= "<div class='shm-row point_type_swicher $row_class' style='$row_style'>";
 		switch($params['col_width'])
@@ -249,6 +300,8 @@ class ShMapPointType
 			$color 		= get_term_meta($ganre->term_id, "color", true);
 			$d 			= wp_get_attachment_image_src($icon, array(100, 100));
 			$cur_bgnd 	= $d[0];
+			$before 	= "";
+			$after 		= "";
 			switch( $form_factor )
 			{
 				case "large":
@@ -286,7 +339,7 @@ class ShMapPointType
 				$after";
 		}
 		
-		if( $params['default_none']	)
+		if( isset($params['default_none'])	)
 		{
 			$html .= "
 			<div class='$col_width'>

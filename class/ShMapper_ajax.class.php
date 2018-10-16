@@ -182,7 +182,6 @@ class ShMapper_ajax
 					$params[0],
 					array( 
 						"href"		=> $stepData['href'],
-						'a_alert'	=> $step . '. ' . $stepData['href'],
 						"msg"		=> $messge
 					)
 				);
@@ -268,7 +267,8 @@ class ShMapper_ajax
 				$d = array(	
 					$params[0],
 					[ 
-						"msg"		=> '<a href="' . $link .'">download csv</a>'
+						"text"		=> $link,
+						"name"		=> "map" //$map->get("post_title")
 					]
 				);
 				break;		
@@ -347,6 +347,7 @@ class ShMapper_ajax
 				$map_id = $params[1][0];
 				$x		= $params[1][1];
 				$y		= $params[1][2];
+				$ad		= $params[1][3];
 				$d = array(	
 					$params[0],
 					array( 
@@ -368,6 +369,7 @@ class ShMapper_ajax
 					"post_content"	=> $data["post_content"],
 					"latitude"		=> $data["latitude"],
 					"longitude"		=> $data["longitude"],
+					"location"		=> $data["location"],
 					"color"			=> get_term_meta($type->term_id, "color", true),
 					"height"		=> get_term_meta($type->term_id, "height", true),
 					"icon"			=> ShMapPointType::get_icon_src($type->term_id)[0],

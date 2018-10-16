@@ -177,6 +177,7 @@ class ShmForm
 		$data 	= !is_array($data) ? [ "require"=>1, "selected" => 0 ] : $data;		
 		$type 	= static::get_type_by("id", $data['type']);
 		$fields = $type['fields'];
+		$mark_emable = false;
 		return "
 		<li shm-num='$id' type_id='" . $type['id'] . "'>
 			<input type='hidden' name='form_forms[$id][type]' value='" . $type['id'] . "' /> 
@@ -384,9 +385,23 @@ class ShmForm
 	}
 	static function form($data, $map)
 	{
+		
+		$is_personal_data 	= $map->get_meta("is_personal_data");
+		$is_name_iclude 	= $map->get_meta("is_name_iclude");
+		$personal_name 		= $map->get_meta("personal_name");
+		$is_name_required 	= $map->get_meta("is_name_required");
+		$is_email_iclude 	= $map->get_meta("is_email_iclude");
+		$personal_email 	= $map->get_meta("personal_email");
+		$is_email_required 	= $map->get_meta("is_email_required");
+		$is_phone_iclude 	= $map->get_meta("is_phone_iclude");
+		$personal_phone 	= $map->get_meta("personal_phone");
+		$is_phone_required 	= $map->get_meta("is_phone_required");		
+		$def_mark 			= "";
+		
+		
 		$html	= apply_filters("shm_before_request_form", "");
 		$html 	.= "";
-		$html1 	.= apply_filters("shm_start_request_form", "");
+		$html1	= apply_filters("shm_start_request_form", "");
 		$i = 0;
 		foreach($data as $element)
 		{
@@ -416,17 +431,17 @@ class ShmForm
 				case SHMAPPER_TEXTAREA_TYPE_ID:			
 					$html1 .= "<textarea class='sh-form' placeholder='".$element['placeholder']."' name='elem[]' $require  rows='5' $data_types></textarea>";					
 					break;
-				case SHMAPPER_IMAGE_TYPE_ID:								
+				case SHMAPPER_IMAGE_TYPE_ID:	
+					$file_map =  "<span class='dashicons dashicons-upload'></span> " .
+							($element['placeholder'] ? $element['placeholder'] : __("Сhoose files", SHMAPPER))	;			
 					$html1 .= "
 					<div class='shm-form-file'>
-						<label> <span class='dashicons dashicons-upload'></span> " .
-							($element['placeholder'] ? $element['placeholder'] : __("choose files")).
-						"</label>
+						<label>$file_map</label>
 						<input type='file' class='sh-form' name='elem[]' $require  $data_types/>
 					</div>";
 					break;
-				case SHMAPPER_MARK_TYPE_ID:
-					$mark_emable = true;
+				case SHMAPPER_MARK_TYPE_ID:		
+					$mark_emable = true;			
 					$terms = explode(",", $element["placemarks"]);
 					$icons = "";
 					if(count($terms))
@@ -435,20 +450,33 @@ class ShmForm
 						{
 							$clr 	= get_term_meta($term_id, "color", true);
 							$icon 	= ShMapPointType::get_icon_src($term_id)[0];
-							$icons .= $icon ? "
-							<div class='shm-type-icon' style='background-image:url($icon);' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
-							</div>" : "
-							<div class='shm-type-icon' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
-								<div class='shm-color-crcl' style='background:$clr'></div>
-							</div>";
+							if($icon)
+							{
+								$icons .= "
+								<div class='shm-type-icon' style='background-image:url($icon);' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
+								</div>";
+							}
+							else
+							{
+								$diid = $map->get_meta("default_icon_id");
+								$icon	= wp_get_attachment_image_src($diid, [60, 60])[0];			
+								if(!$icon)
+									$icon = ShMapper::$options['map_api'] == 2 
+									? "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"
+									: SHM_URLPATH . 'assets/img/ym_default.png';								
+								$icons .=  true ? "
+								<div class='shm-type-icon' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
+									<div class='shm-color-crcl' style='background:$clr'></div>
+								</div>" :
+								"<div class='shm-type-icon' style='background-image:url($icon);' shm_map_id=''></div>";
+							} 
 						}
 						$html1 .= "
 						<div class='shm-form-placemarks' $require >$icons</div>
 						<input type=hidden name='shm_point_type' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='shm_point_lat' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='shm_point_lon' class='sh-form shm-bg-transparent small' />
-						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small hidden' />
-						<input type='hidden' class='sh-form' name='elem[]'/>";
+						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small hidden' />";
 						$element['description'] .= __("Drag choosed icon and place it to map.", SHMAPPER);
 					}
 					break;
@@ -458,14 +486,17 @@ class ShmForm
 			$req	= $require ? "<small class='req_descr'>".__("This required field", SHMAPPER)."</small>" : "$require";
 			$html1 .= $element['description'] ? "<div class='shm-description'>" . $req . $element['description'] ."</div>" : "<div class='shm-description'>$req</div>";
 			
-			$html1 .= apply_filters("shm_end_request_form", "");
 			$html1 .= "</div>";
 			$i++;
 		}
 		if(!$mark_emable)
 		{
-			$default_icon_id = $map->get_meta("default_icon_id");
-			$icon	= wp_get_attachment_image_src($default_icon_id, [60, 60])[0];
+			$diid = $map->get_meta("default_icon_id");
+			$icon	= wp_get_attachment_image_src($diid, [60, 60])[0];
+			
+			if(!$icon)
+				$icon = ShMapper::$options['map_api'] == 2 ? "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"
+				: SHM_URLPATH . 'assets/img/ym_default.png';
 			$desc	= "
 			<div class='shm-float-right'>	
 				<div class='sh-right shm-form-title'>" . 
@@ -495,9 +526,50 @@ class ShmForm
 						<input type=hidden name='shm_point_lat' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='shm_point_lon' class='sh-form shm-bg-transparent small' />
 						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small hidden' />
-						<input type='hidden' class='sh-form' name='elem[]'/>";
+						";
 		}
-		$html = $def_mark . $html .$html1 . apply_filters("shm_after_request_form", "");
+		if( $is_personal_data )
+		{
+			$require	= $is_name_required ? " required " : ""; 
+			$html1 		.= $is_name_iclude ? "
+			<div class='shm-form-element'>
+				<div class='shm-form-title'>" . __("Your name",SHMAPPER) . "</div>
+				<input type='text' class='sh-form' placeholder='".$personal_name."'  name='shm_form_name' $require/>
+			</div>" 		: "";	
+			$html1 .= $is_name_required ? "<div class='shm-description'>
+				<small class='req_descr'>".__("This required field", SHMAPPER)."</small>
+			</div>" : "";	
+			
+			
+			$require	= $is_email_required ? " required " : ""; 
+			$html1 		.= $is_email_iclude ? "
+			<div class='shm-form-element'>
+				<div class='shm-form-title'>" . __("Your e-mail",SHMAPPER) . "</div>
+				<input type='text' class='sh-form' placeholder='".$personal_email."'  name='shm_form_email' $require/>
+			</div>" 	: "";			
+			$html1 .= $is_email_required ? "<div class='shm-description'>
+				<small class='req_descr'>".__("This required field", SHMAPPER)."</small>
+			</div>" : "";
+			
+			$require	= $is_phone_required ? " required " : ""; 
+			$html1 		.= $is_phone_iclude ? "
+			<div class='shm-form-element'>
+				<div class='shm-form-title'>" . __("Your phone",SHMAPPER) . "</div>
+				<input type='text' class='sh-form' placeholder='".$personal_phone."'  name='shm_form_phone' $require />
+			</div>" 	: "";			
+			$html1 .= $is_phone_required ? "<div class='shm-description'>
+				<small class='req_descr'>".__("This required field", SHMAPPER)."</small>
+			</div>" : "";	
+			
+			$att		= "
+			<div class='shm-form-element'>
+				<div class='shm-description'>".
+					ShMapper::$options['shm_personal_text'] .
+				"</div>
+			</div>";
+		}
+		$html1 			.= apply_filters("shm_end_request_form", "");
+		$html = $def_mark . $html . $html1 . $att. apply_filters("shm_after_request_form", "");
 		return $html ;
 	}
 	

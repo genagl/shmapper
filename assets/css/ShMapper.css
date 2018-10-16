@@ -1,3 +1,24 @@
+#toplevel_page_shm_page .wp-menu-image img
+{
+	padding-top:3px;
+	width:28px;
+	height:28px;
+}
+.toplevel_page_shm_page>ul>li.wp-first-item
+{
+	display:none!important;
+}
+.shm_logo
+{
+	width:95px;
+	height:95px;
+	position:relative;
+	display:flex;
+	background-image:url(../img/shmapper.svg);
+	background-size:85px;
+	background-repeat:no-repeat;
+	background-position: center;
+}
 .shm-flex
 {
 	display:flex;
@@ -7,6 +28,7 @@
 	min-width:270px;
 	display: inline-block;
 	margin-right:10px;
+	vertical-align:top;
 }
 .shm-incblock
 {
@@ -854,7 +876,11 @@ ul.shm-card li
     justify-content: center;
     margin: 0;
 }
-
+.my_image_delete
+{
+	padding: 3px!important;
+    margin: 3px!important;
+}
 ul.shm-card li:nth-of-type(even)
 {
 	background-color:rgba(0,0,0,0.05);
@@ -1291,7 +1317,11 @@ input[type=checkbox].ganre_checkbox2,
 input[type=radio].ganre_checkbox2
 {
 	position: absolute;
-	opacity: 0;
+    opacity: 0;
+    width: 0;
+    min-width: 0px;
+    height: 0;
+    pointer-events: none;
 }
 input[type=checkbox].ganre_checkbox:not(.checked) + label ,
 input[type=checkbox].ganre_checkbox.checked + label, 

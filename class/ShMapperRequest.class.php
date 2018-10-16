@@ -4,8 +4,9 @@ class ShMapperRequest extends SMC_Post
 {
 	static function init()
 	{
-		add_action('init',					array(__CLASS__, 'add_class'), 15 );
-		add_action('before_delete_post', 	array(__CLASS__, 'before_delete_post')); 
+		add_action('init',					[__CLASS__, 'add_class'], 15 );
+		add_action('before_delete_post', 	[__CLASS__, 'before_delete_post'] ); 
+		add_action( 'admin_menu', 			[__CLASS__, 'add_menu_notification'] );
 		parent::init();
 	}
 	static function get_type()
@@ -121,7 +122,7 @@ class ShMapperRequest extends SMC_Post
 					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'/>";
 					break;
 				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>";
+					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>$meta";
 					break;
 				case "post":
 					$h = "$meta";
@@ -171,7 +172,10 @@ class ShMapperRequest extends SMC_Post
 		foreach($_obj as $key=>$value)
 		{
 			if( $key == 't' || $key == 'class'  || $key == 'contacts' || $key == 'notify_user' ) continue;
-			$arr[$key] = $_POST[$key];
+			if($key == "notified" && $_POST[$key] != 1)
+				$arr[$key] = -1;
+			else
+				$arr[$key] = $_POST[$key];
 		}
 		
 		return $arr;
@@ -186,6 +190,18 @@ class ShMapperRequest extends SMC_Post
 		$form			= $map->get_meta("form_forms");
 		$emails			= [];
 		$contacts		= [];
+		if( $data['shm_form_name'] )
+		{
+			$contacts[] = $data['shm_form_name'];
+			$author		= $data['shm_form_name'];
+		}
+		if( $data['shm_form_phone'] )
+			$contacts[] = $data['shm_form_phone'];
+		if( $data['shm_form_email'])
+		{
+			$contacts[] = $data['shm_form_email'];
+			$emails[] 	= $data['shm_form_email'];
+		}
 		foreach($form as $key => $val)
 		{
 			if($val['type'] == SHMAPPER_EMAIL_TYPE_ID)
@@ -222,7 +238,7 @@ class ShMapperRequest extends SMC_Post
 			"post_type" 	=> static::get_type(),
 			"post_name" 	=> $title ? $title : $map->get("post_name"),
 			"post_title" 	=> $title ? $title : $map->get("post_title"),
-			"post_content"	=> $h['contents'],
+			"post_content"	=> sanitize_text_field( $h['contents'] ),
 			"map"			=> (int)$data['id'],
 			"location"		=> $data['shm_point_loc'],
 			"latitude"		=> ( (int) ($data['shm_point_lat'] * 10000)) / 10000,
@@ -248,6 +264,8 @@ class ShMapperRequest extends SMC_Post
 				"From: $site <$semail>",
 				'content-type: text/html',
 			);
+			//var_dump($email);
+			//wp_die(  );
 			wp_mail(
 				$email,
 				sprintf(__("<%s> Request to your Map '%s'", SHMAPPER), $suser, $map->get("post_title")),
@@ -267,7 +285,7 @@ class ShMapperRequest extends SMC_Post
 	}
 	function get_notified_form()
 	{
-		if($notify = $this->get_meta("notified"))
+		if($notify = $this->get_meta("notified") > 0)
 		{
 			$user = get_user_by("id", $this->get_meta("notify_user"));
 			$html = "<p>" . $user->display_name . "</p><p>" . date("j.n.Y H:m", $this->get_meta("notify_date"));
@@ -361,5 +379,41 @@ class ShMapperRequest extends SMC_Post
 				}
 		 }
 		return $post_id;
+	}
+	static function add_menu_notification()
+	{
+		global $submenu ;
+		$not_approved = get_posts([
+			"numberposts" 	=> -1,
+			"post_type"		=> static::get_type(),
+			"fields"		=> "ids",
+			"post_status"	=> "publish",
+			"meta_query"	=> [
+				"relation"	=> "OR",
+				[
+					"key"		=> "notified",
+					"compare"	=> "NOT EXISTS"
+				],
+				[
+					"key"		=> "notified",
+					"value"		=> -1,
+					"compare"	=> "=",
+					
+				]
+			]
+		]);
+		//var_dump($submenu["shm_page"] );
+		//wp_die();
+		if(count($not_approved))
+		{
+			foreach ( $submenu["shm_page"] as $key => $value ) 
+			{
+				if ( $submenu["shm_page"][$key][2] ==  "edit.php?post_type=shm_request"  ) 
+				{
+					$submenu["shm_page"][$key][0] .= ' <span class="awaiting-mod">' . count($not_approved) . '</span>';
+					return;
+				}
+			}
+		}
 	}
 }

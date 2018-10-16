@@ -3,7 +3,7 @@
 Plugin Name: ShMapper
 Plugin URI: http://genagl.ru/?p=652
 Description: Location and logistics services for NKO
-Version: 0.0.2
+Version: 0.0.3
 Author: Genagl
 Author URI: http://genagl.ru/author
 License: GPL2
@@ -93,6 +93,5 @@ function init_shmapper()
 function shm_is_session()
 {
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	session_start();
 	return is_plugin_active( 'wp-session-manager/wp-session-manager.php' ) ;		
 }

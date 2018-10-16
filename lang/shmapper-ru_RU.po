@@ -139,7 +139,7 @@ msgstr "Карта"
 
 #: class/ShMap.class.php:1
 msgid "add Map"
-msgstr "добавить Карту"
+msgstr "Добавить новую"
 
 #: class/ShMap.class.php:1
 msgid "edit Map"
@@ -147,6 +147,10 @@ msgstr "редактировать Карту"
 
 #: class/ShMap.class.php:1
 msgid "all Maps"
+msgstr "Карты"
+
+#: class/ShMap.class.php:1
+msgid "Maps"
 msgstr "Карты"
 
 #: class/ShMap.class.php:1
@@ -166,12 +170,16 @@ msgid "no found Map in trash"
 msgstr "Карт в корзине не найдено"
 
 #: class/ShMap.class.php:1
+msgid "edit Maps in page"
+msgstr "редактировать Карты на странице"
+
+#: class/ShMap.class.php:1
 msgid "Map Request"
 msgstr "Карт-запрос"
 
 #: class/ShMap.class.php:1
 msgid "add Map Request"
-msgstr "добавить Карт-запрос"
+msgstr "Добавить новый"
 
 #: class/ShMap.class.php:1
 msgid "all Map Requests"
@@ -203,7 +211,7 @@ msgstr "Маркер"
 
 #: class/ShMap.class.php:1
 msgid "add Map marker"
-msgstr "добавить Маркер"
+msgstr "Добавить новый"
 
 #: class/ShMap.class.php:1
 msgid "edit Map marker"
@@ -287,7 +295,7 @@ msgstr "обновить Тип маркера"
 
 #: class/ShMap.class.php:1
 msgid "add Map marker type"
-msgstr "добавить Тип маркера"
+msgstr "Добавить новый"
 
 #: class/ShMap.class.php:1
 msgid "new Map marker type name"
@@ -682,5 +690,45 @@ msgid "You can insert a card into a post or page by copying this shortcode."
 msgstr "Вы сможете вставить карту в запись или страницу скопировав этот шорткод"
 
 #: class/ShMap.class.php:1
+msgid "Your name"
+msgstr "Ваше имя"
+
+#: class/ShMap.class.php:1
+msgid "We give a guarantee of complete confidentiality of your data, in accordance with the Federal Law of July 27, 2006 No. 152-ФЗ. By clicking send you consent to the processing of personal data contained in the request and the attached documents."
+msgstr "Даем гарантию полной конфидециальности Ваших данных, в соответствии с Федеральным законом от 27.07.2006 года №152-ФЗ. Нажав отправить Вы даете согласие на обработку персональных данных содержащихся в запросе и прилагаемых документах."
+
+#: class/ShMap.class.php:1
+msgid "Your request has been successfully registered."
+msgstr "Ваш запрос успешно зарегистрирован."
+
+#: class/ShMap.class.php:1
+msgid "Сhoose files"
+msgstr "Выберите файл"
+
+#: class/ShMap.class.php:1
+msgid "Unknown error"
+msgstr "Неизвестная ошибка"
+
+#: class/ShMap.class.php:1
+msgid "Your e-mail"
+msgstr "Ваш e-mail"
+
+#: class/ShMap.class.php:1
+msgid "Your phone"
+msgstr "Ваш номер телефона"
+
+#: class/ShMap.class.php:1
+msgid "Error: no map"
+msgstr "Ошибка: нет карты"
+
+#: class/ShMap.class.php:1
 msgid "You can create your own forms using form elements: & laquo; Text line & raquo;, & laquo; Text field & raquo;, & laquo; Upload files & raquo;, & laquo; Categories of Markers & raquo;"
 msgstr "Вы можете создавать собственные формы, используя элементы формы: &laquo;Строка текста&raquo;, &laquo;Поле текста&raquo;, &laquo;Загрузка файлов&raquo;, &laquo;Категории Маркеров&raquo;"
+
+#: class/ShMap.class.php:1
+msgid "Wizzard"
+msgstr "Мастер"
+
+#: class/ShMap.class.php:1
+msgid "Restart wizzard"
+msgstr "Перезапустить Мастер"

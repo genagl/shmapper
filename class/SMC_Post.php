@@ -29,7 +29,7 @@
 		{
 			$obj				= is_numeric($id) ?	$id :	$id->ID;
 			if(!static::$instances)	static::$instances = array();
-			if(!static::$instances[$obj])
+			if(!isset(static::$instances[$obj]))
 				static::$instances[$obj] = new static($obj);
 			return static::$instances[$obj];
 		}

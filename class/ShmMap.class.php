@@ -1,18 +1,54 @@
 <?php
 class ShmMap extends SMC_Post
 {
+	static function get_map_types()
+	{
+		return [
+			"1" => [
+				"map",
+				"hybrid",
+				"satellite",
+			],
+			"2" => [
+				"OpenStreetMap",
+				"Topographic",
+				"Streets",
+				"Gray",
+				"DarkGray", 
+				"Imagery",
+				"Physical"
+			]
+		];
+	}
 	static function init()
 	{
 		$typee = static::get_type();
 		add_action('init',					array(__CLASS__, 'add_class'), 14 );
 		add_action('admin_menu',			array(__CLASS__, 'my_form_fields'), 11);
 		add_action('admin_menu',			array(__CLASS__, 'shortcode_fields'), 11);
+		add_action('admin_menu',			array(__CLASS__, 'admin_redirect'), 11);
 		add_filter("the_content",			array(__CLASS__, "the_content"));
 		add_filter( 'post_row_actions', 		[__CLASS__, 'post_row_actions'], 10, 2 );
 		add_action("smc_before_doubled_post",	[__CLASS__, "smc_before_doubled_post"], 10, 2);
 		add_action("smc_after_doubled_post",	[__CLASS__, "smc_after_doubled_post"], 10, 2);
 		add_filter("bulk_actions-edit-{$typee}",[__CLASS__, "register_my_bulk_actions"]);
 		parent::init();
+	}
+	static function get_osm_types()
+	{
+		return [
+			"Topographic",
+			"Streets",
+			"NationalGeographic",
+			"Oceans",
+			"Gray",
+			"DarkGray",
+			"StreetsRelief", 
+			"Imagery",
+			"ImageryClarity",
+			"ImageryFirefly",
+			"Physical"
+		];
 	}
 	static function register_my_bulk_actions( $bulk_actions )
 	{
@@ -136,7 +172,15 @@ class ShmMap extends SMC_Post
 				parent::fill_views_column($column_name, $post_id);
 		}
 	}
-	
+
+	static function admin_redirect()
+	{
+		global $pagenow, $submenu ;
+		if("shm_page" == $_GET["page"] && "admin.php" === $pagenow)
+		{
+			wp_redirect( admin_url( '/admin.php?page=shm_settings_page' ) );
+		}
+	}	
 	static function shortcode_fields() 
 	{
 		add_meta_box( 'shortcode_fields', __('Including Map to post', SHMAPPER), [__CLASS__, 'shortcode_fields_box_func'], static::get_type(), 'side', 'low'  );		
@@ -192,7 +236,7 @@ class ShmMap extends SMC_Post
 			<div class='shm-row'>
 				<h3 class='shm-12'>". __("1.1. Pan map and choose zoom", SHMAPPER). "</h3>
 				<div class='shm-12'>".
-					$obj->draw().
+					$obj->draw( [ 'height'=>$height, 'id' => $obj->id ] ).
 				"</div>
 				<div class='shm-12'>
 					<input type='hidden' value='". $latitude ."' name='latitude' />
@@ -251,6 +295,15 @@ class ShmMap extends SMC_Post
 						<label for='is_lock'>" . __("Lock zoom and drag", SHMAPPER) . "</albel> 	
 					</div>
 				</div>
+				<div class='spacer-10'></div>
+				<h4 class='shm-12'>". __("Choose layers", SHMAPPER). "</h4>
+				<div class='shm-12'>".
+					static::get_type_radio([
+						"id"		=> "map_type",
+						"name"		=> "map_type",
+						"selected"	=> $obj->get_meta("map_type"),
+					]).
+				"</div>
 			</div>
 			
 			<div class='spacer-5'></div>
@@ -297,77 +350,14 @@ class ShmMap extends SMC_Post
 				<p class='description shm-12'>".
 					__("Recommended size is 64х64 px, format is .png", SHMAPPER) . 
 				"</p>
-			</div>
-			
-			";
-			
-			return $html;
-		/*
-		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
-		$SMC_Object_type	= SMC_Object_Type::get_instance();
-		$bb				= $SMC_Object_type->object [static::get_type()];
+			</div>";
 		
-		foreach($bb as $key=>$value)
-		{
-			if($key == 't' || $key == 'class' || $value['distination'] != "map") continue;
-			$meta = get_post_meta( $obj->id, $key, true);
-			switch($key)
-			{
-				case "latitude":
-					$meta 		= $meta ? $meta : 55.8;
-					$opacity 	= " style='display:none;' " ;
-					break;
-				case "longitude":
-					$meta 		= $meta ? $meta : 37.8;
-					$opacity 	= " style='display:none;' " ;
-					break;
-				case "zoom":
-					$meta 		= $meta ? $meta : 4;
-					$opacity 	= " style='display:none;' " ;
-					break;
-				default:
-					$opacity 	= " ";
-			}
-			$$key = $meta;
-			switch( $value['type'] )
-			{
-				case "number":
-					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'/>";
-					break;
-				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>
-					<div class='spacer-10'></div>";
-					break;
-				default:
-					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
-			}
-			$html .="<div class='shm-row' $opacity>
-				<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
-				<div class='shm-9 shm-md-12 '>
-					$h
-				</div>
-			</div>
-			<div class='spacer-5'></div>";
-		}
-		$html 	.= "
-			<div class='spacer-15'></div>
-			<div class='shm-row'>
-				<div class='shm-3 shm-md-12 sh-right'>". __("Map", SHMAPPER). "</div>
-				<div class='shm-9 shm-md-12'>".
-					$obj->draw().
-				"</div>
-			</div>
-			
-			";
-		$html 	.= "</div>";
-		echo $html;
-		*/
+		return $html;
 	}
 	static function form_fields_box_func( $post )
 	{	
 		$lt = static::get_instance( $post );
 		echo static::view_form_fields_edit($lt);			
-		//wp_nonce_field( basename( __FILE__ ), static::get_type().'_metabox_nonce' );
 	}
 	static function view_form_fields_edit($obj)
 	{
@@ -536,7 +526,11 @@ class ShmMap extends SMC_Post
 	}
 	static function save_admin_edit($obj)
 	{
+		//var_dump($_POST['map_type']);
+		//wp_die();
+		
 		return [
+			"map_type"			=> $_POST['map_type'],
 			"latitude"			=> $_POST['latitude'],
 			"longitude"			=> $_POST['longitude'],
 			"zoom"				=> $_POST['zoom'],
@@ -634,21 +628,42 @@ class ShmMap extends SMC_Post
 	function get_csv()
 	{
 		$points		= $this->get_points();
-		$csv 		= [implode(SHM_CSV_STROKE_SEPARATOR, [ "#", __("Title", SHMAPPER), __("Description", SHMAPPER),  __("Location", SHMAPPER) ])];
+		$csv 		= [implode(SHM_CSV_STROKE_SEPARATOR, [ "#", __("Title", SHMAPPER), __("Description", SHMAPPER),  __("Location", SHMAPPER),  __("Longitude", SHMAPPER),  __("Latitude", SHMAPPER) ])];
 		$i = 0;
 		foreach($points as $point)
 		{
 			$p 		= ShmPoint::get_instance($point);
 			$csv[]	= implode(SHM_CSV_STROKE_SEPARATOR, [
 				($i++) . ". ",
-				'"' . str_replace(';', ",", $p->get("post_title") ). '"', 
-				'"' . str_replace(';', ",", $p->get("post_content")) . '"',
-				'"' . str_replace(';', ",", $p->get_meta("location") . " ( " . $p->get_meta("latitude") . "," . $p->get_meta("longitude") . " )" ) . '"'
+				'"' . str_replace(';', ",", $p->get("post_title") )	  . '"', 
+				'"' . str_replace(';', ",", $p->get("post_content"))  . '"',
+				'"' . str_replace(';', ",", $p->get_meta("location")) . '"',
+				'"' . str_replace(';', ",", $p->get_meta("longitude")). '"',
+				'"' . str_replace(';', ",", $p->get_meta("latitude")) . '"',
 			]);
 		}
-		$csv_data = iconv ("UTF-8", "cp1251",implode( SHM_CSV_ROW_SEPARATOR, $csv)); // ;
-		file_put_contents(WP_CONTENT_DIR . "/uploads/shmapper/" . $p->get("post_title") . ".csv", $csv_data);
-		return "/wp-content/uploads/shmapper/" . $p->get("post_title") . ".csv";
+		$csv_data 	= iconv ("UTF-8", "cp1251", implode( SHM_CSV_ROW_SEPARATOR, $csv));
+		$path 		= WP_CONTENT_DIR . "/uploads/shmapper/shmap_" . $p->id . ".csv";
+		$href		= "/wp-content/uploads/shmapper/shmap_" . $p->id . ".csv";
+		file_put_contents( $path, $csv_data );		
+			return $href;
+		if(class_exists("ZipArchive"))
+		{
+			$zip 		= new ZipArchive();
+			$zip_name	= "shmap_" . $p->id . ".zip";
+			if($zip->open($zip_name, ZIPARCHIVE::CREATE)!==TRUE)
+			{
+				return $href;
+			}
+			$zip->addFile( $path );
+			$zip->close();
+			if(file_exists($zip_name))
+				return "/wp-content/uploads/shmapper/" . $zip_name;
+			else
+				return $href;
+		}
+		else		
+			return $href;
 	}
 	function get_points_args()
 	{
@@ -730,7 +745,7 @@ class ShmMap extends SMC_Post
 		{
 			$pn = ShmPoint::get_instance($point);
 			$types	= wp_get_object_terms($pn->id, SHM_POINT_TYPE);
-			$type	= $types[0];
+			$type	= count( $types ) ? $types[0] : null;
 			$pnt 	= new StdClass;
 			$pnt->ID			= $pn->id;
 			$pnt->post_title	= $pn->get("post_title");
@@ -738,12 +753,14 @@ class ShmMap extends SMC_Post
 			$pnt->latitude 		= $pn->get_meta("latitude");
 			$pnt->longitude 	= $pn->get_meta("longitude");
 			$pnt->location 		= $pn->get_meta("location");
-			$pnt->color 		= get_term_meta($type->term_id, "color", true);
-			$pnt->height 		= get_term_meta($type->term_id, "height", true);
+			$pnt->color 		= $type ? get_term_meta($type->term_id, "color", true) : "";
+			$pnt->height 		= $type ? get_term_meta($type->term_id, "height", true): 40;
 			$pnt->height 		= $pnt->height 	? $pnt->height 	: 30;
-			$pnt->type 			= $type->name;
-			$pnt->term_id 		= $type->term_id;
-			$pnt->icon 			= ShMapPointType::get_icon_src( $type->term_id )[0];
+			$pnt->width 		= $type ? get_term_meta($type->term_id, "width", true): 40;
+			$pnt->width 		= $pnt->width 	? $pnt->width 	: 30;
+			$pnt->type 			= $type ? $type->name : "";
+			$pnt->term_id 		= $type ? $type->term_id: -1;
+			$pnt->icon 			= $type ? ShMapPointType::get_icon_src( $type->term_id )[0] : "";
 			//$pnt->width 		= ShMapPointType::get_icon_src( $type->term_id )[2]/ShMapPointType::get_icon_src( $type->term_id )[1] * $pnt->height ;
 			//$pnt->width 		= $pnt->width ? $pnt->width : $pnt->height;
 			$p[] 	= $pnt;
@@ -806,5 +823,58 @@ class ShmMap extends SMC_Post
 		global $post;
 		$t = ($post->post_type == SHM_MAP && (is_single() || is_archive() )) ? '[shmMap id="' . $post->ID . '" map form ]'  : "";
 		return $t . $content;
+	}
+	static function get_type_radio($params=-1)
+	{
+		if(!is_array($params))
+		{
+			$params = [ 
+				"id" 		=> "map_radio", 
+				"name" 		=> "type_radio[" . ShMapper::$options['map_api'] . "][]", 
+				'selected' 	=> [] 
+			];
+		}
+		$html 	= "
+		<div class='shm_type_radio shm-row'>
+			<div class='shm-12'>
+				<div class='shm-admin-block'>
+				<h3>Yandex Map</h3>";
+		$i 		= 0;
+		
+		foreach(static::get_map_types()[ 1 ] as $type)
+		{
+			$selected = $params[ 'selected' ][1][0] == $type ? " checked " : "";
+			$name 	= $params[ 'name' ];
+			$id 	= $params[ 'id' ];
+			$html 	.= "
+			<div>
+				<input type='radio' name='".$name."[1][]' id='$id$i' $selected value='$type'/> 
+				<label for='$id$i'>" . $type . "</label>
+			</div>";
+			$i++;
+		}
+		
+		$html .= "
+				</div>
+				<div class='shm-admin-block'>
+				<h3>Open Street Map</h3>";
+		
+		foreach(static::get_map_types()[ 2 ] as $type)
+		{
+			$selected = $params[ 'selected' ][2][0] ==$type  ? " checked " : "";
+			$name 	= $params[ 'name' ];
+			$id 	= $params[ 'id' ];
+			$html 	.= "
+			<div>
+				<input type='radio' name='".$name."[2][]' id='$id$i' $selected value='$type'/> 
+				<label for='$id$i'>" . $type . "</label>
+			</div>";
+			$i++;
+		}
+		$html .= "
+				</div>
+			</div>
+		</div>";
+		return $html;
 	}
 }

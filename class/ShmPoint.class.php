@@ -114,100 +114,8 @@ class ShmPoint extends SMC_Post
 		</div>
 		<div class='spacer-5'></div>";
 		$html 	.= "
-			<div class='spacer-15'></div>
-			<div class='shm-row'>
-				<div class='shm-3 sh-right'>". __("Map", SHMAPPER). "</div>
-				<div class='shm-9'>
-					<div id='YMapID' style='width:100%;height:300px;border:3px solid darkgrey;'>
-			
-					</div>
-				</div>
-			</div>
-			
-			";
-		$html 	.= "</div>			
-		<section>
-		<script type='text/javascript'>
+			<div class='spacer-15'></div>" . $obj->draw();
 		
-		
-			// console.log('coords:' , $latitude, $longitude);
-			ymaps.ready(function () 
-			{
-				var myMap = new ymaps.Map('YMapID', 
-				{
-					center: [ $latitude, $longitude ],
-					controls: [ ],
-					zoom: $zoom
-				});
-			// center map
-			myMap.events.add( 'boundschange', function(event)
-			{
-				 zoom = myMap.getZoom();
-				 $('[name=zoom]').val(zoom);
-			});
-			// Создание геообъекта с типом точка (метка).
-			var myPlacemark = new ymaps.GeoObject({
-				geometry: 
-				{
-					type: 'Point', // тип геометрии - точка
-					coordinates: [$latitude, $longitude] // координаты точки
-				}
-			});
-			myMap.geoObjects.add(myPlacemark); 
-			
-			function MyBehavior() 
-			{
-				this.options = new ymaps.option.Manager(); // Менеджер опций
-				this.events = new ymaps.event.Manager(); // Менеджер событий
-			}
-			MyBehavior.prototype = 
-			{
-				constructor: MyBehavior,
-				enable: function () 
-				{
-					this._parent.getMap().events.add('click', this._onClick, this);
-				},
-				disable: function () 
-				{
-					this._parent.getMap().events.remove('click', this._onClick, this);
-				},
-				setParent: function (parent) 
-				{
-					this._parent = parent; 
-				},
-				getParent: function () 
-				{ 
-					return this._parent; 
-				},
-				_onClick: function (e) 
-				{
-					var coords = e.get('coords');
-					//this._parent.getMap().setCenter(coords);
-					myMap.geoObjects.remove(myPlacemark);
-					myPlacemark = new ymaps.GeoObject({
-						geometry: 
-						{
-							type: 'Point', // тип геометрии - точка
-							coordinates: coords // координаты точки
-						}
-					});
-					myMap.geoObjects.add(myPlacemark); 
-					console.log(coords);
-					$('[name=latitude]').val(parseInt(coords[0]*1000)/1000);
-					$('[name=longitude]').val(parseInt(coords[1]*1000)/1000);
-				}
-			};
-
-			// Помещаем созданный класс в хранилище поведений.
-			// Далее данное поведение будет доступно по ключу 'mybehavior'.
-			ymaps.behavior.storage.add('mybehavior', MyBehavior);
-			// Включаем поведение
-			myMap.behaviors.enable('mybehavior');
-						
-		  });
-		  
-		  
-		</script>";
 		echo $html;
 	}
 	static function update_map_owners($obj)
@@ -236,6 +144,7 @@ class ShmPoint extends SMC_Post
 		return [
 			"latitude"		=> $_POST['latitude'],
 			"longitude"		=> $_POST['longitude'],
+			"location"		=> $_POST['location'],
 			"zoom"			=> $_POST['zoom'],
 			"approved"		=> $_POST['approved'],
 		];
@@ -360,24 +269,29 @@ class ShmPoint extends SMC_Post
 		// 0 - map_id 
 		// 1 - x
 		// 2 - y
+		// 3 - address
 		$html = "
 		<div class='shm-row'>
 			<input type='hidden' name='shm_map_id' value='".$data[0]."' />
 			<input type='hidden' name='shm_x' value='".$data[1]."' />
 			<input type='hidden' name='shm_y' value='".$data[2]."' />
-			<input type='hidden' name='shm_loc' value='".$data[2]."' />
+			<input type='hidden' name='shm_loc' value='".$data[3]."' />
 			<div class='shm-12'>
-				<label class='shm-form'>" . __("Title") . "</label>
+				<label>" . __("Title") . "</label>
 				<input class='shm-form shm-title-4' name='shm-new-point-title' onclick='this.classList.remove(\"shm-alert\");' />
 			</div>
 			<div class='shm-12'>
-				<label class='shm-form'>" . __("Description") . "</label>
+				<label>" . __("Description") . "</label>
 				<textarea class='shm-form' rows='4' name='shm-new-point-content' onclick='this.classList.remove(\"shm-alert\");'></textarea>
 			</div>
 			<div class='shm-12' onclick='this.classList.remove(\"shm-alert\");'>
-				<label class='shm-form'>" . __("Type", SHMAPPER) . "</label>".
+				<label>" . __("Type", SHMAPPER) . "</label>".
 				ShMapPointType::get_ganre_swicher( ["name"=>"shm-new-point-type", "prefix" => "shm-new-type"],  "radio" ).
 			"</div>
+			<div class='shm-12'>
+				<label>" . __("Address", SHMAPPER) . "</label>
+				<input class='shm-form shm-title-4' name='shm-new-point-location' onclick='this.classList.remove(\"shm-alert\");' value='".$data[3]."'/>
+			</div>
 		<div>
 		";
 		
@@ -444,8 +358,10 @@ class ShmPoint extends SMC_Post
 "];
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
 		$type		= $types[0];
+		$term_id	= $type->term_id ? $type->term_id : -1;
 		$post_title	= $this->get("post_title");
 		$post_content = str_replace($str, " " , wpautop( wp_trim_words($this->get("post_content"), 20) )); 
+		$location	= $this->get_meta("location");
 		$latitude	= $this->get_meta("latitude");
 		$latitude 	= $latitude ? $latitude : 55.8;
 		$longitude	= $this->get_meta("longitude");
@@ -468,60 +384,57 @@ class ShmPoint extends SMC_Post
 					</div>
 					<div class='spacer-10'></div>
 				</div>	
-			</div>		
-			<script type='text/javascript'>
+			</div>	";	
+		$point = $this->body;	
+		$p .= " 
+			var p = {}; 
+			p.post_id 	= '" . $point->ID . "';
+			p.post_title 	= '" . $point->post_title . "';
+			p.post_content 	= '" . $point->post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
+			p.latitude 		= '" . $latitude . "'; 
+			p.longitude 	= '" . $longitude . "'; 
+			p.location 		= '" . $location . "'; 
+			p.draggable 	= " . (is_admin() ? 1: 0) . "; 
+			p.type 			= '" . $term_id . "'; 
+			p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
+			p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
+			p.term_id 		= '" . $term_id . "'; 
+			p.icon 			= '" . (ShMapPointType::get_icon_src( $term_id )[0]) . "'; 
+			p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
+			points.push(p);
+			";	
+			
+		$html 	.= "</div>			
+		<section>
+		<script type='text/javascript'>
+			jQuery(document).ready( function($)
+			{
+				var points 		= []; 
+				$p
+				var mData = {
+					uniq 			: 'YMapID',
+					muniq			: 'YMapID',
+					latitude		: p.latitude,
+					longitude		: p.longitude,
+					zoom			: 4,
+					map_id			: '$point->id',
+					isClausterer	: 0,
+					isLayerSwitcher	: 0,
+					isFullscreen	: 1,
+					isDesabled		: 0,
+					isSearch		: 0,
+					isZoomer		: 1,
+					isAdmin			: 1,
+					isMap			: 0,
+				};
 				
-				ymaps.ready(function () 
-				{
-					var myMap = new ymaps.Map('YMapID', 
-					{
-					  center: [ $latitude, $longitude ],
-					  controls: [ ],
-					  zoom: $zoom
-					});
-					
-					if( '$icon' )
-					{
-						paramet = {
-							balloonMaxWidth: 250,
-							hideIconOnBalloonOpen: false,
-							iconColor:'$color',
-							iconLayout: 'default#image',
-							iconImageHref: '$icon',
-							iconImageSize: [50,50], 
-							iconImageOffset: [-5, -25],
-						};
-					}
-					else
-					{
-						paramet = {
-							balloonMaxWidth: 250,
-							hideIconOnBalloonOpen: false,
-							iconColor: '$color',
-							preset: 'islands#dotIcon'
-						}
-					}
-					
-					
-					
-					// Создание геообъекта с типом точка (метка).
-					var myPlacemark = new ymaps.Placemark([$latitude, $longitude] ,
-						{
-							geometry: 
-							{
-								type: 'Point', // тип геометрии - точка
-								coordinates: [$latitude, $longitude] // координаты точки
-							},
-							balloonContentHeader: '$post_title',
-							balloonContentBody: '$post_content',
-							//balloonContentFooter: '$icon',
-							hintContent: '$post_title'
-						}, 
-						paramet);
-					myMap.geoObjects.add(myPlacemark); 
-					myPlacemark.balloon.open(myMap.getCenter());
-				});
-			</script>";
+				if(map_type == 1)
+					ymaps.ready(() => init_map( mData, points ));
+				else if (map_type == 2)
+					init_map( mData, points );
+			});
+		  
+		</script>";
 		return $html;
 	}
 	static function the_content($content)

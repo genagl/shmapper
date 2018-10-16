@@ -2,7 +2,12 @@
 var place_new_mark = function(){}, addAdress = function(){}, $this,  new_mark_coords, shm_address, shm_placemark, map, shm_paramet;
 jQuery(document).ready(function($)
 {	
-	
+	//destroy all orphan map forms
+	$("form[form_id]").each((num, elem) =>
+	{
+		if($("#"+ $(elem).attr("form_id")).size() < 1)
+			$(elem).empty().append( __("Error: no map") );
+	})
 	
 	//send new request
 	$("form.shm-form-request").live({ submit: evt =>
@@ -27,11 +32,15 @@ jQuery(document).ready(function($)
 				if( evt.name=="g-recaptcha-response" ) d.append("cap", evt.value);
 			});
 			d.append("id", $this.attr("map_id"));
+			d.append("form_id", $this.attr("form_id"));
 			d.append("shm_point_type", $this.find( "[name='shm_point_type']" ).val());
 			d.append("action", "shm_set_req");
-			d.append("shm_point_lat", $this.find( "[name='shm_point_lat']" ).val());
-			d.append("shm_point_lon", $this.find( "[name='shm_point_lon']" ).val());
-			d.append("shm_point_loc", $this.find( "[name='shm_point_loc']" ).val());
+			d.append("shm_point_lat", 	$this.find( "[name='shm_point_lat']" ).val());
+			d.append("shm_point_lon", 	$this.find( "[name='shm_point_lon']" ).val());
+			d.append("shm_point_loc", 	$this.find( "[name='shm_point_loc']" ).val());
+			d.append("shm_form_name", 	$this.find( "[name='shm_form_name']" ).val());
+			d.append("shm_form_email", 	$this.find( "[name='shm_form_email']" ).val());
+			d.append("shm_form_phone", 	$this.find( "[name='shm_form_phone']" ).val());
 			d.append("elem", $this.find( "[name='elem[]']" ).map( (num,el) => el.value ).get() );
 			$.each( shm_img, function( key, value ){
 				d.append( key, value );
@@ -51,7 +60,7 @@ jQuery(document).ready(function($)
 					if(response.grecaptcha == 1)
 						grecaptcha.reset();
 					//clear form
-					var $form  = $("[form_id='ShmMap" + response.data.id + "']");
+					var $form  = $("[form_id='" + response.data.form_id + "']");
 					$form.find("[name='shm_point_type']").val("");
 					$form.find("[name='shm_point_lat']").val("");
 					$form.find("[name='shm_point_lon']").val("");
@@ -61,7 +70,7 @@ jQuery(document).ready(function($)
 					$form.find(".shm-form-element .shm-form-file img").attr("src","");
 					var dat = [
 						{},
-						shm_maps["ShmMap" + response.data.id],
+						shm_maps["" + response.data.form_id ],
 						response.data.id
 					];
 					var clear_form = new CustomEvent("clear_form", {bubbles : true, cancelable : true, detail : dat});
