@@ -10,6 +10,7 @@ function draw_shMap($map, $args )
 	$legend		= "";
 	
 	$mapType	= $map->get_meta("map_type");
+	$mapType	= $mapType ? $mapType : ShmMap::get_map_types();
 	$mapType	= $mapType[ ShMapper::$options['map_api'] ][0];
 	$id 		= $map->id;
 	$muniq		= isset($args['uniq']) ? $args['uniq'] : $id;
