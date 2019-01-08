@@ -96,7 +96,7 @@ jQuery(document).ready(function($)
 	create_point = function()
 	{
 		$(".shm-alert").removeClass("shm-alert");
-		var s = ["shm-new-point-title", "shm-new-point-content", "shm-new-point-type"];
+		var s = ["shm-new-point-title", "shm-new-point-content"];
 		var alerting = [];
 		s.forEach(function(elem)
 		{
@@ -146,32 +146,7 @@ jQuery(document).ready(function($)
 			map		: map
 		}
 		var customEvent = new CustomEvent("shm_filter", {bubbles : true, cancelable : true, detail : dat})
-		document.documentElement.dispatchEvent(customEvent);		
-		/*
-		//yandex map doing	
-		var geos = map.geoObjects;
-		for(var ii = 0, ll = geos.getLength(); ii < ll; ii++)
-		{
-			switch(geos.get([ii]).options.get("type"))
-			{
-				case "clusterer":
-					var clusterer  	= geos.get([ii]);
-					var mrks 		= clusterer.getGeoObjects();
-					for(var i=0, l = mrks.length; i<l; i++ )
-					{
-						if(term_id == mrks[i].options.get("term_id"))
-							mrks[i].options.set({visible : $this.is(":checked")});
-					}
-					break;
-				case "point":
-				default:
-					if(term_id == geos.get([ii]).options.get("term_id"))
-							geos.get([ii]).options.set({visible : $this.is(":checked")});
-					break;
-			}
-		}
-		*/
-		
+		document.documentElement.dispatchEvent(customEvent);	
 	}});
 	
 	//admin map editor
@@ -418,7 +393,7 @@ jQuery(document).ready(function($)
 
 function shm_send( params, type )
 {
-	console.log(params, type);
+	//console.log(params, type);
 	jQuery.post	(
 		myajax.url,
 		{
@@ -428,7 +403,7 @@ function shm_send( params, type )
 		},
 		function( response ) 
 		{
-			console.log(response);
+			//console.log(response);
 			try
 			{
 				var dat = JSON.parse(response);

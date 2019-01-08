@@ -374,7 +374,7 @@ class ShMapper_ajax
 					"height"		=> get_term_meta($type->term_id, "height", true),
 					"icon"			=> ShMapPointType::get_icon_src($type->term_id)[0],
 					"term_id"		=> $data['type'],
-					"mapid"			=> "ShmMap".$data['map_id']
+					"mapid"			=> "ShmMap".$data['map_id'].$data['map_id']
 				];
 				$d = array(	
 					$params[0],

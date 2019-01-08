@@ -653,7 +653,7 @@ class ShMapper
 			[
 				"title"				=> "Создайте вашу первую карту",
 				"text"				=> "Нажмите кнопку  \"Добавить карту\" в самом верху страницы",
-				"selector"			=> 'a[href=\"edit.php?post_type=shm_map\"]',
+				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"alt_selector"		=> "body.post-type-shm_map .page-title-action" ,
 				"href"				=> '/wp-admin/edit.php?post_type=shm_map',
 			],
