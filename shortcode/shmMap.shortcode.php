@@ -18,14 +18,14 @@ function shmMap($args)
 	{
 		return __("No map on ID ", SHMAPPER) . $args['id'];
 	}
-	$map_enb	= $args["map"]  || ( !$args["map"] && !$args["form"]); 
-	$form_enb	= $args["form"] || ( !$args["map"] && !$args["form"]); 
+	$map_enb	= $args["map"]  || ( !$args["map"] && !$args["form"]) ? 1 : 0; 
+	$form_enb	= $args["form"] || ( !$args["map"] && !$args["form"]) ? 1 : 0; 
 	$html 		= "<div class='shm-title-6 shm-map-title'>" . $map->get("post_title")  . "</div>";
 	if($map_enb)
 	{
 		$html 	.= $map->draw($args);		
 	}
-	//if( $form_enb && $map->get_meta("is_form") && ShMapper::$options['shm_map_is_crowdsourced'])
+	if( $form_enb && $map->get_meta("is_form") && !ShMapper::$options['shm_map_is_crowdsourced'])
 	{
 		$form_title = $map->get_meta("form_title");
 		$form_forms = $map->get_meta("form_forms");

@@ -1,13 +1,18 @@
-var init_map=function(){}, is_admin=function(){alert("AAAA")}, map, all_markers = [], $this, geocodeService, eclectMarker, eclectCoords, myMap;
+
+var init_map=function(){}, is_admin=function(){ }, map, all_markers = [], $this, geocodeService, eclectMarker, eclectCoords, myMap;
 var changeBasemap = function(){}, setBasemap=function(){}, layer, layerLabels, lG;
 
 jQuery(document).ready(function($)
 {
+	document.documentElement.addEventListener("init_map", function(e) 
+	{
+		init_map( e.detail.mData, e.detail.points );
+	});
 	//filter	
 	document.documentElement.addEventListener("shm_filter", function(e) 
 	{	
 		var dat = e.detail;	
-		all_markers[dat.uniq].forEach(elem =>
+		all_markers[dat.uniq].forEach(function(elem)
 		{
 			if(elem.options.term_id == dat.term_id )
 			{
@@ -32,7 +37,7 @@ jQuery(document).ready(function($)
 	
 	if($(".shm-type-icon").size())
 	{
-		L.DomEvent.on(document, 'pushing', ev => 
+		L.DomEvent.on(document, 'pushing', function(ev)
 		{
 			L.DomEvent.stopPropagation(ev);	
 		});
@@ -40,21 +45,21 @@ jQuery(document).ready(function($)
 		$(".shm-type-icon").draggable(
 		{
 			revert: false,
-			start: (evt, ui) => 
+			start: function(evt, ui)
 			{
 				$this = $(ui.helper);
 				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
 				map = shm_maps[$map_id];	
 				map.mp.enable();		
 			},
-			stop: (evt, ui) =>
+			stop: function(evt, ui)
 			{
 				$this = $(ui.helper);
 				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
 				map = shm_maps[$map_id];
 				//
 				
-				setTimeout(() => 
+				setTimeout(function()
 				{			
 					
 					//заполняем формы отправки 
@@ -108,7 +113,7 @@ jQuery(document).ready(function($)
 					}
 					eclectMarker = L.marker(eclectCoords,s_style).addTo(map);
 					map.mp.disable();
-					eclectMarker.on("dragend touchend", evt=>
+					eclectMarker.on("dragend touchend", function(evt)
 					{
 						//console.log(evt.target._latlng);
 						eclectCoords = [evt.target._latlng.lat, evt.target._latlng.lng]
@@ -149,7 +154,7 @@ jQuery(document).ready(function($)
 					{
 						L.DomEvent.off(myMap, 'contextmenu', this.onClicker, this);
 					},
-					onClicker: evt=>
+					onClicker: function(evt)
 					{
 						geocodeService.reverse().latlng(evt.latlng).run(function(error, result) 
 						{
@@ -175,7 +180,7 @@ jQuery(document).ready(function($)
 					L.DomEvent.off(myMap, 'mousemove', this.onmousemove, this);
 					L.DomEvent.off(myMap, 'touchmove', this.onmousemove, this);
 				},
-				onmousemove: evt=>
+				onmousemove: function(evt)
 				{
 					eclectCoords = [
 						L.Util.formatNum(evt.latlng.lat, 7), 
@@ -186,7 +191,7 @@ jQuery(document).ready(function($)
 					$("[name='longitude']").val( L.Util.formatNum(myMap.getCenter().lng ));
 					$("[name='zoom']").val( myMap.getZoom() );	
 				},
-				ontouchstart: evt=>
+				ontouchstart: function(evt)
 				{
 					
 				}
@@ -236,7 +241,7 @@ jQuery(document).ready(function($)
 		
 		
 		//search 
-		if(mData.isSearch)
+		if(mData.isSearch && typeof easyGeocoder !== "undefined" )
 		{
 			easyGeocoder({ map: myMap });
 		}
@@ -258,7 +263,7 @@ jQuery(document).ready(function($)
 			var dist = myMap;
 		
 		var icons = [], marker;
-		points.forEach( elem =>
+		points.forEach( function(elem)
 		{
 			if(  elem.icon )
 			{

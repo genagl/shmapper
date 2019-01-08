@@ -1,7 +1,7 @@
 /* (c) J.F.O. https://daozen.org/ | easyGeocoder changes are in public domain */
 /* Leaflet Control Geocoder (c) 2013-2016 Per Liedman, (c) 2012 sa3m https://github.com/sa3m | https://opensource.org/licenses/BSD-2-Clause */
 const UTIL = {
-	extend: obj => {
+	extend: function(obj) {
 		const CLASS = function(){},
 			proto = Object.create(CLASS.prototype);
 		CLASS.extend = function(){

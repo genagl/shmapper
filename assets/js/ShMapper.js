@@ -1,3 +1,4 @@
+
 var media_uploader = null, setmsg, $pm_pars={}, shm_add_modal=function(){}, shm_close_modal=function(){}, create_point=function(){}, shm_delete_map_hand = function(){}, shm_map_add_point = function(data){}, shm_img=[];
 var __ = function(text)
 {
@@ -26,24 +27,24 @@ function open_media_uploader_image()
 jQuery(document).ready(function($)
 {	
 	// ajax
-	$("[name='shm_wnext']").live({click:evt =>
+	$("[name='shm_wnext']").live({click:function(evt)
 	{
 		shm_send(['shm_wnext']);	
 	}});
-	$(".shm_doubled[post_id]").live({click:evt =>
+	$(".shm_doubled[post_id]").live({click:function(evt)
 	{
 		evt.preventDefault();
 		shm_send(['shm_doubled', $(evt.currentTarget).attr("post_id")]);	
 	}});
-	$("[name='shm_wclose']").live({click:evt =>
+	$("[name='shm_wclose']").live({click:function(evt)
 	{
 		shm_send(['shm_wclose']);	
 	}});
-	$("#shm_settings_wizzard").live({click:evt =>
+	$("#shm_settings_wizzard").live({click:function(evt)
 	{
 		shm_send(['shm_wrestart']);	
 	}});
-	$(".shm-change-input-change").live({click:evt =>
+	$(".shm-change-input-change").live({click:function(evt)
 	{
 		evt.preventDefault();
 		var command = $(evt.currentTarget).attr("c");
@@ -51,43 +52,43 @@ jQuery(document).ready(function($)
 		var post_id	= $(evt.currentTarget).parents("section[post_id]").attr("post_id");
 		shm_send([ command, num, post_id ]);	
 	}});
-	$(".admin_voc").live({change:evt =>
+	$(".admin_voc").live({change:function(evt)
 	{
 		$("#shm_vocabulary_cont").css("opacity", 0.7);
 		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);	
 	}});
-	$("[name='map_api']").live({click:evt =>
+	$("[name='map_api']").live({click:function(evt)
 	{
 		$(".map_api_cont").css("opacity", 0.7);
 		shm_send(["map_api", $(evt.currentTarget).val()]);	
 	}});
-	$("#shm_map_is_crowdsourced").live({click:evt =>
+	$("#shm_map_is_crowdsourced").live({click:function(evt)
 	{
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
 		shm_send(["shm_map_is_crowdsourced", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
 	}});
-	$("#shm_map_marker_premoderation").live({click:evt =>
+	$("#shm_map_marker_premoderation").live({click:function(evt)
 	{
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
 		shm_send(["shm_map_marker_premoderation", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
 	}});
-	$("#shm_settings_captcha").live({click:evt =>
+	$("#shm_settings_captcha").live({click:function(evt)
 	{
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
 		shm_send(["shm_settings_captcha", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
 	}});	
-	$("[name=shm_captcha_siteKey]").live({change:evt =>
+	$("[name=shm_captcha_siteKey]").live({change:function(evt)
 	{
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
 		shm_send(["shm_captcha_siteKey", $(evt.currentTarget).val() ]);	
 	}});	
-	$("[name=shm_captcha_secretKey]").live({change:evt =>
+	$("[name=shm_captcha_secretKey]").live({change:function(evt)
 	{
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
 		shm_send(["shm_captcha_secretKey", $(evt.currentTarget).val() ]);	
 	}});
 	
-	$("a.shm-csv-icon[map_id]").live({click:evt =>
+	$("a.shm-csv-icon[map_id]").live({click:function(evt)
 	{
 		evt.preventDefault();
 		shm_send(['shm_csv', $(evt.currentTarget).attr("map_id")]);
@@ -97,7 +98,7 @@ jQuery(document).ready(function($)
 		$(".shm-alert").removeClass("shm-alert");
 		var s = ["shm-new-point-title", "shm-new-point-content", "shm-new-point-type"];
 		var alerting = [];
-		s.forEach(elem => 
+		s.forEach(function(elem)
 		{
 			if($("[name='" + elem + "']").val() == "")
 			{
@@ -106,7 +107,7 @@ jQuery(document).ready(function($)
 		});
 		if(alerting.length)
 		{
-			alerting.forEach(elem => $("[name='" + elem + "']").addClass("shm-alert"));
+			alerting.forEach(function(elem) {$("[name='" + elem + "']").addClass("shm-alert") });
 			return;
 		}
 		shm_send(['shm_create_map_point', {
@@ -119,7 +120,7 @@ jQuery(document).ready(function($)
 			location: $("[name='shm-new-point-location']").val(),
 		}]);
 	}
-	shm_delete_map_hand = id =>
+	shm_delete_map_hand = function(id)
 	{
 		var action = $('[name=shm_esc_points]:checked').val();
 		var anover = $("#shm_esc_points_id").val();
@@ -131,7 +132,7 @@ jQuery(document).ready(function($)
 		}])
 	}
 	// map filter
-	$(".shm-map-panel[for] .point_type_swicher>input[type='checkbox']").live({change:evt =>
+	$(".shm-map-panel[for] .point_type_swicher>input[type='checkbox']").live({change:function(evt)
 	{
 		var $this = $(evt.currentTarget);
 		var uniq = $this.parents("[for]").attr("for");
@@ -256,11 +257,11 @@ jQuery(document).ready(function($)
 	}
 	
 	//point_type_swicher
-	$(".point_type_swicher .ganre_checkbox").live({click:evt =>
+	$(".point_type_swicher .ganre_checkbox").live({click:function(evt)
 	{
 		var types = [];
 		var $e = $(evt.currentTarget).parents(".point_type_swicher").find(".ganre_checkbox");
-		$e.each((num, elem) =>
+		$e.each(function(num, elem)
 		{
 			if($(elem).is(":checked"))
 				types.push($(elem).attr("term_id"));
@@ -270,23 +271,24 @@ jQuery(document).ready(function($)
 	
 	
 	//admin form element chooser
-	$("#form_editor select[selector]").live({change:evt =>
+	$("#form_editor select[selector]").live({change:function(evt)
 	{
 		var $this = $(evt.currentTarget);
 		var flds = $this.find("option:selected").attr("data-fields").split(",");
 		var $num =  $this.parents(".shm-row").attr("shm-num");	
 		$this.parents(".shm-row [shm-num="+$num + "]").find(".shm-t").hide();
-		flds.forEach((elem, num) => {
+		flds.forEach(function(elem, num)
+		{
 			$this.parents(".shm-row [shm-num="+$num + "]").find(".shm--" + elem).show();
 		});
 	}});
-	$("[name='tax_input[shm_point_type][]']").live({change:evt=>
+	$("[name='tax_input[shm_point_type][]']").live({change:function(evt)
 	{
 		var ch = $(evt.currentTarget).is(":checked");
-		$("[name='tax_input[shm_point_type][]']:checked").each( (num, elem) => $(elem).prop('checked', false) );
+		$("[name='tax_input[shm_point_type][]']:checked").each( function(num, elem){$(elem).prop('checked', false)} );
 		$(evt.currentTarget).attr("checked", ch);
 	}});
-	$("[name=shm_esc_points]").live({change:evt =>
+	$("[name=shm_esc_points]").live({change:function(evt)
 	{
 		if($(evt.currentTarget).val() == 3)
 		{
@@ -298,7 +300,7 @@ jQuery(document).ready(function($)
 		}
 	}})
 	//interface
-	$(".shm-close-btn").live({click:evt =>
+	$(".shm-close-btn").live({click:function(evt)
 	{
 		$(evt.currentTarget).parents(".shm-win").hide();	
 	}})
@@ -334,7 +336,7 @@ jQuery(document).ready(function($)
 		prefix = $(this).attr("prefix");// "pic_example";
 		$( elem ).height( $("#" + prefix  + $(elem).attr("image_id")).height() + 0);
 	})
-	$(".my_image_delete").click(evt=>
+	$(".my_image_delete").click(function(evt)
 	{
 		var $prefix = $(evt.currentTarget).attr("prefix");
 		var $default = $(evt.currentTarget).attr("default");
@@ -346,9 +348,9 @@ jQuery(document).ready(function($)
 	
 	
 	// input file
-	$(".shm-form-file > input[type='file']").each((num, elem) =>
+	$(".shm-form-file > input[type='file']").each(function(num, elem)
 	{
-		$(elem).live({change:evt =>
+		$(elem).live({change:function(evt)
 		{
 			var file	= evt.target.files[0];	
 			if(!file)	return;
@@ -396,7 +398,7 @@ jQuery(document).ready(function($)
 		if(data.send)
 			$(".shm_modal_footer").append("<button class='button' onClick='" + data.sendHandler + "(" + data.sendArgs + ");'>"+ data.send + "</button>");
 		$(".shm_modal_footer").append("<button class='button' onclick='shm_close_modal();'>"+__("Close") + "</button>");
-		$(".shm_modal").click(evt =>
+		$(".shm_modal").click(function(evt)
 		{
 			$(evt.currentTarget).parents(".shm_modal_container").detach();
 		});
@@ -414,7 +416,7 @@ jQuery(document).ready(function($)
 
 
 
-var shm_send = (params, type=-1) =>
+function shm_send( params, type )
 {
 	console.log(params, type);
 	jQuery.post	(
@@ -461,7 +463,7 @@ var shm_send = (params, type=-1) =>
 					link.innerHTML= "Download";
 					document.body.appendChild(link);
 					link.click();
-					//link.parentNode.removeChild(link);
+					link.parentNode.removeChild(link);
 					break;
 				case "shm_set_req":
 					if(datas['grecaptcha'] == 1)
@@ -473,10 +475,12 @@ var shm_send = (params, type=-1) =>
 							.hide()
 								.slideDown("slow");
 					$("#form_editor li").each(
-						(num, elem) => {
+						function(num, elem) 
+						{
 							var prev_id = $(elem).attr("shm-num");
 							$(elem).attr("shm-num", num);
-							$(elem).find("[name^='form_forms[" + prev_id + "]']").each( (n, e) => {
+							$(elem).find("[name^='form_forms[" + prev_id + "]']").each( function(n, e)
+							{
 								var name = $(e).attr("name").replace("form_forms[" + prev_id + "]", "form_forms[" + num + "]");
 								$(e).attr("name", name);
 							});
@@ -489,10 +493,12 @@ var shm_send = (params, type=-1) =>
 							.hide()
 								.slideDown("slow");
 					$("#form_editor li").each(
-						(num, elem) => {
+						function(num, elem)
+						{
 							var prev_id = $(elem).attr("shm-num");
 							$(elem).attr("shm-num", num);
-							$(elem).find("[name^='form_forms[" + prev_id + "]']").each( (n, e) => {
+							$(elem).find("[name^='form_forms[" + prev_id + "]']").each( function(n, e) 
+							{
 								var name = $(e).attr("name").replace("form_forms[" + prev_id + "]", "form_forms[" + num + "]");
 								$(e).attr("name", name);
 							});

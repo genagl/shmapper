@@ -3,21 +3,21 @@ var place_new_mark = function(){}, addAdress = function(){}, $this,  new_mark_co
 jQuery(document).ready(function($)
 {	
 	//destroy all orphan map forms
-	$("form[form_id]").each((num, elem) =>
+	$("form[form_id]").each(function(num, elem)
 	{
 		if($("#"+ $(elem).attr("form_id")).size() < 1)
 			$(elem).empty().append( __("Error: no map") );
 	})
 	
 	//send new request
-	$("form.shm-form-request").live({ submit: evt =>
+	$("form.shm-form-request").live({ submit: function(evt)
 		{
 			
 			evt.preventDefault();
 			//console.log(shm_img[0]);
 			
 			var $this = $(evt.currentTarget);
-			$this.find("[required]").each((num, elem) =>
+			$this.find("[required]").each(function(num, elem)
 			{
 				$(elem).removeClass("shm-alert");
 				if( $(elem).val() == "" )
@@ -28,7 +28,8 @@ jQuery(document).ready(function($)
 			if( $this.find(".shm-alert").length )	return;
 			var data = $this.serializeArray();
 			var d = new FormData();
-			data.forEach( evt => {
+			data.forEach( function(evt)
+			{
 				if( evt.name=="g-recaptcha-response" ) d.append("cap", evt.value);
 			});
 			d.append("id", $this.attr("map_id"));
@@ -41,8 +42,9 @@ jQuery(document).ready(function($)
 			d.append("shm_form_name", 	$this.find( "[name='shm_form_name']" ).val());
 			d.append("shm_form_email", 	$this.find( "[name='shm_form_email']" ).val());
 			d.append("shm_form_phone", 	$this.find( "[name='shm_form_phone']" ).val());
-			d.append("elem", $this.find( "[name='elem[]']" ).map( (num,el) => el.value ).get() );
-			$.each( shm_img, function( key, value ){
+			d.append("elem", $this.find( "[name='elem[]']" ).map( function(num,el){ return el.value} ).get() );
+			$.each( shm_img, function( key, value )
+			{
 				d.append( key, value );
 			});
 			// AJAX запрос
@@ -66,7 +68,7 @@ jQuery(document).ready(function($)
 					$form.find("[name='shm_point_lon']").val("");
 					$form.find("[name='shm_point_loc']").val("").slideUp("slow");
 					$form.find(".shm-form-element input:not([type='submit']), .shm-form-element textarea")
-						.each((num,elem) => $(elem).val(""));
+						.each(function(num,elem) { $(elem).val("")});
 					$form.find(".shm-form-element .shm-form-file img").attr("src","");
 					var dat = [
 						{},

@@ -238,7 +238,7 @@ class ShMapper
 			
 			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
 			wp_enqueue_script("Leaflet.fs");
-			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper.osm.js', __FILE__ ), array());
+			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.osm");	
 		}
 		wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
@@ -328,7 +328,7 @@ class ShMapper
 			wp_enqueue_script("layerSwitcher");	
 			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
 			wp_enqueue_script("Leaflet.fs");		
-			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper.osm.js', __FILE__ ), array());
+			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.osm");			
 			
 		}

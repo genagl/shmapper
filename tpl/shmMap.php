@@ -137,10 +137,23 @@ function draw_shMap($map, $args )
 				isMap			: true,
 				default_icon	: '$icon',
 			};
+			/*
+			var clear_form = new CustomEvent(
+				'init_map', 
+				{
+					bubbles : true, 
+					cancelable : true, 
+					detail : {mData:mData, points:points}
+				}
+			);
+			document.documentElement.dispatchEvent(clear_form);
+			*/
+			
 			if(map_type == 1)
-				ymaps.ready(() => init_map( mData, points ));
+				ymaps.ready( function(){ init_map( mData, points ) } );
 			else if (map_type == 2)
 				init_map( mData, points );
+			
 		});
 	</script>";
 	return $html;

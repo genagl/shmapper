@@ -1,3 +1,4 @@
+
 var init_map=function(){}, is_admin=function(){}
 jQuery(function () 
 {
@@ -11,6 +12,13 @@ function init ()
 }
 jQuery(document).ready(function($)
 {
+	document.documentElement.addEventListener("init_map", function(e) 
+	{
+		ymaps.ready( function()
+		{
+			init_map( e.detail.mData, e.detail.points ) 
+		} ); 
+	});
 	//filter	
 	document.documentElement.addEventListener("shm_filter", function(e) 
 	{	
@@ -174,7 +182,6 @@ jQuery(document).ready(function($)
 	//
 	init_map = function(mData, points)
 	{
-		console.log( 'yandex#satellite', 'yandex#' + mData.mapType );
 		var i=0, paramet;
 		var myMap = new ymaps.Map(mData.uniq, 
 		{

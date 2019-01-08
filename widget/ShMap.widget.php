@@ -1,15 +1,5 @@
 <?php
-	/*
-	Plugin Name: Location Navigator Widget
-	
-	License: GNU General Public License v2.0
-	License URI: http://www.gnu.org/licenses/gpl-2.0.html
-	
-	Copyright: (c) 2014 genagl@gmail.com
-	
-		@package genagl
-		@version 1.0
-	*/
+
 	class ShmLocationNavigatorWidget extends WP_Widget 
 	{
 		/*  Constructor
