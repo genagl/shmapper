@@ -193,6 +193,8 @@ class ShMapper
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array());
 		wp_enqueue_style( "ShMapper");
 		//js
+		wp_register_script("jquery", 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' , array());
+		wp_enqueue_script("jquery");
 		wp_register_script("inline", get_bloginfo("url").'/wp-admin/js/inline-edit-post.js', array());
 		wp_enqueue_script("inline");
 		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array());
@@ -282,6 +284,8 @@ class ShMapper
 		wp_enqueue_style( "ShMapper");
 		
 		//js			
+		wp_register_script("jquery", 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' , array());
+		wp_enqueue_script("jquery");
 		//wp_register_script("jquery-ui", "https://code.jquery.com/ui/1.12.1/jquery-ui.js", array());
 		wp_register_script("jquery-ui", plugins_url( '../assets/js/jquery-ui.min.js', __FILE__ ), array());
 		wp_enqueue_script("jquery-ui");	
@@ -429,7 +433,6 @@ class ShMapper
 								<label for='radio_OSM'>".__("Open Street Map", SHMAPPER) ."</label>
 							</div>
 							<div class='spacer-10'></div>
-							<div><small class='shm-color-grey'>Short description label</small></div>
 						</div>
 					</div>
 				</li>
