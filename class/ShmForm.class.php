@@ -384,8 +384,8 @@ class ShmForm
 		</li>";
 	}
 	static function form($data, $map)
-	{
-		
+	{		
+		$default_icon_id 	= $map->get_meta("default_icon_id");
 		$is_personal_data 	= $map->get_meta("is_personal_data");
 		$is_name_iclude 	= $map->get_meta("is_name_iclude");
 		$personal_name 		= $map->get_meta("personal_name");
@@ -464,7 +464,7 @@ class ShmForm
 									$icon = ShMapper::$options['map_api'] == 2 
 									? "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"
 									: SHM_URLPATH . 'assets/img/ym_default.png';								
-								$icons .=  true ? "
+								$icons .=  !$icon ? "
 								<div class='shm-type-icon' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
 									<div class='shm-color-crcl' style='background:$clr'></div>
 								</div>" :

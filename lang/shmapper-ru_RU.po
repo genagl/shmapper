@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 "\"\"X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.2\n"
 "PO-Revision-Date: \n"
 
 #: class/shmapper.php:1
@@ -148,6 +148,10 @@ msgstr "редактировать Карту"
 #: class/ShMap.class.php:1
 msgid "all Maps"
 msgstr "Карты"
+
+#: class/ShMap.class.php:1
+msgid "all maps"
+msgstr "все карты"
 
 #: class/ShMap.class.php:1
 msgid "Maps"
@@ -402,6 +406,10 @@ msgid "Delete %s"
 msgstr "Удалён %s"
 
 #: class/ShMap.class.php:1
+msgid "add Map Point"
+msgstr "Маркер добавлен"
+
+#: class/ShMap.class.php:1
 msgid "Location"
 msgstr "Адрес"
 
@@ -486,6 +494,10 @@ msgid "Delete me"
 msgstr "Удали меня"
 
 #: class/ShMap.class.php:1
+msgid "input title"
+msgstr "напишите заголовок"
+
+#: class/ShMap.class.php:1
 msgid "input text"
 msgstr "текстовая строка"
 
@@ -515,7 +527,7 @@ msgstr "загрузка картинки"
 
 #: class/ShMap.class.php:1
 msgid "enabled Map markers"
-msgstr "досупные маркеры"
+msgstr "доступные маркеры"
 
 #: class/ShMap.class.php:1
 msgid "Place the mark to Map"
@@ -544,6 +556,18 @@ msgstr "Закрыть навсегда"
 #: class/ShMap.class.php:1
 msgid "Next step"
 msgstr "Следующий шаг"
+
+#: class/ShMap.class.php:1
+msgid "Congratulation! That's all!"
+msgstr "Поздравляем! Это всё."
+
+#: class/ShMap.class.php:1
+msgid "Wizzard closed"
+msgstr "Мастер закрыт"
+
+#: class/ShMap.class.php:1
+msgid "Wizzard restarted"
+msgstr "Мастер запущен сызнова"
 
 #: class/ShMap.class.php:1
 msgid "Go to current page"

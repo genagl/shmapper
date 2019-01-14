@@ -249,11 +249,25 @@ class ShmPoint extends SMC_Post
 				break;
 			case "type":
 				$terms = get_the_terms( $post_id, SHM_POINT_TYPE );
-				foreach($terms as $term)
+				if($terms[0]->term_id)
+					foreach($terms as $term)
+					{
+						//$term = get_term($obj->get_meta("type"), SHM_POINT_TYPE);
+						echo ShMapPointType::get_icon($term);
+					}
+				else
 				{
-					//$term = get_term($obj->get_meta("type"), SHM_POINT_TYPE);
-					echo ShMapPointType::get_icon($term);
+					$owners = $obj->get_owners();
+					$map_id = $owners[0]->ID;
+					$diid = get_post_meta($map_id, "default_icon_id", true);
+					$icon	= "<div 
+						class='shm_type_icon' 
+						style='background-color:$color; background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
+						>
+					</div>";	
+					echo $icon;
 				}
+					
 				//the_terms( $post_id, SHM_POINT_TYPE, "", ", ", "" );
 				break;
 			case "thumb":
@@ -356,6 +370,7 @@ class ShmPoint extends SMC_Post
 ","
 
 "];
+		$mapType 	= ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
 		$type		= $types[0];
 		$term_id	= $type->term_id ? $type->term_id : -1;
@@ -412,6 +427,7 @@ class ShmPoint extends SMC_Post
 				var points 		= []; 
 				$p
 				var mData = {
+					mapType			: '$mapType',
 					uniq 			: 'YMapID',
 					muniq			: 'YMapID',
 					latitude		: p.latitude,

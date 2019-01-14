@@ -393,7 +393,7 @@ jQuery(document).ready(function($)
 
 function shm_send( params, type )
 {
-	//console.log(params, type);
+	console.log(params, type);
 	jQuery.post	(
 		myajax.url,
 		{
@@ -403,7 +403,7 @@ function shm_send( params, type )
 		},
 		function( response ) 
 		{
-			//console.log(response);
+			console.log(response);
 			try
 			{
 				var dat = JSON.parse(response);

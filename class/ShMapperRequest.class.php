@@ -91,8 +91,23 @@ class ShMapperRequest extends SMC_Post
 				echo implode("<br>", $contacts);
 				break;
 			case "type":
-				$term = get_term($obj->get_meta("type"), SHM_POINT_TYPE);
-				echo ShMapPointType::get_icon($term , $obj->get_meta("notified"));
+				$term_id = $obj->get_meta("type");
+				$term = get_term($term_id, SHM_POINT_TYPE);				
+				if($term_id)
+				{
+					$icon = ShMapPointType::get_icon($term , $obj->get_meta("notified"));
+				}
+				else
+				{
+					$map_id = $obj->get_meta("map");
+					$diid = get_post_meta($map_id, "default_icon_id", true);
+					$icon	= "<div 
+						class='shm_type_icon' 
+						style='background-color:$color; background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
+						>
+					</div>";	
+				}
+				echo $icon;
 				break;
 			case "notified":
 				echo $obj->get_notified_form();
@@ -264,8 +279,8 @@ class ShMapperRequest extends SMC_Post
 				"From: $site <$semail>",
 				'content-type: text/html',
 			);
-			//var_dump($email);
-			//wp_die(  );
+			var_dump($email);
+			//wp_die( "----" );
 			wp_mail(
 				$email,
 				sprintf(__("<%s> Request to your Map '%s'", SHMAPPER), $suser, $map->get("post_title")),

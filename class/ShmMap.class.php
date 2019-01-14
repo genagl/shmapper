@@ -477,58 +477,9 @@ class ShmMap extends SMC_Post
 		
 		
 		return $html;
-		/*
-		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
-		$SMC_Object_type	= SMC_Object_Type::get_instance();
-		$bb				= $SMC_Object_type->object [static::get_type()];
-		$html = "<section post_id='$obj->id'><div>";
-		foreach($bb as $key=>$value)
-		{
-			if($key == 't' || $key == 'class' || $value['distination'] != "form") continue;
-			$meta = get_post_meta( $obj->id, $key, true);			
-			$$key = $meta;
-			switch( $value['type'] )
-			{
-				case "text":
-					$h = "<textarea name='$key' id='$key' class='sh-form' rows='6' placeholder='".$value['placeholder']."'>$meta</textarea>";
-					break;
-				case "number":
-					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'  placeholder='".$value['placeholder']."'/>";
-					break;
-				case "form_editor":
-					//ob_start();
-					//var_dump($meta);
-					//$v = ob_get_contents();
-					//ob_end_clean();
-					$meta = $meta ? $meta : ShmForm::get_default();
-				
-					$h = $v . static::formEditor( $meta );
-					break;
-				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "  /><label for='$key'></label>
-					<div class='spacer-10'></div>";
-					break;
-				default:
-					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'  placeholder='".$value['placeholder']."'/>";
-			}
-			$html .="<div class='shm-row' $opacity>
-				<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
-				<div class='shm-9 shm-md-12'>
-					$h
-				</div>
-			</div>
-			<div class='spacer-5'></div>";
-		}
-		$html 	.= "</div>			
-		</section>";
-		echo $html;
-		*/	
 	}
 	static function save_admin_edit($obj)
 	{
-		//var_dump($_POST['map_type']);
-		//wp_die();
-		
 		return [
 			"map_type"			=> $_POST['map_type'],
 			"latitude"			=> $_POST['latitude'],

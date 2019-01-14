@@ -268,21 +268,6 @@
     margin-left: -15px;
     margin-top: 15px;
 }
-.shm_wizzard_current
-{
-	position: relative;
-	background-color:#d54e21;
-}
-.shm_wizzard_current:before
-{
-    z-index: 1000;
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 40%;
-    border-bottom: 4px solid#0073aa!important
-}
 
 .shm_wizzard_line
 {
