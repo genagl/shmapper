@@ -152,7 +152,7 @@ jQuery(document).ready(function($)
 	
 	$("[c='shm_delete_me']").live({click:evt=>
 	{
-		if( confirm("Are you ready?") )
+		if( confirm(__("Are you shure?")) )
 		{
 			var $this 	= $(evt.currentTarget);
 			var num		= $this.parents("[shm-num]").attr("shm-num");

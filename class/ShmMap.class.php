@@ -587,7 +587,7 @@ class ShmMap extends SMC_Post
 			$csv[]	= implode(SHM_CSV_STROKE_SEPARATOR, [
 				($i++) . ". ",
 				'"' . str_replace(';', ",", $p->get("post_title") )	  . '"', 
-				'"' . str_replace(';', ",", $p->get("post_content"))  . '"',
+				'"' . str_replace(';', ",", wp_strip_all_tags( wp_specialchars_decode ($p->get("post_content"))))  . '"',
 				'"' . str_replace(';', ",", $p->get_meta("location")) . '"',
 				'"' . str_replace(';', ",", $p->get_meta("longitude")). '"',
 				'"' . str_replace(';', ",", $p->get_meta("latitude")) . '"',
@@ -597,7 +597,8 @@ class ShmMap extends SMC_Post
 		$path 		= WP_CONTENT_DIR . "/uploads/shmapper/shmap_" . $p->id . ".csv";
 		$href		= "/wp-content/uploads/shmapper/shmap_" . $p->id . ".csv";
 		file_put_contents( $path, $csv_data );		
-			return $href;
+		return $href;
+			
 		if(class_exists("ZipArchive"))
 		{
 			$zip 		= new ZipArchive();

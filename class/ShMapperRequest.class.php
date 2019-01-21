@@ -272,21 +272,22 @@ class ShMapperRequest extends SMC_Post
 			$author_id 	= $map->get("post_author");
 			$user 		= get_userdata($author_id);
 			$email	 	= $user->get('user_email');
-			$semail  	= $emails[0] ? $emails[0] : get_bloginfo( "admin_email" );
+			$semail  	= "admin@shmapper4.genagl.ru";//$emails[0] ? $emails[0] : get_bloginfo( "admin_email" );
 			$suser		= $author ? $author : __("Uknown User", SHMAPPER);
 			$site		= get_bloginfo("name");
 			$headers = array(
 				"From: $site <$semail>",
 				'content-type: text/html',
 			);
-			var_dump($email);
+			//var_dump($email);
 			//wp_die( "----" );
-			wp_mail(
+			$is = wp_mail(
 				$email,
 				sprintf(__("<%s> Request to your Map '%s'", SHMAPPER), $suser, $map->get("post_title")),
 				$h['contents'],
 				$headers
 			);
+			return [ $is ? 1 : 0, $email, $headers,  ];
 		}
 		
 		//SESSION if session-plugin active

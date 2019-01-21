@@ -100,7 +100,7 @@ class ShMapper_ajax
 		}
 		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );
 		$answer = [
-			//'res'			=> $res,
+			'res'			=> $res,
 			'data'			=> $data,
 			"msg"			=> $msg,
 			//"form"		=> $form,
@@ -306,8 +306,9 @@ class ShMapper_ajax
 					$params[0],
 					array( 
 						"msg"	=> $msg,
-						"grec"	=> $grec,
-						'grecaptcha' => ShMapper::$options['shm_settings_captcha']
+						"res"	=> $res,
+						//"grec"	=> $grec,
+						//'grecaptcha' => ShMapper::$options['shm_settings_captcha']
 					)
 				);
 				break;	

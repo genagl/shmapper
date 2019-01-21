@@ -756,3 +756,7 @@ msgstr "Мастер"
 #: class/ShMap.class.php:1
 msgid "Restart wizzard"
 msgstr "Перезапустить Мастер"
+
+#: class/ShMap.class.php:1
+msgid "Are you shure?"
+msgstr "Вы уверены?"

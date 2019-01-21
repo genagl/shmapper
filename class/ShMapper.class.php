@@ -273,6 +273,7 @@ class ShMapper
 				'Send' => __( "Send" ),
 				'Close' => __( "Close" ),
 				'Error: no map' => __( "Error: no map", SHMAPPER ),
+				'Are you shure?' => __( "Are you shure?", SHMAPPER ),
 			)
 		);	
 	}
