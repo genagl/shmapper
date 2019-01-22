@@ -279,11 +279,10 @@ class ShMapperRequest extends SMC_Post
 				"From: $site <$semail>",
 				'content-type: text/html',
 			);
-			//var_dump($email);
-			//wp_die( "----" );
 			$is = wp_mail(
 				$email,
-				sprintf(__("<%s> Request to your Map '%s'", SHMAPPER), $suser, $map->get("post_title")),
+				sprintf(__("<%s> Request to your Map from [%s] [%s]", SHMAPPER), $site, $suser, $map->get("post_title")) . 
+				sprintf(__("You may see this %s"), get_bloginfo("url") . "/wp-admin/edit.php?post_type=shm_request"),
 				$h['contents'],
 				$headers
 			);

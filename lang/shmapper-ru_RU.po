@@ -46,6 +46,10 @@ msgid "What is Google reCAPTCHA? How recived keys for your site? See %sthis inst
 msgstr "Что такое Google reCAPTCHA? Как получить ключи для сайта? Смотрите %sэту инстукцию%s."
 
 #: class/shmapper.php:1
+msgid "Your reCAPTCHA doesn't work yet. In order to make it work, please get the API keys at google.com/recaptcha"
+msgstr "Ваша Капча пока не работает. Для включения этой функции получите ключи API на google.com/recaptch"
+
+#: class/shmapper.php:1
 msgid "We give a guarantee of the full confidentiality of your data, in accordance with Federal Law No. 152-FZ of July 27, 2006. By clicking send you consent to the processing of personal data contained in the request and the attached documents."
 msgstr "Даем гарантию полной конфидециальности Ваших данных, в соответствии с Федеральным законом от 27.07.2006 года №152-ФЗ. Нажав отправить Вы даете согласие на обработку персональных данных содержащихся в запросе и прилагаемых документах."
 
@@ -466,8 +470,8 @@ msgid "Uknown User"
 msgstr "некто Имярек"
 
 #: class/ShMap.class.php:1
-msgid "<%s> Request to your Map '%s'"
-msgstr "<%s> Запрос для Вашей Карты '%s'"
+msgid "<%s> Request to your Map from [%s] [%s]"
+msgstr "<%s>  Новый карт-запрос от [%s] [%s]"
 
 #: class/ShMap.class.php:1
 msgid "Drag choosed icon and place it to map."
@@ -760,3 +764,27 @@ msgstr "Перезапустить Мастер"
 #: class/ShMap.class.php:1
 msgid "Are you shure?"
 msgstr "Вы уверены?"
+
+#: class/ShMap.class.php:1
+msgid "Height"
+msgstr "Высота"
+
+#: class/ShMap.class.php:1
+msgid "Width"
+msgstr "Ширина"
+
+#: class/ShMap.class.php:1
+msgid "Choose layers"
+msgstr "Выбор типа визуализации слоя"
+
+#: class/ShMap.class.php:1
+msgid "Parameters"
+msgstr "Параметры"
+
+#: class/ShMap.class.php:1
+msgid "Map owner"
+msgstr "Родительская карта"
+
+#: class/ShMap.class.php:1
+msgid "None"
+msgstr "Никакой"

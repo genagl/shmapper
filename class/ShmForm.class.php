@@ -383,7 +383,7 @@ class ShmForm
 			</div>				
 		</li>";
 	}
-	static function form($data, $map)
+	static function form($data, $map )
 	{		
 		$default_icon_id 	= $map->get_meta("default_icon_id");
 		$is_personal_data 	= $map->get_meta("is_personal_data");
@@ -563,7 +563,8 @@ class ShmForm
 			
 			$att		= "
 			<div class='shm-form-element'>
-				<div class='shm-description'>".
+				<div class='shm-description'>
+					<input type='checkbox' name='shm_personal_check' required /> ".
 					ShMapper::$options['shm_personal_text'] .
 				"</div>
 			</div>";

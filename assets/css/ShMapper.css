@@ -8,6 +8,10 @@
 {
 	display:none!important;
 }
+.dashicons, .dashicons-before:before
+{
+	font-family: dashicons!important;
+}
 .shm_logo
 {
 	width:95px;
@@ -988,7 +992,7 @@ tfoot .shm-notify2:after
 	width:32px;
 	height:32px;
 	margin:3px;
-	background-color:#222;
+	background-color:#0000000F;
 	background-repeat:no-repeat;
 	background-position:center;
 	background-size:28px;
@@ -1151,7 +1155,7 @@ tfoot .shm-notify2:after
 {
 	width:50px;
 	height:50px;
-	background-color:#777;
+	background-color:#000000000;
 	background-size:40px;
 	background-repeat: no-repeat;
 	background-position:center;

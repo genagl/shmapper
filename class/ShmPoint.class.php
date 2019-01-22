@@ -374,7 +374,7 @@ class ShmPoint extends SMC_Post
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
 		$type		= $types[0];
 		$term_id	= $type->term_id ? $type->term_id : -1;
-		$post_title	= $this->get("post_title");
+		$post_title	= $this->get("post_title");		
 		$post_content = str_replace($str, " " , wpautop( wp_trim_words($this->get("post_content"), 20) )); 
 		$location	= $this->get_meta("location");
 		$latitude	= $this->get_meta("latitude");
@@ -404,8 +404,8 @@ class ShmPoint extends SMC_Post
 		$p .= " 
 			var p = {}; 
 			p.post_id 	= '" . $point->ID . "';
-			p.post_title 	= '" . $point->post_title . "';
-			p.post_content 	= '" . $point->post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
+			p.post_title 	= '" . $post_title . "';
+			p.post_content 	= '" . $post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
 			p.latitude 		= '" . $latitude . "'; 
 			p.longitude 	= '" . $longitude . "'; 
 			p.location 		= '" . $location . "'; 
@@ -426,6 +426,7 @@ class ShmPoint extends SMC_Post
 			{
 				var points 		= []; 
 				$p
+				console.log( p );
 				var mData = {
 					mapType			: '$mapType',
 					uniq 			: 'YMapID',

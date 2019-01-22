@@ -21,7 +21,7 @@ class ShMapper
 			"shm_map_is_crowdsourced"	=> 0,
 			"shm_map_marker_premoderation"	=> 1,
 			"wizzard" => 1,
-			"shm_personal_text" => __("We give a guarantee of the full confidentiality of your data, in accordance with Federal Law No. 152-FZ of July 27, 2006. By clicking send you consent to the processing of personal data contained in the request and the attached documents.", SHMAPPER),
+			"shm_personal_text" => __("Я даю свое согласие администратору сайта на обработку, в том числе автоматизированную, своих персональных данных в соответствии с Федеральным законом от 27.07.2006 N 152-ФЗ «О персональных данных».", SHMAPPER),
 			"shm_succ_request_text" => __("Your request has been successfully registered.", SHMAPPER),
 			"shm_error_request_text" => __("Unknown error.", SHMAPPER),
 		]);
@@ -375,7 +375,13 @@ class ShMapper
 	}
 	static function set_styles()
 	{
-		
+		echo "<style>
+			.dashicons, 
+			.dashicons-before:before 
+			{
+				font-family: dashicons!important;
+			}
+		</style>";
 	}
 	static function admin_page_handler()
 	{
@@ -500,7 +506,7 @@ class ShMapper
 							"</small>
 							<div class='" . (!static::$options['shm_captcha_siteKey'] || !static::$options['shm_captcha_secretKey'] ? "" : "hidden") . "'>
 								<small class='shm-color-danger'>".
-									__("Your reCAPTCH is no work now! Take valid keys from Goggle. Please", SHMAPPER).
+									__("Your reCAPTCHA doesn't work yet. In order to make it work, please get the API keys at google.com/recaptcha", SHMAPPER).
 								"</small>
 							</div>
 						</div>	

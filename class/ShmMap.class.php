@@ -788,43 +788,52 @@ class ShmMap extends SMC_Post
 		}
 		$html 	= "
 		<div class='shm_type_radio shm-row'>
-			<div class='shm-12'>
-				<div class='shm-admin-block'>
-				<h3>Yandex Map</h3>";
-		$i 		= 0;
+			<div class='shm-12'>";
 		
-		foreach(static::get_map_types()[ 1 ] as $type)
+		if( Shmapper::$options['map_type'] !== 2 )
 		{
-			$selected = $params[ 'selected' ][1][0] == $type ? " checked " : "";
-			$name 	= $params[ 'name' ];
-			$id 	= $params[ 'id' ];
-			$html 	.= "
-			<div>
-				<input type='radio' name='".$name."[1][]' id='$id$i' $selected value='$type'/> 
-				<label for='$id$i'>" . $type . "</label>
-			</div>";
-			$i++;
+			$html .= "<div class='shm-admin-block'>
+					<h3>Yandex Map</h3>";
+			$i 		= 0;
+			
+			foreach(static::get_map_types()[ 1 ] as $type)
+			{
+				$selected = $params[ 'selected' ][1][0] == $type ? " checked " : "";
+				$name 	= $params[ 'name' ];
+				$id 	= $params[ 'id' ];
+				$html 	.= "
+				<div>
+					<input type='radio' name='".$name."[1][]' id='$id$i' $selected value='$type'/> 
+					<label for='$id$i'>" . $type . "</label>
+				</div>";
+				$i++;
+			}
+			
+			$html .= "
+					</div>";
 		}
-		
-		$html .= "
-				</div>
-				<div class='shm-admin-block'>
-				<h3>Open Street Map</h3>";
-		
-		foreach(static::get_map_types()[ 2 ] as $type)
+		else
 		{
-			$selected = $params[ 'selected' ][2][0] ==$type  ? " checked " : "";
-			$name 	= $params[ 'name' ];
-			$id 	= $params[ 'id' ];
-			$html 	.= "
-			<div>
-				<input type='radio' name='".$name."[2][]' id='$id$i' $selected value='$type'/> 
-				<label for='$id$i'>" . $type . "</label>
-			</div>";
-			$i++;
+			$html .= "<div class='shm-admin-block'>
+					<h3>Open Street Map</h3>";
+			
+			foreach(static::get_map_types()[ 2 ] as $type)
+			{
+				$selected = $params[ 'selected' ][2][0] ==$type  ? " checked " : "";
+				$name 	= $params[ 'name' ];
+				$id 	= $params[ 'id' ];
+				$html 	.= "
+				<div>
+					<input type='radio' name='".$name."[2][]' id='$id$i' $selected value='$type'/> 
+					<label for='$id$i'>" . $type . "</label>
+				</div>";
+				$i++;
+			}
+			
+			$html .= "
+					</div>";
 		}
 		$html .= "
-				</div>
 			</div>
 		</div>";
 		return $html;
