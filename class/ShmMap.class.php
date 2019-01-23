@@ -790,7 +790,7 @@ class ShmMap extends SMC_Post
 		<div class='shm_type_radio shm-row'>
 			<div class='shm-12'>";
 		
-		if( Shmapper::$options['map_type'] !== 2 )
+		if( ShMapper::$options['map_api'] != 2 )
 		{
 			$html .= "<div class='shm-admin-block'>
 					<h3>Yandex Map</h3>";

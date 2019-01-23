@@ -788,3 +788,23 @@ msgstr "Родительская карта"
 #: class/ShMap.class.php:1
 msgid "None"
 msgstr "Никакой"
+
+#: class/ShMap.class.php:1
+msgid "Are you want delete %s?"
+msgstr "Хотите удалить карту %s?"
+
+#: class/ShMap.class.php:1
+msgid "What do with placemarks of deleting Map?"
+msgstr "Что делать с Маркерами удаляемой Карты?"
+
+#: class/ShMap.class.php:1
+msgid "Delete all Points"
+msgstr "Удалить все Маркеры"
+
+#: class/ShMap.class.php:1
+msgid "Escape all Points without Owner Map"
+msgstr "Оставить все Маркеры без родительской Карты"
+
+#: class/ShMap.class.php:1
+msgid "Switch all Points to anover Map"
+msgstr "Перенести все Маркеры на другую Карту"

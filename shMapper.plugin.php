@@ -3,7 +3,7 @@
 Plugin Name: ShMapper
 Plugin URI: http://genagl.ru/?p=652
 Description: Location and logistics services for NKO
-Version: 0.0.8
+Version: 0.0.9
 Author: Genagl
 Author URI: http://genagl.ru/author
 License: GPL2

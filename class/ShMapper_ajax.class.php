@@ -335,7 +335,7 @@ class ShMapper_ajax
 					$params[0],
 					array( 
 						"text"		=> [ 
-							"title" 	=> sprintf(__("Delete %s", SHMAPPER), $map->get("post_title") ), 
+							"title" 	=> sprintf(__("Are you want delete %s?", SHMAPPER), $map->get("post_title") ), 
 							"content" 	=> $map->get_delete_form( $href ),
 							"send" 		=> __("Delete"),
 							"sendHandler" => "shm_delete_map_hand",
