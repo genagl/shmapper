@@ -8,8 +8,7 @@ class ShmPoint extends SMC_Post
 		add_action('admin_menu',							array(__CLASS__, 'owner_fields'), 20);
 		//bulk-actions
 		add_action("bulk_edit_custom_box", 					array(__CLASS__, 'my_bulk_edit_custom_box'), 2, 2 );
-		add_action("wp_ajax_save_bulk_edit", 				array(__CLASS__, 'save_bulk_edit_book') );
-		
+		add_action("shmapper_bulk_before", 					array(__CLASS__, 'save_bulk_edit_point') );		
 		add_filter("the_content",							array(__CLASS__, "the_content"));
 		parent::init();
 	}
@@ -129,12 +128,14 @@ class ShmPoint extends SMC_Post
 		$q = [];
 		foreach($_POST['owner_id'] as $owner)
 		{
-			$q[] = " (NULL, '$obj->id', '$owner', '".time()."', '0', '1', '0')";
+			$q[] = " (NULL, '".$obj->id."', '$owner', '".time()."', '0', '1', '0')";
 		}
 		$query .= implode(",", $q);
-		//var_dump( $query );
-		//wp_die();
-		$wpdb->query($query);
+		$current = file_get_contents( ABSPATH. "alert.log" );
+		file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
+		$wpdb->query( $query );
+		var_dump( $query );
+		return $query;
 	}
 	static function save_admin_edit($obj)
 	{
@@ -152,7 +153,6 @@ class ShmPoint extends SMC_Post
 	static function owner_fields() 
 	{
 		add_meta_box( 'owner_fields', __('Map owner', SHMAPPER), [__CLASS__, 'owner_fields_box_func'], static::get_type(), 'side', 'low'  );
-		
 	}
 	
 	static function owner_fields_box_func( $post )
@@ -471,41 +471,36 @@ class ShmPoint extends SMC_Post
 	static function my_bulk_edit_custom_box( $column_name, $post_type ) 
 	{ 
 		if($post_type != static::get_type())	return;
-		/*
-		static $printNonce = TRUE;
-		if ( $printNonce ) {
-			$printNonce = FALSE;
-			wp_nonce_field( plugin_basename( __FILE__ ), 'book_edit_nonce' );
-		}
-		*/
 		?>
 		<fieldset class="inline-edit-col-left inline-edit-shm_point">
 		  <div class="inline-edit-col column-<?php echo $column_name; ?>">
 			<?php 
-			// Например здесь получить ID записи ... ?
-			 switch ( $column_name ) {
-			 case 'owner_map':
-				 echo "<span class='title'>".__("Usage in Maps: ", SHMAPPER)."</span>". static::bulk_owner_fields_edit( );
-				 break;
-			default:
-				break;
-			 }
+			 switch ( $column_name )
+			 {
+				case 'owner_map':
+					 echo "<span class='title'>".__("Usage in Maps: ", SHMAPPER)."</span>". static::bulk_owner_fields_edit( );
+					 break;
+				default:
+					break;
+			}
 			?>
 		  </div>
 		</fieldset>
 		<?php
 	} 
-	static function save_bulk_edit_book()
+		
+	static function save_bulk_edit_point()
 	{
-		$post_ids	= ( ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
-		$owner_id	= ( ! empty( $_POST[ 'owner_id' ] ) ) ? $_POST[ 'owner_id' ] : null;
-		if ( ! empty( $post_ids ) && is_array( $post_ids )  && ! empty( $owner_id ) && is_array( $owner_id ) ) 
+		$post_ids	=  ! empty( $_POST[ 'post_ids' ] )  ? $_POST[ 'post_ids' ] : [];
+		$owner_id	=  ! empty( $_POST[ 'owner_id' ] )  ? $_POST[ 'owner_id' ] : [];
+		if ( ! empty( $post_ids ) && ! empty( $owner_id ) ) 
+		{
 			foreach( $post_ids as $post_id ) 
 			{
 				$obj = static::get_instance((int)$post_id);
 				static::update_map_owners($obj);
 			}
-		wp_die();
-		/**/
+		}
+		echo json_encode( $_POST );
 	}
 }

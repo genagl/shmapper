@@ -577,8 +577,8 @@
 		} 
 		static function save_bulk_edit_book()
 		{
+			do_action("shmapper_bulk_before");
 			$post_ids	= ( ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
-			$is_legend	= (int)$_POST['smc_post_changer'][ 'is_legend' ];
 			require_once(SHM_REAL_PATH."class/SMC_Object_type.php");				
 			$SMC_Object_type	= SMC_Object_type::get_instance();
 			$obj				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];		
@@ -586,9 +586,7 @@
 			if ( ! empty( $post_ids ) && is_array( $post_ids ) )			
 				foreach( $post_ids as $post_id ) 
 				{
-					
-					$_obj = static::get_instance((int)$post_id);
-					//$_obj->update_meta( 'is_legend', $is_legend );					
+					$_obj = static::get_instance((int)$post_id);				
 					foreach($obj as $key => $value)
 					{
 						if($key == 't' ||$key == 'class' ) continue;
@@ -608,7 +606,6 @@
 								break;
 						}
 					}
-					/**/
 				}
 			echo json_encode( $_POST );
 			wp_die();

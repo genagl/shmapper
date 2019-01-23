@@ -87,7 +87,7 @@ jQuery(document).ready(function($)
 				$smc_post_changer[ $(elem).attr("name") ] = $val;
 			});
 			
-			
+			console.log($post_ids);
 			// save the data
 			$.ajax({
 				url: ajaxurl, // this is a variable that WordPress has already defined for us
@@ -100,7 +100,7 @@ jQuery(document).ready(function($)
 				},
 				data: 
 				{
-					action: 'save_bulk_edit', // this is the name of our WP AJAX function that we'll set up next
+					action: 'save_bulk_edit', 
 					post_ids: $post_ids, // and these are the 2 parameters we're passing to our function
 					owner_id: $owner_id,
 					smc_post_changer: $smc_post_changer
