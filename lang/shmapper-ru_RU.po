@@ -471,7 +471,11 @@ msgstr "некто Имярек"
 
 #: class/ShMap.class.php:1
 msgid "<%s> Request to your Map from [%s] [%s]"
-msgstr "<%s>  Новый карт-запрос от [%s] [%s]"
+msgstr "<%s> Новый карт-запрос от [%s] [%s]"
+
+#: class/ShMap.class.php:1
+msgid "You may see this %s"
+msgstr "Вы можете посмотреть его здесь %s"
 
 #: class/ShMap.class.php:1
 msgid "Drag choosed icon and place it to map."
@@ -808,6 +812,10 @@ msgstr "Оставить все Маркеры без родительской �
 #: class/ShMap.class.php:1
 msgid "Switch all Points to anover Map"
 msgstr "Перенести все Маркеры на другую Карту"
+
+#: class/ShMap.class.php:1
+msgid "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match"
+msgstr "Ошибка: форма не связана с картой. Чтобы связать карту и форму, на одной странице должно быть 2 шорткода (карта - [shmMap id='6' map='true' uniq='например, 777'] и форма - [shmMap id='94' form='true' uniq='например, 777']), у которых параметр uniq будет совпадать"
 
 #: class/ShMap.class.php:1
 msgid "Reload page after User send request."

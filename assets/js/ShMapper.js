@@ -527,6 +527,10 @@ function shm_send( params, type )
 				case "shm_captcha_siteKey":
 				case "shm_captcha_secretKey":
 					$("#shm_settings_captcha_cont").css("opacity", 1);
+					if(datas['hide_dang'])
+						$("#recaptcha_danger").hide();
+					else
+						$("#recaptcha_danger").fadeIn("slow");
 					break;				
 				default:
 					var customEvent = new CustomEvent("_shm_send_", {bubbles : true, cancelable : true, detail : dat})

@@ -455,6 +455,7 @@ class ShMapper_ajax
 					$params[0],
 					array( 
 						"msg"	=> __( "Set key" , SHMAPPER),
+						"hide_dang" => $params[1] != "" && ShMapper::$options['shm_captcha_secretKey'] != "" ? 1 : 0
 					)
 				);
 				break; 
@@ -465,6 +466,7 @@ class ShMapper_ajax
 					$params[0],
 					array( 
 						"msg"	=> __( "Set key" , SHMAPPER),
+						"hide_dang" => $params[1] != "" && ShMapper::$options['shm_captcha_siteKey'] != "" ? 1 : 0
 					)
 				);
 				break; 

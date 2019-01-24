@@ -6,7 +6,7 @@ jQuery(document).ready(function($)
 	$("form[form_id]").each(function(num, elem)
 	{
 		if($("#"+ $(elem).attr("form_id")).size() < 1)
-			$(elem).empty().append( __("Error: no map") + " " +  $(elem).attr("form_id") );
+			$(elem).empty().append( __("Error: no map") );
 	})
 	
 	//send new request

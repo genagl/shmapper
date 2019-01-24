@@ -273,7 +273,7 @@ class ShMapper
 				'Attantion' => __( "Attantion", SHMAPPER ),
 				'Send' => __( "Send" ),
 				'Close' => __( "Close" ),
-				'Error: no map' => __( "Error: no map", SHMAPPER ),
+				'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
 				'Are you shure?' => __( "Are you shure?", SHMAPPER ),
 			)
 		);	
@@ -370,7 +370,7 @@ class ShMapper
 				'Attantion' => __( "Attantion", SHMAPPER ),
 				'Send' => __( "Send" ),
 				'Close' => __( "Close" ),
-				'Error: no map' => __( "Error: no map", SHMAPPER ),
+				'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
 			)
 		);	
 	}
@@ -514,7 +514,7 @@ class ShMapper
 								sprintf(__("What is Google reCAPTCHA? How recived keys for your site? See %sthis instruction%s.", SHMAPPER), "<a href='https://webdesign.tutsplus.com/" . substr(get_bloginfo("language"), 0, 2) . "/tutorials/how-to-integrate-no-captcha-recaptcha-in-your-website--cms-23024'>", "</a>") .
 							"</small>
 							<div class='" . (!static::$options['shm_captcha_siteKey'] || !static::$options['shm_captcha_secretKey'] ? "" : "hidden") . "'>
-								<small class='shm-color-danger'>".
+								<small class='shm-color-danger' id='recaptcha_danger'>".
 									__("Your reCAPTCHA doesn't work yet. In order to make it work, please get the API keys at google.com/recaptcha", SHMAPPER).
 								"</small>
 							</div>
