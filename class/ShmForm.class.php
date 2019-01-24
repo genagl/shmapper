@@ -436,7 +436,7 @@ class ShmForm
 							($element['placeholder'] ? $element['placeholder'] : __("Сhoose files", SHMAPPER))	;			
 					$html1 .= "
 					<div class='shm-form-file'>
-						<label>$file_map</label>
+						<label class='shm_nowrap'>$file_map</label>
 						<input type='file' class='sh-form' name='elem[]' $require  $data_types/>
 					</div>";
 					break;

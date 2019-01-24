@@ -100,6 +100,7 @@ class ShMapper_ajax
 		}
 		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );
 		$answer = [
+			"reload"		=> ShMapper::$options['shm_reload'] ? 1 : 0,
 			'res'			=> $res,
 			'data'			=> $data,
 			"msg"			=> $msg,
@@ -424,6 +425,16 @@ class ShMapper_ajax
 					$params[0],
 					array( 
 						"msg"	=>  __($params[1] ?"Pre-moderation on" : "Pre-moderation off", SHMAPPER),
+					)
+				);
+				break; 
+			case "shm_reload":	
+				ShMapper::$options['shm_reload'] = $params[1];
+				ShMapper::update_options();
+				$d = array(	
+					$params[0],
+					array( 
+						"msg"	=>  __($params[1] ? "Reload mode" : "Not relaod mode", SHMAPPER),
 					)
 				);
 				break; 

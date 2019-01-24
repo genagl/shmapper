@@ -72,6 +72,11 @@ jQuery(document).ready(function($)
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
 		shm_send(["shm_map_marker_premoderation", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
 	}});
+	$("#shm_reload").live({click:function(evt)
+	{
+		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
+		shm_send(["shm_reload", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
+	}});
 	$("#shm_settings_captcha").live({click:function(evt)
 	{
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
@@ -443,6 +448,8 @@ function shm_send( params, type )
 				case "shm_set_req":
 					if(datas['grecaptcha'] == 1)
 						grecaptcha.reset();
+					if(datas['reload'])
+						window.location.reload(window.location.href);
 					break;
 				case "shm_add_before":
 					$(datas['text'])
@@ -513,6 +520,7 @@ function shm_send( params, type )
 					break;	
 				case "shm_map_is_crowdsourced":
 				case "shm_map_marker_premoderation":
+				case "shm_reload":
 					$("#shm_map_is_crowdsourced_cont").css("opacity", 1);
 					break;	
 				case "shm_settings_captcha":

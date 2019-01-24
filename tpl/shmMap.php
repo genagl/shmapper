@@ -10,7 +10,7 @@ function draw_shMap($map, $args )
 	$legend		= "";
 	
 	$mapType	= $map->get_meta("map_type");
-	$mapType	= $mapType && ShMapper::$options['map_api']  === array_keys($mapType)[0]
+	$mapType	= $mapType && ShMapper::$options['map_api']  == array_keys($mapType)[0]
 		? $mapType 
 		: ShmMap::get_map_types();
 	$mapType	= $mapType[ ShMapper::$options['map_api'] ][0];

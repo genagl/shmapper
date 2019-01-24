@@ -40,6 +40,12 @@
 	float:left;
 	margin-right:20px;
 }
+.shm_nowrap
+{
+	text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 .shmw-100
 {
 	width:100%;
@@ -810,7 +816,8 @@ div.sh-form
     color: #a5a2a2;
     height: 63px;
     display: flex;
-    max-width: 240px;
+	overflow:hidden;
+	width:100%;
 }
 .shm-form-file > label .dashicons 
 {

@@ -198,6 +198,7 @@ jQuery(document).ready(function($)
 			});
 			L.Map.addInitHook('addHandler', 'mp', L.MousePosit);	
 		}
+		console.log(mData.mapType);
 		var shmLayer1 = mData.mapType && "OpenStreetMap" !== mData.mapType 
 			? L.esri.basemapLayer( mData.mapType) : 
 			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 

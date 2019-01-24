@@ -20,6 +20,7 @@ class ShMapper
 			"map_api"	=> 1,
 			"shm_map_is_crowdsourced"	=> 0,
 			"shm_map_marker_premoderation"	=> 1,
+			"shm_reload"	=> 1,
 			"wizzard" => 1,
 			"shm_personal_text" => __("Я даю свое согласие администратору сайта на обработку, в том числе автоматизированную, своих персональных данных в соответствии с Федеральным законом от 27.07.2006 N 152-ФЗ «О персональных данных».", SHMAPPER),
 			"shm_succ_request_text" => __("Your request has been successfully registered.", SHMAPPER),
@@ -476,6 +477,14 @@ class ShMapper
 								<span class='shm-color-alert'><small>". 
 										__("ВНИМАНИЕ: отключайте эту опцию только на ваш страх и риск, т.к. существует угроза спам-атаки", SHMAPPER). 
 								"</small></span>
+							</p>
+							<p>
+								<input type='checkbox' class='checkbox' value='1' id='shm_reload' " . 
+									checked(1, (int)static::$options['shm_reload'], 0) . 
+								"/>
+								<label for='shm_reload'>".
+									__("Reload page after User send request.", SHMAPPER) .
+								"</label> 
 							</p>
 						</div>	
 						<div class='shm-1'>
