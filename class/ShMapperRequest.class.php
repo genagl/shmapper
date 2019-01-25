@@ -200,7 +200,6 @@ class ShMapperRequest extends SMC_Post
 		$h = [];
 		$map 			= ShmMap::get_instance((int)$data['id']);
 		$h['map_id'] 	= $map->get("post_title");
-		//$h['form_title']= $map->get_meta("form_title");
 		$contents		= [];
 		$form			= $map->get_meta("form_forms");
 		$emails			= [];
@@ -219,6 +218,8 @@ class ShMapperRequest extends SMC_Post
 		}
 		foreach($form as $key => $val)
 		{
+			if($val['type'] == SHMAPPER_MARK_TYPE_ID)
+				continue;
 			if($val['type'] == SHMAPPER_EMAIL_TYPE_ID)
 			{
 				$emails[] 	= $data['elem'][$key];
@@ -263,16 +264,56 @@ class ShMapperRequest extends SMC_Post
 			"description"	=> $description,
 			"author"		=> $author
 		];
-		/**/
 		$new_req = parent::insert($arr);
+		
+		//attach
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		$overrides = array( 'test_form' => false );
+		foreach( $_FILES as $file )
+		{				
+			$movefile = wp_handle_upload( $file, $overrides );
+			if ( $movefile && empty($movefile['error']) ) 
+			{
+				$filename  		= $movefile['file'];
+				$filetype 		= $movefile['type'];
+				$filetype 		= wp_check_filetype( basename( $filename ), null );
+				$url			= $movefile['url'];
+				$parent_post_id = $new_req->id;
+				$wp_upload_dir 	= wp_upload_dir();
+				
+				$attachment 	= [
+					'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ), 
+					'post_mime_type' => $filetype['type'],
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+					'post_content'   => '',
+					'post_status'    => 'inherit'
+				];
+				// Вставляем запись в базу данных.
+				$attach_id = wp_insert_attachment( $attachment, $filename, $parent_post_id );
+				set_post_thumbnail($parent_post_id, $attach_id);
+				$h['contents'] .= "<p>
+					<img src='". wp_get_attachment_image_url($attach_id, "full")."' style='max-height:200px; width:auto' />
+				</p>";
+			} 
+			else 
+			{
+				//echo "Возможны атаки при загрузке файла!\n";
+			}
+			
+		}
+		
+		
 		
 		//notify map owner
 		if($notify_owner = $map->get_meta("notify_owner"))
 		{
 			$author_id 	= $map->get("post_author");
-			$user 		= get_userdata($author_id);
-			$email	 	= $user->get('user_email');
-			$semail  	= "admin@shmapper4.genagl.ru";//$emails[0] ? $emails[0] : get_bloginfo( "admin_email" );
+			$user 		= get_user_by("id", $author_id);
+			$email	 	= "genag1@list.ru";//$user->get('user_email');
+			$semail  	=  get_bloginfo( "admin_email" );
+			//$semail1	= "admin@" . substr( get_bloginfo("url"), strpos(get_bloginfo("url"), "://") + 3 );
 			$suser		= $author ? $author : __("Uknown User", SHMAPPER);
 			$site		= get_bloginfo("name");
 			$headers = array(
@@ -286,16 +327,8 @@ class ShMapperRequest extends SMC_Post
 				sprintf(__("You may see this %s", SHMAPPER), get_bloginfo("url") . "/wp-admin/edit.php?post_type=shm_request"),
 				$headers
 			);
-			return [ $is ? 1 : 0, $email, $headers,  ];
 		}
 		
-		//SESSION if session-plugin active
-		if(!shm_is_session())	return $new_req;
-		$shm_reqs 		= $_SESSION['shm_reqs'];
-		if(!is_array(shm_reqs))
-			$shm_reqs 	= [ ];
-		$shm_reqs[] 	= $new_req->id;
-		$_SESSION['shm_reqs'] = $shm_reqs;
 		return $new_req;
 	}
 	function get_notified_form()

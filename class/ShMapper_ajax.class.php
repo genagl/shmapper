@@ -64,39 +64,7 @@ class ShMapper_ajax
 		//load image
 		if( $res AND $res->id > 1 )		
 		{
-			require_once( ABSPATH . 'wp-admin/includes/image.php' );
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
-			require_once( ABSPATH . 'wp-admin/includes/media.php' );
-			$overrides = array( 'test_form' => false );
-			foreach( $_FILES as $file )
-			{				
-				$movefile = wp_handle_upload( $file, $overrides );
-				if ( $movefile && empty($movefile['error']) ) 
-				{
-					$filename  		= $movefile['file'];
-					$filetype 		= $movefile['type'];
-					$filetype 		= wp_check_filetype( basename( $filename ), null );
-					$url			= $movefile['url'];
-					$parent_post_id = $res->id;
-					$wp_upload_dir 	= wp_upload_dir();
-					
-					$attachment 	= [
-						'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ), 
-						'post_mime_type' => $filetype['type'],
-						'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
-						'post_content'   => '',
-						'post_status'    => 'inherit'
-					];
-					// Вставляем запись в базу данных.
-					$attach_id = wp_insert_attachment( $attachment, $filename, $parent_post_id );
-					set_post_thumbnail($parent_post_id, $attach_id);
-				} 
-				else 
-				{
-					//echo "Возможны атаки при загрузке файла!\n";
-				}
-				
-			}
+			
 		}
 		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );
 		$answer = [
