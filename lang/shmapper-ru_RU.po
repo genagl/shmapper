@@ -74,8 +74,8 @@ msgid "Protection"
 msgstr "Защита"
 
 #: class/shmapper.php:1
-msgid "Includes captcha in the form"
-msgstr "Включать капчу в форме"
+msgid "Include captcha in form (plugin uses only reCAPTCHA v2 keys)"
+msgstr "Включать капчу в форме (плагин использует только ключи reCAPTCHA v2)"
 
 #: class/shmapper.php:1
 msgid "Pre-modertion from Map owner."

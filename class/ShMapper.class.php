@@ -502,7 +502,7 @@ class ShMapper
 								checked(1, (int)static::$options['shm_settings_captcha'], 0) . 
 							"/>
 							<label for='shm_settings_captcha'>".
-								__("Includes captcha in the form", SHMAPPER) .
+								__("Include captcha in form (plugin uses only reCAPTCHA v2 keys)", SHMAPPER) .
 							"</label> 
 							<p>
 							<div><small class='shm-color-grey'>Google reCAPTCHA site key</small></div>
