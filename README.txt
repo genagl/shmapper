@@ -1,10 +1,11 @@
-=== shMapper ===
+=== shMapper by Teplitsa ===
 Contributors: Genagl, denis.cherniatev
 Author URI: http://te-st.ru
 Plugin URI: http://genagl.ru/?p=652
 Tags: map, Open Street Maps, OSM, yandex.map, crowdsourcing, карта, yandex.карты
 Requires at least: 3.6.1
 Tested up to: 5.1.1
+Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -39,6 +40,14 @@ If you have a questions for the plugin work in any aspect, please address our su
 == Installation ==
 
 PHP version required: 5.6+
+
+== Upgrade Notice ==
+
+No upgrade needed yet.
+
+== Frequently Asked Questions ==
+
+No questions yet.
 
 == Screenshots ==
 
