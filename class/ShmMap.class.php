@@ -595,8 +595,8 @@ class ShmMap extends SMC_Post
 		}
 		$csv_data 	= iconv ("UTF-8", "cp1251", implode( SHM_CSV_ROW_SEPARATOR, $csv));
 		$upload_dir = upload_dir();
-		$path 		= $upload_dir['basedir'] . "/shmapper/shmap_" . $p->id . ".csv";
-		$href		= $upload_dir['baseurl'] . "/shmapper/shmap_" . $p->id . ".csv";
+		$path 		= $upload_dir['basedir'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
+		$href		= $upload_dir['baseurl'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
 		file_put_contents( $path, $csv_data );		
 		return $href;
 			
@@ -611,7 +611,7 @@ class ShmMap extends SMC_Post
 			$zip->addFile( $path );
 			$zip->close();
 			if(file_exists($zip_name))
-			    return $upload_dir['basedir'] . "/shmapper/" . $zip_name;
+			    return $upload_dir['basedir'] . "/shmapper-by-teplitsa/" . $zip_name;
 			else
 				return $href;
 		}
