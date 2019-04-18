@@ -42,8 +42,8 @@ PHP version required: 5.6+
 
 == Screenshots ==
 
-1.  Edit map page example
-2.  Map and feedback from example
+1.  Edit map form example
+2.  Map and feedback form example
 
 == Changelog ==
 
