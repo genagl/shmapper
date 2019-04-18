@@ -499,7 +499,7 @@ class ShmMap extends SMC_Post
 		    "height"			=> sanitize_text_field($_POST['height']),
 			
 			"is_form"			=> $_POST['is_form'] ? 1 : 0,
-		    "form_title"		=> sanitize_title($_POST['form_title']),
+		    "form_title"		=> sanitize_text_field($_POST['form_title']),
 		    "form_contents"		=> sanitize_textarea_field($_POST['form_contents']),			
 			"notify_owner"		=> $_POST['notify_owner'] ? 1: 0,			
 			"form_forms"		=> $_POST['form_forms'],			
