@@ -143,11 +143,11 @@ class ShmPoint extends SMC_Post
 			wp_set_object_terms($obj->id, (int)$_POST['point_type'], SHM_POINT_TYPE);
 		static::update_map_owners($obj);
 		return [
-			"latitude"		=> $_POST['latitude'],
-			"longitude"		=> $_POST['longitude'],
-			"location"		=> $_POST['location'],
-			"zoom"			=> $_POST['zoom'],
-			"approved"		=> $_POST['approved'],
+		    "latitude"		=> sanitize_text_field($_POST['latitude']),
+		    "longitude"		=> sanitize_text_field($_POST['longitude']),
+		    "location"		=> sanitize_text_field($_POST['location']),
+		    "zoom"			=> sanitize_text_field($_POST['zoom']),
+		    "approved"		=> sanitize_text_field($_POST['approved']),
 		];
 	}
 	static function owner_fields() 

@@ -190,7 +190,7 @@ class ShMapperRequest extends SMC_Post
 			if($key == "notified" && $_POST[$key] != 1)
 				$arr[$key] = -1;
 			else
-				$arr[$key] = $_POST[$key];
+			    $arr[$key] = sanitize_text_field($_POST[$key]);
 		}
 		
 		return $arr;

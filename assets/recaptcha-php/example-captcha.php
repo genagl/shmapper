@@ -18,8 +18,8 @@ $error = null;
 if ($_POST["recaptcha_response_field"]) {
         $resp = recaptcha_check_answer ($privatekey,
                                         $_SERVER["REMOTE_ADDR"],
-                                        $_POST["recaptcha_challenge_field"],
-                                        $_POST["recaptcha_response_field"]);
+                                        sanitize_text_field($_POST["recaptcha_challenge_field"]),
+                                        sanitize_text_field($_POST["recaptcha_response_field"]));
 
         if ($resp->is_valid) {
                 echo "You got it!";
