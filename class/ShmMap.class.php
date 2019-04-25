@@ -481,7 +481,7 @@ class ShmMap extends SMC_Post
 	static function save_admin_edit($obj)
 	{
 		return [
-		    "map_type"			=> sanitize_text_field($_POST['map_type']),
+		    "map_type"			=> $_POST['map_type'],
 		    "latitude"			=> sanitize_text_field($_POST['latitude']),
 		    "longitude"			=> sanitize_text_field($_POST['longitude']),
 		    "zoom"				=> sanitize_text_field($_POST['zoom']),
