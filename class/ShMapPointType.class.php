@@ -208,7 +208,7 @@ class ShMapPointType
 	static function save_ctg( $term_id ) 
 	{
 	    update_term_meta($term_id, "icon", 	sanitize_text_field($_POST['icon0']));
-	    update_term_meta($term_id, "color", sanitize_text_field($_POST['color']));
+	    update_term_meta($term_id, "color", sanitize_hex_color($_POST['color']));
 	    update_term_meta($term_id, "height", sanitize_text_field($_POST['height']));
 	    update_term_meta($term_id, "width", sanitize_text_field($_POST['width']));
 	}

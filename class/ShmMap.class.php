@@ -762,9 +762,9 @@ class ShmMap extends SMC_Post
 				break;
 			case 3:
 				$count = $wpdb->get_var("SELECT COUNT(point_id) FROM ".$wpdb->prefix."point_map WHERE map_id=".$this->id);
-				$query = "UPDATE " . $wpdb->prefix . "point_map SET map_id=".$data['anover']. " WHERE map_id=".$this->id;
+				$query = "UPDATE " . $wpdb->prefix . "point_map SET map_id=".((int)sanitize_text_field($data['anover'])). " WHERE map_id=".$this->id;
 				$res = $wpdb->query($query);
-				$map2 = static::get_instance($data['anover']);
+				$map2 = static::get_instance(sanitize_text_field($data['anover']));
 				$message = sprintf(__("Succesfuly delete map and %s points migrates to %s", SHMAPPER), $count, $map2->get("post_title") );
 				break;
 		}

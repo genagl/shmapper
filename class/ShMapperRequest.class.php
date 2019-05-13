@@ -206,15 +206,15 @@ class ShMapperRequest extends SMC_Post
 		$contacts		= [];
 		if( $data['shm_form_name'] )
 		{
-			$contacts[] = $data['shm_form_name'];
-			$author		= $data['shm_form_name'];
+		    $contacts[] = sanitize_text_field($data['shm_form_name']);
+		    $author		= sanitize_text_field($data['shm_form_name']);
 		}
 		if( $data['shm_form_phone'] )
-			$contacts[] = $data['shm_form_phone'];
+		    $contacts[] = sanitize_text_field($data['shm_form_phone']);
 		if( $data['shm_form_email'])
 		{
-			$contacts[] = $data['shm_form_email'];
-			$emails[] 	= $data['shm_form_email'];
+		    $contacts[] = sanitize_email($data['shm_form_email']);
+		    $emails[] 	= sanitize_email($data['shm_form_email']);
 		}
 		foreach($form as $key => $val)
 		{
@@ -222,16 +222,16 @@ class ShMapperRequest extends SMC_Post
 				continue;
 			if($val['type'] == SHMAPPER_EMAIL_TYPE_ID)
 			{
-				$emails[] 	= $data['elem'][$key];
-				$contacts[] = $data['elem'][$key];					
+			    $emails[] 	= sanitize_email($data['elem'][$key]);
+			    $contacts[] = sanitize_email($data['elem'][$key]);					
 			}	
 			if(
 				$val['type'] == SHMAPPER_PHONE_TYPE_ID ||
 				$val['type'] == SHMAPPER_NAME_TYPE_ID 
 			)
-				$contacts[] = $data['elem'][$key];
+			    $contacts[] = sanitize_text_field($data['elem'][$key]);
 			if($val['type'] == SHMAPPER_NAME_TYPE_ID)
-				$author		= $data['elem'][$key];
+			    $author		= sanitize_text_field($data['elem'][$key]);
 			if($val['type'] == SHMAPPER_TEXTAREA_TYPE_ID)
 			{
 				$description .= "<p>" . $data['elem'][$key];
@@ -242,13 +242,13 @@ class ShMapperRequest extends SMC_Post
 			}
 			if($val['type'] == SHMAPPER_TITLE_TYPE_ID)
 			{
-				$title .= $data['elem'][$key];
+			    $title .= sanitize_text_field($data['elem'][$key]);
 			}
 			$tpp  = ShmForm::get_type_by( "id", $val['type'] );
 			if(SHMAPPER_IMAGE_TYPE_ID != $val['type'] )
-				$contents[] =  "<small>".$tpp['title'].":</small> <strong>".$data['elem'][$key]."</strong>";
+			    $contents[] =  "<small>".$tpp['title'].":</small> <strong>".sanitize_text_field($data['elem'][$key])."</strong>";
 		}
-		$contents[] =  "<div>" . $data['shm_point_loc'] . "</div>";
+		$contents[] =  "<div>" . sanitize_text_field($data['shm_point_loc']) . "</div>";
 		$h['contents'] 		= implode("<br>", $contents);
 		$arr = [
 			"post_type" 	=> static::get_type(),
@@ -256,10 +256,10 @@ class ShMapperRequest extends SMC_Post
 			"post_title" 	=> $title ? $title : $map->get("post_title"),
 			"post_content"	=> sanitize_text_field( $h['contents'] ),
 			"map"			=> (int)$data['id'],
-			"location"		=> $data['shm_point_loc'],
+		    "location"		=> sanitize_text_field($data['shm_point_loc']),
 			"latitude"		=> ( (int) ($data['shm_point_lat'] * 10000)) / 10000,
 			"longitude"		=> ( (int) ($data['shm_point_lon'] * 10000)) / 10000,
-			"type"			=> $data['shm_point_type'],
+		    "type"			=> sanitize_text_field($data['shm_point_type']),
 			"contacts"		=> $contacts,
 			"description"	=> $description,
 			"author"		=> $author
