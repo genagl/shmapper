@@ -14,6 +14,7 @@
  * Contributors:
 	Genagl (genag1@list.ru)
 	Denis Cherniatev (denis.cherniatev@gmail.com)
+    Teplitsa Support Team (suptestru@gmail.com)
 
  * License: GPLv2 or later
 	Copyright 2018  Genagl  (email: genag1@list.ru)
