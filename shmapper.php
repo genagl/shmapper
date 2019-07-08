@@ -4,12 +4,10 @@
  * Plugin URI: http://genagl.ru/?p=652
  * Description: Location and logistics services for NKO
  * Version: 1.0
- * Author: Genagl
- * Author URI: http://genagl.ru/author
- * Contributors: Teplitsa Support Team (suptestru@gmail.com)
+ * Author: Teplitsa. Technologies for Social Good
+ * Author URI:  https://te-st.ru
  * License: GPL2
- * Text Domain:   shmapper
- * Domain Path:   /lang/
+ * Text Domain: shmapper-by-teplitsa
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Contributors:
 	Genagl (genag1@list.ru)
@@ -41,7 +39,7 @@ function init_textdomain_shmapper()
 { 
 	if (function_exists('load_plugin_textdomain')) 
 	{
-		load_plugin_textdomain("shmapper", false , dirname( plugin_basename( __FILE__ ) ) .'/lang/');     
+		load_plugin_textdomain("shmapper-by-teplitsa", false , dirname( plugin_basename( __FILE__ ) ) .'/languages/');     
 	} 
 }
 add_action('plugins_loaded', 'init_textdomain_shmapper');
@@ -49,7 +47,7 @@ add_action('plugins_loaded', 'init_textdomain_shmapper');
 //Paths
 define('SHM_URLPATH', WP_PLUGIN_URL.'/shmapper-by-teplitsa/');
 define('SHM_REAL_PATH', WP_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/');
-define('SHMAPPER', 'shmapper');
+define('SHMAPPER', 'shmapper-by-teplitsa');
 define('SHM_MAP', 'shm_map');
 define('SHM_POINT', 'shm_point');
 define('SHM_POINT_TYPE', 'shm_point_type');

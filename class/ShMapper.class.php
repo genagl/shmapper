@@ -195,7 +195,7 @@ class ShMapper
 		wp_enqueue_style( "ShMapper");
 		//js
 		wp_enqueue_script("jquery");
-		wp_register_script("inline", get_bloginfo("url").'/wp-admin/js/inline-edit-post.js', array());
+		wp_register_script("inline", admin_url().'/js/inline-edit-post.js', array());
 		wp_enqueue_script("inline");
 		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array());
 		wp_enqueue_script("ShMapper");

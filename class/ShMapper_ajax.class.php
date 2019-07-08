@@ -35,6 +35,7 @@ class ShMapper_ajax
 		/**/
 		$data = $_POST;
 		$data['elem']	= explode(",", $data['elem']);
+		
 		if( ShMapper::$options['shm_settings_captcha'] )
 		{
 			require_once( SHM_REAL_PATH . "assets/recaptcha-php/recaptcha.class.php" );
@@ -57,8 +58,27 @@ class ShMapper_ajax
 		}
 		else
 		{
-			
-			$res 	= ShMapperRequest::insert($data);
+            $res = ShMapperRequest::insert($data);
+            
+            if( !ShMapper::$options['shm_map_marker_premoderation'] ) {
+                $point = ShmPoint::insert([
+                    "post_title"	=> (string)$res->get("post_title"),
+                    "post_name"		=> (string)$res->get("post_name"),
+                    "post_content"	=> (string)$res->get_meta("description"),
+                    "latitude"		=> $res->get_meta("latitude"),
+                    "longitude"		=> $res->get_meta("longitude"),
+                    "location"		=> $res->get_meta("location"),
+                    "type"			=> (int)$res->get_meta("type"),
+                    "map_id"		=> (int)$res->get_meta("map"),
+                ]);
+                if($attach_id = get_post_thumbnail_id($res->id))
+                {
+                    set_post_thumbnail($point->id, (int)$attach_id);
+                }
+
+                SMC_Post::delete($res->id);
+            }
+            
 			$msg	= ShMapper::$options['shm_succ_request_text'];
 		}
 		//load image

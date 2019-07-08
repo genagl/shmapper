@@ -46,5 +46,6 @@ function shmMap($args)
 			</div>
 		</div>";
 	}
+
 	return $html;
 }

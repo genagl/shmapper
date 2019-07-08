@@ -578,6 +578,16 @@ class ShmMap extends SMC_Post
 	}
 	function get_csv()
 	{
+
+        $upload_dir = wp_upload_dir();
+        if(
+            !file_exists($upload_dir['basedir']."/shmapper-by-teplitsa")
+            && !wp_mkdir_p($upload_dir['basedir']."/shmapper-by-teplitsa")
+        ) {
+            echo '<pre>'.print_r('FAIL', 1).'</pre>';
+            return false;
+        }
+
 		$points		= $this->get_points();
 		$csv 		= [implode(SHM_CSV_STROKE_SEPARATOR, [ "#", __("Title", SHMAPPER), __("Description", SHMAPPER),  __("Location", SHMAPPER),  __("Longitude", SHMAPPER),  __("Latitude", SHMAPPER) ])];
 		$i = 0;
@@ -594,7 +604,6 @@ class ShmMap extends SMC_Post
 			]);
 		}
 		$csv_data 	= iconv ("UTF-8", "cp1251", implode( SHM_CSV_ROW_SEPARATOR, $csv));
-		$upload_dir = upload_dir();
 		$path 		= $upload_dir['basedir'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
 		$href		= $upload_dir['baseurl'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
 		file_put_contents( $path, $csv_data );		
