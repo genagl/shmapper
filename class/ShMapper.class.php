@@ -2,7 +2,7 @@
 
 class ShMapper 
 {
-	static function activate()
+	public static function activate()
 	{
 		global $wpdb;
 		init_textdomain_shmapper();
@@ -31,7 +31,7 @@ class ShMapper
 		$upload_dir = $upload_dir . '/shmapper';
 		wp_mkdir_p( $upload_dir );
 	}
-	static function deactivate()
+	public static function deactivate()
 	{
 		
 	}
@@ -243,7 +243,9 @@ class ShMapper
 			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.osm");	
 		}
-		wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
+		if(is_array(static::$options['map_api'])) {
+			wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
+		}
 		
 		// load media library scripts
 		wp_enqueue_media();
@@ -264,7 +266,7 @@ class ShMapper
 			)
 		);	
 		
-		wp_localize_script( 'jquery', 'shm_maps', [] );
+		// wp_localize_script( 'jquery', 'shm_maps', array() );
 		wp_localize_script( 
 			'jquery', 
 			'voc', 
@@ -335,7 +337,10 @@ class ShMapper
 			wp_enqueue_script("ShMapper.osm");			
 			
 		}
-		wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
+		if(is_array(static::$options['map_api'])) {
+			wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
+		}
+		
 		//ajax
 		wp_localize_script( 
 			'jquery', 
@@ -359,7 +364,7 @@ class ShMapper
 				'url' => admin_url('admin-ajax.php')
 			)
 		);	
-		wp_localize_script( 'jquery', 'shm_maps', [] );
+		// wp_localize_script( 'jquery', 'shm_maps', array() );
 		wp_localize_script( 
 			'jquery', 
 			'voc', 
@@ -624,15 +629,15 @@ class ShMapper
 			}
 			jQuery(document).ready(function($)
 			{	
-				jQuery('" . $stepData["selector"] . "').addClass('shm_wizzard_current');
+				jQuery('" . (empty($stepData["selector"]) ? '' : $stepData["selector"]) . "').addClass('shm_wizzard_current');
 				var loc = jQuery('" . $stepData["selector"] . "').offset();
 				if( loc.top < 0 )
 				{
-					loc = jQuery('" . $stepData["parent_selector"] . "').offset();
+					loc = jQuery('" . (empty($stepData["parent_selector"]) ? '' : $stepData["parent_selector"]) . "').offset();
 				}
 				jQuery('#shm_wizzard').appendTo('#adminmenu').hide().fadeIn('slow').css({top: loc.top - 15});
 				jQuery('#shm_wizzard_closed').appendTo('#adminmenu').hide().css({top: loc.top - 28});
-				jQuery('" . $stepData["alt_selector"] . "').each((num, elem) => {
+				jQuery('" .(empty($stepData["alt_selector"]) ? '' : $stepData["alt_selector"]) . "').each((num, elem) => {
 					var ofset = $(elem).offset();
 					var poss = ofset.left < window.innerWidth/2 ? 1 : 2;
 					var arr	= poss == 1 ? '<div class=\"shm_warrow\" id=\"shm_warrow'+ num +'\"></div>' : '<div class=\"shm_warrow2\" id=\"shm_warrow'+ num +'\"></div>';

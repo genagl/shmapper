@@ -80,10 +80,10 @@ require_once(SHM_REAL_PATH.'class/ShMapper_Assistants.class.php');
 require_once(SHM_REAL_PATH.'shortcode/shm_shortcodes.php');
 require_once(SHM_REAL_PATH.'widget/ShMap.widget.php');
 
-register_activation_hook( __FILE__, array( ShMapper, 'activate' ) );
+register_activation_hook( __FILE__, array( 'ShMapper', 'activate' ) );
 if (function_exists('register_deactivation_hook'))
 {
-	register_deactivation_hook(__FILE__, array(ShMapper, 'deactivate'));
+	register_deactivation_hook(__FILE__, array('ShMapper', 'deactivate'));
 }
 add_action("init", "init_shmapper", 1);
 function init_shmapper()

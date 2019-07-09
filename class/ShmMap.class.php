@@ -176,7 +176,7 @@ class ShmMap extends SMC_Post
 	static function admin_redirect()
 	{
 		global $pagenow, $submenu ;
-		if("shm_page" == $_GET["page"] && "admin.php" === $pagenow)
+		if( !empty($_GET["page"]) && "shm_page" == $_GET["page"] && "admin.php" === $pagenow)
 		{
 			wp_redirect( admin_url( '/admin.php?page=shm_settings_page' ) );
 		}
