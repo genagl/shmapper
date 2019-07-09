@@ -118,19 +118,19 @@ class ShMapPointType
 			</label> 
 			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
 			</div>
-			<input type="color" name="color" value="<?php echo $color ?>" />
+			<input type="color" name="color" value="<?php echo empty($color) ? '' : $color; ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="height">
 				<?php echo __("Height", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="height" value="<?php echo $height ?>" />
+			<input type="number" name="height" value="<?php echo empty($height) ? '' : $height; ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="width">
 				<?php echo __("Width", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="width" value="<?php echo $width ?>" />
+			<input type="number" name="width" value="<?php echo empty($width) ? '' : $width;?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="icon">
@@ -138,7 +138,7 @@ class ShMapPointType
 			</label> 
 			<div class='shm-flex'>
 			<?php
-				echo get_input_file_form2( "icon", $icon, "icon", 0 );
+				echo get_input_file_form2( "icon", empty($icon) ? '' : $icon, "icon", 0 );
 			?>
 			</div>
 		</div>
@@ -264,10 +264,12 @@ class ShMapPointType
 	}
 	static function get_ganre_swicher($params = -1, $type="checkbox", $form_factor="large")
 	{
-		if(!is_array($params))
-			$params = ["prefix" =>"ganre" ];
+		if(!is_array($params)) {
+			$params = array("prefix" => "ganre");
+		}
+
 		$selected = is_array($params['selected']) ?  $params['selected'] : explode(",", $params['selected']);
-		$includes = $params['includes'] ;
+		$includes = empty($params['includes']) ? '' : $params['includes'];
 		$row_class = isset($params['row_class']) ? $params['row_class'] : "" ;
 		$row_style = isset($params['row_style']) ? $params['row_style'] : ""; ;
 		$ganres	= get_terms(["taxonomy" => SHM_POINT_TYPE, 'hide_empty' => false ]);

@@ -232,7 +232,7 @@ class ShmMap extends SMC_Post
 		$is_clustered 	= $obj->get_meta("is_clustered");
 		$is_lock 		= $obj->get_meta("is_lock");
 		$form_title		= $obj->get_meta("form_title");
-		$html 	.= "
+		$html 	= "
 			<div class='shm-row'>
 				<h3 class='shm-12'>". __("1.1. Pan map and choose zoom", SHMAPPER). "</h3>
 				<div class='shm-12'>".
@@ -376,7 +376,7 @@ class ShmMap extends SMC_Post
 		$is_phone_iclude = $obj->get_meta("is_phone_iclude");
 		$personal_phone = $obj->get_meta("personal_phone");
 		$is_phone_required = $obj->get_meta("is_phone_required");
-		$html 	.= "
+		$html 	= "
 			<div class='shm-row'>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' name='is_form' id='is_form' " . checked(1, $is_form, 0) . " /> 
@@ -548,7 +548,7 @@ class ShmMap extends SMC_Post
 	}
 	static function formEditor($data)
 	{
-		$html 	.= "
+		$html 	= "
 		<div style='display:block;  border:#888 1px solid; padding:0px;' id='form_editor'>
 			<ul class='shm-card'>";
 		//for( $i = 0; $i < 5; $i ++ )
@@ -808,7 +808,7 @@ class ShmMap extends SMC_Post
 			
 			foreach(static::get_map_types()[ 1 ] as $type)
 			{
-				$selected = $params[ 'selected' ][1][0] == $type ? " checked " : "";
+				$selected = !empty($params['selected']) && !empty($params['selected'][1][0]) && $params[ 'selected' ][1][0] == $type ? " checked " : "";
 				$name 	= $params[ 'name' ];
 				$id 	= $params[ 'id' ];
 				$html 	.= "

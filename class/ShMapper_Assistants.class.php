@@ -33,7 +33,7 @@ class ShMapper_Assistants
 	{
 		global $wpdb, $post, $wp_list_table, $map_dropdown;
 		$current 			= isset($_GET['ADMIN_FILTER_FIELD'])? $_GET['ADMIN_FILTER_FIELD']:'';
-		if($post->post_type == SHM_POINT)
+		if($post && $post->post_type == SHM_POINT)
 		{
 			$map_dropdown = $map_dropdown ? $map_dropdown : ShmMap::get_all();
 			echo ShmMap::wp_dropdown([

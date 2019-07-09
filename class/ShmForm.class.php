@@ -204,7 +204,7 @@ class ShmForm
 								<small class=''>".
 									__("Placeholder", SHMAPPER) .
 								"</small>
-								<input class='sh-form' placeholder='" .__("write placeholder", SHMAPPER). "' name='form_forms[$id][placeholder]'  value='".$data['placeholder']."' />
+								<input class='sh-form' placeholder='" .__("write placeholder", SHMAPPER). "' name='form_forms[$id][placeholder]'  value='".(empty($data['placeholder']) ? '' : $data['placeholder'])."' />
 							</div>
 							<div class='shm--placemarks shm-t' ".(!in_array("placemarks", $fields) ? "style='display:none;'":"")." >
 								<small class=''>".
@@ -214,7 +214,7 @@ class ShmForm
 									"prefix" 	=> "ganre$id". MD5(rand(0,100000000)), 
 									"id" 		=> $id, 
 									"name" 		=> "form_forms[$id][placemarks]", 
-									"selected"	=> $data['placemarks'],
+									"selected"	=> empty($data['placemarks']) ? '' : $data['placemarks'],
 									"col_width"	=> 6
 								]).
 							"</div>

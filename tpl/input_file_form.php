@@ -104,10 +104,10 @@ function _get_media($media_id, $size=300)
 	}
 	else
 	{
-		return "<img style='opacity:1; height:".$size."px; width:auto;' src='"._get_default( $file_url )."'/>";
+		return "<img style='opacity:1; height:".$size."px; width:auto;' src='"._get_default()."'/>";
 	}
 }
-function _get_default($file_url="")
+function _get_default()
 {
 	return SHM_URLPATH."assets/img/empty.png";
 }

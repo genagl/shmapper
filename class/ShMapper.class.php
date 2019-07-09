@@ -243,9 +243,7 @@ class ShMapper
 			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.osm");	
 		}
-		if(is_array(static::$options['map_api'])) {
-			wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
-		}
+		wp_localize_script( "jquery", "map_type", array(static::$options['map_api']) );
 		
 		// load media library scripts
 		wp_enqueue_media();
@@ -266,7 +264,7 @@ class ShMapper
 			)
 		);	
 		
-		// wp_localize_script( 'jquery', 'shm_maps', array() );
+		wp_localize_script( 'jquery', 'shm_maps', array() );
 		wp_localize_script( 
 			'jquery', 
 			'voc', 
@@ -337,9 +335,7 @@ class ShMapper
 			wp_enqueue_script("ShMapper.osm");			
 			
 		}
-		if(is_array(static::$options['map_api'])) {
-			wp_localize_script( "jquery", "map_type", static::$options['map_api'] );
-		}
+		wp_localize_script( "jquery", "map_type", array(static::$options['map_api']) );
 		
 		//ajax
 		wp_localize_script( 
@@ -364,7 +360,7 @@ class ShMapper
 				'url' => admin_url('admin-ajax.php')
 			)
 		);	
-		// wp_localize_script( 'jquery', 'shm_maps', array() );
+		wp_localize_script( 'jquery', 'shm_maps', array() );
 		wp_localize_script( 
 			'jquery', 
 			'voc', 
@@ -501,21 +497,21 @@ class ShMapper
 						"</div>
 						<div class='shm-9'>
 							<input type='checkbox' class='checkbox' value='1' id='shm_settings_captcha' " . 
-								checked(1, (int)static::$options['shm_settings_captcha'], 0) . 
+								checked(1, empty(static::$options['shm_settings_captcha']) ? 0 : (int)static::$options['shm_settings_captcha'], 0) . 
 							"/>
 							<label for='shm_settings_captcha'>".
 								__("Include captcha in form (plugin uses only reCAPTCHA v2 keys)", SHMAPPER) .
 							"</label> 
 							<p>
 							<div><small class='shm-color-grey'>Google reCAPTCHA site key</small></div>
-							<input class='sh-form' name='shm_captcha_siteKey' value='". static::$options['shm_captcha_siteKey'] .  "' />
+							<input class='sh-form' name='shm_captcha_siteKey' value='".(empty(static::$options['shm_captcha_siteKey']) ? '' : static::$options['shm_captcha_siteKey']). "' />
 							<p>
 							<div><small class='shm-color-grey'>Google reCAPTCHA secret key</small></div>
-							<input class='sh-form' name='shm_captcha_secretKey' value='". static::$options['shm_captcha_secretKey'] .  "' />
+							<input class='sh-form' name='shm_captcha_secretKey' value='".(empty(static::$options['shm_captcha_secretKey']) ? '' : static::$options['shm_captcha_secretKey'])."' />
 							<small class='shm-color-grey'>".
 								sprintf(__("What is Google reCAPTCHA? How recived keys for your site? See %sthis instruction%s.", SHMAPPER), "<a href='https://webdesign.tutsplus.com/" . substr(get_bloginfo("language"), 0, 2) . "/tutorials/how-to-integrate-no-captcha-recaptcha-in-your-website--cms-23024'>", "</a>") .
 							"</small>
-							<div class='" . (!static::$options['shm_captcha_siteKey'] || !static::$options['shm_captcha_secretKey'] ? "" : "hidden") . "'>
+							<div class='" . (empty(static::$options['shm_captcha_siteKey']) || empty(static::$options['shm_captcha_secretKey']) ? "" : "hidden") . "'>
 								<small class='shm-color-danger' id='recaptcha_danger'>".
 									__("Your reCAPTCHA doesn't work yet. In order to make it work, please get the API keys at google.com/recaptcha", SHMAPPER).
 								"</small>
