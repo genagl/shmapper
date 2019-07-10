@@ -54,7 +54,7 @@ class ShMapper_Assistants
 	
 	static function shm_after_request_form( $text )
 	{
-		if( !ShMapper::$options['shm_settings_captcha'] ) return $text;
+		if( empty(ShMapper::$options['shm_settings_captcha']) ) return $text;
 		//require_once( SHM_REAL_PATH .'assets/recaptcha-php-1.11/recaptchalib.php');			
 		// Register API keys at https://www.google.com/recaptcha/admin
 		$siteKey = ShMapper::$options['shm_captcha_siteKey'];

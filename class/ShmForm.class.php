@@ -571,7 +571,7 @@ class ShmForm
 			</div>";
 		}
 		$html1 			.= apply_filters("shm_end_request_form", "");
-		$html = $def_mark . $html . $html1 . $att. apply_filters("shm_after_request_form", "");
+		$html = $def_mark . $html . $html1 . (empty($att) ? '' : $att) . apply_filters("shm_after_request_form", "");
 		return $html ;
 	}
 	

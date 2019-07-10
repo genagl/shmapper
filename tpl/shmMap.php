@@ -43,9 +43,18 @@ function draw_shMap($map, $args )
 		{
 			foreach($include as $term_id)
 			{
+				if( !$term_id ) {
+					continue;
+				}
+
 				$term = get_term($term_id);
-				$color = get_term_meta($term_id, "color", true);
-				$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
+				if( !is_wp_error($term) ) { // echo '<pre>HERE: '.print_r($include, 1).'</pre>';
+					
+					$color = get_term_meta($term_id, "color", true);
+					$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
+
+				}
+
 			}
 			$legend = "
 			<div class='shm-legend' style='width:$width;'>
