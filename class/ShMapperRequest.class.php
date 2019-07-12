@@ -65,6 +65,7 @@ class ShMapperRequest extends SMC_Post
 					break;
 				case "session":
 					$new["session"] = __("Author");
+					break;
 				case "latitude":
 					$new["location"] = __("GEO location", SHMAPPER);
 					break;
@@ -92,7 +93,7 @@ class ShMapperRequest extends SMC_Post
 				break;
 			case "type":
 				$term_id = $obj->get_meta("type");
-				$term = get_term($term_id, SHM_POINT_TYPE);				
+				$term = get_term($term_id, SHM_POINT_TYPE);
 				if($term_id)
 				{
 					$icon = ShMapPointType::get_icon($term , $obj->get_meta("notified"));
@@ -101,10 +102,7 @@ class ShMapperRequest extends SMC_Post
 				{
 					$map_id = $obj->get_meta("map");
 					$diid = get_post_meta($map_id, "default_icon_id", true);
-					$icon	= "<div 
-						class='shm_type_icon' 
-						style='background-color:$color; background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
-						>
+					$icon	= "<div class='shm_type_icon' style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0].");'>
 					</div>";	
 				}
 				echo $icon;
@@ -144,7 +142,7 @@ class ShMapperRequest extends SMC_Post
 					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'/>";
 					break;
 				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0)."><label for='$key'></label>$meta";
+					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0)."><label for='$key'>".(mb_strlen($meta) > 1 ? $meta : '')."</label>";
 					break;
 				case "post":
 					$h = "$meta";
@@ -207,13 +205,15 @@ class ShMapperRequest extends SMC_Post
 	}
 	static function insert($data)
 	{
-		$h = [];
+		$h = array();
 		$map 			= ShmMap::get_instance((int)$data['id']);
-		$h['map_id'] 	= $map->get("post_title");
-		$contents		= [];
-		$form			= $map->get_meta("form_forms");
-		$emails			= [];
-		$contacts		= [];
+		$h['map_id'] 	= $map->get('post_title');
+		$contents		= array();
+		$form			= $map->get_meta('form_forms');
+		$emails			= array();
+		$contacts		= array();
+		$title = $description = '';
+
 		if( $data['shm_form_name'] )
 		{
 		    $contacts[] = sanitize_text_field($data['shm_form_name']);

@@ -97,8 +97,8 @@ class ShmPoint extends SMC_Post
 			<div class='spacer-5'></div>";
 		}
 		//type switcher
-		$tp  = wp_get_object_terms($obj->id, SHM_POINT_TYPE);
-		$term = $tp[0];
+		$tp = wp_get_object_terms($obj->id, SHM_POINT_TYPE);
+		$term = empty($tp) ? false : $tp[0];
 		$term_id = $term ? $term->term_id : -1;
 
         $html = empty($html) ? '' : $html;
@@ -376,8 +376,8 @@ class ShmPoint extends SMC_Post
 "];
 		$mapType 	= ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
-		$type		= $types[0];
-		$term_id	= $type->term_id ? $type->term_id : -1;
+		$type		= empty($types) ? false : $types[0];
+		$term_id	= $type && $type->term_id ? $type->term_id : -1;
 		$post_title	= $this->get("post_title");		
 		$post_content = str_replace($str, " " , wpautop( wp_trim_words($this->get("post_content"), 20) )); 
 		$location	= $this->get_meta("location");
@@ -385,14 +385,9 @@ class ShmPoint extends SMC_Post
 		$latitude 	= $latitude ? $latitude : 55.8;
 		$longitude	= $this->get_meta("longitude");
 		$longitude 	= $longitude ? $longitude : 37.8;
+
 		$zoom		= $this->get_meta("zoom");
-		$zoom 		= $zoom ? $zoom : 11;
-//		$color 		= get_term_meta($type->term_id, "color", true);
-		$height 	= get_term_meta($type->term_id, "height", true);
-		$icon 		= ShMapPointType::get_icon_src( $type->term_id )[0];
-		$width 		= ShMapPointType::get_icon_src( $type->term_id )[2]/ShMapPointType::get_icon_src( $type->term_id )[1] * ($height ? absint($height) : 1);
-		//$type 		= $type->name;
-		//$term_id 	= $type->term_id;
+		$zoom 		= $zoom ? $zoom : 4;
 		
 		$html = "
 			<div class='shm-row'>
@@ -435,7 +430,7 @@ class ShmPoint extends SMC_Post
 					muniq			: 'YMapID',
 					latitude		: p.latitude,
 					longitude		: p.longitude,
-					zoom			: 4,
+					zoom			: '$zoom',
 					map_id			: '$point->id',
 					isClausterer	: 0,
 					isLayerSwitcher	: 0,
@@ -444,7 +439,7 @@ class ShmPoint extends SMC_Post
 					isSearch		: 0,
 					isZoomer		: 1,
 					isAdmin			: 1,
-					isMap			: 0,
+					isMap			: 0
 				};
 				
 				if(map_type == 1)
