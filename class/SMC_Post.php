@@ -265,24 +265,29 @@
 		*/
 		static function wp_dropdown($params="-1")
 		{
-			if(!is_array($params))
+			if( !is_array($params) )
 				$params	= array();
-			$hubs		= $params['posts'] ? $params['posts'] : self::get_all($params['args']);
+
+			$hubs = empty($params['posts']) ?
+                (empty($params['args']) ? array() : self::get_all($params['args'])) :
+                $params['posts'];
+
 			$html		= "<select ";
-			if($params['class'])
+			if( !empty($params['class']) )
 				$html	.= "class='".$params['class']."' ";
-			if($params['style'])
+			if( !empty($params['style']) )
 				$html	.= "style='".$params['style']."' ";
-			if($params['name'])
+			if( !empty($params['name']) )
 				$html	.= "name='".$params['name']."' ";
-			if($params['id'])
+			if( !empty($params['id']) )
 				$html	.= "id='".$params['id']."' ";
 			$html		.= " >";
-			$zero 		= $params['select_none'] ? $params['select_none'] : "---";
-			$html		.= "<option value='-1'>$zero</option>";			
+			$zero 		= empty($params['select_none']) ? '---' : $params['select_none'];
+			$html		.= "<option value='-1'>$zero</option>";
+
 			foreach($hubs as $hub)
 			{
-				$idd 	= $params['display_id'] ? $hub->ID . ". " : "";
+				$idd 	= empty($params['display_id']) ? '' : $hub->ID.'. ';
 				$html	.= "
 				<option value='" . $hub->ID . "' " . selected($hub->ID, $params['selected'], 0) . ">
 					$idd" . $hub->post_title .

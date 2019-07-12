@@ -121,29 +121,36 @@ class ShMapperRequest extends SMC_Post
 				break;
 		}
 	}
+
 	static function view_admin_edit($obj)
-	{			
-		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
+	{
+
+	    require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
+
 		$SMC_Object_type	= SMC_Object_Type::get_instance();
-		$bb				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];	
-		foreach($bb as $key=>$value)
+		$bb				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];
+        $html = '';
+
+		foreach($bb as $key => $value)
 		{
 			if($key == 't' || $key == 'class' || $key == 'contacts' || $key == 'notify_user' ) continue;
 			$meta = get_post_meta( $obj->id, $key, true);
-			$$key = $meta;
+
+//			$$key = $meta;
+
 			switch( $value['type'] )
 			{
 				case "number":
 					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'/>";
 					break;
 				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>$meta";
+					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0)."><label for='$key'></label>$meta";
 					break;
 				case "post":
 					$h = "$meta";
 					break;
 				default:
-					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
+					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'>";
 			}
 			switch($key)
 			{
@@ -168,7 +175,8 @@ class ShMapperRequest extends SMC_Post
 					$h = "<textarea name='$key' id='$key' class='sh-form'>$meta</textarea>";
 					break;
 			}
-			$html .="<div class='shm-row'>
+
+			$html .= "<div class='shm-row'>
 				<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
 				<div class='shm-9 shm-md-12 '>
 					$h
@@ -176,7 +184,9 @@ class ShMapperRequest extends SMC_Post
 			</div>
 			<div class='spacer-5'></div>";
 		}
-		echo $html;
+
+		echo empty($html) ? '' : $html;
+
 	}
 	static function save_admin_edit($obj)
 	{

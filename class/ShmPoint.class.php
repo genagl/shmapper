@@ -3,7 +3,7 @@ class ShmPoint extends SMC_Post
 {
 	static function init()
 	{
-		$typee = static::get_type();
+//		$typee = static::get_type();
 		add_action('init',									array(__CLASS__, 'add_class'), 14 );
 		add_action('admin_menu',							array(__CLASS__, 'owner_fields'), 20);
 		//bulk-actions
@@ -88,7 +88,7 @@ class ShmPoint extends SMC_Post
 					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
 			}
 			
-			$html .="<div class='shm-row' $opacity>
+			$html ="<div class='shm-row' $opacity>
 				<div class='shm-3 sh-right sh-align-middle'>".$value['name'] . "</div>
 				<div class='shm-9'>
 					$h
@@ -100,7 +100,9 @@ class ShmPoint extends SMC_Post
 		$tp  = wp_get_object_terms($obj->id, SHM_POINT_TYPE);
 		$term = $tp[0];
 		$term_id = $term ? $term->term_id : -1;
-		$html .="<div class='shm-row'>
+
+        $html = empty($html) ? '' : $html;
+		$html .= "<div class='shm-row'>
 			<div class='shm-3 sh-right sh-align-middle'>".__("Map marker type", SHMAPPER). "</div>
 			<div class='shm-9'>".
 				$h = ShMapPointType::get_ganre_swicher([
@@ -160,10 +162,11 @@ class ShmPoint extends SMC_Post
 		$lt = static::get_instance( $post );
 		echo static::owner_fields_edit($lt, "radio");			
 	}
-	static function owner_fields_edit($obj = -1, $type="checkbox")
+	static function owner_fields_edit($obj = false, $type = 'checkbox')
 	{
 		global $wpdb;
-		$id = $obj == -1 ? -1  : $obj->id;
+
+		$id = $obj && is_object($obj) ? $obj->id : -1;
 		$query = "SELECT map_id FROM ".$wpdb->prefix."point_map WHERE point_id=".$id;
 		$d = $wpdb->get_results($query);
 		$selects = [];
@@ -182,8 +185,8 @@ class ShmPoint extends SMC_Post
 			$html .= "
 				<li class='popular-category'>
 					<label class='selectit'>
-						<input value='$map->ID' type='$type' name='owner_id[]' $selected />
-						$map->post_title
+						<input value='$map->ID' type='$type' name='owner_id[]' $selected>
+						".($map->post_title ? $map->post_title : '(карта без названия)')."
 					</label>
 				</li>
 			";
@@ -249,20 +252,21 @@ class ShmPoint extends SMC_Post
 				break;
 			case "type":
 				$terms = get_the_terms( $post_id, SHM_POINT_TYPE );
-				if($terms[0]->term_id)
-					foreach($terms as $term)
-					{
-						//$term = get_term($obj->get_meta("type"), SHM_POINT_TYPE);
-						echo ShMapPointType::get_icon($term);
-					}
+				if($terms && !empty($terms[0]) && $terms[0]->term_id) {
+                    foreach($terms as $term) {
+                        //$term = get_term($obj->get_meta("type"), SHM_POINT_TYPE);
+                        echo ShMapPointType::get_icon($term);
+                    }
+                }
 				else
 				{
+//                    $color 		= get_term_meta($type->term_id, "color", true);
 					$owners = $obj->get_owners();
 					$map_id = $owners[0]->ID;
 					$diid = get_post_meta($map_id, "default_icon_id", true);
 					$icon	= "<div 
 						class='shm_type_icon' 
-						style='background-color:$color; background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
+						style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
 						>
 					</div>";	
 					echo $icon;
@@ -383,14 +387,14 @@ class ShmPoint extends SMC_Post
 		$longitude 	= $longitude ? $longitude : 37.8;
 		$zoom		= $this->get_meta("zoom");
 		$zoom 		= $zoom ? $zoom : 11;
-		$color 		= get_term_meta($type->term_id, "color", true);
+//		$color 		= get_term_meta($type->term_id, "color", true);
 		$height 	= get_term_meta($type->term_id, "height", true);
 		$icon 		= ShMapPointType::get_icon_src( $type->term_id )[0];
-		$width 		= ShMapPointType::get_icon_src( $type->term_id )[2]/ShMapPointType::get_icon_src( $type->term_id )[1] * $this->height ;
+		$width 		= ShMapPointType::get_icon_src( $type->term_id )[2]/ShMapPointType::get_icon_src( $type->term_id )[1] * ($height ? absint($height) : 1);
 		//$type 		= $type->name;
 		//$term_id 	= $type->term_id;
 		
-		$html 	.= "
+		$html = "
 			<div class='shm-row'>
 				<div class='shm-12'>
 					<div class='spacer-10'></div>
@@ -400,33 +404,31 @@ class ShmPoint extends SMC_Post
 					<div class='spacer-10'></div>
 				</div>	
 			</div>	";	
-		$point = $this->body;	
-		$p .= " 
-			var p = {}; 
-			p.post_id 	= '" . $point->ID . "';
-			p.post_title 	= '" . $post_title . "';
-			p.post_content 	= '" . $post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
-			p.latitude 		= '" . $latitude . "'; 
-			p.longitude 	= '" . $longitude . "'; 
-			p.location 		= '" . $location . "'; 
-			p.draggable 	= " . (is_admin() ? 1: 0) . "; 
-			p.type 			= '" . $term_id . "'; 
-			p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
-			p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
-			p.term_id 		= '" . $term_id . "'; 
-			p.icon 			= '" . (ShMapPointType::get_icon_src( $term_id )[0]) . "'; 
-			p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
-			points.push(p);
-			";	
+		$point = $this->body;
 			
 		$html 	.= "</div>			
 		<section>
 		<script type='text/javascript'>
 			jQuery(document).ready( function($)
 			{
-				var points 		= []; 
-				$p
-				console.log( p );
+				var points 		= [],
+				p = {}; 
+                p.post_id 	= '" . $point->ID . "';
+                p.post_title 	= '" . $post_title . "';
+                p.post_content 	= '" . esc_js($post_content)." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
+                p.latitude 		= '" . $latitude . "'; 
+                p.longitude 	= '" . $longitude . "'; 
+                p.location 		= '" . $location . "'; 
+                p.draggable 	= ".(is_admin() ? 1 : 0)."; 
+                p.type 			= '" . $term_id . "'; 
+                p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
+                p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
+                p.term_id 		= '" . $term_id . "'; 
+                p.icon 			= '" . (ShMapPointType::get_icon_src( $term_id )[0]) . "'; 
+                p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
+
+                points.push(p);
+				/*console.log( p );*/
 				var mData = {
 					mapType			: '$mapType',
 					uniq 			: 'YMapID',
@@ -459,11 +461,11 @@ class ShmPoint extends SMC_Post
 		global $post;
 		if($post->post_type == SHM_POINT && (is_single() || is_archive() ))
 		{
+
 			$point = static::get_instance($post);
-			$t .= $point->draw();
-			$t .= $point->get_owner_list( __("Usage in Maps: ", SHMAPPER), ", ", " "  ) .
-			"<div class='spacer-30'></div>";
-			return $t . $content;
+
+			return $point->draw().$point->get_owner_list( __("Usage in Maps: ", SHMAPPER), ", ", " "  )."<div class='spacer-30'></div>".$content;
+
 		}
 		return $content;
 		

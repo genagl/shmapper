@@ -264,8 +264,8 @@ class ShMapPointType
 	}
 	static function get_ganre_swicher($params = -1, $type="checkbox", $form_factor="large")
 	{
-		if(!is_array($params)) {
-			$params = array("prefix" => "ganre");
+		if( !is_array($params) || empty($params['prefix']) ) {
+			$params = array('prefix' => 'ganre');
 		}
 
 		$selected = is_array($params['selected']) ?  $params['selected'] : explode(",", $params['selected']);
@@ -362,8 +362,10 @@ class ShMapPointType
 		}	
 		
 		$html .= "
-			<input type='hidden' id='" . $params['prefix'] . "pointtype' name='" . $params['name'] . "' point='' value='" . $params['selected'] . "' />
+			<input type='hidden' id='".$params['prefix']."pointtype' name='".(empty($params['name']) ? '' : $params['name'])."' value='".$params['selected'] . "' />
 		</div>";
+
 		return $html;
+
 	}
 }
