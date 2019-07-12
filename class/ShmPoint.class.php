@@ -199,17 +199,18 @@ class ShmPoint extends SMC_Post
 	}
 	static function bulk_owner_fields_edit( $params=-1, $type="radio")
 	{
+
 		$all = ShmMap::get_all(-1, -1, 0, 'title', 'ASC' );
-		$html = "
-		<ul class='cat-checklist form-no-clear'>";
+
+		$html = "<ul class='cat-checklist form-no-clear'>";
 		foreach($all as $map)
 		{
-			$selected = in_array($map->ID, $selects) ? " checked " : "";
-			$html .= "
-				<li class='popular-category'>
+
+			$selected = ''; // in_array($map->ID, $selects) ? " checked " : "";
+			$html .= "<li class='popular-category'>
 					<label class='selectit'>
-						<input value='$map->ID' type='$type' name='owner_id[]' $selected />
-						$map->post_title
+						<input value='$map->ID' type='$type' name='owner_id[]' $selected>
+						".($map->post_title ? $map->post_title : '(карта без названия)')."
 					</label>
 				</li>
 			";
