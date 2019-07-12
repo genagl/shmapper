@@ -11,6 +11,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Contributors:
 	Genagl (genag1@list.ru)
+    Lev "ahaenor" Zvyagintsev (ahaenor@gmail.com)
 	Denis Cherniatev (denis.cherniatev@gmail.com)
     Teplitsa Support Team (suptestru@gmail.com)
 
