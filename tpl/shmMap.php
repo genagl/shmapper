@@ -72,11 +72,15 @@ function draw_shMap($map, $args )
 			"includes"		=> $includes,
 			"col_width"		=> 2
 		], "checkbox",  "stroke" );
-	}
-	if($is_csv  = $map->get_meta("is_csv"))
-	{
-		$csv	= "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download  %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
-	}
+	} else {
+        $filters = '';
+    }
+
+    $is_csv = $map->get_meta("is_csv");
+    if($is_csv) {
+        $csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download  %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
+    }
+
 	$points		= $map->get_map_points();
 	if($is_filtered || $is_csv)
 	{
