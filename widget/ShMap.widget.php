@@ -4,7 +4,7 @@
 	{
 		/*  Constructor
 		/* ------------------------------------ */
-		function ShmLocationNavigatorWidget() 
+		function __construct()
 		{
 			parent::__construct( false, __("Shmapper Locations", SHMAPPER), array('description' => 'Locations accordeon', 'classname' => 'widget_location_navigator') );;	
 			add_action( 'init',				array($this, 'redirect_login_page'));

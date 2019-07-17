@@ -17,7 +17,7 @@ class ShMapPointType
 
 	}
 	
-	function before_delete_post( $post_id ) 
+	static function before_delete_post( $post_id )
 	{
 		global $wpdb;
 		$query = "
