@@ -30,6 +30,32 @@ class ShMapper_ajax
 		add_action('wp_ajax_shm_set_req-admin', 	array(__CLASS__, 'shm_ajax3_submit'));
 		
 	}
+	
+	static function insert_marker($data) {
+	    $res 	= ShMapperRequest::insert($data);
+	    
+	    if( !ShMapper::$options['shm_map_marker_premoderation'] ) {
+	        $point = ShmPoint::insert([
+	            "post_title"	=> (string)$res->get("post_title"),
+	            "post_name"		=> (string)$res->get("post_name"),
+	            "post_content"	=> (string)$res->get_meta("description"),
+	            "latitude"		=> $res->get_meta("latitude"),
+	            "longitude"		=> $res->get_meta("longitude"),
+	            "location"		=> $res->get_meta("location"),
+	            "type"			=> (int)$res->get_meta("type"),
+	            "map_id"		=> (int)$res->get_meta("map"),
+	        ]);
+	        
+	        if($attach_id = get_post_thumbnail_id($res->id)) {
+	            set_post_thumbnail($point->id, (int)$attach_id);
+	        }
+	        
+	        SMC_Post::delete($res->id);
+	    }
+	    
+	    return $res;
+	}
+	
 	static function shm_ajax3_submit()
 	{
 		/**/
@@ -47,7 +73,7 @@ class ShMapper_ajax
 			switch( $response->success )
 			{
 				case(true):
-					$res 	= ShMapperRequest::insert($data);
+				    $res    = static::insert_marker($data);
 					$msg 	= ShMapper::$options['shm_succ_request_text'];
 					break;
 				default:
@@ -58,32 +84,12 @@ class ShMapper_ajax
 		}
 		else
 		{
-            $res = ShMapperRequest::insert($data);
-            
-            if( !ShMapper::$options['shm_map_marker_premoderation'] ) {
-                $point = ShmPoint::insert([
-                    "post_title"	=> (string)$res->get("post_title"),
-                    "post_name"		=> (string)$res->get("post_name"),
-                    "post_content"	=> (string)$res->get_meta("description"),
-                    "latitude"		=> $res->get_meta("latitude"),
-                    "longitude"		=> $res->get_meta("longitude"),
-                    "location"		=> $res->get_meta("location"),
-                    "type"			=> (int)$res->get_meta("type"),
-                    "map_id"		=> (int)$res->get_meta("map"),
-                ]);
-                if($attach_id = get_post_thumbnail_id($res->id))
-                {
-                    set_post_thumbnail($point->id, (int)$attach_id);
-                }
-
-                SMC_Post::delete($res->id);
-            }
-            
+		    $res = static::insert_marker($data);
 			$msg	= ShMapper::$options['shm_succ_request_text'];
 		}
+		
 		//load image
-		if( $res AND $res->id > 1 )		
-		{
+		if( $res AND $res->id > 1 ) {
 			
 		}
 		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );

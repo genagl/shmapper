@@ -1592,3 +1592,7 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 		width:100%;
 	}
 }
+
+.shm-type-icon.shmapperMarkerSelected {
+    border: 1px solid #111111;
+}

@@ -31,8 +31,10 @@ jQuery(document).ready(function($)
 	{	
 		var dat = e.detail;	
 		var data = dat[0];
-		var map = dat[1];		
-		eclectMarker.remove(map);
+		var map = dat[1];
+		if(eclectMarker) {
+			eclectMarker.remove(map);
+		}
 	});
 	
 	if($(".shm-type-icon").size())
@@ -54,87 +56,7 @@ jQuery(document).ready(function($)
 			},
 			stop: function(evt, ui)
 			{
-				$this = $(ui.helper);
-				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
-				map = shm_maps[$map_id];
-				//
-				
-				setTimeout(function()
-				{			
-					
-					//заполняем формы отправки 
-					var lat = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lat]");
-					var lon = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lon]");
-					var type = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_type]");
-					var loc = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_loc]");
-					lat.val(eclectCoords[0]);
-					lon.val(eclectCoords[1]);
-					type.val($this.attr("shm_type_id"));
-					//
-					geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
-						//console.log(result.address.Match_addr);
-						loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
-					});
-			
-					//set marker
-					var bg = $this.css('background-image');
-					if( bg !== "none")
-					{
-						bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
-						s_style = {draggable:true};
-						s_style.icon = L.icon({
-							iconUrl: bg,
-							shadowUrl: '',
-							iconSize:     [40, 40], // size of the icon
-							iconAnchor:   [20, 40], // point of the icon which will correspond to marker's location
-						});
-					}
-					else if($this.attr("shm_clr"))
-					{
-						var clr = $this.attr("shm_clr");
-						var style = document.createElement('style');
-						var iid = $this.attr("shm_type_id");
-						style.type = 'text/css';
-						style.innerHTML = '.__class'+ iid + ' { color:' + clr + '; }';
-						document.getElementsByTagName('head')[0].appendChild(style);
-						var classes = 'dashicons dashicons-location shm-size-40 __class'+ iid;
-						var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40), iconAnchor: [20, 30] });//
-						s_style = { draggable:true, icon: myIcon };
-					}
-					else
-					{
-						s_style = {draggable:true};
-						
-					}
-					
-					if(eclectMarker)
-					{
-						eclectMarker.remove(map);
-					}
-					eclectMarker = L.marker(eclectCoords,s_style).addTo(map);
-					map.mp.disable();
-					eclectMarker.on("dragend touchend", function(evt)
-					{
-						//console.log(evt.target._latlng);
-						eclectCoords = [evt.target._latlng.lat, evt.target._latlng.lng]
-						//заполняем формы отправки 
-						var lat = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lat]");
-						var lon = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lon]");
-						var type = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_type]");
-						var loc = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_loc]");
-						lat.val(eclectCoords[0]);
-						lon.val(eclectCoords[1]);
-						type.val($this.attr("shm_type_id"));
-						//
-						geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
-							//console.log(result.address.Match_addr);
-							loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
-						});
-					})
-				}, 100);
-				
-				$this.css({left:0, top:0}).hide().fadeIn("slow");
-				$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
+				shmapperPlaceMarkerOnMap(evt, ui);
 			}
 		});	
 	}
@@ -174,6 +96,7 @@ jQuery(document).ready(function($)
 					L.DomEvent.on(myMap, 'mousemove', this.onmousemove, this);
 					L.DomEvent.on(myMap, 'touchmove', this.onmousemove, this);
 					L.DomEvent.on(myMap, 'touchstart', this.ontouchstart, this);
+					L.DomEvent.on(myMap, 'click', this.onmouseclick, this);
 				},
 				removeHooks: function() 
 				{
@@ -193,6 +116,23 @@ jQuery(document).ready(function($)
 				},
 				ontouchstart: function(evt)
 				{
+					
+				},
+				onmouseclick: function(evt)
+				{
+					eclectCoords = [
+						L.Util.formatNum(evt.latlng.lat, 7), 
+						L.Util.formatNum(evt.latlng.lng, 7)
+					];
+						
+					$("[name='latitude']").val( L.Util.formatNum(myMap.getCenter().lat ));
+					$("[name='longitude']").val( L.Util.formatNum(myMap.getCenter().lng ));
+					$("[name='zoom']").val( myMap.getZoom() );
+					
+					$selectedMarker = $('.shm-form-request .shm-type-icon.shmapperMarkerSelected');
+					if($selectedMarker.size()) {
+						shmapperPlaceMarkerOnMap(evt, {"helper": $selectedMarker});
+					}
 					
 				}
 			});
@@ -346,6 +286,92 @@ jQuery(document).ready(function($)
 		});
 		
 		
+	}
+	
+	function shmapperPlaceMarkerOnMap(evt, ui) {
+		$this = $(ui.helper);
+		
+		var $map_id = $this.parents("form.shm-form-request").attr("form_id");
+		map = shm_maps[$map_id];
+		
+		setTimeout(function()
+		{			
+			
+			//заполняем формы отправки 
+			var lat = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lat]");
+			var lon = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lon]");
+			var type = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_type]");
+			var loc = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_loc]");
+			lat.val(eclectCoords[0]);
+			lon.val(eclectCoords[1]);
+			type.val($this.attr("shm_type_id"));
+			//
+			geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
+				//console.log(result.address.Match_addr);
+				loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
+			});
+	
+			//set marker
+			var bg = $this.css('background-image');
+			if( bg !== "none")
+			{
+				bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+				s_style = {draggable:true};
+				s_style.icon = L.icon({
+					iconUrl: bg,
+					shadowUrl: '',
+					iconSize:     [40, 40], // size of the icon
+					iconAnchor:   [20, 40], // point of the icon which will correspond to marker's location
+				});
+			}
+			else if($this.attr("shm_clr"))
+			{
+				var clr = $this.attr("shm_clr");
+				var style = document.createElement('style');
+				var iid = $this.attr("shm_type_id");
+				style.type = 'text/css';
+				style.innerHTML = '.__class'+ iid + ' { color:' + clr + '; }';
+				document.getElementsByTagName('head')[0].appendChild(style);
+				var classes = 'dashicons dashicons-location shm-size-40 __class'+ iid;
+				var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40), iconAnchor: [20, 30] });//
+				s_style = { draggable:true, icon: myIcon };
+			}
+			else
+			{
+				s_style = {draggable:true};
+				
+			}
+			
+			if(eclectMarker)
+			{
+				eclectMarker.remove(map);
+			}
+			eclectMarker = L.marker(eclectCoords,s_style).addTo(map);
+			map.mp.disable();
+			eclectMarker.on("dragend touchend", function(evt)
+			{
+				//console.log(evt.target._latlng);
+				eclectCoords = [evt.target._latlng.lat, evt.target._latlng.lng]
+				//заполняем формы отправки 
+				var lat = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lat]");
+				var lon = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_lon]");
+				var type = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_type]");
+				var loc = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_loc]");
+				lat.val(eclectCoords[0]);
+				lon.val(eclectCoords[1]);
+				type.val($this.attr("shm_type_id"));
+				//
+				geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
+					//console.log(result.address.Match_addr);
+					loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
+				});
+			})
+		}, 100);
+		
+		$this.css({left:0, top:0}).hide().fadeIn("slow");
+		$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
+		
+		$this.removeClass('shmapperMarkerSelected');
 	}
 });
 

@@ -109,73 +109,7 @@ jQuery(document).ready(function($)
 			},
 			stop: (evt, ui) =>
 			{
-				$this = $(ui.helper);
-				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
-				map = shm_maps[$map_id];
-				//
-				//console.log(evt.clientX, evt.clientY + window.scrollY);
-				var globalPixelPoint = map.converter.pageToGlobal( [evt.clientX, evt.clientY + window.scrollY] );
-				new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
-				map.geoObjects.remove(shm_placemark);
-				var bg = $this.css('background-image');
-				if( bg !== "none")
-				{
-					bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
-					shm_paramet = {
-						balloonMaxWidth: 250,
-						hideIconOnBalloonOpen: false,
-						iconLayout: 'default#imageWithContent',
-						iconShadow:true,
-						iconImageHref: bg,
-						iconImageSize:[40,40], 
-						iconImageOffset: [-20, -20],
-						draggable:true,
-						term_id:$this.attr("shm_type_id"),
-						type:'point',
-						fill:true,
-						fillColor: "#FF0000",
-						opacity:0.22
-					};
-				}
-				else
-				{
-					shm_paramet = {
-						balloonMaxWidth: 250,
-						hideIconOnBalloonOpen: false,
-						iconColor: $this.attr("shm_clr") ? $this.attr("shm_clr"):'#FF0000',
-						preset: 'islands#dotIcon',
-						draggable:true,
-						term_id:$this.attr("shm_type_id"),
-						type:'point',
-						fill:true,
-						fillColor: "#FF0000",
-						iconShadow:true,
-						opacity:0.22
-					}
-				}
-				
-				shm_placemark = new ymaps.GeoObject({
-					geometry: 
-					{
-						type: 'Point',
-						coordinates: new_mark_coords,
-					}
-				} , 
-				shm_paramet);
-				
-				shm_placemark.events.add("dragend", evt =>
-				{
-					var pos = evt.get("position");
-					var globalPixelPoint = map.converter.pageToGlobal( [pos[0], pos[1]] );
-					new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
-					//console.log(pos);
-					//console.log( evt.originalEvent.target.options.get("type") );
-					addAdress( $this, new_mark_coords );
-				});
-				addAdress( $this, new_mark_coords );
-				map.geoObjects.add(shm_placemark); 
-				$this.css({left:0, top:0}).hide().fadeIn("slow");
-				$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
+				shmapperPlaceMarkerOnMap(evt, ui);
 			}
 		});	
 	}
@@ -360,8 +294,16 @@ jQuery(document).ready(function($)
 			{
 				clusterer.add(myPlacemark);
 			}			
-			else
+			else 
 				myMap.geoObjects.add(myPlacemark);
+			
+			myMap.events.add('click', evt => {
+				$selectedMarker = $('.shm-form-request .shm-type-icon.shmapperMarkerSelected');
+				if($selectedMarker.size()) {
+					shmapperPlaceMarkerOnMap({"clientX": evt.get('domEvent').get('pageX'), "clientY": evt.get('domEvent').get('pageY') - window.scrollY}, {"helper": $selectedMarker});
+				}
+			});				
+			
 		})
 		if( mData.isClausterer )	myMap.geoObjects.add(clusterer);
 		if(mData.isAdmin)
@@ -398,6 +340,78 @@ jQuery(document).ready(function($)
 		{
 			
 		}
+	}
+	
+	function shmapperPlaceMarkerOnMap(evt, ui) {
+		$this = $(ui.helper);
+		var $map_id = $this.parents("form.shm-form-request").attr("form_id");
+		map = shm_maps[$map_id];
+		//
+//		console.log(evt.clientX, evt.clientY + window.scrollY);
+		var globalPixelPoint = map.converter.pageToGlobal( [evt.clientX, evt.clientY + window.scrollY] );
+		new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
+		map.geoObjects.remove(shm_placemark);
+		var bg = $this.css('background-image');
+		if( bg !== "none")
+		{
+			bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+			shm_paramet = {
+				balloonMaxWidth: 250,
+				hideIconOnBalloonOpen: false,
+				iconLayout: 'default#imageWithContent',
+				iconShadow:true,
+				iconImageHref: bg,
+				iconImageSize:[40,40], 
+				iconImageOffset: [-20, -20],
+				draggable:true,
+				term_id:$this.attr("shm_type_id"),
+				type:'point',
+				fill:true,
+				fillColor: "#FF0000",
+				opacity:0.22
+			};
+		}
+		else
+		{
+			shm_paramet = {
+				balloonMaxWidth: 250,
+				hideIconOnBalloonOpen: false,
+				iconColor: $this.attr("shm_clr") ? $this.attr("shm_clr"):'#FF0000',
+				preset: 'islands#dotIcon',
+				draggable:true,
+				term_id:$this.attr("shm_type_id"),
+				type:'point',
+				fill:true,
+				fillColor: "#FF0000",
+				iconShadow:true,
+				opacity:0.22
+			}
+		}
+		
+		shm_placemark = new ymaps.GeoObject({
+			geometry: 
+			{
+				type: 'Point',
+				coordinates: new_mark_coords,
+			}
+		} , 
+		shm_paramet);
+		
+		shm_placemark.events.add("dragend", evt =>
+		{
+			var pos = evt.get("position");
+			var globalPixelPoint = map.converter.pageToGlobal( [pos[0], pos[1]] );
+			new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
+			//console.log(pos);
+			//console.log( evt.originalEvent.target.options.get("type") );
+			addAdress( $this, new_mark_coords );
+		});
+		addAdress( $this, new_mark_coords );
+		map.geoObjects.add(shm_placemark); 
+		$this.css({left:0, top:0}).hide().fadeIn("slow");
+		$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");		
+		
+		$this.removeClass('shmapperMarkerSelected');
 	}
 })
 	
