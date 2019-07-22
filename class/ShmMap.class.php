@@ -567,13 +567,17 @@ class ShmMap extends SMC_Post
 	function get_include_types()
 	{
 		$form_forms = $this->get_meta("form_forms");
-		foreach($form_forms as $element)
-		{
-			if( $element['type'] == 8 )
-			{
-				return explode(",", $element["placemarks"]);
-			}
+		
+		if($form_forms) {
+		    foreach($form_forms as $element)
+		    {
+		        if( $element['type'] == 8 )
+		        {
+		            return explode(",", $element["placemarks"]);
+		        }
+		    }
 		}
+		
 		return false;
 	}
 	function get_csv()
@@ -827,9 +831,11 @@ class ShmMap extends SMC_Post
 			$html .= "<div class='shm-admin-block'>
 					<h3>Open Street Map</h3>";
 			
+			$i 		= 0;
+			
 			foreach(static::get_map_types()[ 2 ] as $type)
 			{
-				$selected = $params[ 'selected' ][2][0] ==$type  ? " checked " : "";
+			    $selected = isset($params[ 'selected' ][2][0]) && $params[ 'selected' ][2][0] == $type  ? " checked " : "";
 				$name 	= $params[ 'name' ];
 				$id 	= $params[ 'id' ];
 				$html 	.= "

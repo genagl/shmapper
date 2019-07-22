@@ -296,18 +296,17 @@ jQuery(document).ready(function($)
 			}			
 			else 
 				myMap.geoObjects.add(myPlacemark);
-			
-			myMap.events.add('click', evt => {
-				$selectedMarker = $('.shm-form-request .shm-type-icon.shmapperMarkerSelected');
-				if($selectedMarker.size()) {
-					shmapperPlaceMarkerOnMap({"clientX": evt.get('domEvent').get('pageX'), "clientY": evt.get('domEvent').get('pageY') - window.scrollY}, {"helper": $selectedMarker});
-				}
-			});				
-			
 		})
 		if( mData.isClausterer )	myMap.geoObjects.add(clusterer);
 		if(mData.isAdmin)
-			is_admin(myMap, mData);	
+			is_admin(myMap, mData);
+		
+		myMap.events.add('click', evt => {
+			var $selectedMarker = $('.shm-type-icon.shmapperMarkerSelected');
+			if($selectedMarker.size()) {
+				shmapperPlaceMarkerOnMap({"clientX": evt.get('domEvent').get('pageX'), "clientY": evt.get('domEvent').get('pageY') - window.scrollY}, {"helper": $selectedMarker});
+			}
+		});				
 	}
 	is_admin = function(myMap, mData)
 	{

@@ -362,7 +362,7 @@ class ShMapPointType
 		}	
 		
 		$html .= "
-			<input type='hidden' id='".$params['prefix']."pointtype' name='".(empty($params['name']) ? '' : $params['name'])."' point='' value='".$params['selected'] . "' />
+			<input type='hidden' id='".$params['prefix']."pointtype' name='".(empty($params['name']) ? '' : $params['name'])."' point='' value='".(is_array($params['selected']) ? implode(",", $params['selected']) : $params['selected']) . "' />
 		</div>";
 
 		return $html;

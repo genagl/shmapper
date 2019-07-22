@@ -129,7 +129,7 @@ jQuery(document).ready(function($)
 					$("[name='longitude']").val( L.Util.formatNum(myMap.getCenter().lng ));
 					$("[name='zoom']").val( myMap.getZoom() );
 					
-					$selectedMarker = $('.shm-form-request .shm-type-icon.shmapperMarkerSelected');
+					var $selectedMarker = $('.shm-type-icon.shmapperMarkerSelected');
 					if($selectedMarker.size()) {
 						shmapperPlaceMarkerOnMap(evt, {"helper": $selectedMarker});
 					}

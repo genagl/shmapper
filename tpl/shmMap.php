@@ -77,6 +77,8 @@ function draw_shMap($map, $args )
     }
 
     $is_csv = $map->get_meta("is_csv");
+    $csv = "";
+    
     if($is_csv) {
         $csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download  %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
     }

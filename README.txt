@@ -58,6 +58,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.2 =
+* Post-moderation of markers fixed for forms with enabled reCaptcha.
+* Marker setup fixed for mobile screens.
+* Other minor fixes.
+
 = 1.1 =
 * Pre-moderation of markers fixed.
 * Other minor fixes.
