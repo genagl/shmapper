@@ -703,10 +703,7 @@ class ShmMap extends SMC_Post
 	{
 		$points = $this->get_points();
 		$p = [];
-		$str = ["
-","
-
-"];
+		
 		foreach($points as $point)
 		{
 			$pn = ShmPoint::get_instance($point);
@@ -715,7 +712,7 @@ class ShmMap extends SMC_Post
 			$pnt 	= new StdClass;
 			$pnt->ID			= $pn->id;
 			$pnt->post_title	= $pn->get("post_title");
-			$pnt->post_content	= str_replace( $str , " " , wp_trim_words($pn->get("post_content"), 20) ); 
+			$pnt->post_content  = wpautop( $pn->get("post_content") );
 			$pnt->latitude 		= $pn->get_meta("latitude");
 			$pnt->longitude 	= $pn->get_meta("longitude");
 			$pnt->location 		= $pn->get_meta("location");

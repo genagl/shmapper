@@ -54,6 +54,7 @@ class ShmPoint extends SMC_Post
 		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
 		$SMC_Object_type	= SMC_Object_Type::get_instance();
 		$bb					= $SMC_Object_type->object [static::get_type()];
+		$html = "";
 		foreach($bb as $key=>$value)
 		{
 			if($key == 't' || $key == 'class' ) continue;
@@ -88,7 +89,7 @@ class ShmPoint extends SMC_Post
 					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
 			}
 			
-			$html ="<div class='shm-row' $opacity>
+			$html .="<div class='shm-row' $opacity>
 				<div class='shm-3 sh-right sh-align-middle'>".$value['name'] . "</div>
 				<div class='shm-9'>
 					$h
@@ -371,16 +372,12 @@ class ShmPoint extends SMC_Post
 	}
 	function draw()
 	{
-		$str = ["
-","
-
-"];
 		$mapType 	= ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
 		$type		= empty($types) ? false : $types[0];
 		$term_id	= $type && $type->term_id ? $type->term_id : -1;
 		$post_title	= $this->get("post_title");		
-		$post_content = str_replace($str, " " , wpautop( wp_trim_words($this->get("post_content"), 20) )); 
+		$post_content = wpautop( $this->get("post_content") );
 		$location	= $this->get_meta("location");
 		$latitude	= $this->get_meta("latitude");
 		$latitude 	= $latitude ? $latitude : 55.8;
@@ -411,7 +408,7 @@ class ShmPoint extends SMC_Post
 				p = {}; 
                 p.post_id 	= '" . $point->ID . "';
                 p.post_title 	= '" . $post_title . "';
-                p.post_content 	= '" . esc_js($post_content)." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
+                p.post_content 	= '" . html_entity_decode( esc_js($post_content) )." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $location . "</div>';
                 p.latitude 		= '" . $latitude . "'; 
                 p.longitude 	= '" . $longitude . "'; 
                 p.location 		= '" . $location . "'; 

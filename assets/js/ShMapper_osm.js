@@ -138,16 +138,35 @@ jQuery(document).ready(function($)
 			});
 			L.Map.addInitHook('addHandler', 'mp', L.MousePosit);	
 		}
-		console.log(mData.mapType);
-		var shmLayer1 = mData.mapType && "OpenStreetMap" !== mData.mapType 
-			? L.esri.basemapLayer( mData.mapType) : 
-			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
-			{
-				attribution: '<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'
-			});
+		//console.log(mData.mapType);
+		//var shmLayer1 = mData.mapType && 
+			
+		var possibleMapTypes = mData.isLayerSwitcher ? ['OpenStreetMap', 'Topographic', 'Streets', 'Gray', 'DarkGray', 'Imagery', 'Physical'] : [];
+		var currentMapTypeIndex = possibleMapTypes.indexOf(mData.mapType);
+		if (currentMapTypeIndex !== -1) {
+			possibleMapTypes.splice(currentMapTypeIndex, 1);
+		}
+		possibleMapTypes.push(mData.mapType);
+		
+		var shmLayers = [];
+		var shmBaseMaps = {};
+		
+		for(var li in possibleMapTypes) {
+			
+			shmBaseMaps[possibleMapTypes[li]] = "OpenStreetMap" !== possibleMapTypes[li] 
+				? L.esri.basemapLayer( possibleMapTypes[li] ) : 
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+				{
+					attribution: '<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'
+				}); 
+			
+			shmLayers.push(shmBaseMaps[possibleMapTypes[li]]);			
+		}
+			
 		myMap = L.map(mData.uniq, 
 		{
-			layers: [shmLayer1],
+			//layers: [shmLayer1],
+			layers: shmLayers,
 			center: [mData.latitude, mData.longitude],
 			zoom: mData.zoom,
 			renderer: L.svg(),
@@ -166,8 +185,8 @@ jQuery(document).ready(function($)
 		//layer switcher 
 		if(mData.isLayerSwitcher)
 		{
-			var layerControl = L.control.layerSwitcher({});
-			layerControl.addTo(myMap);
+			var layerControl = L.control.layerSwitcher();
+			L.control.layers(shmBaseMaps).addTo(myMap);
 		}
 		
 		if(mData.isMap) myMap.mp.disable();	
@@ -220,7 +239,7 @@ jQuery(document).ready(function($)
 						shadowSize	: [w, h], // size of the shadow
 						iconAnchor	: [w/2, h/2], // point of the icon which will correspond to marker's location
 						shadowAnchor: [0, h],  // the same for the shadow
-						popupAnchor	: [-w/4, -w/2] // point from which the popup should open relative to the iconAnchor
+						popupAnchor	: [-w/4, -h/4] // point from which the popup should open relative to the iconAnchor
 					});
 				}
 				
@@ -234,7 +253,7 @@ jQuery(document).ready(function($)
 				}	
 				marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
 					.addTo(dist)
-						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
+						.bindPopup('<div class=\"shml-body shml-popup-scroll\">' + '<div class=\"shml-title\">' + elem.post_title +'</div>' + elem.post_content + '</div>');
 				
 			}					
 			else if( mData.default_icon && !elem.color )
@@ -251,7 +270,7 @@ jQuery(document).ready(function($)
 				};
 				marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
 					.addTo(dist)
-						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');			
+						.bindPopup('<div class=\"shml-body shml-popup-scroll\">' + '<div class=\"shml-title\">' + elem.post_title +'</div>' + elem.post_content + '</div>');			
 				
 			}
 			else
@@ -268,7 +287,7 @@ jQuery(document).ready(function($)
 					{draggable	: elem.draggable,icon: myIcon, term_id: elem.term_id}
 				)
 				.addTo(dist)
-					.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
+					.bindPopup('<div class=\"shml-body shml-popup-scroll\">' + '<div class=\"shml-title\">' + elem.post_title +'</div>' + elem.post_content + '</div>');
 			}
 			all_markers[mData.uniq].push(marker);
 			if(elem.draggable)

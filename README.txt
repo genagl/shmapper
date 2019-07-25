@@ -58,6 +58,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.3 =
+* Layer switcher for OSM fixed.
+* Map owner email notification about new map requests fixed. 
+* Display of marker clouds content fixed.
+
 = 1.2 =
 * Post-moderation of markers fixed for forms with enabled reCaptcha.
 * Marker setup fixed for mobile screens.

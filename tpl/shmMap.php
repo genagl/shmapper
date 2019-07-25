@@ -107,7 +107,7 @@ function draw_shMap($map, $args )
 			var p = {}; 
 			p.post_id 	= '" . $point->ID . "';
 			p.post_title 	= '" . $point->post_title . "';
-			p.post_content 	= '" . $point->post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $point->location . "</div>';
+			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js($point->post_content) ) . "</div> <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $point->location . "</div>';
 			p.latitude 		= '" . $point->latitude . "'; 
 			p.longitude 	= '" . $point->longitude . "'; 
 			p.location 		= '" . $point->location . "'; 
@@ -153,7 +153,7 @@ function draw_shMap($map, $args )
 				isZoomer		: ". ($is_zoomer ? 1 : 0). ",
 				isAdmin			: ". (is_admin() ? 1 : 0). ",
 				isMap			: true,
-				default_icon	: '$icon',
+				default_icon	: '$icon'
 			};
 			/*
 			var clear_form = new CustomEvent(
@@ -173,6 +173,9 @@ function draw_shMap($map, $args )
 				init_map( mData, points );
 			
 		});
+
+        jQuery(\"<style type='text/css'>.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {max-height: ".round($height * 1.5)."px !important;} </style>\").appendTo('head');
+
 	</script>";
 	return $html;
 }

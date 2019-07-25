@@ -321,9 +321,8 @@ class ShMapperRequest extends SMC_Post
 		{
 			$author_id 	= $map->get("post_author");
 			$user 		= get_user_by("id", $author_id);
-			$email	 	= "genag1@list.ru";//$user->get('user_email');
+			$email	 	= $user->get('user_email');
 			$semail  	=  get_bloginfo( "admin_email" );
-			//$semail1	= "admin@" . substr( get_bloginfo("url"), strpos(get_bloginfo("url"), "://") + 3 );
 			$suser		= $author ? $author : __("Uknown User", SHMAPPER);
 			$site		= get_bloginfo("name");
 			$headers = array(
@@ -333,8 +332,9 @@ class ShMapperRequest extends SMC_Post
 			$is = wp_mail(
 				$email,
 				sprintf(__("<%s> Request to your Map from [%s] [%s]", SHMAPPER), $site, $suser, $map->get("post_title")) ,
-				$h['contents']. "<p>" . 
-				sprintf(__("You may see this %s", SHMAPPER), get_bloginfo("url") . "/wp-admin/edit.php?post_type=shm_request"),
+				$h['contents']. "\n\n<p>" . 
+				sprintf(__("You may see this %s", SHMAPPER), get_bloginfo("url") . "/wp-admin/edit.php?post_type=shm_request")
+			    . "</p>",
 				$headers
 			);
 		}

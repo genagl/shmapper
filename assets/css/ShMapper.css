@@ -1596,3 +1596,39 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 .shm-type-icon.shmapperMarkerSelected {
     border: 1px solid #111111;
 }
+
+/* OSM cloud */
+.leaflet-popup-content .shml-title {
+}
+
+.leaflet-popup-content .shml-popup-post-content {
+}
+
+.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
+    overflow: hidden;
+}
+
+.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {
+    overflow: auto;
+    padding-right: 5px;
+}
+
+.leaflet-popup-content .shml-popup-scroll::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 6px;
+    background-color: #F5F5F5;
+}
+
+.leaflet-popup-content .shml-popup-scroll::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+.leaflet-popup-content .shml-popup-scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #888888;
+}
