@@ -340,7 +340,7 @@ jQuery(document).ready(function($)
 					iconUrl: bg,
 					shadowUrl: '',
 					iconSize:     [40, 40], // size of the icon
-					iconAnchor:   [20, 40], // point of the icon which will correspond to marker's location
+					iconAnchor:   [20, 20], // point of the icon which will correspond to marker's location
 				});
 			}
 			else if($this.attr("shm_clr"))

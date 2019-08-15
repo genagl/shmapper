@@ -684,7 +684,9 @@ class ShmMap extends SMC_Post
 					ShmMap::wp_dropdown([
 						"class"		=> "shm-form",
 						"id"		=> "shm_esc_points_id",
-						"style"		=> "display:none;"
+						"style"		=> "display:none;",
+					    "posts"     => ShmMap::get_all(),
+					    "exclude_post_id"   => $this->id,
 												
 					]) . 
 				"<div class='spacer-10'></div>

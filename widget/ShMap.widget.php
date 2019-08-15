@@ -71,7 +71,8 @@
 								"class" 	=> "shm-form",
 								"name"		=> $this->get_field_name('map_id'),
 								"selected"	=> esc_attr($instance["map_id"]),
-								"id"		=> $instance['map_id']
+								"id"		=> $instance['map_id'],
+							    "posts"     => ShmMap::get_all(),
 							]);						
 						?>
 					</p>					

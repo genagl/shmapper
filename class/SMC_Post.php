@@ -113,7 +113,7 @@
 		}
 		public function get($field)
 		{
-			return $this->body->$field;
+		    return is_object($this->body) ? $this->body->$field : NULL;
 		}
 		function set($field)
 		{
@@ -265,13 +265,18 @@
 		*/
 		static function wp_dropdown($params="-1")
 		{
-			if( !is_array($params) )
+		    if( !is_array($params) ) {
 				$params	= array();
+		    }
 
+		    if(isset($params["exclude_post_id"]) && !is_array($params["exclude_post_id"])) {
+		        $params["exclude_post_id"] = array($params["exclude_post_id"]);
+		    }
+			
 			$hubs = empty($params['posts']) ?
                 (empty($params['args']) ? array() : self::get_all($params['args'])) :
                 $params['posts'];
-
+			
 			$html		= "<select ";
 			if( !empty($params['class']) )
 				$html	.= "class='".$params['class']."' ";
@@ -287,6 +292,10 @@
 
 			foreach($hubs as $hub)
 			{
+			    if(isset($params["exclude_post_id"]) && in_array($hub->ID, $params["exclude_post_id"])) {
+			        continue;
+			    }
+			    
 				$idd 	= empty($params['display_id']) ? '' : $hub->ID.'. ';
 				$html	.= "
 				<option value='" . $hub->ID . "' " . selected($hub->ID, $params['selected'], 0) . ">
@@ -413,7 +422,7 @@
 								if($meta)
 								{
 									$p = get_post($meta);
-									$post_title = $p->post_title;
+									$post_title = is_object($p) ? $p->post_title : '';
 									$color = $obj[$column_name]['color'];
 									echo "
 										<strong>$post_title</strong>

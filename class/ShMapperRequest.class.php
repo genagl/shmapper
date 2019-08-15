@@ -158,6 +158,7 @@ class ShMapperRequest extends SMC_Post
 						"class"		=> "sh-form",
 						"name"		=> "map",
 						"id"		=> "map",
+						"posts"     => ShmMap::get_all(),
 					]);
 					break;
 				case "type":

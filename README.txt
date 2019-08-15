@@ -58,6 +58,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.3.1 =
+* Marker placement for OSM fixed.
+* Map selector fixed in widget. 
+* Map selector fixed in map-request edit form.
+
 = 1.3 =
 * Layer switcher for OSM fixed.
 * Map owner email notification about new map requests fixed. 
