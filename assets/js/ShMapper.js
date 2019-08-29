@@ -571,12 +571,22 @@ function shm_send( params, type )
 
 // click marker event for mobiles
 jQuery(document).ready(function($) {
-	if(shmapperIsMobileView()) {
-		$(".shm-type-icon").click(function(e) {
+	//if(shmapperIsMobileView()) {
+		var $shmapperIcons = $(".shm-type-icon");
+		$shmapperIcons.on('mousedown', function(e) {
+			$(this).removeClass('shmapperDragged');
+		});
+		$shmapperIcons.click(function(e) {
 			e.preventDefault();
 			$(this).closest('.shm-form-placemarks').find('.shm-type-icon').removeClass('shmapperMarkerSelected');
-			$(this).addClass('shmapperMarkerSelected');
+			if(!$(this).hasClass('shmapperDragged')) {
+				$(this).addClass('shmapperMarkerSelected');
+			}
 		});
-	}
+	//}
 });
 
+//change location addr
+jQuery(document).ready(function($) {
+	
+});

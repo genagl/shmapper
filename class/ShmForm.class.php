@@ -477,8 +477,8 @@ class ShmForm
 						<input type=hidden name='shm_point_lat' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='shm_point_lon' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='elem[]' class='sh-form shm-bg-transparent small' />
-						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small hidden' />";
-						$element['description'] .= __("Drag choosed icon and place it to map.", SHMAPPER);
+						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small' />";
+						$element['description'] .= __("Drag choosed icon and place it to map or enter exact address.", SHMAPPER);
 					}
 					break;
 				default:			
@@ -526,7 +526,7 @@ class ShmForm
 			$def_mark .= "<input type=hidden name='shm_point_type' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='shm_point_lat' class='sh-form shm-bg-transparent small' />
 						<input type=hidden name='shm_point_lon' class='sh-form shm-bg-transparent small' />
-						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small hidden' />
+						<input type=text name='shm_point_loc' class='sh-form shm-bg-transparent small' />
 						";
 		}
 		if( $is_personal_data )

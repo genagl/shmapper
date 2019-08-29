@@ -56,6 +56,8 @@ jQuery(document).ready(function($)
 			},
 			stop: function(evt, ui)
 			{
+				$(ui.helper).addClass('shmapperDragged');
+				$('.shm-type-icon.shmapperMarkerSelected').removeClass('shmapperMarkerSelected');
 				shmapperPlaceMarkerOnMap(evt, ui);
 			}
 		});	

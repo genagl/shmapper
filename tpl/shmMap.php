@@ -107,10 +107,10 @@ function draw_shMap($map, $args )
 			var p = {}; 
 			p.post_id 	= '" . $point->ID . "';
 			p.post_title 	= '" . $point->post_title . "';
-			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js($point->post_content) ) . "</div> <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $point->location . "</div>';
+			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js($point->post_content) ) . "</div> <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js($point->location) . "</div>';
 			p.latitude 		= '" . $point->latitude . "'; 
 			p.longitude 	= '" . $point->longitude . "'; 
-			p.location 		= '" . $point->location . "'; 
+			p.location 		= '" . esc_js($point->location) . "'; 
 			p.type 			= '" . $point->type . "'; 
 			p.term_id 		= '" . $point->term_id . "'; 
 			p.icon 			= '" . $point->icon . "'; 
