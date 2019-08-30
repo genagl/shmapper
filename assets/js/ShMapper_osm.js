@@ -62,6 +62,48 @@ jQuery(document).ready(function($)
 			}
 		});	
 	}
+	
+	// place marker by addr
+	function shm_place_marker_by_addr($this) {
+		var addr = $this.val();
+//		console.log(addr);
+		
+		var $selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon.shmapperMarkerSelected');
+		
+		if(!$selectedMarker.length) {
+			$selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon').first();
+			$selectedMarker.addClass('shmapperMarkerSelected');
+		}
+		
+		geocodeService.geocode().text(addr).run(function(error, result)
+		{
+//			console.log("decoded");
+//			console.log(result);
+			
+			if(result.results[0]) {
+				new_mark_coords = result.results[0].latlng;
+//				console.log(new_mark_coords);
+				
+				eclectCoords = [new_mark_coords.lat, new_mark_coords.lng];
+				
+				var $map_id = $selectedMarker.parents("form.shm-form-request").attr("form_id");
+				$selectedMarker.data("straight_geocoding", "true");
+				shmapperPlaceMarkerOnMapByCoords($map_id, $selectedMarker);
+			}
+		});
+	}
+
+	var $addrInput = $("input[name='shm_point_loc']");
+	$addrInput.change(function(){
+		shm_place_marker_by_addr($(this));
+	});
+	$addrInput.keydown(function(e){
+	    if(e.keyCode == 13){
+	        e.preventDefault();
+			shm_place_marker_by_addr($(this));
+	    }
+	});
+	
 	//
 	init_map = function(mData, points)
 	{	
@@ -311,8 +353,13 @@ jQuery(document).ready(function($)
 	
 	function shmapperPlaceMarkerOnMap(evt, ui) {
 		$this = $(ui.helper);
-		
 		var $map_id = $this.parents("form.shm-form-request").attr("form_id");
+		
+//		console.log(eclectCoords);
+		shmapperPlaceMarkerOnMapByCoords($map_id, $this);
+	}
+	
+	function shmapperPlaceMarkerOnMapByCoords($map_id, $selectedMarker) {
 		map = shm_maps[$map_id];
 		
 		setTimeout(function()
@@ -325,15 +372,17 @@ jQuery(document).ready(function($)
 			var loc = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_loc]");
 			lat.val(eclectCoords[0]);
 			lon.val(eclectCoords[1]);
-			type.val($this.attr("shm_type_id"));
+			type.val($selectedMarker.attr("shm_type_id"));
 			//
-			geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
-				//console.log(result.address.Match_addr);
-				loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
-			});
+			if(!$selectedMarker.data("straight_geocoding")) {
+				geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
+					//console.log(result.address.Match_addr);
+					loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
+				});
+			}
 	
 			//set marker
-			var bg = $this.css('background-image');
+			var bg = $selectedMarker.css('background-image');
 			if( bg !== "none")
 			{
 				bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
@@ -345,11 +394,11 @@ jQuery(document).ready(function($)
 					iconAnchor:   [20, 20], // point of the icon which will correspond to marker's location
 				});
 			}
-			else if($this.attr("shm_clr"))
+			else if($selectedMarker.attr("shm_clr"))
 			{
-				var clr = $this.attr("shm_clr");
+				var clr = $selectedMarker.attr("shm_clr");
 				var style = document.createElement('style');
-				var iid = $this.attr("shm_type_id");
+				var iid = $selectedMarker.attr("shm_type_id");
 				style.type = 'text/css';
 				style.innerHTML = '.__class'+ iid + ' { color:' + clr + '; }';
 				document.getElementsByTagName('head')[0].appendChild(style);
@@ -380,19 +429,22 @@ jQuery(document).ready(function($)
 				var loc = $("form.shm-form-request[form_id='" + $map_id + "']").find("[name=shm_point_loc]");
 				lat.val(eclectCoords[0]);
 				lon.val(eclectCoords[1]);
-				type.val($this.attr("shm_type_id"));
+				type.val($selectedMarker.attr("shm_type_id"));
 				//
-				geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
-					//console.log(result.address.Match_addr);
-					loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
-				});
+				if(!$selectedMarker.data("straight_geocoding")) {
+					geocodeService.reverse().latlng(eclectCoords).run(function(error, result) {
+						//console.log(result.address.Match_addr);
+						loc.val(result.address.Match_addr).removeClass("hidden").hide().fadeIn("slow");
+					});
+				}
 			})
+			
+			$selectedMarker.data("straight_geocoding", "");
+			
 		}, 100);
 		
-		$this.css({left:0, top:0}).hide().fadeIn("slow");
-		$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
-		
-		$this.removeClass('shmapperMarkerSelected');
+		$selectedMarker.css({left:0, top:0}).hide().fadeIn("slow");
+		$selectedMarker.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
 	}
 });
 

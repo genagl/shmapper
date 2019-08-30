@@ -92,7 +92,9 @@ jQuery(document).ready(function($)
 			var loc = $this.parents("form.shm-form-request").find("[name=shm_point_loc]");
 			lat.val(new_mark_coords[0]);
 			lon.val(new_mark_coords[1]);
-			loc.val(shm_address).removeClass("hidden").hide().fadeIn("slow");
+			if(!$this.data("straight_geocoding")) {
+				loc.val(shm_address).removeClass("hidden").hide().fadeIn("slow");
+			}
 			type.val($this.attr("shm_type_id"));
 		})			
 	}
@@ -119,7 +121,7 @@ jQuery(document).ready(function($)
 	// place marker by addr
 	function shm_place_marker_by_addr($this) {
 		var addr = $this.val();
-//		console.log(addr);
+		console.log(addr);
 		
 		var $selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon.shmapperMarkerSelected');
 		
@@ -137,6 +139,8 @@ jQuery(document).ready(function($)
 			
 			var $map_id = $selectedMarker.parents("form.shm-form-request").attr("form_id");
 			map = shm_maps[$map_id];
+			
+			$selectedMarker.data("straight_geocoding", "true");
 			shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $selectedMarker);
 			
 		}, function (err) {
@@ -149,7 +153,7 @@ jQuery(document).ready(function($)
 	$addrInput.change(function(){
 		shm_place_marker_by_addr($(this));
 	});
-	$addrInput.keyup(function(e){
+	$addrInput.keydown(function(e){
 	    if(e.keyCode == 13){
 	        e.preventDefault();
 			shm_place_marker_by_addr($(this));
@@ -254,7 +258,7 @@ jQuery(document).ready(function($)
 			{
 				var h = parseInt(elem.height);
 				var w = elem.width ? parseInt(elem.width) : h;
-				console.log( w, h );
+//				console.log( w, h );
 				paramet = {
 					balloonMaxWidth: 250,
 					balloonItemContentLayout: customItemContentLayout,
@@ -457,7 +461,7 @@ jQuery(document).ready(function($)
 		$markerIcon.css({left:0, top:0}).hide().fadeIn("slow");
 		$markerIcon.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");		
 		
-		$markerIcon.removeClass('shmapperMarkerSelected');
+		$selectedMarker.data("straight_geocoding", "");
 	}
 	
 })
