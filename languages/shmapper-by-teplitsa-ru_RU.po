@@ -820,3 +820,7 @@ msgstr "Ошибка: форма не связана с картой. Чтобы
 #: class/ShMap.class.php:1
 msgid "Reload page after User send request."
 msgstr "Перегрузить страницу после того, как юзер отправил форму запроса"
+
+#: class/ShmAdminPage.class.php:1
+msgid "shMapper developers chat"
+msgstr "Чат разработчиков shMapper"

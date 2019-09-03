@@ -24,7 +24,7 @@ class ShmAdminPage
         ob_start();
         ?>
         <span class="shmapper-admin-footer <?php echo $footer_class;?>">
-            <a href="https://t.me/shmapper" target="_blank"><?php _e('Shmapper developers chat', 'leyka');?></a>
+            <a href="https://t.me/shmapper" target="_blank"><?php _e('shMapper developers chat', SHMAPPER);?></a>
         </span>
         <?php
         return ob_get_clean() . $old_footer_html;
