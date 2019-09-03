@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 "\"\"X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.0.5\n"
 "PO-Revision-Date: \n"
 
 #: class/shmapper.php:1
@@ -478,8 +478,8 @@ msgid "You may see this %s"
 msgstr "Вы можете посмотреть его здесь %s"
 
 #: class/ShMap.class.php:1
-msgid "Drag choosed icon and place it to map."
-msgstr "Перетащите выбранную иконку в нужное место Карты"
+msgid "Drag choosed icon and place it to map or click it and enter exact address."
+msgstr "Перетащите выбранную иконку в нужное место Карты или кликните по ней и введите точный адрес."
 
 #: class/ShMap.class.php:1
 msgid "Drag icon and place it to map."

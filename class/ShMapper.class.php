@@ -191,7 +191,7 @@ class ShMapper
 	static function add_admin_js_script()
 	{	
 		//css
-		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array());
+	    wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper");
 		//js
 		wp_enqueue_script("jquery");

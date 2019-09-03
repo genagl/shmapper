@@ -1632,3 +1632,17 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #888888;
 }
+
+/* admin footer */
+.shmapper-admin-footer {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.post-type-shm_map #footer-upgrade,
+.post-type-shm_point #footer-upgrade,
+.post-type-shm_request #footer-upgrade,
+.shmapper_page_shm_settings_page #footer-upgrade {
+    margin-top: 40px;
+}
