@@ -58,6 +58,9 @@ No questions yet.
 
 == Changelog ==
 
+= 1.3.3 =
+* Textdomain load forced.
+
 = 1.3.2 =
 * Marker placement by address added.
 * Marker placement by click added.
