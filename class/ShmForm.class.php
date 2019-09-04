@@ -450,25 +450,41 @@ class ShmForm
 						{
 							$clr 	= get_term_meta($term_id, "color", true);
 							$icon 	= ShMapPointType::get_icon_src($term_id)[0];
+							
 							if($icon)
 							{
+							    $icon_width = get_term_meta( $term_id, "width", true );
+							    $icon_height = get_term_meta( $term_id, "height", true );
 								$icons .= "
-								<div class='shm-type-icon' style='background-image:url($icon);' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
+								<div class='shm-type-icon' style='background-image:url($icon);' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr' data-icon-width='".$icon_width."' data-icon-height='".$icon_height."'>
 								</div>";
 							}
 							else
 							{
 								$diid = $map->get_meta("default_icon_id");
 								$icon	= wp_get_attachment_image_src($diid, [60, 60])[0];			
-								if(!$icon)
-									$icon = ShMapper::$options['map_api'] == 2 
-									? "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"
-									: SHM_URLPATH . 'assets/img/ym_default.png';								
+								if(!$icon) {
+								    if(ShMapper::$options['map_api'] == 2) {
+								        $icon = "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"; // 25 x 41
+								        $icon_width = 25;
+								        $icon_height = 41;
+								    }
+    								else {
+    								    $icon = SHM_URLPATH . 'assets/img/ym_default.png';	// 34 x 41
+    								    $icon_width = 34;
+    								    $icon_height = 41;
+    								}
+								}
+								else {
+								    $icon_width = 25;
+								    $icon_height = 41;
+								}
+								
 								$icons .=  !$icon ? "
-								<div class='shm-type-icon' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr'>
+								<div class='shm-type-icon' shm_type_id='$term_id' shm_map_id='' shm_clr='$clr' data-icon-width='".$icon_width."' data-icon-height='".$icon_height."'>
 									<div class='shm-color-crcl' style='background:$clr'></div>
 								</div>" :
-								"<div class='shm-type-icon' style='background-image:url($icon);' shm_map_id=''></div>";
+								"<div class='shm-type-icon' style='background-image:url($icon);' shm_map_id='' data-icon-width='".$icon_width."' data-icon-height='".$icon_height."'></div>";
 							} 
 						}
 						$html1 .= "

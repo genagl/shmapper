@@ -273,6 +273,8 @@ jQuery(document).ready(function($)
 			{
 				var h = parseInt(elem.height);
 				var w = elem.width ? parseInt(elem.width) : h;
+//				console.log(String(w) + ' x ' + h);
+				
 				if(!icons[elem.term_id])
 				{
 					icons[elem.term_id] = L.icon({
@@ -387,11 +389,22 @@ jQuery(document).ready(function($)
 			{
 				bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
 				s_style = {draggable:true};
+				
+				var icon_width = $selectedMarker.data('icon-width');
+				var icon_height = $selectedMarker.data('icon-height');
+				
+				if(!icon_width) {
+					icon_width = 40;
+				}
+				if(!icon_height) {
+					icon_height = 40;
+				}
+				
 				s_style.icon = L.icon({
 					iconUrl: bg,
 					shadowUrl: '',
-					iconSize:     [40, 40], // size of the icon
-					iconAnchor:   [20, 20], // point of the icon which will correspond to marker's location
+					iconSize:     [icon_width, icon_height], // size of the icon
+					iconAnchor:   [icon_width / 2, icon_height / 2], // point of the icon which will correspond to marker's location
 				});
 			}
 			else if($selectedMarker.attr("shm_clr"))
