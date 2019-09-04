@@ -461,7 +461,7 @@ jQuery(document).ready(function($)
 		$markerIcon.css({left:0, top:0}).hide().fadeIn("slow");
 		$markerIcon.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");		
 		
-		$selectedMarker.data("straight_geocoding", "");
+		$markerIcon.data("straight_geocoding", "");
 	}
 	
 })

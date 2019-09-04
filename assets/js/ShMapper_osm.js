@@ -431,6 +431,10 @@ jQuery(document).ready(function($)
 			}
 			eclectMarker = L.marker(eclectCoords,s_style).addTo(map);
 			map.mp.disable();
+			eclectMarker.on("dragstart", function(evt){
+				console.log(evt);
+			});
+			
 			eclectMarker.on("dragend touchend", function(evt)
 			{
 				//console.log(evt.target._latlng);
