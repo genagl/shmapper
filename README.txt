@@ -6,7 +6,7 @@ Tags: map, OpenStreetMap, OSM, yandex.map, crowdsourcing, карта, Яндек
 Requires at least: 3.6.1
 Tested up to: 5.2.2
 Requires PHP: 5.6
-Stable tag: 1.3.1
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
