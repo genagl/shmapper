@@ -38,9 +38,12 @@
 // load textdomain
 function init_textdomain_shmapper() 
 { 
-	if (function_exists('load_plugin_textdomain')) 
-	{
-		load_plugin_textdomain("shmapper-by-teplitsa", false , dirname( plugin_basename( __FILE__ ) ) .'/languages/');     
+	if (function_exists('load_textdomain'))	{
+        load_textdomain("shmapper-by-teplitsa", WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) .'/languages/shmapper-by-teplitsa-'.get_locale().'.mo');
+	}
+  
+	if (function_exists('load_plugin_textdomain')) {
+		load_plugin_textdomain("shmapper-by-teplitsa", false , dirname( plugin_basename( __FILE__ ) ) .'/languages');
 	} 
 }
 add_action('plugins_loaded', 'init_textdomain_shmapper');
