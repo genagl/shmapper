@@ -68,7 +68,7 @@ define('SHMAPPER_TITLE_TYPE_ID', 9);
 define('SHM_CSV_STROKE_SEPARATOR', ';');
 define('SHM_CSV_ROW_SEPARATOR', '
 ');
-define('SHMAPPER_VERSION', '1.3.2');
+define('SHMAPPER_VERSION', '1.3.3');
 
 require_once(SHM_REAL_PATH.'class/ShMapper.class.php');
 require_once(SHM_REAL_PATH.'class/ShMapper_ajax.class.php');
