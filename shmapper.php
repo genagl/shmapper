@@ -3,7 +3,7 @@
  * Plugin Name: ShMapper by Teplitsa
  * Plugin URI: http://genagl.ru/?p=652
  * Description: Location and logistics services for NKO
- * Version: 1.3.2
+ * Version: 1.3.3
  * Author: Teplitsa. Technologies for Social Good
  * Author URI:  https://te-st.ru
  * License: GPL2
