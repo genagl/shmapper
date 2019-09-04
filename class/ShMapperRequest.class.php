@@ -245,7 +245,7 @@ class ShMapperRequest extends SMC_Post
 			    $author		= sanitize_text_field($data['elem'][$key]);
 			if($val['type'] == SHMAPPER_TEXTAREA_TYPE_ID)
 			{
-				$description .= "<p>" . $data['elem'][$key];
+				$description .= $data['elem'][$key];
 			}
 			if($key == 1)
 			{

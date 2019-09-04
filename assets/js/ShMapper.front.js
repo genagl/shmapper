@@ -42,7 +42,13 @@ jQuery(document).ready(function($)
 			d.append("shm_form_name", 	$this.find( "[name='shm_form_name']" ).val());
 			d.append("shm_form_email", 	$this.find( "[name='shm_form_email']" ).val());
 			d.append("shm_form_phone", 	$this.find( "[name='shm_form_phone']" ).val());
-			d.append("elem", $this.find( "[name='elem[]']" ).map( function(num,el){ return el.value} ).get() );
+			d.append("elem", $this.find( "[name='elem[]']" ).map( function(num,el){
+				var val = el.value;
+				if(val) {
+					val = String(val).replace(/,/g, "{{shmapper_comma}}");
+				}
+				return val;
+			} ).get() );
 			$.each( shm_img, function( key, value )
 			{
 				d.append( key, value );

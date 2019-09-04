@@ -61,6 +61,9 @@ class ShMapper_ajax
 		/**/
 		$data = $_POST;
 		$data['elem']	= explode(",", $data['elem']);
+		foreach($data['elem'] as $i => $v) {
+		    $data['elem'][$i] = str_replace("{{shmapper_comma}}", ",", $v);
+		}
 		
 		if( ShMapper::$options['shm_settings_captcha'] )
 		{
