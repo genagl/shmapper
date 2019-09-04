@@ -105,3 +105,11 @@ function shm_is_session()
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	return is_plugin_active( 'wp-session-manager/wp-session-manager.php' ) ;		
 }
+
+function shmapper_prefix_disable_gutenberg($current_status, $post_type) {
+    if(in_array($post_type, array(SHM_POINT))) {
+        return false;
+    }
+    return $current_status;
+}
+add_filter('use_block_editor_for_post_type', 'shmapper_prefix_disable_gutenberg', 10, 2);
