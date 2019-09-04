@@ -476,8 +476,8 @@ class ShmForm
     								}
 								}
 								else {
-								    $icon_width = 25;
-								    $icon_height = 41;
+								    $icon_width = "";
+								    $icon_height = "";
 								}
 								
 								$icons .=  !$icon ? "
