@@ -16,7 +16,7 @@ shMapper is a plugin, that allows you to create simple crowdsourcing maps based 
 
 The shMapper plugin allows you to create simple crowdsourcing maps on OpenStreetMap with an option of feedback messages form. This plugin gives you an alternative to current online map services such as Yandex.Maps, Google Maps etc which don’t provide the option for users to add new objects.
 
-Most of the code written by Gennadiy Glazunov aka [Genagl](http://genagl.ru/author)
+Most of the code written by Gennadiy Glazunov aka [Genagl](http://genagl.ru)
 
 **Core features**
 
