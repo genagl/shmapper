@@ -137,7 +137,7 @@ class ShmPoint extends SMC_Post
 		$current = file_get_contents( ABSPATH. "alert.log" );
 		file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
 		$wpdb->query( $query );
-		var_dump( $query );
+		//var_dump( $query );
 		return $query;
 	}
 	static function save_admin_edit($obj)
