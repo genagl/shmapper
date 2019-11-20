@@ -17,7 +17,8 @@ class ShMapper
 			PRIMARY KEY (`ID`)
 		) ENGINE=MyISAM DEFAULT CHARSET=cp1251 AUTO_INCREMENT=1 ;");
 				update_option(SHMAPPER,[
-			"map_api"	=> 1,
+// 			"map_api"	=> 1,
+		    "map_api"	=> 2,
 			"shm_map_is_crowdsourced"	=> 0,
 			"shm_map_marker_premoderation"	=> 1,
 			"shm_reload"	=> 1,
@@ -51,6 +52,8 @@ class ShMapper
 	function __construct()
 	{	
 		static::$options = get_option(SHMAPPER);
+		static::$options['map_api'] = 2; // hot fix to disable Maps.Yandex
+		
 		add_action( "init", 						[__CLASS__, "add_shortcodes"], 80);
 		add_action( "wp_head",						[__CLASS__, "set_styles"]);
 		add_filter( "smc_add_post_types",	 		[__CLASS__, "init_obj"], 10);
@@ -634,14 +637,14 @@ class ShMapper
 				jQuery('#shm_wizzard').appendTo('#adminmenu').hide().fadeIn('slow').css({top: loc.top - 15});
 				jQuery('#shm_wizzard_closed').appendTo('#adminmenu').hide().css({top: loc.top - 28});
 				jQuery('" .(empty($stepData["alt_selector"]) ? '' : $stepData["alt_selector"]) . "').each((num, elem) => {
-					var ofset = $(elem).offset();
+					var ofset = jQuery(elem).offset();
 					var poss = ofset.left < window.innerWidth/2 ? 1 : 2;
 					var arr	= poss == 1 ? '<div class=\"shm_warrow\" id=\"shm_warrow'+ num +'\"></div>' : '<div class=\"shm_warrow2\" id=\"shm_warrow'+ num +'\"></div>';
-					var lpos =  poss == 1 ? ofset.left +  $(elem).width() + 20 : ofset.left - 50;
-					$(arr)
+					var lpos =  poss == 1 ? ofset.left +  jQuery(elem).width() + 20 : ofset.left - 50;
+					jQuery(arr)
 						.appendTo('body')
 							.offset({top:ofset.top - 8, left:lpos})
-					$(elem).live({click:evt =>
+					jQuery(elem).live({click:evt =>
 					{
 						shm_send(['shm_wnext']);	
 					}});

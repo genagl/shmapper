@@ -409,6 +409,7 @@ jQuery(document).ready(function($)
 
 function shm_send( params, type )
 {
+	var $ = jQuery;
 	console.log(params, type);
 	jQuery.post	(
 		myajax.url,
@@ -419,6 +420,7 @@ function shm_send( params, type )
 		},
 		function( response ) 
 		{
+			var $ = jQuery;
 			console.log(response);
 			try
 			{
