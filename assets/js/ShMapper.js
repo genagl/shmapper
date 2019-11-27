@@ -73,6 +73,11 @@ jQuery(document).ready(function($)
 		$(".map_api_cont").css("opacity", 0.7);
 		shm_send(["map_api", $(evt.currentTarget).val()]);	
 	}});
+	$("[name=shm_yandex_maps_api_key]").live({change:function(evt)
+	{
+		$(".map_api_cont").css("opacity", 0.7);
+		shm_send(["shm_yandex_maps_api_key", $(evt.currentTarget).val() ]);	
+	}});	
 	$("#shm_map_is_crowdsourced").live({click:function(evt)
 	{
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
@@ -528,6 +533,13 @@ function shm_send( params, type )
 					break;	
 				case "map_api":
 					$(".map_api_cont").css("opacity", 1);
+				case "shm_yandex_maps_api_key":
+					$(".map_api_cont").css("opacity", 1);
+					if(datas['hide_dang'])
+						$("#shm_settings_yandex_map_api_key_cont .shm-color-alert").hide();
+					else
+						$("#shm_settings_yandex_map_api_key_cont .shm-color-alert").fadeIn("slow");
+					break;				
 				case "shm_voc":
 					$("#shm_vocabulary_cont").css("opacity", 1);
 					break;	

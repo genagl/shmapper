@@ -979,3 +979,18 @@ msgstr "http://genagl.ru/?p=652"
 #. Plugin Name of the plugin
 msgid "ShMapper by Teplitsa"
 msgstr "ShMapper by Teplitsa"
+
+msgid "Yandex.Maps API key Saved"
+msgstr "Ключ API Яндекс.Карт сохранен"
+
+msgid "Yandex.Maps API Key"
+msgstr "Ключ API Яндекс.Карт"
+
+msgid "ATTENTION: you must specify a key for working with the Yandex.Maps API."
+msgstr "ВНИМАНИЕ: необходимо указать ключ для работы с API Яндекс.Карт."
+
+msgid "Learn more here:"
+msgstr "Подробнее здесь:"
+
+msgid "Yandex.Maps"
+msgstr "Яндекс.Карты"

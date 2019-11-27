@@ -52,7 +52,7 @@ class ShMapper
 	function __construct()
 	{	
 		static::$options = get_option(SHMAPPER);
-		static::$options['map_api'] = 2; // hot fix to disable Maps.Yandex
+// 		static::$options['map_api'] = 2; // hot fix to disable Maps.Yandex
 		
 		add_action( "init", 						[__CLASS__, "add_shortcodes"], 80);
 		add_action( "wp_head",						[__CLASS__, "set_styles"]);
@@ -206,7 +206,7 @@ class ShMapper
 		wp_enqueue_script("ShMapper.admin");
 		if( static::$options['map_api'] == 1 )
 		{
-			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?load=package.full&lang=ru_RU", array());
+		    wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=".ShMapper::$options['shm_yandex_maps_api_key']."&load=package.full&lang=ru_RU", array());
 			wp_enqueue_script("api-maps");	
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
@@ -301,7 +301,7 @@ class ShMapper
 		wp_enqueue_script("ShMapper.front");	
 		if( static::$options['map_api'] == 1 )
 		{
-			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?load=package.full&lang=ru_RU", array());
+			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=".ShMapper::$options['shm_yandex_maps_api_key']."&load=package.full&lang=ru_RU", array());
 			wp_enqueue_script("api-maps");			
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
@@ -423,7 +423,7 @@ class ShMapper
 			</div>
 			<div class='spacer-30'></div>
 			<ul class='shm-card'>
-				<li>
+				<li class='shm-map-api-vendor'>
 					<div class='shm-row map_api_cont'>
 						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3'>".
 							__("Map API", SHMAPPER) . 
@@ -433,15 +433,27 @@ class ShMapper
 								<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" . 
 									checked(1, (int)static::$options['map_api'], 0) . 
 								"/>
-								<label for='radio_Yandex'>".__("Yandex Map", SHMAPPER) ."</label>
+								<label for='radio_Yandex'>".__("Yandex.Maps", SHMAPPER) ."</label>
 							</div>
 							<div class='shm-admin-block'>
 								<input type='radio' class='radio' value='2' name='map_api' id='radio_OSM'" . 
 									checked(2, (int)static::$options['map_api'], 0) . 
 								"/>
-								<label for='radio_OSM'>".__("Open Street Map", SHMAPPER) ."</label>
+								<label for='radio_OSM'>".__("OpenStreetMap", SHMAPPER) ."</label>
 							</div>
+
 							<div class='spacer-10'></div>
+
+        					<div class='shm-row' id='shm_settings_yandex_map_api_key_cont'>
+        						<div class='shm-9'>
+        							<p>
+            							<div><small class='shm-color-grey'>".__("Yandex.Maps API Key", SHMAPPER)."</small></div>
+            							<input class='sh-form' name='shm_yandex_maps_api_key' value='".(empty(static::$options['shm_yandex_maps_api_key']) ? '' : static::$options['shm_yandex_maps_api_key']). "' />
+                                        <span class='shm-color-alert'><small>".__("ATTENTION: you must specify a key for working with the Yandex.Maps API.", SHMAPPER)."<br />".__("Learn more here:", SHMAPPER)." <a href='https://tech.yandex.ru/maps/jsapi/doc/2.1/dg/concepts/load-docpage/' target='_blank'>https://tech.yandex.ru/maps/jsapi/doc/2.1/dg/concepts/load-docpage/</a></small></span>
+        							<p>
+        						</div>	
+        					</div>
+				
 						</div>
 					</div>
 				</li>

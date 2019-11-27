@@ -881,7 +881,7 @@ ul.shm-card li:nth-of-type(even)
 {
 	background-color:rgba(0,0,0,0.05);
 }
-.wp-admin.shmapper_page_shm_settings_page ul.shm-card li:first-child
+.wp-admin.shmapper_page_shm_settings_page #shm_settings_yandex_map_api_key_cont
 {
 	display: none;
 }

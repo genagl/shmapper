@@ -407,6 +407,17 @@ class ShMapper_ajax
 					)
 				);
 				break; 
+			case "shm_yandex_maps_api_key":
+			    ShMapper::$options['shm_yandex_maps_api_key'] = sanitize_text_field($params[1]);
+			    ShMapper::update_options();
+			    $d = array(
+			        $action,
+			        array(
+			            "msg"	=> __( "Yandex.Maps API key Saved" , SHMAPPER),
+			            "hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_yandex_maps_api_key'] != "" ? 1 : 0
+			        )
+			    );
+			    break;
 			case "shm_map_is_crowdsourced":	
 			    ShMapper::$options['shm_map_is_crowdsourced'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
