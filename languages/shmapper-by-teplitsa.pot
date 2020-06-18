@@ -1,0 +1,1043 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: ShMapper by Teplitsa\n"
+"POT-Creation-Date: 2020-06-18 05:16+0300\n"
+"PO-Revision-Date: 2020-06-18 05:16+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: shmapper.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: class/SMC_Post.php:370 class/ShMapper.class.php:170
+#: class/ShmMap.class.php:103 class/ShmMap.class.php:596
+#: class/ShmPoint.class.php:300
+msgid "Title"
+msgstr ""
+
+#: class/SMC_Post.php:496 class/ShmMap.class.php:521
+msgid "Double"
+msgstr ""
+
+#: class/SMC_Post.php:542 class/ShmPoint.class.php:234
+#: class/ShmPoint.class.php:460 class/ShmPoint.class.php:476
+msgid "Usage in Maps: "
+msgstr ""
+
+#: class/SMC_Post.php:560
+msgid "&mdash; No Change &mdash;"
+msgstr ""
+
+#: class/SMC_Post.php:563
+msgid "No"
+msgstr ""
+
+#: class/SMC_Post.php:566
+msgid "Yes"
+msgstr ""
+
+#: class/SMC_Post.php:631 class/SMC_Post.php:636
+msgid "Parameters"
+msgstr ""
+
+#: class/ShMapPointType.class.php:32 class/ShMapPointType.class.php:33
+#: class/ShMapPointType.class.php:43 class/ShmPoint.class.php:107
+msgid "Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:34
+msgid "Search Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:35
+msgid "all Map marker types"
+msgstr ""
+
+#: class/ShMapPointType.class.php:36
+msgid "view Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:37
+msgid "parent Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:38
+msgid "parent Map marker type:"
+msgstr ""
+
+#: class/ShMapPointType.class.php:39
+msgid "edit Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:40
+msgid "update Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:41
+msgid "add Map marker type"
+msgstr ""
+
+#: class/ShMapPointType.class.php:42
+msgid "new Map marker type name"
+msgstr ""
+
+#: class/ShMapPointType.class.php:49
+msgid "Unique type of every Map markers"
+msgstr ""
+
+#: class/ShMapPointType.class.php:74 class/ShMapPointType.class.php:75
+msgid "Map marker types"
+msgstr ""
+
+#: class/ShMapPointType.class.php:86
+msgid "Name"
+msgstr ""
+
+#: class/ShMapPointType.class.php:87 class/ShMapPointType.class.php:137
+#: class/ShMapPointType.class.php:197
+msgid "Icon"
+msgstr ""
+
+#: class/ShMapPointType.class.php:117 class/ShMapPointType.class.php:165
+msgid "Color"
+msgstr ""
+
+#: class/ShMapPointType.class.php:125 class/ShMapPointType.class.php:177
+#: class/ShMapper.class.php:141 class/ShmMap.class.php:252
+#: widget/ShMap.widget.php:80
+msgid "Height"
+msgstr ""
+
+#: class/ShMapPointType.class.php:131 class/ShMapPointType.class.php:187
+#: class/ShMapper.class.php:140 class/ShmMap.class.php:257
+msgid "Width"
+msgstr ""
+
+#: class/ShMapPointType.class.php:358
+msgid "None"
+msgstr ""
+
+#: class/ShMapper.class.php:26
+msgid ""
+"Я даю свое согласие администратору сайта на обработку, в том числе "
+"автоматизированную, своих персональных данных в соответствии с Федеральным "
+"законом от 27.07.2006 N 152-ФЗ «О персональных данных»."
+msgstr ""
+
+#: class/ShMapper.class.php:27
+msgid "Your request has been successfully registered."
+msgstr ""
+
+#: class/ShMapper.class.php:28
+msgid "Unknown error."
+msgstr ""
+
+#: class/ShMapper.class.php:78 class/ShMapper.class.php:392
+#: class/ShMapper.class.php:393
+msgid "Shmapper"
+msgstr ""
+
+#: class/ShMapper.class.php:84 class/ShmMap.class.php:72
+#: class/ShmMap.class.php:73 class/ShmMap.class.php:75
+msgid "add Map"
+msgstr ""
+
+#: class/ShMapper.class.php:90
+msgid "Maps"
+msgstr ""
+
+#: class/ShMapper.class.php:96
+msgid "edit Maps in page"
+msgstr ""
+
+#: class/ShMapper.class.php:115 class/ShMapperRequest.class.php:25
+#: class/ShMapperRequest.class.php:30
+msgid "all Map Requests"
+msgstr ""
+
+#: class/ShMapper.class.php:126 class/ShMapper.class.php:174
+#: class/ShMapperRequest.class.php:88 class/ShmMap.class.php:596
+#: class/ShmPoint.class.php:250
+msgid "Location"
+msgstr ""
+
+#: class/ShMapper.class.php:127 class/ShMapper.class.php:134
+#: class/ShMapper.class.php:172 class/ShMapperRequest.class.php:84
+#: class/ShmMap.class.php:596 class/ShmPoint.class.php:246
+msgid "Latitude"
+msgstr ""
+
+#: class/ShMapper.class.php:128 class/ShMapper.class.php:135
+#: class/ShMapper.class.php:173 class/ShMapperRequest.class.php:86
+#: class/ShmMap.class.php:596 class/ShmPoint.class.php:248
+msgid "Longitude"
+msgstr ""
+
+#: class/ShMapper.class.php:129 class/ShMapper.class.php:136
+msgid "Zoom"
+msgstr ""
+
+#: class/ShMapper.class.php:137 class/ShmMap.class.php:112
+#: class/ShmMap.class.php:327
+msgid "Legend exists"
+msgstr ""
+
+#: class/ShMapper.class.php:138 class/ShmMap.class.php:338
+msgid "Filters exists"
+msgstr ""
+
+#: class/ShMapper.class.php:139 class/ShmMap.class.php:107
+#: class/ShmMap.class.php:316
+msgid "Export csv"
+msgstr ""
+
+#: class/ShMapper.class.php:142 class/ShmMap.class.php:273
+msgid "Map search"
+msgstr ""
+
+#: class/ShMapper.class.php:143 class/ShmMap.class.php:287
+msgid "Map full screen"
+msgstr ""
+
+#: class/ShMapper.class.php:144
+msgid "Map zoom slider"
+msgstr ""
+
+#: class/ShMapper.class.php:145 class/ShmMap.class.php:281
+msgid "Map layer switcher"
+msgstr ""
+
+#: class/ShMapper.class.php:146 class/ShmMap.class.php:295
+msgid "Lock zoom and drag"
+msgstr ""
+
+#: class/ShMapper.class.php:147 class/ShmMap.class.php:291
+msgid "Formating Marker to cluster"
+msgstr ""
+
+#: class/ShMapper.class.php:148
+msgid "Default Marker icon"
+msgstr ""
+
+#: class/ShMapper.class.php:150 class/ShmMap.class.php:117
+msgid "Form exists"
+msgstr ""
+
+#: class/ShMapper.class.php:151 class/ShmMap.class.php:122
+#: class/ShmMap.class.php:401
+msgid "Notify owner of Map"
+msgstr ""
+
+#: class/ShMapper.class.php:152
+msgid "Form Title"
+msgstr ""
+
+#: class/ShMapper.class.php:153
+msgid "Form generator"
+msgstr ""
+
+#: class/ShMapper.class.php:154 class/ShmMap.class.php:421
+msgid "Users can leave their contact details for feedback."
+msgstr ""
+
+#: class/ShMapper.class.php:155
+msgid "Unclude Personal name"
+msgstr ""
+
+#: class/ShMapper.class.php:156 class/ShmMap.class.php:434
+msgid "Personal name"
+msgstr ""
+
+#: class/ShMapper.class.php:157
+msgid "Required Personal name"
+msgstr ""
+
+#: class/ShMapper.class.php:158
+msgid "Unclude Personal e-mail"
+msgstr ""
+
+#: class/ShMapper.class.php:159
+msgid "Personal e-mail"
+msgstr ""
+
+#: class/ShMapper.class.php:160
+msgid "Required Personal e-mail"
+msgstr ""
+
+#: class/ShMapper.class.php:161
+msgid "Unclude Personal phone"
+msgstr ""
+
+#: class/ShMapper.class.php:162 class/ShmMap.class.php:466
+msgid "Personal phone"
+msgstr ""
+
+#: class/ShMapper.class.php:163
+msgid "Required Personal phone"
+msgstr ""
+
+#: class/ShMapper.class.php:169 class/ShmMap.class.php:70
+#: class/ShmMap.class.php:71 widget/ShMap.widget.php:68
+msgid "Map"
+msgstr ""
+
+#: class/ShMapper.class.php:171 class/ShmForm.class.php:223
+#: class/ShmForm.class.php:295 class/ShmForm.class.php:372
+#: class/ShmMap.class.php:596 class/ShmPoint.class.php:304
+msgid "Description"
+msgstr ""
+
+#: class/ShMapper.class.php:175 class/ShmPoint.class.php:231
+#: class/ShmPoint.class.php:308
+msgid "Type"
+msgstr ""
+
+#: class/ShMapper.class.php:176
+msgid "Session"
+msgstr ""
+
+#: class/ShMapper.class.php:177 class/ShMapperRequest.class.php:67
+#: class/ShmMap.class.php:126
+msgid "Author"
+msgstr ""
+
+#: class/ShMapper.class.php:178
+msgid "Contacts"
+msgstr ""
+
+#: class/ShMapper.class.php:179
+msgid "Aproved"
+msgstr ""
+
+#: class/ShMapper.class.php:180
+msgid "Aprove date"
+msgstr ""
+
+#: class/ShMapper.class.php:181
+msgid "Accessed User"
+msgstr ""
+
+#: class/ShMapper.class.php:275 class/ShMapper.class.php:371
+msgid "Attantion"
+msgstr ""
+
+#: class/ShMapper.class.php:276 class/ShMapper.class.php:372
+msgid "Send"
+msgstr ""
+
+#: class/ShMapper.class.php:277 class/ShMapper.class.php:373
+msgid "Close"
+msgstr ""
+
+#: class/ShMapper.class.php:278 class/ShMapper.class.php:374
+msgid ""
+"Error: the form is not associated with the card. To link a map and a form, "
+"there should be 2 shortcodes on one page (map - [shmMap id = '6' map = "
+"'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' "
+"uniq = 'for example, 777']), in which the uniq parameter will match"
+msgstr ""
+
+#: class/ShMapper.class.php:279
+msgid "Are you shure?"
+msgstr ""
+
+#: class/ShMapper.class.php:405 class/ShMapper.class.php:406
+#: class/ShMapper.class.php:420
+msgid "Settings"
+msgstr ""
+
+#: class/ShMapper.class.php:429
+msgid "Map API"
+msgstr ""
+
+#: class/ShMapper.class.php:436
+msgid "Yandex.Maps"
+msgstr ""
+
+#: class/ShMapper.class.php:442
+msgid "OpenStreetMap"
+msgstr ""
+
+#: class/ShMapper.class.php:450
+msgid "Yandex.Maps API Key"
+msgstr ""
+
+#: class/ShMapper.class.php:452
+msgid "ATTENTION: you must specify a key for working with the Yandex.Maps API."
+msgstr ""
+
+#: class/ShMapper.class.php:452
+msgid "Learn more here:"
+msgstr ""
+
+#: class/ShMapper.class.php:463
+msgid "Interactive"
+msgstr ""
+
+#: class/ShMapper.class.php:471
+msgid "Включить глобальный режим неинтерактивных карт"
+msgstr ""
+
+#: class/ShMapper.class.php:475
+msgid ""
+"пользователи не смогут добавлять сообщения ни к одной карте. Если галочка "
+"включена у карт даже не появляется блок интерактивности."
+msgstr ""
+
+#: class/ShMapper.class.php:483
+msgid "Pre-modertion from Map owner."
+msgstr ""
+
+#: class/ShMapper.class.php:487
+msgid "все сообщения будут добавляться в статусе «Черновик»"
+msgstr ""
+
+#: class/ShMapper.class.php:491
+msgid ""
+"ВНИМАНИЕ: отключайте эту опцию только на ваш страх и риск, т.к. существует "
+"угроза спам-атаки"
+msgstr ""
+
+#: class/ShMapper.class.php:499
+msgid "Reload page after User send request."
+msgstr ""
+
+#: class/ShMapper.class.php:511
+msgid "Protection"
+msgstr ""
+
+#: class/ShMapper.class.php:518
+msgid "Include captcha in form (plugin uses only reCAPTCHA v2 keys)"
+msgstr ""
+
+#: class/ShMapper.class.php:527
+#, php-format
+msgid ""
+"What is Google reCAPTCHA? How recived keys for your site? See %sthis "
+"instruction%s."
+msgstr ""
+
+#: class/ShMapper.class.php:531
+msgid ""
+"Your reCAPTCHA doesn't work yet. In order to make it work, please get the "
+"API keys at google.com/recaptcha"
+msgstr ""
+
+#: class/ShMapper.class.php:543
+msgid "Vocabulary"
+msgstr ""
+
+#: class/ShMapper.class.php:547
+msgid "Save personal data garantee"
+msgstr ""
+
+#: class/ShMapper.class.php:553
+msgid "Successful send map request"
+msgstr ""
+
+#: class/ShMapper.class.php:559
+msgid "Error send map request"
+msgstr ""
+
+#: class/ShMapper.class.php:571
+msgid "Wizzard"
+msgstr ""
+
+#: class/ShMapper.class.php:574
+msgid "Restart wizzard"
+msgstr ""
+
+#: class/ShMapper.class.php:616 class/ShMapper.class.php:624
+msgid "Close wizzard"
+msgstr ""
+
+#: class/ShMapper.class.php:617 class/ShMapper.class.php:623
+msgid "Go to current page"
+msgstr ""
+
+#: class/ShMapper.class.php:620 class/ShMapper_ajax.class.php:170
+msgid "Next step"
+msgstr ""
+
+#: class/ShMapper.class.php:622
+msgid "Prevous step"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:19 class/ShMapperRequest.class.php:20
+msgid "Map Request"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:21 class/ShMapperRequest.class.php:22
+#: class/ShMapperRequest.class.php:24
+msgid "add Map Request"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:23
+msgid "edit Map Request"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:26
+msgid "view Map Request"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:27
+msgid "search Map Request"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:28
+msgid "Map Request not found"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:29
+msgid "no found Map Request in trash"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:57 class/ShmPoint.class.php:233
+msgid "Image"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:64
+msgid "Approving"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:70 class/ShmPoint.class.php:232
+msgid "GEO location"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:327
+msgid "Uknown User"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:335
+#, php-format
+msgid "<%s> Request to your Map from [%s] [%s]"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:337
+#, php-format
+msgid "You may see this %s"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:358
+msgid "Approve"
+msgstr ""
+
+#: class/ShMapperRequest.class.php:360
+msgid "Trash"
+msgstr ""
+
+#: class/ShMapper_Assistants.class.php:44
+msgid "all maps"
+msgstr ""
+
+#: class/ShMapper_Assistants.class.php:90
+msgid "Your requests to this Map "
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:177
+msgid "Congratulation! That's all!"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:195
+msgid "Wizzard closed"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:206
+msgid "Wizzard restarted"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:220
+msgid "Approve succesfully and insert new Map marker"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:232
+msgid "Request put to Trash"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:337
+#, php-format
+msgid "Are you want delete %s?"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:339
+msgid "Delete"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:355
+msgid "add Map Point"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:357
+msgid "Create"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:396
+msgid "Change Vocabulaty: "
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:416
+msgid "Yandex.Maps API key Saved"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:427
+msgid "Users can add Placemarks"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:437
+msgid "Pre-moderation on"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:447
+msgid "Reload mode"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:457
+msgid "captha added"
+msgstr ""
+
+#: class/ShMapper_ajax.class.php:467 class/ShMapper_ajax.class.php:478
+msgid "Set key"
+msgstr ""
+
+#: class/ShmAdminPage.class.php:27
+msgid "shMapper developers chat"
+msgstr ""
+
+#: class/ShmForm.class.php:14
+msgid "Place the mark to Map"
+msgstr ""
+
+#: class/ShmForm.class.php:22
+msgid "Put a title"
+msgstr ""
+
+#: class/ShmForm.class.php:43
+msgid "Whrite description"
+msgstr ""
+
+#: class/ShmForm.class.php:56
+msgid "input title"
+msgstr ""
+
+#: class/ShmForm.class.php:62
+msgid "input text"
+msgstr ""
+
+#: class/ShmForm.class.php:92
+msgid "textarea"
+msgstr ""
+
+#: class/ShmForm.class.php:98
+msgid "input file"
+msgstr ""
+
+#: class/ShmForm.class.php:104
+msgid "enabled Map markers"
+msgstr ""
+
+#: class/ShmForm.class.php:186 class/ShmForm.class.php:254
+#: class/ShmForm.class.php:340
+msgid "Type of element"
+msgstr ""
+
+#: class/ShmForm.class.php:196 class/ShmForm.class.php:267
+#: class/ShmForm.class.php:334
+msgid "Label of element"
+msgstr ""
+
+#: class/ShmForm.class.php:198 class/ShmForm.class.php:269
+#: class/ShmForm.class.php:336
+msgid "write title"
+msgstr ""
+
+#: class/ShmForm.class.php:205 class/ShmForm.class.php:277
+#: class/ShmForm.class.php:355
+msgid "Placeholder"
+msgstr ""
+
+#: class/ShmForm.class.php:207 class/ShmForm.class.php:279
+#: class/ShmForm.class.php:357
+msgid "write placeholder"
+msgstr ""
+
+#: class/ShmForm.class.php:211 class/ShmForm.class.php:283
+#: class/ShmForm.class.php:361
+msgid "Placemark types"
+msgstr ""
+
+#: class/ShmForm.class.php:225 class/ShmForm.class.php:297
+#: class/ShmForm.class.php:374
+msgid "write description"
+msgstr ""
+
+#: class/ShmForm.class.php:231
+msgid "Element is required"
+msgstr ""
+
+#: class/ShmForm.class.php:233 class/ShmForm.class.php:302
+msgid "Add before"
+msgstr ""
+
+#: class/ShmForm.class.php:234 class/ShmForm.class.php:303
+msgid "Add after"
+msgstr ""
+
+#: class/ShmForm.class.php:235 class/ShmForm.class.php:304
+msgid "Delete me"
+msgstr ""
+
+#: class/ShmForm.class.php:261 class/ShmForm.class.php:329
+msgid "require"
+msgstr ""
+
+#: class/ShmForm.class.php:326
+msgid "enable"
+msgstr ""
+
+#: class/ShmForm.class.php:378
+msgid "The name of the parameter that refers to this element"
+msgstr ""
+
+#: class/ShmForm.class.php:436
+msgid "Сhoose files"
+msgstr ""
+
+#: class/ShmForm.class.php:497
+msgid ""
+"Drag choosed icon and place it to map or click it and enter exact address."
+msgstr ""
+
+#: class/ShmForm.class.php:503 class/ShmForm.class.php:523
+#: class/ShmForm.class.php:557 class/ShmForm.class.php:568
+#: class/ShmForm.class.php:578
+msgid "This required field"
+msgstr ""
+
+#: class/ShmForm.class.php:520
+msgid "Drag icon and place it to map."
+msgstr ""
+
+#: class/ShmForm.class.php:553
+msgid "Your name"
+msgstr ""
+
+#: class/ShmForm.class.php:564
+msgid "Your e-mail"
+msgstr ""
+
+#: class/ShmForm.class.php:574
+msgid "Your phone"
+msgstr ""
+
+#: class/ShmMap.class.php:65
+msgid "Step 1. Set up your map."
+msgstr ""
+
+#: class/ShmMap.class.php:74
+msgid "edit Map"
+msgstr ""
+
+#: class/ShmMap.class.php:76 class/ShmMap.class.php:81
+msgid "all Maps"
+msgstr ""
+
+#: class/ShmMap.class.php:77
+msgid "view Map"
+msgstr ""
+
+#: class/ShmMap.class.php:78
+msgid "search Map"
+msgstr ""
+
+#: class/ShmMap.class.php:79
+msgid "Map not found"
+msgstr ""
+
+#: class/ShmMap.class.php:80
+msgid "no found Map in trash"
+msgstr ""
+
+#: class/ShmMap.class.php:102 class/ShmPoint.class.php:231
+msgid "ID"
+msgstr ""
+
+#: class/ShmMap.class.php:124
+msgid "shortcodes"
+msgstr ""
+
+#: class/ShmMap.class.php:125 class/ShmPoint.class.php:34
+msgid "Map markers"
+msgstr ""
+
+#: class/ShmMap.class.php:145
+msgid "include all (map and request form)"
+msgstr ""
+
+#: class/ShmMap.class.php:153
+msgid "only map"
+msgstr ""
+
+#: class/ShmMap.class.php:162
+msgid "only request form"
+msgstr ""
+
+#: class/ShmMap.class.php:186
+msgid "Including Map to post"
+msgstr ""
+
+#: class/ShmMap.class.php:198
+msgid "You can insert a card into a post or page by copying this shortcode."
+msgstr ""
+
+#: class/ShmMap.class.php:212
+msgid "Step 2. May anover Users add information for Map."
+msgstr ""
+
+#: class/ShmMap.class.php:237
+msgid "1.1. Pan map and choose zoom"
+msgstr ""
+
+#: class/ShmMap.class.php:249
+msgid "1.2. Set size for map's div (per pixels)"
+msgstr ""
+
+#: class/ShmMap.class.php:254 class/ShmMap.class.php:259
+msgid "Empty for "
+msgstr ""
+
+#: class/ShmMap.class.php:269
+msgid "1.3. Include interface"
+msgstr ""
+
+#: class/ShmMap.class.php:277
+msgid "Map zoom slider enabled"
+msgstr ""
+
+#: class/ShmMap.class.php:299
+msgid "Choose layers"
+msgstr ""
+
+#: class/ShmMap.class.php:313
+msgid "1.4. May User download data in *.csv?"
+msgstr ""
+
+#: class/ShmMap.class.php:324
+msgid "1.5. Will the legend be displayed?"
+msgstr ""
+
+#: class/ShmMap.class.php:335
+msgid "1.6. Will Marker type filter be displayed?"
+msgstr ""
+
+#: class/ShmMap.class.php:346
+msgid "1.7. Default Marker icon"
+msgstr ""
+
+#: class/ShmMap.class.php:351
+msgid "Recommended size is 64х64 px, format is .png"
+msgstr ""
+
+#: class/ShmMap.class.php:383
+msgid "Enable crowdsourcing function (free add Users new Markers)"
+msgstr ""
+
+#: class/ShmMap.class.php:388
+msgid "2.1. What is the name of your information form?"
+msgstr ""
+
+#: class/ShmMap.class.php:392
+msgid "For example &laquo;All beaches by the river&raquo;"
+msgstr ""
+
+#: class/ShmMap.class.php:398
+msgid "2.2. Will I notify the author about new posts?"
+msgstr ""
+
+#: class/ShmMap.class.php:406
+msgid "2.3. What information can users enter?"
+msgstr ""
+
+#: class/ShmMap.class.php:409
+msgid ""
+"You can create your own forms using form elements: & laquo; Text line & "
+"raquo;, & laquo; Text field & raquo;, & laquo; Upload files & raquo;, & "
+"laquo; Categories of Markers & raquo;"
+msgstr ""
+
+#: class/ShmMap.class.php:418
+msgid "2.4. Can users leave their contact information?"
+msgstr ""
+
+#: class/ShmMap.class.php:426
+msgid "2.5. What data users will have to put?"
+msgstr ""
+
+#: class/ShmMap.class.php:429 class/ShmMap.class.php:445
+#: class/ShmMap.class.php:461
+msgid "Include"
+msgstr ""
+
+#: class/ShmMap.class.php:439 class/ShmMap.class.php:455
+#: class/ShmMap.class.php:471
+msgid "Required"
+msgstr ""
+
+#: class/ShmMap.class.php:450
+msgid "Personal email"
+msgstr ""
+
+#: class/ShmMap.class.php:665
+msgid "What do with placemarks of deleting Map?"
+msgstr ""
+
+#: class/ShmMap.class.php:670
+msgid "Delete all Points"
+msgstr ""
+
+#: class/ShmMap.class.php:676
+msgid "Escape all Points without Owner Map"
+msgstr ""
+
+#: class/ShmMap.class.php:682
+msgid "Switch all Points to anover Map"
+msgstr ""
+
+#: class/ShmMap.class.php:768
+#, php-format
+msgid "Succesfuly delete map width %s points"
+msgstr ""
+
+#: class/ShmMap.class.php:773
+#, php-format
+msgid "Succesfuly delete map and %s points are orphans now"
+msgstr ""
+
+#: class/ShmMap.class.php:780
+#, php-format
+msgid "Succesfuly delete map and %s points migrates to %s"
+msgstr ""
+
+#: class/ShmPoint.class.php:23 class/ShmPoint.class.php:24
+msgid "Map marker"
+msgstr ""
+
+#: class/ShmPoint.class.php:25 class/ShmPoint.class.php:26
+#: class/ShmPoint.class.php:28
+msgid "add Map marker"
+msgstr ""
+
+#: class/ShmPoint.class.php:27
+msgid "edit Map marker"
+msgstr ""
+
+#: class/ShmPoint.class.php:29
+msgid "all Map markers"
+msgstr ""
+
+#: class/ShmPoint.class.php:30
+msgid "view Map marker"
+msgstr ""
+
+#: class/ShmPoint.class.php:31
+msgid "search Map marker"
+msgstr ""
+
+#: class/ShmPoint.class.php:32
+msgid "Map marker not found"
+msgstr ""
+
+#: class/ShmPoint.class.php:33
+msgid "no found Map marker in trash"
+msgstr ""
+
+#: class/ShmPoint.class.php:158
+msgid "Map owner"
+msgstr ""
+
+#: class/ShmPoint.class.php:312
+msgid "Address"
+msgstr ""
+
+#: shortcode/shmMap.shortcode.php:19
+msgid "No map on ID "
+msgstr ""
+
+#: shortcode/shmMap.shortcode.php:43
+msgid "Send request"
+msgstr ""
+
+#: tpl/input_file_form.php:64
+msgid "Upload Image"
+msgstr ""
+
+#: tpl/input_file_form.php:66
+msgid "File"
+msgstr ""
+
+#: tpl/input_file_form.php:72
+msgid "Browse"
+msgstr ""
+
+#: tpl/input_file_form.php:76 tpl/input_file_form.php:86
+msgid "Remove"
+msgstr ""
+
+#: tpl/input_file_form.php:77
+msgid "Insert"
+msgstr ""
+
+#: tpl/input_file_form.php:83 tpl/input_file_form.php:92
+msgid "Submit"
+msgstr ""
+
+#: tpl/shmMap.php:83
+#, php-format
+msgid "download  %s.csv"
+msgstr ""
+
+#: widget/ShMap.widget.php:9
+msgid "Shmapper Locations"
+msgstr ""
+
+#: widget/ShMap.widget.php:16
+msgid "Ermak Locations"
+msgstr ""
+
+#: widget/ShMap.widget.php:17
+msgid "Player Cabinet"
+msgstr ""
+
+#: widget/ShMap.widget.php:64
+msgid "Tite"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "ShMapper by Teplitsa"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://genagl.ru/?p=652"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Location and logistics services for NKO"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Teplitsa. Technologies for Social Good"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://te-st.ru"
+msgstr ""

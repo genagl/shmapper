@@ -43,7 +43,7 @@ function init_textdomain_shmapper()
 	}
   
 	if (function_exists('load_plugin_textdomain')) {
-		load_plugin_textdomain("shmapper-by-teplitsa", false , dirname( plugin_basename( __FILE__ ) ) .'/languages');
+		load_plugin_textdomain("shmapper-by-teplitsa", false , dirname( plugin_basename( __FILE__ ) ) .'/languages/');
 	} 
 }
 add_action('plugins_loaded', 'init_textdomain_shmapper');
