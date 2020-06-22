@@ -1,6 +1,6 @@
 === shMapper by Teplitsa ===
-Contributors: Genagl, Ahaenor, denis.cherniatev, Teplitsa Support Team (suptestru@gmail.com)
-Author URI: http://te-st.ru
+Contributors: Genagl, Ahaenor, denis.cherniatev, burdianov, teplosup
+Author URI: https://te-st.ru/
 Plugin URI: http://genagl.ru/?p=652
 Tags: map, OpenStreetMap, OSM, yandex.map, crowdsourcing, карта, Яндекс.карты, картирование, mapping, crowdsourced mapping, user mapping
 Requires at least: 3.6.1
