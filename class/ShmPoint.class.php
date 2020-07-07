@@ -399,9 +399,8 @@ class ShmPoint extends SMC_Post
 			</div>	";	
 		$point = $this->body;
 			
-		$html 	.= "</div>			
-		<section>
-		<script type='text/javascript'>
+		$html 	.= "
+		<script>
 			jQuery(document).ready( function($)
 			{
 				var points 		= [],
