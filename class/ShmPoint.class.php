@@ -264,14 +264,16 @@ class ShmPoint extends SMC_Post
 				{
 //                    $color 		= get_term_meta($type->term_id, "color", true);
 					$owners = $obj->get_owners();
-					$map_id = $owners[0]->ID;
-					$diid = get_post_meta($map_id, "default_icon_id", true);
-					$icon	= "<div 
-						class='shm_type_icon' 
-						style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
-						>
-					</div>";	
-					echo $icon;
+					if ( isset( $owners[0] ) ) {
+						$map_id = $owners[0]->ID;
+						$diid = get_post_meta($map_id, "default_icon_id", true);
+						$icon	= "<div 
+							class='shm_type_icon' 
+							style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
+							>
+						</div>";
+						echo $icon;
+					}
 				}
 					
 				//the_terms( $post_id, SHM_POINT_TYPE, "", ", ", "" );
