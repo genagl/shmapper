@@ -343,6 +343,9 @@ class ShMapPointType
 		
 		if( isset($params['default_none'])	)
 		{
+			if ( ! isset( $class ) ) {
+				$class = '';
+			}
 			$html .= "
 			<div class='$col_width'>
 				<input 
