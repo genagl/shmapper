@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package Teplitsa
+ */
+
 class ShmPoint extends SMC_Post
 {
 	static function init()
@@ -264,16 +270,14 @@ class ShmPoint extends SMC_Post
 				{
 //                    $color 		= get_term_meta($type->term_id, "color", true);
 					$owners = $obj->get_owners();
-					if ( isset( $owners[0] ) ) {
-						$map_id = $owners[0]->ID;
-						$diid = get_post_meta($map_id, "default_icon_id", true);
-						$icon	= "<div 
-							class='shm_type_icon' 
-							style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
-							>
-						</div>";
-						echo $icon;
-					}
+					$map_id = $owners[0]->ID;
+					$diid = get_post_meta($map_id, "default_icon_id", true);
+					$icon	= "<div 
+						class='shm_type_icon' 
+						style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
+						>
+					</div>";	
+					echo $icon;
 				}
 					
 				//the_terms( $post_id, SHM_POINT_TYPE, "", ", ", "" );
@@ -401,8 +405,9 @@ class ShmPoint extends SMC_Post
 			</div>	";	
 		$point = $this->body;
 			
-		$html 	.= "
-		<script>
+		$html 	.= "</div>			
+		<section>
+		<script type='text/javascript'>
 			jQuery(document).ready( function($)
 			{
 				var points 		= [],
