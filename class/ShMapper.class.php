@@ -411,13 +411,13 @@ class ShMapper
 		$latitude  = 55.8;
 		$longitude = 37.8;
 		$zoom      = 4;
-		if ( static::$options['shm_default_zoom'] ) {
+		if ( isset( static::$options['shm_default_zoom'] ) && static::$options['shm_default_zoom'] ) {
 			$zoom = static::$options['shm_default_zoom'];
 		}
-		if ( static::$options['shm_default_latitude'] ) {
+		if ( isset( static::$options['shm_default_latitude'] ) && static::$options['shm_default_latitude'] ) {
 			$latitude = static::$options['shm_default_latitude'];
 		}
-		if ( static::$options['shm_default_longitude'] ) {
+		if ( isset( static::$options['shm_default_longitude'] ) && static::$options['shm_default_longitude'] ) {
 			$longitude = static::$options['shm_default_longitude'];
 		}
 
@@ -594,50 +594,69 @@ class ShMapper
 						<script>
 							jQuery(document).ready( function($)
 							{
-								var points 		= []; 
-								var mData = {
-									mapType			: '$mapType',
-									uniq 			: 'map_default_coordinates',
-									muniq			: 'map_default_coordinates',
-									latitude		: '$latitude',
-									longitude		: '$longitude',
-									zoom			: '$zoom',
-									map_id			: 'default_coordinates',
-									isClausterer	: 0,
-									isLayerSwitcher	: 0,
-									isFullscreen	: 1,
-									isDesabled		: 0,
-									isSearch		: 1,
-									isZoomer		: 1,
-									isAdmin			: 0,
-									isMap			: true,
-								};
-								
 								if( map_type == 1 ) {
+
+									var points 		= [],
+									p = {}; 
+									p.post_id 	= '';
+									p.post_title 	= 'Черновик';
+									p.post_content 	= 'content';
+									p.latitude 		= '$latitude'; 
+									p.longitude 	= '$longitude'; 
+									p.location 		= ''; 
+									p.draggable 	= 1; 
+									p.type 			= '-1'; 
+									p.height 		= ''; 
+									p.width 		= ''; 
+									p.term_id 		= '-1'; 
+									p.icon 			= ''; 
+									p.color 		= '';
+
+									points.push(p);
+
+									var mData = {
+										mapType			: 'map',
+										uniq 			: 'map_default_coordinates',
+										muniq			: 'map_default_coordinates',
+										latitude		: p.latitude,
+										longitude		: p.longitude,
+										zoom			: '$zoom',
+										map_id			: '',
+										isClausterer	: 0,
+										isLayerSwitcher	: 0,
+										isFullscreen	: 1,
+										isDesabled		: 0,
+										isSearch		: 1,
+										isZoomer		: 1,
+										isAdmin			: 1,
+										isMap			: 0
+									};
+
 									ymaps.ready(() => init_map( mData, points ));
+
 								} else if (map_type == 2) {
+
+									var points = [];
+
+									var mData = {
+										mapType			: '$mapType',
+										uniq 			: 'map_default_coordinates',
+										muniq			: 'map_default_coordinates',
+										latitude		: '$latitude',
+										longitude		: '$longitude',
+										zoom			: '$zoom',
+										map_id			: 'default_coordinates',
+										isClausterer	: 0,
+										isLayerSwitcher	: 0,
+										isFullscreen	: 1,
+										isDesabled		: 0,
+										isSearch		: 1,
+										isZoomer		: 1,
+										isAdmin			: 1,
+										isMap			: true,
+									};
+
 									init_map( mData, points );
-								
-									// On zoom map.
-									myMap.on('zoom', function(e) {
-										$('[name=shm_default_zoom]').val( myMap.getZoom() ).trigger('change');
-									});
-
-									// On move map.
-									myMap.on('move', function(e) {
-										marker.setLatLng(myMap.getCenter());
-									});
-
-									// On moveend map.
-									myMap.on('moveend', function(e) {
-										var shmCenter = myMap.getCenter();
-										var shmLat = shmCenter.lat;
-										var shmLng = shmCenter.lng;
-										$('[name=shm_default_latitude]').val( shmLat ).trigger('change');
-										$('[name=shm_default_longitude]').val( shmLng ).trigger('change');
-										console.log($('[name=shm_default_longitude]').val());
-										console.log($('[name=shm_default_latitude]').val());
-									});
 
 									// Add Center Marker.
 									var classes = 'dashicons dashicons-location shm-size-40 shm-color-danger';
@@ -647,10 +666,21 @@ class ShMapper
 										{draggable: true, icon: myIcon}
 									)
 									.addTo(myMap);
-								}
 
+									// On zoom map.
+									myMap.on('zoom', function(e) {
+										$('[name=shm_default_zoom]').val( myMap.getZoom() ).trigger('change');
+									});
+
+									marker.on('dragend', function (e) {
+										$('[name=shm_default_latitude]').val(marker.getLatLng().lat).trigger('change');
+										$('[name=shm_default_longitude]').val(marker.getLatLng().lng).trigger('change');
+									});
+								}
+								
 							});
 						</script>
+
 
 							<input class='sh-form' name='shm_default_latitude' value='" . esc_attr( $latitude ) . "' readonly disabled>
 							<input class='sh-form' name='shm_default_longitude' value='" . esc_attr( $longitude ) . "' readonly disabled>

@@ -329,6 +329,11 @@ jQuery(document).ready(function($)
 				})
 				myPlacemark.events.add("dragend", evt =>
 				{
+
+					var shmCoordinates = evt.get('target').geometry.getCoordinates();
+					$("[name='shm_default_latitude']").val(shmCoordinates[0]).trigger('change');
+					$("[name='shm_default_longitude']").val(shmCoordinates[1]).trigger('change');
+
 					var pos = evt.get("position");
 					var globalPixelPoint = myMap.converter.pageToGlobal( [pos[0], pos[1]] );
 					var new_mark_coords = myMap.options.get('projection').fromGlobalPixels(globalPixelPoint, myMap.getZoom());
@@ -336,7 +341,14 @@ jQuery(document).ready(function($)
 					$("[name='longitude']").val(new_mark_coords[1].toFixed(6));
 					initAddress(new_mark_coords);
 				});
+
+				// On change zoom.
+				myMap.events.add('boundschange', function(e){
+					zoom = myMap.getZoom();
+					$('[name=shm_default_zoom]').val( zoom ).trigger('change');
+				});
 			}
+
 			if( mData.isClausterer )
 			{
 				clusterer.add(myPlacemark);
@@ -357,8 +369,10 @@ jQuery(document).ready(function($)
 	}
 	is_admin = function(myMap, mData)
 	{
+
 		if(mData.isMap)
 		{
+
 			myMap.events.add( 'boundschange', function(event)
 			{
 				 coords = myMap.getCenter();

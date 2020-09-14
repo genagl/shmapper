@@ -444,7 +444,7 @@ class ShMapper_ajax
 				$d = array(
 					$action,
 					array(
-						//"msg" => __( "New coordinates saved" , SHMAPPER ),
+						"msg" => __( "New coordinates saved" , SHMAPPER ),
 					),
 				);
 				break;
