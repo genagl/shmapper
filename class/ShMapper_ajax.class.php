@@ -418,6 +418,36 @@ class ShMapper_ajax
 			        )
 			    );
 			    break;
+			case "shm_default_longitude":
+				ShMapper::$options['shm_default_longitude'] = sanitize_text_field($params[1]);
+				ShMapper::update_options();
+				$d = array(
+					$action,
+					array(
+						"msg" => __( "New coordinates saved" , SHMAPPER ),
+					),
+				);
+				break;
+			case "shm_default_latitude":
+				ShMapper::$options['shm_default_latitude'] = sanitize_text_field($params[1]);
+				ShMapper::update_options();
+				$d = array(
+					$action,
+					array(
+						//"msg" => __( "New coordinates saved" , SHMAPPER ),
+					),
+				);
+				break;
+			case "shm_default_zoom":
+				ShMapper::$options['shm_default_zoom'] = sanitize_text_field($params[1]);
+				ShMapper::update_options();
+				$d = array(
+					$action,
+					array(
+						//"msg" => __( "New coordinates saved" , SHMAPPER ),
+					),
+				);
+				break;
 			case "shm_map_is_crowdsourced":	
 			    ShMapper::$options['shm_map_is_crowdsourced'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();

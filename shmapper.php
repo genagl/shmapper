@@ -124,4 +124,3 @@ function shmapper_disable_gutenberg( $current_status, $post_type ) {
 	return $current_status;
 }
 add_filter( 'use_block_editor_for_post_type', 'shmapper_disable_gutenberg', 10, 2);
-

@@ -66,8 +66,21 @@ jQuery(document).ready(function($)
 	$(".admin_voc").live({change:function(evt)
 	{
 		$("#shm_vocabulary_cont").css("opacity", 0.7);
-		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);	
+		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);
 	}});
+	$("[name=shm_default_longitude]").on( 'change', function(evt) {
+		setTimeout(function(){
+			shm_send(["shm_default_longitude", $(evt.currentTarget).val() ]);
+		},100);
+		setTimeout(function(){
+			shm_send(["shm_default_latitude", $('[name=shm_default_latitude]').val() ]);
+		},500);
+	});
+	$("[name=shm_default_zoom]").on( 'change', function(evt) {
+		setTimeout(function(){
+			shm_send(["shm_default_zoom", $(evt.currentTarget).val() ]);
+		},1000);
+	});
 	$("[name='map_api']").live({click:function(evt)
 	{
 		$(".map_api_cont").css("opacity", 0.7);
@@ -244,7 +257,7 @@ jQuery(document).ready(function($)
 				style.innerHTML = '.__class'+ elem.post_id + ' { color:' + clr + '; }';
 				document.getElementsByTagName('head')[0].appendChild(style);
 				var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
-				var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40) });//
+				var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });//
 				L.marker([ elem.latitude, elem.longitude ], {icon: myIcon})
 					.addTo(shm_maps[elem.mapid])
 						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');

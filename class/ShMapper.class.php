@@ -408,7 +408,21 @@ class ShMapper
 	}
 	static function setting_pages()
 	{
-		//var_dump(static::$options);
+		$latitude  = 55.8;
+		$longitude = 37.8;
+		$zoom      = 4;
+		if ( static::$options['shm_default_zoom'] ) {
+			$zoom = static::$options['shm_default_zoom'];
+		}
+		if ( static::$options['shm_default_latitude'] ) {
+			$latitude = static::$options['shm_default_latitude'];
+		}
+		if ( static::$options['shm_default_longitude'] ) {
+			$longitude = static::$options['shm_default_longitude'];
+		}
+
+		$mapType = ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
+
 		echo "<div class='shm-container shm-padding-20'>
 			<div class='shm-row'>
 				<div class='shm-12'>
@@ -532,7 +546,7 @@ class ShMapper
 						<div class='shm-1'>
 							
 						</div>	
-					</div>				
+					</div>
 				</li>	
 				<li>
 					<div class='shm-row' id='shm_vocabulary_cont'>
@@ -562,6 +576,90 @@ class ShMapper
 						</div>	
 					</div>				
 				</li>
+
+
+				<li>
+					<div class='shm-row'>
+						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3 '>".
+							__( "Coordinates", SHMAPPER ) .
+						"</div>
+						<div class='shm-9'>
+							<div id='map_default_coordinates' style='width:100%;height:300px;border:1px solid darkgrey;'>
+			
+					</div>
+						<p>
+							<span class='shm-color-grey'><small>" . esc_html__( "Set default coordinates", SHMAPPER ) . "</small></span>
+						</p>
+
+						<script>
+							jQuery(document).ready( function($)
+							{
+								var points 		= []; 
+								var mData = {
+									mapType			: '$mapType',
+									uniq 			: 'map_default_coordinates',
+									muniq			: 'map_default_coordinates',
+									latitude		: '$latitude',
+									longitude		: '$longitude',
+									zoom			: '$zoom',
+									map_id			: 'default_coordinates',
+									isClausterer	: 0,
+									isLayerSwitcher	: 0,
+									isFullscreen	: 1,
+									isDesabled		: 0,
+									isSearch		: 1,
+									isZoomer		: 1,
+									isAdmin			: 0,
+									isMap			: true,
+								};
+								
+								if( map_type == 1 ) {
+									ymaps.ready(() => init_map( mData, points ));
+								} else if (map_type == 2) {
+									init_map( mData, points );
+								
+									// On zoom map.
+									myMap.on('zoom', function(e) {
+										$('[name=shm_default_zoom]').val( myMap.getZoom() ).trigger('change');
+									});
+
+									// On move map.
+									myMap.on('move', function(e) {
+										marker.setLatLng(myMap.getCenter());
+									});
+
+									// On moveend map.
+									myMap.on('moveend', function(e) {
+										var shmCenter = myMap.getCenter();
+										var shmLat = shmCenter.lat;
+										var shmLng = shmCenter.lng;
+										$('[name=shm_default_latitude]').val( shmLat ).trigger('change');
+										$('[name=shm_default_longitude]').val( shmLng ).trigger('change');
+										console.log($('[name=shm_default_longitude]').val());
+										console.log($('[name=shm_default_latitude]').val());
+									});
+
+									// Add Center Marker.
+									var classes = 'dashicons dashicons-location shm-size-40 shm-color-danger';
+									var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });
+									marker = L.marker(
+										[ '$latitude', '$longitude' ], 
+										{draggable: true, icon: myIcon}
+									)
+									.addTo(myMap);
+								}
+
+							});
+						</script>
+
+							<input class='sh-form' name='shm_default_latitude' value='" . esc_attr( $latitude ) . "' readonly disabled>
+							<input class='sh-form' name='shm_default_longitude' value='" . esc_attr( $longitude ) . "' readonly disabled>
+							<input class='sh-form' name='shm_default_zoom' value='" . esc_attr( $zoom ) . "' readonly disabled>
+
+						</div>
+						<div class='shm-1'></div>
+					</div>
+				</li>
 				<li>
 					<div class='shm-row' id='shm_vocabulary_cont'>
 						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3 '>".
@@ -569,12 +667,10 @@ class ShMapper
 						"</div>
 						<div class='shm-9' id='shm_voc'>
 							<div class='button' id='shm_settings_wizzard' >" . __("Restart wizzard", SHMAPPER) . "</div>
-						</div>	
-						<div class='shm-1'>
-							
-						</div>	
-					</div>				
-				</li>	
+						</div>
+						<div class='shm-1'></div>
+					</div
+				</li>
 			</ul>
 		</div>";
 	}

@@ -61,6 +61,19 @@ class ShmPoint extends SMC_Post
 		$SMC_Object_type	= SMC_Object_Type::get_instance();
 		$bb					= $SMC_Object_type->object [static::get_type()];
 		$html = "";
+
+		$default_latitude  = 55.8;
+		$default_longitude = 37.8;
+		$default_zoom      = 4;
+		if ( isset( ShMapper::$options['shm_default_latitude'] ) ) {
+			$default_latitude = ShMapper::$options['shm_default_latitude'];
+		}
+		if ( isset( ShMapper::$options['shm_default_longitude'] ) ) {
+			$default_longitude = ShMapper::$options['shm_default_longitude'];
+		}
+		if ( isset( ShMapper::$options['shm_default_zoom'] ) ) {
+			$default_zoom = ShMapper::$options['shm_default_zoom'];
+		}
 		foreach($bb as $key=>$value)
 		{
 			if($key == 't' || $key == 'class' ) continue;
@@ -68,15 +81,15 @@ class ShmPoint extends SMC_Post
 			switch($key)
 			{
 				case "latitude":
-					$meta 		= $meta ? $meta : 55.8;
+					$meta 		= $meta ? $meta : $default_latitude;
 					$opacity 	= " style='display:none;' " ;
 					break;
 				case "longitude":
-					$meta 		= $meta ? $meta : 37.8;
+					$meta 		= $meta ? $meta : $default_longitude;
 					$opacity 	= " style='display:none;' " ;
 					break;
 				case "zoom":
-					$meta 		= $meta ? $meta : 4;
+					$meta 		= $meta ? $meta : $default_zoom;
 					$opacity 	= " style='display:none;' " ;
 					break;
 				default:
@@ -318,7 +331,7 @@ class ShmPoint extends SMC_Post
 				<label>" . __("Address", SHMAPPER) . "</label>
 				<input class='shm-form shm-title-4' name='shm-new-point-location' onclick='this.classList.remove(\"shm-alert\");' value='".$data[3]."'/>
 			</div>
-		<div>
+		</div>
 		";
 		
 		return $html;
@@ -376,8 +389,21 @@ class ShmPoint extends SMC_Post
 
 		return $before . implode($separator, $d) . $after;
 	}
-	function draw()
-	{
+	function draw() {
+
+		$default_latitude  = 55.8;
+		$default_longitude = 37.8;
+		$default_zoom      = 4;
+		if ( isset( ShMapper::$options['shm_default_latitude'] ) ) {
+			$default_latitude = ShMapper::$options['shm_default_latitude'];
+		}
+		if ( isset( ShMapper::$options['shm_default_longitude'] ) ) {
+			$default_longitude = ShMapper::$options['shm_default_longitude'];
+		}
+		if ( isset( ShMapper::$options['shm_default_zoom'] ) ) {
+			$default_zoom = ShMapper::$options['shm_default_zoom'];
+		}
+
 		$mapType 	= ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
 		$type		= empty($types) ? false : $types[0];
@@ -386,12 +412,12 @@ class ShmPoint extends SMC_Post
 		$post_content = wpautop( $this->get("post_content") );
 		$location	= $this->get_meta("location");
 		$latitude	= $this->get_meta("latitude");
-		$latitude 	= $latitude ? $latitude : 55.8;
+		$latitude 	= $latitude ? $latitude : $default_latitude;
 		$longitude	= $this->get_meta("longitude");
-		$longitude 	= $longitude ? $longitude : 37.8;
+		$longitude 	= $longitude ? $longitude : $default_longitude;
 
 		$zoom		= $this->get_meta("zoom");
-		$zoom 		= $zoom ? $zoom : 4;
+		$zoom 		= $zoom ? $zoom : $default_zoom;
 		
 		$html = "
 			<div class='shm-row'>
@@ -402,32 +428,31 @@ class ShmPoint extends SMC_Post
 					</div>
 					<div class='spacer-10'></div>
 				</div>	
-			</div>	";	
+			</div>	";
 		$point = $this->body;
 			
-		$html 	.= "</div>			
-		<section>
+		$html 	.= "
 		<script type='text/javascript'>
 			jQuery(document).ready( function($)
 			{
 				var points 		= [],
 				p = {}; 
-                p.post_id 	= '" . $point->ID . "';
-                p.post_title 	= '" . $post_title . "';
-                p.post_content 	= '" . html_entity_decode( esc_js($post_content) )." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js($location) . "</div>';
-                p.latitude 		= '" . $latitude . "'; 
-                p.longitude 	= '" . $longitude . "'; 
-                p.location 		= '" . esc_js($location) . "'; 
-                p.draggable 	= ".(is_admin() ? 1 : 0)."; 
-                p.type 			= '" . $term_id . "'; 
-                p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
-                p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
-                p.term_id 		= '" . $term_id . "'; 
-                p.icon 			= '" . (ShMapPointType::get_icon_src( $term_id )[0]) . "'; 
-                p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
+				p.post_id 	= '" . $point->ID . "';
+				p.post_title 	= '" . $post_title . "';
+				p.post_content 	= '" . html_entity_decode( esc_js($post_content) )." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js($location) . "</div>';
+				p.latitude 		= '" . $latitude . "'; 
+				p.longitude 	= '" . $longitude . "'; 
+				p.location 		= '" . esc_js($location) . "'; 
+				p.draggable 	= ".(is_admin() ? 1 : 0)."; 
+				p.type 			= '" . $term_id . "'; 
+				p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
+				p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
+				p.term_id 		= '" . $term_id . "'; 
+				p.icon 			= '" . (ShMapPointType::get_icon_src( $term_id )[0]) . "'; 
+				p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
 
-                points.push(p);
-				/*console.log( p );*/
+				points.push(p);
+
 				var mData = {
 					mapType			: '$mapType',
 					uniq 			: 'YMapID',
@@ -440,7 +465,7 @@ class ShmPoint extends SMC_Post
 					isLayerSwitcher	: 0,
 					isFullscreen	: 1,
 					isDesabled		: 0,
-					isSearch		: 0,
+					isSearch		: 1,
 					isZoomer		: 1,
 					isAdmin			: 1,
 					isMap			: 0
@@ -450,8 +475,16 @@ class ShmPoint extends SMC_Post
 					ymaps.ready(() => init_map( mData, points ));
 				else if (map_type == 2)
 					init_map( mData, points );
+
+				// Disable submit post form on this page.
+				$('form#post').on('keyup keypress', function(e) {
+					var keyCode = e.keyCode || e.which;
+					if (keyCode === 13) { 
+					e.preventDefault();
+						return false;
+					}
+				});
 			});
-		  
 		</script>";
 		return $html;
 	}

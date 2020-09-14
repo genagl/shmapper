@@ -170,7 +170,6 @@ jQuery(function($){
 	var $yandexMapsAPIKeyControl = $('#shm_settings_yandex_map_api_key_cont');
 
 	function shmMapProviderChangeHandler(mapProvider) {
-		console.log(mapProvider);
 		if(mapProvider == 1) {
 			$yandexMapsAPIKeyControl.show();
 			if($yandexMapsAPIKeyControl.find('input').val()) {

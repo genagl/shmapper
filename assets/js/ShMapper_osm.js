@@ -327,7 +327,7 @@ jQuery(document).ready(function($)
 				style.innerHTML = '.__class'+ elem.post_id + ' { color:' + clr + '; }';
 				document.getElementsByTagName('head')[0].appendChild(style);
 				var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
-				var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40) });//
+				var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });//
 				marker = L.marker(
 					[ elem.latitude, elem.longitude ], 
 					{draggable	: elem.draggable,icon: myIcon, term_id: elem.term_id}
