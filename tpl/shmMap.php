@@ -100,26 +100,27 @@ function draw_shMap($map, $args )
 
 "];
 
-//line javascript
-	foreach($points as $point)
-	{
+	//line javascript.
+	foreach ( $points as $point ) {
 		$p .= " 
 			var p = {}; 
-			p.post_id 	= '" . $point->ID . "';
+			p.post_id 	= '" . esc_attr( $point->ID ) . "';
 			p.post_title 	= '" . $point->post_title . "';
-			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js($point->post_content) ) . "</div> <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js($point->location) . "</div>';
-			p.latitude 		= '" . $point->latitude . "'; 
-			p.longitude 	= '" . $point->longitude . "'; 
-			p.location 		= '" . esc_js($point->location) . "'; 
-			p.type 			= '" . $point->type . "'; 
-			p.term_id 		= '" . $point->term_id . "'; 
-			p.icon 			= '" . $point->icon . "'; 
-			p.color 		= '" . $point->color . "'; 
-			p.height 		= " . $point->height . "; 
-			p.width 		= " . $point->width . "; 
+			p.post_title 	= '" . esc_html( $point->post_title ) . "';
+			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js( $point->post_content ) ) . "</div> <a href=\"" . get_permalink( $point->ID ) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js( $point->location ) . "</div>';
+			p.latitude 		= '" . esc_attr( $point->latitude ) . "';
+			p.longitude 	= '" . esc_attr( $point->longitude ) . "';
+			p.location 		= '" . esc_js( $point->location ) . "';
+			p.type 			= '" . esc_attr( $point->type ) . "';
+			p.term_id 		= '" . esc_attr( $point->term_id ) . "';
+			p.icon 			= '" . esc_attr( $point->icon ) . "';
+			p.color 		= '" . esc_attr( $point->color ) . "';
+			p.height 		= " . esc_attr( $point->height ) . ";
+			p.width 		= " . esc_attr( $point->width ) . ";
 			points.push(p);
 			";
 	}
+
 	$desabled = $is_lock ? "
 					myMap.behaviors.disable('scrollZoom');
 					myMap.behaviors.disable('drag');
