@@ -18,7 +18,7 @@ class ShMapper
 		) ENGINE=MyISAM DEFAULT CHARSET=cp1251 AUTO_INCREMENT=1 ;");
 				update_option(SHMAPPER,[
 // 			"map_api"	=> 1,
-		    "map_api"	=> 2,
+			"map_api"	=> 2,
 			"shm_map_is_crowdsourced"	=> 0,
 			"shm_map_marker_premoderation"	=> 1,
 			"shm_reload"	=> 1,
@@ -194,7 +194,7 @@ class ShMapper
 	static function add_admin_js_script()
 	{	
 		//css
-	    wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
+		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper");
 		//js
 		wp_register_script("inline", admin_url().'/js/inline-edit-post.js', array());
@@ -205,7 +205,11 @@ class ShMapper
 		wp_enqueue_script("ShMapper.admin");
 		if( static::$options['map_api'] == 1 )
 		{
-		    wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=".ShMapper::$options['shm_yandex_maps_api_key']."&load=package.full&lang=ru_RU", array());
+			$ymap_key = '';
+			if ( isset( ShMapper::$options['shm_yandex_maps_api_key'] ) ) {
+				$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
+			}
+			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=ru_RU", array());
 			wp_enqueue_script("api-maps");	
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
@@ -280,12 +284,15 @@ class ShMapper
 		);	
 	}
 	static function add_frons_js_script()
-	{	
-		
+	{
+		$ymap_key = '';
+		if ( isset( ShMapper::$options['shm_yandex_maps_api_key'] ) ) {
+			$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
+		}
 		//css
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array());
 		wp_enqueue_style( "ShMapper");
-		
+
 		wp_enqueue_script('jquery-ui-core');
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_register_script("touchpunch", plugins_url( '../assets/js/touchpunch.js', __FILE__ ), array());
@@ -298,7 +305,7 @@ class ShMapper
 		wp_enqueue_script("ShMapper.front");	
 		if( static::$options['map_api'] == 1 )
 		{
-			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=".ShMapper::$options['shm_yandex_maps_api_key']."&load=package.full&lang=ru_RU", array());
+			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=ru_RU", array());
 			wp_enqueue_script("api-maps");			
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
@@ -406,8 +413,8 @@ class ShMapper
 			[ __CLASS__, 'setting_pages' ]
 		);
 	}
-	static function setting_pages()
-	{
+	static function setting_pages() {
+
 		$latitude  = 55.8;
 		$longitude = 37.8;
 		$zoom      = 4;
@@ -421,7 +428,7 @@ class ShMapper
 			$longitude = static::$options['shm_default_longitude'];
 		}
 
-		$mapType = ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
+		$map_type = ShmMap::get_map_types()[ self::$options['map_api'] ][0];
 
 		echo "<div class='shm-container shm-padding-20'>
 			<div class='shm-row'>
@@ -436,34 +443,34 @@ class ShMapper
 			<ul class='shm-card'>
 				<li class='shm-map-api-vendor'>
 					<div class='shm-row map_api_cont'>
-						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3'>".
-							__("Map API", SHMAPPER) . 
+						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3'>" .
+							esc_html__("Map API", SHMAPPER ) .
 						"</div>
 						<div class='shm-10'>
 							<div class='shm-admin-block'>
-								<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" . 
-									checked(1, (int)static::$options['map_api'], 0) . 
+								<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" .
+									checked(1, (int)static::$options['map_api'], 0) .
 								"/>
-								<label for='radio_Yandex'>".__("Yandex.Maps", SHMAPPER) ."</label>
+								<label for='radio_Yandex'>" . esc_html( "Yandex.Maps", SHMAPPER ) . "</label>
 							</div>
 							<div class='shm-admin-block'>
-								<input type='radio' class='radio' value='2' name='map_api' id='radio_OSM'" . 
+								<input type='radio' class='radio' value='2' name='map_api' id='radio_OSM'" .
 									checked(2, (int)static::$options['map_api'], 0) . 
 								"/>
-								<label for='radio_OSM'>".__("OpenStreetMap", SHMAPPER) ."</label>
+								<label for='radio_OSM'>" . esc_html__( "OpenStreetMap", SHMAPPER ) . "</label>
 							</div>
 
 							<div class='spacer-10'></div>
 
-        					<div class='shm-row' id='shm_settings_yandex_map_api_key_cont'>
-        						<div class='shm-9'>
-        							<p>
-            							<div><small class='shm-color-grey'>".__("Yandex.Maps API Key", SHMAPPER)."</small></div>
-            							<input class='sh-form' name='shm_yandex_maps_api_key' value='".(empty(static::$options['shm_yandex_maps_api_key']) ? '' : static::$options['shm_yandex_maps_api_key']). "' />
-                                        <span class='shm-color-alert'><small>".__("ATTENTION: you must specify a key for working with the Yandex.Maps API.", SHMAPPER)."<br />".__("Learn more here:", SHMAPPER)." <a href='https://tech.yandex.ru/maps/jsapi/doc/2.1/dg/concepts/load-docpage/' target='_blank'>https://tech.yandex.ru/maps/jsapi/doc/2.1/dg/concepts/load-docpage/</a></small></span>
-        							<p>
-        						</div>	
-        					</div>
+							<div class='shm-row' id='shm_settings_yandex_map_api_key_cont'>
+								<div class='shm-9'>
+									<p>
+										<div><small class='shm-color-grey'>" . __("Yandex.Maps API Key", SHMAPPER)."</small></div>
+										<input class='sh-form' name='shm_yandex_maps_api_key' value='".(empty(static::$options['shm_yandex_maps_api_key']) ? '' : static::$options['shm_yandex_maps_api_key']). "' />
+										<span class='shm-color-alert'><small>".__("ATTENTION: you must specify a key for working with the Yandex.Maps API.", SHMAPPER)."<br />".__("Learn more here:", SHMAPPER)." <a href='https://tech.yandex.ru/maps/jsapi/doc/2.1/dg/concepts/load-docpage/' target='_blank'>https://tech.yandex.ru/maps/jsapi/doc/2.1/dg/concepts/load-docpage/</a></small></span>
+									<p>
+								</div>	
+							</div>
 				
 						</div>
 					</div>
@@ -581,7 +588,7 @@ class ShMapper
 				<li>
 					<div class='shm-row'>
 						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3 '>".
-							__( "Coordinates", SHMAPPER ) .
+							esc_html__( "Coordinates", SHMAPPER ) .
 						"</div>
 						<div class='shm-9'>
 							<div id='map_default_coordinates' style='width:100%;height:300px;border:1px solid darkgrey;'>
@@ -590,17 +597,22 @@ class ShMapper
 						<p>
 							<span class='shm-color-grey'><small>" . esc_html__( "Set default coordinates", SHMAPPER ) . "</small></span>
 						</p>
+							<div><small class='shm-color-grey'>" . esc_html__( "Longitude", SHMAPPER ) . "</small></div>
+							<input class='sh-form' name='shm_default_longitude' value='" . esc_attr( $longitude ) . "' readonly disabled>
+							<div><small class='shm-color-grey'>" . esc_html__( "Latitude", SHMAPPER ) . "</small></div>
+							<input class='sh-form' name='shm_default_latitude' value='" . esc_attr( $latitude ) . "' readonly disabled>
+							<div><small class='shm-color-grey'>" . esc_html__( "Zoom", SHMAPPER ) . "</small></div>
+							<input class='sh-form' name='shm_default_zoom' value='" . esc_attr( $zoom ) . "' readonly disabled>
 
-						<script>
-							jQuery(document).ready( function($)
-							{
+							<script>
+							jQuery(document).ready( function($) {
 								if( map_type == 1 ) {
-
+									// if is YandexMap
 									var points 		= [],
 									p = {}; 
 									p.post_id 	= '';
-									p.post_title 	= 'Черновик';
-									p.post_content 	= 'content';
+									p.post_title 	= '" . esc_html__( "Coordinates", SHMAPPER ) . "';
+									p.post_content 	= '';
 									p.latitude 		= '$latitude'; 
 									p.longitude 	= '$longitude'; 
 									p.location 		= ''; 
@@ -635,11 +647,11 @@ class ShMapper
 									ymaps.ready(() => init_map( mData, points ));
 
 								} else if (map_type == 2) {
-
+									// if is OpenStreetMap
 									var points = [];
 
 									var mData = {
-										mapType			: '$mapType',
+										mapType			: '$map_type',
 										uniq 			: 'map_default_coordinates',
 										muniq			: 'map_default_coordinates',
 										latitude		: '$latitude',
@@ -653,7 +665,7 @@ class ShMapper
 										isSearch		: 1,
 										isZoomer		: 1,
 										isAdmin			: 1,
-										isMap			: true,
+										isMap			: 0,
 									};
 
 									init_map( mData, points );
@@ -661,11 +673,6 @@ class ShMapper
 									// Add Center Marker.
 									var classes = 'dashicons dashicons-location shm-size-40 shm-color-danger';
 									var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });
-									marker = L.marker(
-										[ '$latitude', '$longitude' ], 
-										{draggable: true, icon: myIcon}
-									)
-									.addTo(myMap);
 
 									// On zoom map.
 									myMap.on('zoom', function(e) {
@@ -680,11 +687,6 @@ class ShMapper
 								
 							});
 						</script>
-
-
-							<input class='sh-form' name='shm_default_latitude' value='" . esc_attr( $latitude ) . "' readonly disabled>
-							<input class='sh-form' name='shm_default_longitude' value='" . esc_attr( $longitude ) . "' readonly disabled>
-							<input class='sh-form' name='shm_default_zoom' value='" . esc_attr( $zoom ) . "' readonly disabled>
 
 						</div>
 						<div class='shm-1'></div>

@@ -69,12 +69,11 @@ jQuery(document).ready(function($)
 		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);
 	}});
 	$("[name=shm_default_longitude]").on( 'change', function(evt) {
-		setTimeout(function(){
-			shm_send(["shm_default_longitude", $(evt.currentTarget).val() ]);
-		},100);
-		setTimeout(function(){
-			shm_send(["shm_default_latitude", $('[name=shm_default_latitude]').val() ]);
-		},500);
+		var shmDefaultLongitude = $('[name=shm_default_longitude]').val();
+		var shmDefaultLatitude  = $('[name=shm_default_latitude]').val();
+		shm_send([ 'shm_default_coordinates', [ shmDefaultLongitude, shmDefaultLatitude ] ]);
+		console.log(shmDefaultLongitude);
+		console.log(shmDefaultLatitude) ;
 	});
 	$("[name=shm_default_zoom]").on( 'change', function(evt) {
 		setTimeout(function(){
@@ -84,7 +83,7 @@ jQuery(document).ready(function($)
 	$("[name='map_api']").live({click:function(evt)
 	{
 		$(".map_api_cont").css("opacity", 0.7);
-		shm_send(["map_api", $(evt.currentTarget).val()]);	
+		shm_send(["map_api", $(evt.currentTarget).val()]);
 	}});
 	$("[name=shm_yandex_maps_api_key]").live({change:function(evt)
 	{
@@ -359,8 +358,7 @@ jQuery(document).ready(function($)
 	// input file
 	$(".shm-form-file > input[type='file']").each(function(num, elem)
 	{
-		$(elem).live({change:function(evt)
-		{
+		$(elem).on('change', function(evt) {
 			var file	= evt.target.files[0];	
 			if(!file)	return;
 			shm_img		= evt.target.files;
@@ -387,7 +385,7 @@ jQuery(document).ready(function($)
 				}; 
 			})(img);
 			reader.readAsDataURL(file);
-		}})
+		})
 	});
 	//
 	shm_add_modal = function (data)
@@ -430,6 +428,7 @@ function shm_send( params, type )
 	var $ = jQuery;
 	console.log(params, type);
 	jQuery.post	(
+
 		myajax.url,
 		{
 			action	: 'myajax',
@@ -546,6 +545,9 @@ function shm_send( params, type )
 					break;	
 				case "map_api":
 					$(".map_api_cont").css("opacity", 1);
+					setTimeout( function() {
+						window.location.reload(window.location.href);
+					}, 500 );
 				case "shm_yandex_maps_api_key":
 					$(".map_api_cont").css("opacity", 1);
 					if(datas['hide_dang'])

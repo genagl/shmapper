@@ -172,6 +172,14 @@ function draw_shMap($map, $args )
 			else if (map_type == 2)
 				init_map( mData, points );
 			
+			// Disable submit post form on this page.
+			$('form#post').on('keyup keypress', function(e) {
+				var keyCode = e.keyCode || e.which;
+				if (keyCode === 13) { 
+				e.preventDefault();
+					return false;
+				}
+			});
 		});
 
         jQuery(\"<style type='text/css'>.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {max-height: ".round($height * 1.5)."px !important;} </style>\").appendTo('head');

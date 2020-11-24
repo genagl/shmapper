@@ -352,9 +352,9 @@ class ShMapper_ajax
 					$action,
 					array( 
 						"text" => [
-							'title' 	=> __("add Map Point", SHMAPPER),
+							'title' 	=> esc_html__( 'add Map Point', SHMAPPER ),
 							"content" 	=> ShmPoint::get_insert_form( $params[1] ),
-							"send" 		=> __("Create"),
+							"send" 		=> esc_html__( 'Create', SHMAPPER ),
 							"sendHandler" => "create_point"
 						],
 					)
@@ -382,7 +382,7 @@ class ShMapper_ajax
 					array( 
 						"id"		=> $point->id,
 						"data"		=> $pointdata,
-						"msg"		=> 'success',
+						"msg"		=> esc_html__( 'Success', SHMAPPER ),
 					)
 				);
 				break;
@@ -397,16 +397,17 @@ class ShMapper_ajax
 					)
 				);
 				break; 
-			case "map_api":	
-			    ShMapper::$options['map_api'] = sanitize_text_field($params[1]);
+			case "map_api":
+				ShMapper::$options['map_api'] = sanitize_text_field( $params[1] );
 				ShMapper::update_options();
-				$d = array(	
+				$d = array(
 					$action,
 					array( 
-					    "msg"	=> sanitize_text_field($params[1]) == 1 ? "Yandex Map API" : "OpenStreet Map API",
-					)
+						"msg"    => sanitize_text_field( $params[1]) == 1 ? "Yandex Map API" : "OpenStreet Map API",
+						'reload' => 'true',
+					),
 				);
-				break; 
+				break;
 			case "shm_yandex_maps_api_key":
 			    ShMapper::$options['shm_yandex_maps_api_key'] = sanitize_text_field($params[1]);
 			    ShMapper::update_options();
@@ -418,23 +419,15 @@ class ShMapper_ajax
 			        )
 			    );
 			    break;
-			case "shm_default_longitude":
-				ShMapper::$options['shm_default_longitude'] = sanitize_text_field($params[1]);
+			case "shm_default_coordinates":
+				ShMapper::$options['shm_default_longitude'] = $params[1][0];
+				ShMapper::$options['shm_default_latitude']  = $params[1][1];
 				ShMapper::update_options();
 				$d = array(
 					$action,
 					array(
-						"msg" => __( "New coordinates saved" , SHMAPPER ),
-					),
-				);
-				break;
-			case "shm_default_latitude":
-				ShMapper::$options['shm_default_latitude'] = sanitize_text_field($params[1]);
-				ShMapper::update_options();
-				$d = array(
-					$action,
-					array(
-						//"msg" => __( "New coordinates saved" , SHMAPPER ),
+						"msg"   => esc_html__( "New coordinates saved" , SHMAPPER ),
+						"value" => array( $params[1][0], $params[1][1] ),
 					),
 				);
 				break;

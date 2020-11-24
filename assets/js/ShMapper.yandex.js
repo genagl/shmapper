@@ -367,6 +367,7 @@ jQuery(document).ready(function($)
 			}
 		});				
 	}
+
 	is_admin = function(myMap, mData)
 	{
 
