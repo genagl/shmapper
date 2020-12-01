@@ -38,10 +38,9 @@ function shmapperIsMobileView() {
 jQuery(document).ready(function($)
 {	
 	// ajax
-	$("[name='shm_wnext']").live({click:function(evt)
-	{
-		shm_send(['shm_wnext']);	
-	}});
+	$( '[name="shm_wnext"]' ).on( 'click', function() {
+		shm_send(['shm_wnext']);
+	});
 	$(".shm_doubled[post_id]").live({click:function(evt)
 	{
 		evt.preventDefault();
@@ -522,7 +521,7 @@ function shm_send( params, type )
 						window.location.href = datas['href'];
 					$(".shm_wizzard").detach();
 					$(".shm_wizzard_current").removeClass("shm_wizzard_current");
-					break;	
+					break;
 				case "shm_delete_map_hndl":
 					shm_close_modal();
 					jQuery("#post-"+datas['id']).slideUp( 800 ).hide("slow");

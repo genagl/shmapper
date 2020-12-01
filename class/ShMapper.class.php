@@ -771,6 +771,9 @@ class ShMapper
 				{
 					loc = jQuery('" . (empty($stepData["parent_selector"]) ? '' : $stepData["parent_selector"]) . "').offset();
 				}
+				if ( typeof loc === 'undefined' ) {
+					loc = jQuery('#toplevel_page_shm_page').offset();
+				}
 				jQuery('#shm_wizzard').appendTo('#adminmenu').hide().fadeIn('slow').css({top: loc.top - 15});
 				jQuery('#shm_wizzard_closed').appendTo('#adminmenu').hide().css({top: loc.top - 28});
 				jQuery('" .(empty($stepData["alt_selector"]) ? '' : $stepData["alt_selector"]) . "').each((num, elem) => {
@@ -798,21 +801,21 @@ class ShMapper
 				"text"				=> "Сначала необходимо указать общие настройки. Нажмите на кнопку <span class='dashicons dashicons-controls-play'></span> чтобы перейти в нужный раздел",
 				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
 				"parent_selector"	=> '#toplevel_page_shm_page',
-				"href"				=> "/wp-admin/admin.php?page=shm_page"
+				"href"				=> admin_url( 'admin.php?page=shm_page' ),
 			],
 			[
 				"title"				=> "Настройте Shmapper",
 				"text"				=> "Измените настройки, которые Вас не устраивают. Для подключения reCAPTCHA необходимо создать учётную запись на Google.com",
 				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
 				"parent_selector"	=> '#toplevel_page_shm_page',
-				"href"				=> '/wp-admin/admin.php?page=shm_page',
+				"href"				=> admin_url( 'admin.php?page=shm_page' ),
 			],
 			[
 				"title"				=> "Создайте вашу первую карту",
 				"text"				=> "Нажмите кнопку  \"Добавить карту\" в самом верху страницы",
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"alt_selector"		=> "body.post-type-shm_map .page-title-action" ,
-				"href"				=> '/wp-admin/edit.php?post_type=shm_map',
+				"href"				=> admin_url( 'edit.php?post_type=shm_map' ),
 			],
 			[
 				"title"				=> "Новая карта",
@@ -820,7 +823,7 @@ class ShMapper
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"alt_selector"		=> 'body.post-type-shm_map #publish',
 				"parent_selector"	=> '#adminmenuwrap .toplevel_page_shm_page',
-				"href"				=> '/wp-admin/post-new.php?post_type=shm_map',
+				"href"				=> admin_url( 'edit.php?post_type=shm_map' ),
 			],
 			[
 				"title"				=> "Новая карта",
