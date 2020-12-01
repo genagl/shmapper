@@ -725,7 +725,16 @@ class ShmMap extends SMC_Post
 			$pnt->width 		= $pnt->width 	? $pnt->width 	: 30;
 			$pnt->type 			= $type ? $type->name : "";
 			$pnt->term_id 		= $type ? $type->term_id: -1;
-			$pnt->icon 			= $type ? ShMapPointType::get_icon_src( $type->term_id )[0] : "";
+
+			$pnt_icon = '';
+			if ( $type ) {
+				$pnt_icon_src = ShMapPointType::get_icon_src( $type->term_id );
+				if ( is_array( $pnt_icon_src ) ) {
+					$pnt_icon = $pnt_icon_src[0];
+				}
+			}
+
+			$pnt->icon = $pnt_icon;
 			//$pnt->width 		= ShMapPointType::get_icon_src( $type->term_id )[2]/ShMapPointType::get_icon_src( $type->term_id )[1] * $pnt->height ;
 			//$pnt->width 		= $pnt->width ? $pnt->width : $pnt->height;
 			$p[] 	= $pnt;
@@ -786,7 +795,10 @@ class ShmMap extends SMC_Post
 	static function the_content($content)
 	{
 		global $post;
-		$t = ($post->post_type == SHM_MAP && (is_single() || is_archive() )) ? '[shmMap id="' . $post->ID . '" map form ]'  : "";
+		$t = '';
+		if ( $post ) {
+			$t = ($post->post_type == SHM_MAP && (is_single() || is_archive() )) ? '[shmMap id="' . $post->ID . '" map form ]'  : "";
+		}
 		return $t . $content;
 	}
 	static function get_type_radio($params=-1)

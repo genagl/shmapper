@@ -448,9 +448,12 @@ class ShmForm
 					{
 						foreach($terms as $term_id)
 						{
-							$clr 	= get_term_meta($term_id, "color", true);
-							$icon 	= ShMapPointType::get_icon_src($term_id)[0];
-							
+							$clr  = get_term_meta($term_id, "color", true);
+							$icon = '';
+							if ( ShMapPointType::get_icon_src($term_id) ) {
+								$icon = ShMapPointType::get_icon_src($term_id)[0];
+							}
+
 							if($icon)
 							{
 							    $icon_width = get_term_meta( $term_id, "width", true );
@@ -462,7 +465,7 @@ class ShmForm
 							else
 							{
 								$diid = $map->get_meta("default_icon_id");
-								$icon	= wp_get_attachment_image_src($diid, [60, 60])[0];			
+								$icon	= wp_get_attachment_image_url($diid, [60, 60]);			
 								if(!$icon) {
 								    if(ShMapper::$options['map_api'] == 2) {
 								        $icon = "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"; // 25 x 41

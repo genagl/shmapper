@@ -283,11 +283,19 @@ class ShmPoint extends SMC_Post
 				{
 //                    $color 		= get_term_meta($type->term_id, "color", true);
 					$owners = $obj->get_owners();
-					$map_id = $owners[0]->ID;
-					$diid = get_post_meta($map_id, "default_icon_id", true);
+					$map_id = null;
+					if ( $owners ) {
+						$map_id = $owners[0]->ID;
+					}
+					$diid = get_post_meta( $map_id, 'default_icon_id', true );
+					$image_background_url = '';
+					$image_background_src = wp_get_attachment_image_src( $diid, [60, 60] );
+					if ( $image_background_src ) {
+						$image_background_url = $image_background_src[0];
+					}
 					$icon	= "<div 
 						class='shm_type_icon' 
-						style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
+						style='background-image:url(" . esc_attr( $image_background_url ) . ");'
 						>
 					</div>";	
 					echo $icon;
@@ -430,7 +438,12 @@ class ShmPoint extends SMC_Post
 				</div>	
 			</div>	";
 		$point = $this->body;
-			
+
+		$icon = '';
+		$icon_src = ShMapPointType::get_icon_src( $term_id );
+		if ( $icon_src ) {
+			$icon = $icon_src[0];
+		}
 		$html 	.= "
 		<script type='text/javascript'>
 			jQuery(document).ready( function($)
@@ -447,8 +460,8 @@ class ShmPoint extends SMC_Post
 				p.type 			= '" . $term_id . "'; 
 				p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
 				p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
-				p.term_id 		= '" . $term_id . "'; 
-				p.icon 			= '" . (ShMapPointType::get_icon_src( $term_id )[0]) . "'; 
+				p.term_id 		= '" . esc_attr( $term_id ) . "';
+				p.icon 			= '" . $icon . "'; 
 				p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
 
 				points.push(p);
@@ -491,13 +504,15 @@ class ShmPoint extends SMC_Post
 	static function the_content($content)
 	{
 		global $post;
-		if($post->post_type == SHM_POINT && (is_single() || is_archive() ))
-		{
+		if ( $post ) {
+			if($post->post_type == SHM_POINT && (is_single() || is_archive() ))
+			{
 
-			$point = static::get_instance($post);
+				$point = static::get_instance($post);
 
-			return $point->draw().$point->get_owner_list( __("Usage in Maps: ", SHMAPPER), ", ", " "  )."<div class='spacer-30'></div>".$content;
+				return $point->draw().$point->get_owner_list( __("Usage in Maps: ", SHMAPPER), ", ", " "  )."<div class='spacer-30'></div>".$content;
 
+			}
 		}
 		return $content;
 		

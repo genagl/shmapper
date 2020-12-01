@@ -710,6 +710,7 @@ class ShMapper
 	{
 		if(!static::$options['wizzard']) return;
 		//update_option("shm_wizard_step", 0);
+		$steps_line = '';
 		$step	= (int)get_option("shm_wizard_step");
 		$stepData = static::get_wizzard_lst()[$step];
 		$i =0;
@@ -720,9 +721,15 @@ class ShMapper
 			$steps_line .= "
 			<div class='$active'><div>$i</div></div>";
 		}
-		
+
 		$title  = $stepData['title'];
 		$text  	= $stepData['text'];
+
+		$alt_selector = '';
+		if ( isset( $stepData["alt_selector"] ) ) {
+			$alt_selector = $stepData["alt_selector"];
+		}
+
 		$html 	= "
 		<div class='shm_wizzard' id='shm_wizzard'>
 			<div class='shm_wizzard_close' onclick='shm_close_wizz()'>
@@ -741,7 +748,7 @@ class ShMapper
 				<a name='shm_wclose'>" . __("Close wizzard", SHMAPPER) . "</a>
 				<a name='shm_wcurrent'>" . __("Go to current page", SHMAPPER) . "</a>".
 				(
-					$stepData["alt_selector"] ? "" : 
+					$alt_selector ? "" : 
 					"<a class='dashicons dashicons-controls-play' title='" . __("Next step", SHMAPPER) . "' name='shm_wnext'></a>"
 				).
 				"<!--a class='dashicons dashicons-controls-back' title='" . __("Prevous step", SHMAPPER) . "'></a>

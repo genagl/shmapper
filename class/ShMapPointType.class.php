@@ -96,8 +96,8 @@ class ShMapPointType
 				break;
 			case 'icon': 
 				$icon = get_term_meta( $term_id, 'icon', true ); 
-				$color = get_term_meta( $term_id, 'color', true ); 
-				$logo = wp_get_attachment_image_src($icon, "full")[0];
+				$color = get_term_meta( $term_id, 'color', true );
+				$logo = wp_get_attachment_image_url( $icon, "full" );
 				echo "<div>
 					<img src='$logo' style='width:auto; height:60px; margin:10px;' />
 					<div style='width:80px;height:5px;background-color:$color;'></div>
@@ -106,11 +106,14 @@ class ShMapPointType
 			default:
 				break;
 		}
-		return $out;    
+		return $out;
 	}
 	static function new_ctg( $tax_name )
 	{
 		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
+		if ( ! isset( $color ) ) {
+			$color = '';
+		}
 		?>
 		<div class="form-field term-description-wrap">
 			<label for="color">
@@ -218,7 +221,10 @@ class ShMapPointType
 		$color 		= get_term_meta($term->term_id, "color", true);
 		$icon  		= (int)get_term_meta($term->term_id, "icon", true);
 		$d 			= wp_get_attachment_image_src($icon, array(100, 100));
-		$cur_bgnd 	= $d[0];
+		$cur_bgnd = '';
+		if ( $d ) {
+			$cur_bgnd = $d[0];
+		}
 		$class		= $is_locked ? " shm-muffle " : "";
 		return "
 		<div class='ganre_picto $class' term='". SHM_POINT_TYPE ."' term_id='$term->term_id' >
@@ -301,7 +307,10 @@ class ShMapPointType
 			$icon 		= get_term_meta($ganre->term_id, "icon", true);
 			$color 		= get_term_meta($ganre->term_id, "color", true);
 			$d 			= wp_get_attachment_image_src($icon, array(100, 100));
-			$cur_bgnd 	= $d[0];
+			$cur_bgnd = '';
+			if ( $d ) {
+				$cur_bgnd = $d[0];
+			}
 			$before 	= "";
 			$after 		= "";
 			switch( $form_factor )
