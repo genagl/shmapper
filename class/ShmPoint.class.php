@@ -437,13 +437,13 @@ class ShmPoint extends SMC_Post
 			{
 				var points 		= [],
 				p = {}; 
-				p.post_id 	= '" . $point->ID . "';
-				p.post_title 	= '" . $post_title . "';
+				p.post_id 	= '" . esc_attr( $point->ID ) . "';
+				p.post_title 	= '" . esc_html( $post_title ) . "';
 				p.post_content 	= '" . html_entity_decode( esc_js($post_content) )." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js($location) . "</div>';
-				p.latitude 		= '" . $latitude . "'; 
-				p.longitude 	= '" . $longitude . "'; 
+				p.latitude 		= '" . esc_attr( $latitude ) . "'; 
+				p.longitude 	= '" . esc_attr( $longitude ) . "'; 
 				p.location 		= '" . esc_js($location) . "'; 
-				p.draggable 	= ".(is_admin() ? 1 : 0)."; 
+				p.draggable 	= " . ( is_admin() ? 1 : 0) . "; 
 				p.type 			= '" . $term_id . "'; 
 				p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
 				p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
