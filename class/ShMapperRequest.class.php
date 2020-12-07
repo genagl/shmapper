@@ -102,7 +102,7 @@ class ShMapperRequest extends SMC_Post
 				{
 					$map_id = $obj->get_meta("map");
 					$diid = get_post_meta($map_id, "default_icon_id", true);
-					$icon	= "<div class='shm_type_icon' style='background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0].");'>
+					$icon	= "<div class='shm_type_icon' style='background-image:url(" . wp_get_attachment_image_url($diid, [60, 60]).");'>
 					</div>";	
 				}
 				echo $icon;
