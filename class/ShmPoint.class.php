@@ -189,35 +189,30 @@ class ShmPoint extends SMC_Post
 
 		$id = $obj && is_object($obj) ? $obj->id : -1;
 		$query = "SELECT map_id FROM ".$wpdb->prefix."point_map WHERE point_id=".$id;
+
 		$d = $wpdb->get_results($query);
+
 		$selects = [];
 		foreach($d as $dd)
 			$selects[] = $dd->map_id;
-		//var_dump( $selects );
-		//wp_die();
 		$all = ShmMap::get_all(-1, -1, 0, 'title', 'ASC' );
-		$html = "
-		<div class='categorydiv'>
-			<div  class='tabs-panel'>
-				<ul class='categorychecklist form-no-clear'>";
-		foreach($all as $map)
-		{
+
+		$html = "<ul class='categorychecklist form-no-clear'>";
+		foreach ( $all as $map) {
 			$selected = in_array($map->ID, $selects) ? " checked " : "";
 			$html .= "
-				<li class='popular-category'>
+				<li class='popular-categorys'>
 					<label class='selectit'>
 						<input value='$map->ID' type='$type' name='owner_id[]' $selected>
-						".($map->post_title ? $map->post_title : '(карта без названия)')."
+						" . ( $map->post_title ? $map->post_title : '(карта без названия)')."
 					</label>
 				</li>
 			";
-		}		
-		$html .= "
-				</ul>
-			</div>
-		</div>";
+		}
+		$html .= "</ul>";
 		return $html;
 	}
+
 	static function bulk_owner_fields_edit( $params=-1, $type="radio")
 	{
 
