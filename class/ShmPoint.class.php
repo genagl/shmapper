@@ -105,13 +105,13 @@ class ShmPoint extends SMC_Post
 					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>";
 					break;
 				default:
-					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
+					$h = '<input type="text" name="' . $key . '" id="' . $key . '" value="' . esc_attr( $meta ) . '" class="sh-form">';
 			}
-			
+
 			$html .="<div class='shm-row' $opacity>
 				<div class='shm-3 sh-right sh-align-middle'>".$value['name'] . "</div>
 				<div class='shm-9'>
-					$h
+					" . $h . "
 				</div>
 			</div>
 			<div class='spacer-5'></div>";
@@ -156,22 +156,23 @@ class ShmPoint extends SMC_Post
 		$current = file_get_contents( ABSPATH. "alert.log" );
 		file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
 		$wpdb->query( $query );
-		//var_dump( $query );
 		return $query;
 	}
-	static function save_admin_edit($obj)
-	{
-		//if($_POST['point_type'] != 0)
-			wp_set_object_terms($obj->id, (int)$_POST['point_type'], SHM_POINT_TYPE);
+
+	static function save_admin_edit( $obj ) {
+		if ( isset( $_POST['point_type'] ) ) {
+			wp_set_object_terms( $obj->id, (int) $_POST['point_type'], SHM_POINT_TYPE );
+		}
 		static::update_map_owners($obj);
-		return [
-		    "latitude"		=> sanitize_text_field($_POST['latitude']),
-		    "longitude"		=> sanitize_text_field($_POST['longitude']),
-		    "location"		=> sanitize_text_field($_POST['location']),
-		    "zoom"			=> sanitize_text_field($_POST['zoom']),
-		    "approved"		=> sanitize_text_field($_POST['approved']),
-		];
+		return array(
+			'latitude'  => sanitize_text_field( $_POST['latitude'] ),
+			'longitude' => sanitize_text_field( $_POST['longitude'] ),
+			'location'  => sanitize_textarea_field( $_POST['location'] ),
+			'zoom'      => sanitize_text_field( $_POST['zoom'] ),
+			'approved'  => sanitize_text_field( $_POST['approved'] ),
+		);
 	}
+
 	static function owner_fields() 
 	{
 		add_meta_box( 'owner_fields', __('Map owner', SHMAPPER), [__CLASS__, 'owner_fields_box_func'], static::get_type(), 'side', 'low'  );
@@ -416,8 +417,9 @@ class ShmPoint extends SMC_Post
 		$types		= wp_get_object_terms($this->id, SHM_POINT_TYPE);
 		$type		= empty($types) ? false : $types[0];
 		$term_id	= $type && $type->term_id ? $type->term_id : -1;
-		$post_title	= $this->get("post_title");		
-		$post_content = wpautop( $this->get("post_content") );
+		$post_title	= $this->get("post_title");
+		$post_content = wpautop( do_shortcode( $this->get("post_content") ) );
+		$post_content = str_replace( array("\r\n", "\r", "\n" ), "", $post_content);
 		$location	= $this->get_meta("location");
 		$latitude	= $this->get_meta("latitude");
 		$latitude 	= $latitude ? $latitude : $default_latitude;
@@ -452,7 +454,7 @@ class ShmPoint extends SMC_Post
 				p = {}; 
 				p.post_id 	= '" . esc_attr( $point->ID ) . "';
 				p.post_title 	= '" . esc_html( $post_title ) . "';
-				p.post_content 	= '" . html_entity_decode( esc_js($post_content) )." <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js($location) . "</div>';
+				p.post_content 	= '" . wp_kses_post( $post_content ) . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_html( $location ) . "</div>';
 				p.latitude 		= '" . esc_attr( $latitude ) . "'; 
 				p.longitude 	= '" . esc_attr( $longitude ) . "'; 
 				p.location 		= '" . esc_js($location) . "'; 
