@@ -1,7 +1,11 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
-class ShMapper 
-{
+class ShMapper {
 	public static function activate()
 	{
 		global $wpdb;
@@ -23,9 +27,9 @@ class ShMapper
 			"shm_map_marker_premoderation"	=> 1,
 			"shm_reload"	=> 1,
 			"wizzard" => 1,
-			"shm_personal_text" => __("Я даю свое согласие администратору сайта на обработку, в том числе автоматизированную, своих персональных данных в соответствии с Федеральным законом от 27.07.2006 N 152-ФЗ «О персональных данных».", SHMAPPER),
-			"shm_succ_request_text" => __("Your request has been successfully registered.", SHMAPPER),
-			"shm_error_request_text" => __("Unknown error.", SHMAPPER),
+			"shm_personal_text" => __( 'I give my consent to the site administrator to process, including automated, my personal data in accordance with Federal Law of 27.07.2006 N 152-FZ "On Personal Data".', 'shmapper-by-teplitsa' ),
+			"shm_succ_request_text" => __( 'Your request has been successfully registered.', 'shmapper-by-teplitsa' ),
+			"shm_error_request_text" => __( 'Unknown error.', 'shmapper-by-teplitsa' ),
 		]);
 		$upload = wp_upload_dir();
 		$upload_dir = $upload['basedir'];
@@ -197,9 +201,7 @@ class ShMapper
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper");
 		//js
-		wp_register_script("inline", admin_url().'/js/inline-edit-post.js', array());
-		wp_enqueue_script("inline");
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('jquery-migrate'));
+		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('inline-edit-post'));
 		wp_enqueue_script("ShMapper");
 		wp_register_script("ShMapper.admin", plugins_url( '../assets/js/ShMapper.admin.js', __FILE__ ), array());
 		wp_enqueue_script("ShMapper.admin");
@@ -292,12 +294,7 @@ class ShMapper
 		//css
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array());
 		wp_enqueue_style( "ShMapper");
-
-		wp_enqueue_script('jquery-ui-core');
-		wp_enqueue_script('jquery-ui-draggable');
-		wp_register_script("touchpunch", plugins_url( '../assets/js/touchpunch.js', __FILE__ ), array());
-		wp_enqueue_script("touchpunch");	
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array());
+		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array( 'jquery-ui-draggable', 'jquery-touch-punch'));
 		wp_enqueue_script("ShMapper");	
 		wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
 		wp_enqueue_style( "layerSwitcher");
@@ -486,11 +483,11 @@ class ShMapper
 									checked(1, (int)static::$options['shm_map_is_crowdsourced'], 0) . 
 								"/>
 								<label for='shm_map_is_crowdsourced'>".
-									__("Включить глобальный режим неинтерактивных карт", SHMAPPER) .
+									__("Enable global mode for non-interactive maps", SHMAPPER) .
 								"</label> 
 								<br>
 								<span class='shm-color-grey'><small>".
-									__("пользователи не смогут добавлять сообщения ни к одной карте. Если галочка включена у карт даже не появляется блок интерактивности.", SHMAPPER). 
+									__("users will not be able to add posts to any map. If the checkbox is enabled, the interactivity block does not even appear on the maps.", SHMAPPER). 
 								"</small></span>
 							</p>
 							<p>
@@ -502,11 +499,11 @@ class ShMapper
 								"</label> 
 								<br>
 								<span class='shm-color-grey'><small>".
-									__("все сообщения будут добавляться в статусе «Черновик»", SHMAPPER). 
+									__("all messages will be added in the Draft status", SHMAPPER). 
 								"</small></span>
 								<br>
 								<span class='shm-color-alert'><small>". 
-										__("ВНИМАНИЕ: отключайте эту опцию только на ваш страх и риск, т.к. существует угроза спам-атаки", SHMAPPER). 
+										__("ATTENTION: disable this option only at your own peril and risk, because there is a threat of spam attacks", SHMAPPER). 
 								"</small></span>
 							</p>
 							<p>
@@ -803,37 +800,37 @@ class ShMapper
 	{
 		return [
 			[
-				"title"				=> "Приветствуем Вас в Мастере конфигурации Shmapper",
-				"text"				=> "Сначала необходимо указать общие настройки. Нажмите на кнопку <span class='dashicons dashicons-controls-play'></span> чтобы перейти в нужный раздел",
+				"title"				=> esc_html__( 'Welcome to the Shmapper Configuration Wizard', 'shmapper-by-teplitsa' ),
+				"text"				=> __( "First, you need to specify the general settings. Click on the button <span class = 'dashicons dashicons-controls-play'> </span> to go to the desired section", "shmapper-by-teplitsa" ),
 				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
 				"parent_selector"	=> '#toplevel_page_shm_page',
 				"href"				=> admin_url( 'admin.php?page=shm_page' ),
 			],
 			[
-				"title"				=> "Настройте Shmapper",
-				"text"				=> "Измените настройки, которые Вас не устраивают. Для подключения reCAPTCHA необходимо создать учётную запись на Google.com",
+				"title"				=> esc_html__( 'Configure Shmapper', 'shmapper-by-teplitsa' ),
+				"text"				=> esc_html__( 'Change the settings that do not suit you. To connect reCAPTCHA, you need to create an account on Google.com', 'shmapper-by-teplitsa' ),
 				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
 				"parent_selector"	=> '#toplevel_page_shm_page',
 				"href"				=> admin_url( 'admin.php?page=shm_page' ),
 			],
 			[
-				"title"				=> "Создайте вашу первую карту",
-				"text"				=> "Нажмите кнопку  \"Добавить карту\" в самом верху страницы",
+				"title"				=> esc_html__( 'Create your first map', 'shmapper-by-teplitsa' ),
+				"text"				=> esc_html__( 'Click the "Add Map" button at the very top of the page', 'shmapper-by-teplitsa' ),
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"alt_selector"		=> "body.post-type-shm_map .page-title-action" ,
 				"href"				=> admin_url( 'edit.php?post_type=shm_map' ),
 			],
 			[
-				"title"				=> "Новая карта",
-				"text"				=> "На карте выберите видимую область. <p> Создайте первый Маркер указав на нужное место карты правой кнопкой мыши. <p> Заполните поля и нажмите \"Создать\". ",
+				"title"				=> esc_html__( 'New map', 'shmapper-by-teplitsa' ),
+				"text"				=> __( 'Select a visible area on the map. <p> Create the first Marker by pointing to the desired location on the map with the right mouse button. <p> Fill in the fields and click "Create".', 'shmapper-by-teplitsa' ),
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"alt_selector"		=> 'body.post-type-shm_map #publish',
 				"parent_selector"	=> '#adminmenuwrap .toplevel_page_shm_page',
 				"href"				=> admin_url( 'edit.php?post_type=shm_map' ),
 			],
 			[
-				"title"				=> "Новая карта",
-				"text"				=> "Последовательно заполните предлаженные поля. В разделе \"Форма запроса\" создайте простейшую форму обратной связи, по которой Посетители смогут информировать Вас о предлагаемых Вам новых Маркерах. По окончании нажмите кнопку \"Опубликовать\"",
+				"title"				=> esc_html__( 'New map', 'shmapper-by-teplitsa' ),
+				"text"				=> esc_html__( 'Fill in the provided fields in sequence. In the "Request Form" section, create a simple feedback form by which Visitors will be able to inform you about the new Markers offered to you. When finished, click the "Publish" button.', 'shmapper-by-teplitsa' ),
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"parent_selector"	=> '#adminmenuwrap .toplevel_page_shm_page',
 				"href"				=> '',
