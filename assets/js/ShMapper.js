@@ -356,9 +356,6 @@ jQuery(document).ready(function($)
 				return function(e) 
 				{ 
 					aImg.src = e.target.result; 
-					//console.log(aImg.src);
-					//reader.g.setState({url:aImg.src});
-					//reader.g.props.onChange( aImg.src, aImg.file,  );
 				}; 
 			})(img);
 			reader.readAsDataURL(file);

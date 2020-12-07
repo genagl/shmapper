@@ -121,7 +121,7 @@ class ShmPoint extends SMC_Post
 		$term = empty($tp) ? false : $tp[0];
 		$term_id = $term ? $term->term_id : -1;
 
-        $html = empty($html) ? '' : $html;
+		$html = empty($html) ? '' : $html;
 		$html .= "<div class='shm-row'>
 			<div class='shm-3 sh-right sh-align-middle'>".__("Map marker type", SHMAPPER). "</div>
 			<div class='shm-9'>".
@@ -226,11 +226,11 @@ class ShmPoint extends SMC_Post
 			$html .= "<li class='popular-category'>
 					<label class='selectit'>
 						<input value='$map->ID' type='$type' name='owner_id[]' $selected>
-						".($map->post_title ? $map->post_title : '(карта без названия)')."
+						" . ( $map->post_title ? $map->post_title : esc_html__( '(untitled map)', 'shmapper-by-teplitsa' ) ) . "
 					</label>
 				</li>
 			";
-		}		
+		}
 		$html .= "
 		</ul>";
 		return $html;
@@ -270,14 +270,12 @@ class ShmPoint extends SMC_Post
 			case "type":
 				$terms = get_the_terms( $post_id, SHM_POINT_TYPE );
 				if($terms && !empty($terms[0]) && $terms[0]->term_id) {
-                    foreach($terms as $term) {
-                        //$term = get_term($obj->get_meta("type"), SHM_POINT_TYPE);
-                        echo ShMapPointType::get_icon($term);
-                    }
-                }
+					foreach($terms as $term) {
+						echo ShMapPointType::get_icon($term);
+					}
+				}
 				else
 				{
-//                    $color 		= get_term_meta($type->term_id, "color", true);
 					$owners = $obj->get_owners();
 					$map_id = null;
 					if ( $owners ) {
@@ -296,8 +294,6 @@ class ShmPoint extends SMC_Post
 					</div>";	
 					echo $icon;
 				}
-					
-				//the_terms( $post_id, SHM_POINT_TYPE, "", ", ", "" );
 				break;
 			case "thumb":
 				echo "<div class='shm_type_icon2' style='background-image:url(" . get_the_post_thumbnail_url( $post_id, [75, 75] ) .");'></div>" ;
@@ -519,7 +515,7 @@ class ShmPoint extends SMC_Post
 		if($post_type != static::get_type())	return;
 		?>
 		<fieldset class="inline-edit-col-left inline-edit-shm_point">
-		  <div class="inline-edit-col column-<?php echo $column_name; ?>">
+			<div class="inline-edit-col column-<?php echo $column_name; ?>">
 			<?php 
 			 switch ( $column_name )
 			 {
@@ -530,7 +526,7 @@ class ShmPoint extends SMC_Post
 					break;
 			}
 			?>
-		  </div>
+			</div>
 		</fieldset>
 		<?php
 	} 

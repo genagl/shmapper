@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 class ShMapper_Assistants
 {
 	static $instance;

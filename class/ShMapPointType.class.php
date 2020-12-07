@@ -1,4 +1,9 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
 class ShMapPointType
 {
@@ -44,19 +49,19 @@ class ShMapPointType
 		);
 		register_taxonomy(SHM_POINT_TYPE, [ ], 
 		[
-			'label'                 => '', // определяется параметром $labels->name
+			'label'                 => '',
 			'labels'                => $labels,
-			'description'           => __('Unique type of every Map markers', SHMAPPER), // описание таксономии
+			'description'           => __('Unique type of every Map markers', SHMAPPER),
 			'public'                => true,
 			'hierarchical'          => false,
 			'update_count_callback' => '',
 			'show_in_nav_menus'     => true,
 			'rewrite'               => true,
 			'capabilities'          => array(),
-			'meta_box_cb'           => "post_categories_meta_box", // callback функция. Отвечает за html код метабокса (с версии 3.8): post_categories_meta_box или post_tags_meta_box. Если указать false, то метабокс будет отключен вообще
-			'show_admin_column'     => true, // Позволить или нет авто-создание колонки таксономии в таблице ассоциированного типа записи. (с версии 3.5)
+			'meta_box_cb'           => "post_categories_meta_box",
+			'show_admin_column'     => true,
 			'_builtin'              => false,
-			'show_in_quick_edit'    => true, // по умолчанию значение show_ui
+			'show_in_quick_edit'    => true,
 		] );
 	}
 	static function tax_menu_correction($parent_file) 

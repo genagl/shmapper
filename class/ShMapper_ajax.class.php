@@ -1,13 +1,15 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
-// Класс для записи в лог-файл тех исключений,
-// которые не требуют моментальной реакции администратора
-class ExceptionWriter extends Error
-{
-    public function Write()
-    {
-        // записываем содержимое ошибки в лог-файл
-    }
+// A class for writing those exceptions to the log file
+// which do not require an immediate response from the administrator
+class ExceptionWriter extends Error {
+	public function Write() {
+	}
 }
 
 class ShMapper_ajax
@@ -32,28 +34,28 @@ class ShMapper_ajax
 	}
 	
 	static function insert_marker($data) {
-	    $res 	= ShMapperRequest::insert($data);
-	    
-	    if( !ShMapper::$options['shm_map_marker_premoderation'] ) {
-	        $point = ShmPoint::insert([
-	            "post_title"	=> (string)$res->get("post_title"),
-	            "post_name"		=> (string)$res->get("post_name"),
-	            "post_content"	=> (string)$res->get_meta("description"),
-	            "latitude"		=> $res->get_meta("latitude"),
-	            "longitude"		=> $res->get_meta("longitude"),
-	            "location"		=> $res->get_meta("location"),
-	            "type"			=> (int)$res->get_meta("type"),
-	            "map_id"		=> (int)$res->get_meta("map"),
-	        ]);
-	        
-	        if($attach_id = get_post_thumbnail_id($res->id)) {
-	            set_post_thumbnail($point->id, (int)$attach_id);
-	        }
-	        
-	        SMC_Post::delete($res->id);
-	    }
-	    
-	    return $res;
+		$res 	= ShMapperRequest::insert($data);
+		
+		if( !ShMapper::$options['shm_map_marker_premoderation'] ) {
+			$point = ShmPoint::insert([
+				"post_title"	=> (string)$res->get("post_title"),
+				"post_name"		=> (string)$res->get("post_name"),
+				"post_content"	=> (string)$res->get_meta("description"),
+				"latitude"		=> $res->get_meta("latitude"),
+				"longitude"		=> $res->get_meta("longitude"),
+				"location"		=> $res->get_meta("location"),
+				"type"			=> (int)$res->get_meta("type"),
+				"map_id"		=> (int)$res->get_meta("map"),
+			]);
+			
+			if($attach_id = get_post_thumbnail_id($res->id)) {
+				set_post_thumbnail($point->id, (int)$attach_id);
+			}
+			
+			SMC_Post::delete($res->id);
+		}
+		
+		return $res;
 	}
 	
 	static function shm_ajax3_submit()
@@ -62,7 +64,7 @@ class ShMapper_ajax
 		$data = $_POST;
 		$data['elem']	= explode(",", $data['elem']);
 		foreach($data['elem'] as $i => $v) {
-		    $data['elem'][$i] = str_replace("{{shmapper_comma}}", ",", $v);
+			$data['elem'][$i] = str_replace("{{shmapper_comma}}", ",", $v);
 		}
 		
 		if( ShMapper::$options['shm_settings_captcha'] )
@@ -76,7 +78,7 @@ class ShMapper_ajax
 			switch( $response->success )
 			{
 				case(true):
-				    $res    = static::insert_marker($data);
+					$res    = static::insert_marker($data);
 					$msg 	= ShMapper::$options['shm_succ_request_text'];
 					break;
 				default:
@@ -87,7 +89,7 @@ class ShMapper_ajax
 		}
 		else
 		{
-		    $res = static::insert_marker($data);
+			$res = static::insert_marker($data);
 			$msg	= ShMapper::$options['shm_succ_request_text'];
 		}
 		
@@ -141,8 +143,8 @@ class ShMapper_ajax
 		switch($action)
 		{				
 			case "test":	
-			    $map_id = sanitize_text_field($params[1]);
-			    $num = sanitize_text_field($params[2]);
+				$map_id = sanitize_text_field($params[1]);
+				$num = sanitize_text_field($params[2]);
 				$d = array(	
 					$action,
 					array( 
@@ -151,7 +153,7 @@ class ShMapper_ajax
 				);
 				break;			
 			case "shm_doubled":	
-			    $map_id = sanitize_text_field($params[1]);
+				$map_id = sanitize_text_field($params[1]);
 				$map	= ShmMap::get_instance( $map_id );
 				$new_map = $map->doubled();
 				$d = array(	
@@ -208,7 +210,7 @@ class ShMapper_ajax
 				);
 				break; 	
 			case "shm_notify_req":	
-			    $req_id = sanitize_text_field($params[1]);
+				$req_id = sanitize_text_field($params[1]);
 				$req = ShMapperRequest::get_instance($req_id);
 				$new_id = $req->notify();
 				$d = array(	
@@ -222,7 +224,7 @@ class ShMapper_ajax
 				);
 				break;		
 			case "shm_trash_req":	
-			    $req_id = sanitize_text_field($params[1]);
+				$req_id = sanitize_text_field($params[1]);
 				$req = ShMapperRequest::get_instance($req_id);
 				wp_trash_post( $req_id );
 				$d = array(	
@@ -234,9 +236,9 @@ class ShMapper_ajax
 				);
 				break;		
 			case "shm_add_before":
-			    $num = sanitize_text_field($params[1]);
-			    $post_id = sanitize_text_field($params[2]);
-			    $type_id = sanitize_text_field($params[3]);				
+				$num = sanitize_text_field($params[1]);
+				$post_id = sanitize_text_field($params[2]);
+				$type_id = sanitize_text_field($params[3]);				
 				$d = array(	
 					$action,
 					array( 
@@ -247,9 +249,9 @@ class ShMapper_ajax
 				);
 				break;			
 			case "shm_add_after":	
-			    $num = sanitize_text_field($params[1]);
-			    $post_id = sanitize_text_field($params[2]);
-			    $type_id = sanitize_text_field($params[3]);						
+				$num = sanitize_text_field($params[1]);
+				$post_id = sanitize_text_field($params[2]);
+				$type_id = sanitize_text_field($params[3]);						
 				$d = array(	
 					$action,
 					array( 
@@ -260,7 +262,7 @@ class ShMapper_ajax
 				);
 				break;		
 			case "shm_csv":	
-			    $map_id = sanitize_text_field($params[1]);
+				$map_id = sanitize_text_field($params[1]);
 				$map = ShmMap::get_instance($map_id);
 				$link = $map->get_csv();
 				$d = array(	
@@ -279,7 +281,7 @@ class ShMapper_ajax
 					$reCaptcha = new ReCaptcha( ShMapper::$options['shm_captcha_secretKey'] );					
 					$response = $reCaptcha->verifyResponse(
 						$_SERVER["REMOTE_ADDR"],
-					    sanitize_text_field($data['cap'])
+						sanitize_text_field($data['cap'])
 					);
 					switch( $response->success )
 					{
@@ -327,8 +329,8 @@ class ShMapper_ajax
 				);
 				break;	
 			case "shm_delete_map":	
-			    $id 	= sanitize_text_field($params[1]);
-			    $href 	= sanitize_text_field($params[2]);
+				$id 	= sanitize_text_field($params[1]);
+				$href 	= sanitize_text_field($params[2]);
 				$map 	= ShmMap::get_instance( $id );
 				$d = array(	
 					$action,
@@ -344,10 +346,10 @@ class ShMapper_ajax
 				);
 				break;
 			case "shm_add_point_prepaire":	
-			    $map_id = $params[1][0] = sanitize_text_field($params[1][0]);
-			    $x		= $params[1][1] = sanitize_text_field($params[1][1]);
-			    $y		= $params[1][2] = sanitize_text_field($params[1][2]);
-			    $ad		= $params[1][3] = sanitize_text_field($params[1][3]);
+				$map_id = $params[1][0] = sanitize_text_field($params[1][0]);
+				$x		= $params[1][1] = sanitize_text_field($params[1][1]);
+				$y		= $params[1][2] = sanitize_text_field($params[1][2]);
+				$ad		= $params[1][3] = sanitize_text_field($params[1][3]);
 				$d = array(	
 					$action,
 					array( 
@@ -366,16 +368,16 @@ class ShMapper_ajax
 				$type_term_id = sanitize_text_field($data['type']);
 				$type = get_term($type_term_id, SHM_POINT_TYPE);
 				$pointdata = [
-				    "post_title"	=> sanitize_text_field($data["post_title"]),
+					"post_title"	=> sanitize_text_field($data["post_title"]),
 					"post_content"	=> $data["post_content"],
-				    "latitude"		=> sanitize_text_field($data["latitude"]),
-				    "longitude"		=> sanitize_text_field($data["longitude"]),
-				    "location"		=> sanitize_text_field($data["location"]),
+					"latitude"		=> sanitize_text_field($data["latitude"]),
+					"longitude"		=> sanitize_text_field($data["longitude"]),
+					"location"		=> sanitize_text_field($data["location"]),
 					"color"			=> get_term_meta($type->term_id, "color", true),
 					"height"		=> get_term_meta($type->term_id, "height", true),
 					"icon"			=> ShMapPointType::get_icon_src($type->term_id)[0],
-				    "term_id"		=> $type_term_id,
-				    "mapid"			=> "ShmMap".sanitize_text_field($data['map_id']).sanitize_text_field($data['map_id'])
+					"term_id"		=> $type_term_id,
+					"mapid"			=> "ShmMap".sanitize_text_field($data['map_id']).sanitize_text_field($data['map_id'])
 				];
 				$d = array(	
 					$action,
@@ -387,8 +389,8 @@ class ShMapper_ajax
 				);
 				break;
 			case "shm_voc":	
-			    $voc = sanitize_text_field($params[1]);
-			    ShMapper::$options[$voc] = sanitize_text_field($params[2]);
+				$voc = sanitize_text_field($params[1]);
+				ShMapper::$options[$voc] = sanitize_text_field($params[2]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
@@ -409,16 +411,16 @@ class ShMapper_ajax
 				);
 				break;
 			case "shm_yandex_maps_api_key":
-			    ShMapper::$options['shm_yandex_maps_api_key'] = sanitize_text_field($params[1]);
-			    ShMapper::update_options();
-			    $d = array(
-			        $action,
-			        array(
-			            "msg"	=> __( "Yandex.Maps API key Saved" , SHMAPPER),
-			            "hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_yandex_maps_api_key'] != "" ? 1 : 0
-			        )
-			    );
-			    break;
+				ShMapper::$options['shm_yandex_maps_api_key'] = sanitize_text_field($params[1]);
+				ShMapper::update_options();
+				$d = array(
+					$action,
+					array(
+						"msg"	=> __( "Yandex.Maps API key Saved" , SHMAPPER),
+						"hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_yandex_maps_api_key'] != "" ? 1 : 0
+					)
+				);
+				break;
 			case "shm_default_coordinates":
 				ShMapper::$options['shm_default_longitude'] = $params[1][0];
 				ShMapper::$options['shm_default_latitude']  = $params[1][1];
@@ -442,64 +444,64 @@ class ShMapper_ajax
 				);
 				break;
 			case "shm_map_is_crowdsourced":	
-			    ShMapper::$options['shm_map_is_crowdsourced'] = sanitize_text_field($params[1]);
+				ShMapper::$options['shm_map_is_crowdsourced'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
 					array( 
-					    "msg"	=> __(sanitize_text_field($params[1]) ? "Users can add Placemarks" : "Users don't can add Placemarks", SHMAPPER),
+						"msg"	=> __(sanitize_text_field($params[1]) ? "Users can add Placemarks" : "Users don't can add Placemarks", SHMAPPER),
 					)
 				);
 				break; 
 			case "shm_map_marker_premoderation":	
-			    ShMapper::$options['shm_map_marker_premoderation'] = sanitize_text_field($params[1]);
+				ShMapper::$options['shm_map_marker_premoderation'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
 					array( 
-					    "msg"	=>  __(sanitize_text_field($params[1]) ? "Pre-moderation on" : "Pre-moderation off", SHMAPPER),
+						"msg"	=>  __(sanitize_text_field($params[1]) ? "Pre-moderation on" : "Pre-moderation off", SHMAPPER),
 					)
 				);
 				break; 
 			case "shm_reload":	
-			    ShMapper::$options['shm_reload'] = sanitize_text_field($params[1]);
+				ShMapper::$options['shm_reload'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
 					array( 
-					    "msg"	=>  __(sanitize_text_field($params[1]) ? "Reload mode" : "Not relaod mode", SHMAPPER),
+						"msg"	=>  __(sanitize_text_field($params[1]) ? "Reload mode" : "Not relaod mode", SHMAPPER),
 					)
 				);
 				break; 
 			case "shm_settings_captcha":	
-			    ShMapper::$options['shm_settings_captcha'] = sanitize_text_field($params[1]);
+				ShMapper::$options['shm_settings_captcha'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
 					array( 
-					    "msg"	=> __(sanitize_text_field($params[1]) ? "captha added" : "captcha removed", SHMAPPER),
+						"msg"	=> __(sanitize_text_field($params[1]) ? "captha added" : "captcha removed", SHMAPPER),
 					)
 				);
 				break; 
 			case "shm_captcha_siteKey":	
-			    ShMapper::$options['shm_captcha_siteKey'] = sanitize_text_field($params[1]);
+				ShMapper::$options['shm_captcha_siteKey'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
 					array( 
 						"msg"	=> __( "Set key" , SHMAPPER),
-					    "hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_captcha_secretKey'] != "" ? 1 : 0
+						"hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_captcha_secretKey'] != "" ? 1 : 0
 					)
 				);
 				break; 
 			case "shm_captcha_secretKey":	
-			    ShMapper::$options['shm_captcha_secretKey'] = sanitize_text_field($params[1]);
+				ShMapper::$options['shm_captcha_secretKey'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
 					array( 
 						"msg"	=> __( "Set key" , SHMAPPER),
-					    "hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_captcha_siteKey'] != "" ? 1 : 0
+						"hide_dang" => sanitize_text_field($params[1]) != "" && ShMapper::$options['shm_captcha_siteKey'] != "" ? 1 : 0
 					)
 				);
 				break; 

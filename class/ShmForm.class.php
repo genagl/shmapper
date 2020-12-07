@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 class ShmForm
 {
 	static function init()
@@ -314,10 +320,6 @@ class ShmForm
 		$data 	= !is_array($data) ?["enable"=>1, "require"=>1, "selected" => 0] : $data;		
 		$type 	= static::get_type_by("id", $data['type']);
 		$fields = $type['fields'];
-		//ob_start();
-		//var_dump($data);
-		//$v = ob_get_contents();
-		//ob_end_clean();
 		return "
 		<li>
 			<div class='shm-row' shm-num='$id' >
@@ -593,7 +595,4 @@ class ShmForm
 		$html = $def_mark . $html . $html1 . (empty($att) ? '' : $att) . apply_filters("shm_after_request_form", "");
 		return $html ;
 	}
-	
-	
-	
 }

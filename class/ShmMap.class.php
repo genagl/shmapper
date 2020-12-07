@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 class ShmMap extends SMC_Post
 {
 	static function get_map_types()
@@ -83,8 +89,8 @@ class ShmMap extends SMC_Post
 		$args = array(
 			 'labels' => $labels
 			,'public' => true
-			,'show_ui' => true // показывать интерфейс в админке
-			,'has_archive' => true 
+			,'show_ui' => true
+			,'has_archive' => true
 			,'exclude_from_search' => false
 			,'menu_position' => 17
 			,'menu_icon' => "dashicons-location-alt"
@@ -481,10 +487,10 @@ class ShmMap extends SMC_Post
 	static function save_admin_edit($obj)
 	{
 		return [
-		    "map_type"			=> empty($_POST['map_type']) ? '' : $_POST['map_type'],
-		    "latitude"			=> sanitize_text_field($_POST['latitude']),
-		    "longitude"			=> sanitize_text_field($_POST['longitude']),
-		    "zoom"				=> sanitize_text_field($_POST['zoom']),
+			"map_type"			=> empty($_POST['map_type']) ? '' : $_POST['map_type'],
+			"latitude"			=> sanitize_text_field($_POST['latitude']),
+			"longitude"			=> sanitize_text_field($_POST['longitude']),
+			"zoom"				=> sanitize_text_field($_POST['zoom']),
 			"is_legend"			=> empty($_POST['is_legend']) ? 0 : 1,
 			"is_filtered"		=> empty($_POST['is_filtered']) ? 0 : 1,
 			"is_csv"			=> empty($_POST['is_csv']) ? 0 : 1,
@@ -494,25 +500,25 @@ class ShmMap extends SMC_Post
 			"is_zoomer"			=> empty($_POST['is_zoomer']) ? 0 : 1,
 			"is_layer_switcher"	=> empty($_POST['is_layer_switcher']) ? 0 : 1,
 			"is_fullscreen"		=> empty($_POST['is_fullscreen']) ? 0 : 1,
-		    "default_icon_id"	=> sanitize_text_field($_POST['default_icon_id']),
-		    "width"				=> sanitize_text_field($_POST['width']),
-		    "height"			=> sanitize_text_field($_POST['height']),
+			"default_icon_id"	=> sanitize_text_field($_POST['default_icon_id']),
+			"width"				=> sanitize_text_field($_POST['width']),
+			"height"			=> sanitize_text_field($_POST['height']),
 
 			"is_form"			=> empty($_POST['is_form']) ? 0 : 1,
-		    "form_title"		=> sanitize_text_field($_POST['form_title']),
-		    "form_contents"		=> sanitize_textarea_field(empty($_POST['form_contents']) ? '' : $_POST['form_contents']),
+			"form_title"		=> sanitize_text_field($_POST['form_title']),
+			"form_contents"		=> sanitize_textarea_field(empty($_POST['form_contents']) ? '' : $_POST['form_contents']),
 			"notify_owner"		=> empty($_POST['notify_owner']) ? 0 : 1,
 			"form_forms"		=> empty($_POST['form_forms']) ? '' : $_POST['form_forms'],
-		    "is_personal_data"	=> sanitize_text_field(empty($_POST['is_personal_data']) ? '' : $_POST['is_personal_data']),
-		    "is_name_iclude"	=> sanitize_text_field(empty($_POST['is_name_iclude']) ? '' : $_POST['is_name_iclude']),
-		    "personal_name"		=> sanitize_text_field(empty($_POST['personal_name']) ? '' : $_POST['personal_name']),
-		    "is_name_required"	=> sanitize_text_field(empty($_POST['is_name_required']) ? '' : $_POST['is_name_required']),
-		    "is_email_iclude"	=> sanitize_text_field(empty($_POST['is_email_iclude']) ? '' : $_POST['is_email_iclude']),
-		    "personal_email"	=> sanitize_text_field(empty($_POST['personal_email']) ? '' : $_POST['personal_email']),
-		    "is_email_required"	=> sanitize_text_field(empty($_POST['is_email_required']) ? '' : $_POST['is_email_required']),
-		    "is_phone_iclude"	=> sanitize_text_field(empty($_POST['is_phone_iclude']) ? '' : $_POST['is_phone_iclude']),
-		    "personal_phone"	=> sanitize_text_field(empty($_POST['personal_phone']) ? '' : $_POST['personal_phone']),
-		    "is_phone_required"	=> sanitize_text_field(empty($_POST['is_phone_required']) ? '' : $_POST['is_phone_required']),
+			"is_personal_data"	=> sanitize_text_field(empty($_POST['is_personal_data']) ? '' : $_POST['is_personal_data']),
+			"is_name_iclude"	=> sanitize_text_field(empty($_POST['is_name_iclude']) ? '' : $_POST['is_name_iclude']),
+			"personal_name"		=> sanitize_text_field(empty($_POST['personal_name']) ? '' : $_POST['personal_name']),
+			"is_name_required"	=> sanitize_text_field(empty($_POST['is_name_required']) ? '' : $_POST['is_name_required']),
+			"is_email_iclude"	=> sanitize_text_field(empty($_POST['is_email_iclude']) ? '' : $_POST['is_email_iclude']),
+			"personal_email"	=> sanitize_text_field(empty($_POST['personal_email']) ? '' : $_POST['personal_email']),
+			"is_email_required"	=> sanitize_text_field(empty($_POST['is_email_required']) ? '' : $_POST['is_email_required']),
+			"is_phone_iclude"	=> sanitize_text_field(empty($_POST['is_phone_iclude']) ? '' : $_POST['is_phone_iclude']),
+			"personal_phone"	=> sanitize_text_field(empty($_POST['personal_phone']) ? '' : $_POST['personal_phone']),
+			"is_phone_required"	=> sanitize_text_field(empty($_POST['is_phone_required']) ? '' : $_POST['is_phone_required']),
 		];
 	}
 	static function post_row_actions($actions, $post)
@@ -551,7 +557,6 @@ class ShmMap extends SMC_Post
 		$html 	= "
 		<div style='display:block;  border:#888 1px solid; padding:0px;' id='form_editor'>
 			<ul class='shm-card'>";
-		//for( $i = 0; $i < 5; $i ++ )
 		$i 		= 0;
 		foreach($data as $dat)
 		{
@@ -569,13 +574,13 @@ class ShmMap extends SMC_Post
 		$form_forms = $this->get_meta("form_forms");
 		
 		if($form_forms) {
-		    foreach($form_forms as $element)
-		    {
-		        if( $element['type'] == 8 )
-		        {
-		            return explode(",", $element["placemarks"]);
-		        }
-		    }
+			foreach($form_forms as $element)
+			{
+				if( $element['type'] == 8 )
+				{
+					return explode(",", $element["placemarks"]);
+				}
+			}
 		}
 		
 		return false;
@@ -583,14 +588,14 @@ class ShmMap extends SMC_Post
 	function get_csv()
 	{
 
-        $upload_dir = wp_upload_dir();
-        if(
-            !file_exists($upload_dir['basedir']."/shmapper-by-teplitsa")
-            && !wp_mkdir_p($upload_dir['basedir']."/shmapper-by-teplitsa")
-        ) {
-            echo '<pre>'.print_r('FAIL', 1).'</pre>';
-            return false;
-        }
+		$upload_dir = wp_upload_dir();
+		if(
+			!file_exists($upload_dir['basedir']."/shmapper-by-teplitsa")
+			&& !wp_mkdir_p($upload_dir['basedir']."/shmapper-by-teplitsa")
+		) {
+			echo '<pre>'.print_r('FAIL', 1).'</pre>';
+			return false;
+		}
 
 		$points		= $this->get_points();
 		$csv 		= [implode(SHM_CSV_STROKE_SEPARATOR, [ "#", __("Title", SHMAPPER), __("Description", SHMAPPER),  __("Location", SHMAPPER),  __("Longitude", SHMAPPER),  __("Latitude", SHMAPPER) ])];
@@ -624,7 +629,7 @@ class ShmMap extends SMC_Post
 			$zip->addFile( $path );
 			$zip->close();
 			if(file_exists($zip_name))
-			    return $upload_dir['basedir'] . "/shmapper-by-teplitsa/" . $zip_name;
+				return $upload_dir['basedir'] . "/shmapper-by-teplitsa/" . $zip_name;
 			else
 				return $href;
 		}
@@ -685,8 +690,8 @@ class ShmMap extends SMC_Post
 						"class"		=> "shm-form",
 						"id"		=> "shm_esc_points_id",
 						"style"		=> "display:none;",
-					    "posts"     => ShmMap::get_all(),
-					    "exclude_post_id"   => $this->id,
+						"posts"     => ShmMap::get_all(),
+						"exclude_post_id"   => $this->id,
 												
 					]) . 
 				"<div class='spacer-10'></div>
@@ -695,7 +700,7 @@ class ShmMap extends SMC_Post
 		<!--div class='shm-row'>
 			<div class='shm-12'>
 				<div class='spacer-10'></div>
-				<a class='button' href='$href'>delete</a>
+				<a class='button' href='$href'>" . esc_html__( 'delete', 'shmapper-by-teplitsa' ) . "</a>
 				<div class='spacer-10'></div>
 			</div>
 		</div-->";
@@ -818,9 +823,9 @@ class ShmMap extends SMC_Post
 		if( ShMapper::$options['map_api'] != 2 )
 		{
 			$html .= "<div class='shm-admin-block'>
-					<h3>Yandex Map</h3>";
+					<h3>" . esc_html__( 'Yandex Map', 'shmapper-by-teplitsa' ) . "</h3>";
 			$i 		= 0;
-			
+
 			foreach(static::get_map_types()[ 1 ] as $type)
 			{
 				$selected = !empty($params['selected']) && !empty($params['selected'][1][0]) && $params[ 'selected' ][1][0] == $type ? " checked " : "";
@@ -840,13 +845,13 @@ class ShmMap extends SMC_Post
 		else
 		{
 			$html .= "<div class='shm-admin-block'>
-					<h3>Open Street Map</h3>";
+					<h3>" . esc_html__( 'Open Street Map', 'shmapper-by-teplitsa' ) . "</h3>";
 			
 			$i 		= 0;
 			
 			foreach(static::get_map_types()[ 2 ] as $type)
 			{
-			    $selected = isset($params[ 'selected' ][2][0]) && $params[ 'selected' ][2][0] == $type  ? " checked " : "";
+				$selected = isset($params[ 'selected' ][2][0]) && $params[ 'selected' ][2][0] == $type  ? " checked " : "";
 				$name 	= $params[ 'name' ];
 				$id 	= $params[ 'id' ];
 				$html 	.= "

@@ -1,5 +1,10 @@
 <?php
-	
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 	class SMC_Object_Type
 	{
 		public $object;
@@ -88,7 +93,6 @@
 				if($values[$i]['type'] == 'id')
 				{
 					$pos					= $this->get($values[$i]['object']);
-					//return $meta . ' -- ' . $values[$i]['object'] . ' -- ' . $pos['t']['type'];
 					switch($pos['t']['type'])
 					{
 						case 'post':
@@ -121,18 +125,14 @@
 					if($values[$i]['download'])
 					{	
 						$imageUrl			= wp_get_attachment_url(  $meta );
-						// echo $imageUrl."<BR>";
-						// continue;
 						$stt				= (strrpos($imageUrl, '/'))+1;
 						$fnn				= (strrpos($imageUrl, '.')) - $stt;
 						$filename 			= substr($imageUrl,  $stt, $fnn);
 						$thumbnail 			= substr($imageUrl,  $stt);
 						$wp_check_filetype 	= wp_check_filetype($imageUrl);
 						file_copy($imageUrl, $new_dir ."/".  $filename . "." . $wp_check_filetype['ext']);
-						$obj[$keys[$i]]		= $imageUrl;//$filename . "." . $wp_check_filetype['ext'];
-					/**/
+						$obj[$keys[$i]]		= $imageUrl;
 					}
-					//$obj['download']		= true;
 				}
 				
 				else if($values[$i]['type'] == 'bool' || $values[$i]['type'] == 'number')
@@ -183,15 +183,12 @@
 				if($keys[$i] == "class")	continue;
 				if($values[$i]['type'] == 'db_row')
 				{
-					//$obj[$keys[$i]]	= array("db_field" => $values[$i]['db_field'], "db_name" => $values[$i]['db_name']);
 					continue;
 				}
 				$meta						= $option[$keys[$i]];
 				if($values[$i]['type'] == 'id')
 				{
 					$pos					= $this->get($values[$i]['object']);
-					
-					//return $meta . ' -- ' . $values[$i]['object'] . ' -- ' . $pos['t']['type'];
 					switch($pos['t']['type'])
 					{
 						case 'post':
@@ -245,7 +242,6 @@
 						{
 							case "post":
 								$obj		= $this->get_post_property($v);
-								//insertLog("get_property "."post",  $obj );
 								return $obj;
 							case "taxonomy":
 								$obj		= @$this->get_taxonomy_property($v, $value['object']);
@@ -260,7 +256,6 @@
 				if(!is_wp_error($obj))
 					return $obj;
 			}
-			//insertLog("get_property", array($val, $value));
 		}
 		function get_post_property($meta)
 		{
@@ -271,14 +266,12 @@
 		}
 		function get_user_property($meta)
 		{
-			//$user			= get_userdata($meta);
-			return "==$meta";//$user ? $user->user_login : " - ";
+			return "==$meta";
 		}
 		function get_taxonomy_property($meta, $object)
 		{
 			$pp				= get_term_by("id", $meta, $object );
 			$pos_slug		= $pp->slug;
-			//insertLog("get_taxonomy_property", $pp->slug);
 			return $pos_slug;
 		}
 		function get_db_row_property($meta)
@@ -307,7 +300,6 @@
 					
 				}
 			}
-			//insertLog("get_array_property = obj", $obj);
 			return $obj;
 		}
 		/*
@@ -329,7 +321,6 @@
 				$key == 'post_type'  
 				)
 				return new WP_Error( $key );
-			//echo "<p>-------  ".$key . ': ' . Assistants::echo_me($d[$key]['object'])."</p>";	
 			if($d[$key]['type'] == 'id')
 			{
 				$pos	= $this->get($d[$key]['object']);
@@ -352,15 +343,14 @@
 			if(is_array($val))
 			{
 				$components[] = array( "key" => $key, "value" => $val, "id" => $id );
-				$val		= ""; //$this->convert_array($key, $val, $id);
+				$val		= "";
 			}
 			
 			if($key == 'png_url')
 				$val	= IMPORMAN_URLPATH . "picto/" . $val;
 			if($key == "_thumbnail_id")
 			{
-				$wp_upload_dir 		= wp_upload_dir();				
-				//$filename			= download_url($migration_url . $val);
+				$wp_upload_dir 		= wp_upload_dir();
 				$filename			= (ERMAK_MIGRATION_PATH . $val);
 				$httml .=  "<DIV>". $migration_url . $val ."</div>";
 				if(is_wp_error($filename))
@@ -387,12 +377,9 @@
 				{
 					if(is_array( $v ))
 					{
-						//$arr[$k]	= array();
-						//foreach($v as $k1 => $v1)
 						{
 							$arr[$k]	= $this->convert_array($v);
-							//break;
-						}						
+						}
 					}
 					else
 					{
@@ -405,12 +392,11 @@
 					switch($tp['t']['type'])
 					{
 						case "post":
-							$arr[$k]		= get_postId_by_slug($v, $k);//$this->convert_id($k, $v, $this->get($k), -1);//$v;
+							$arr[$k]		= get_postId_by_slug($v, $k);
 							break;
 						case "taxonomy":
 							$arr[$k]		= get_termId_by_slug($v, $k);
 					}
-					//echo Assistants::echo_me( $this->get($k));
 				}
 			}		
 			return $arr;
@@ -439,7 +425,6 @@
 		{
 			try {
 				$adress	= str_replace(esc_url( home_url( '/' ) ), ABSPATH, $file);
-				//insertLog("file_copy", $adress);
 				$cl		= @copy($adress, $distination) ;
 			}
 			catch (Exception $e) 
@@ -465,4 +450,3 @@
 		$term	= get_term_by("slug", $slug, $tax);
 		return $term->term_id;
 	}
-?>

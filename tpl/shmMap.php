@@ -1,4 +1,9 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
 function draw_shMap($map, $args )
 {
@@ -80,7 +85,7 @@ function draw_shMap($map, $args )
     $csv = "";
     
     if($is_csv) {
-        $csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download  %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
+        $csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
     }
 
 	$points		= $map->get_map_points();

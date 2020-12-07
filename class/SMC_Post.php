@@ -1,4 +1,10 @@
-<?php 
+<?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 	class SMC_Post
 	{
 		public $id;
@@ -92,14 +98,12 @@
 				{
 					continue;
 				}
-				//insertLog("update_metas", array($meta, $val));
 				$this->update_meta($meta, $val);
 			}
 			if(count($data))
 			{
 				$data['ID'] = $this->id;
 				$id			= wp_update_post($data);
-				//insertLog("update_metas", $id);
 			}
 		}
 		public function get_meta($name)
@@ -229,11 +233,9 @@
 					$ar["compare"]	= "=";
 					$arr[]			= $ar;
 				}
-				//$args['meta_query']	= array('relation'		=> 'AND');
 				$args['meta_query'][] = $arr;
 				
 			}
-			//insertLog("SMC_Post", array("action" => "get_all_ids", "args"=>$args));
 			static::$all_ids		= get_posts($args);
 			return static::$all_ids;
 		}
@@ -477,20 +479,20 @@
 			}
 		}
 		
-		// добавляем возможность сортировать колонку
+		// add the ability to sort the column
 		static function add_views_sortable_column($sortable_columns)
 		{
 			
 			return $sortable_columns;
 		}
 		
-		// изменяем запрос при сортировке колонки	
+		// change the query when sorting a column
 		static function add_column_views_request( $object )
 		{
 			
 		}	
 		
-		//bulk actions
+		// bulk actions
 		static function register_my_bulk_actions( $bulk_actions )
 		{
 			$bulk_actions['double'] = __("Double", SHMAPPER);
@@ -499,7 +501,7 @@
 		
 		static  function my_bulk_action_handler( $redirect_to, $doaction, $post_ids )
 		{
-			// ничего не делаем если это не наше действие
+			// do nothing if it is not our action
 			if( $doaction !== 'double' )
 				return $redirect_to;
 			foreach( $post_ids as $post_id )
@@ -536,7 +538,6 @@
 			<fieldset class="inline-edit-col-left">
 			  <div class="inline-edit-col shm-column-<?php echo $column_name; ?>">
 				<?php 
-				// Например здесь получить ID записи ... ?
 				 switch ( $column_name ) {
 					 case 'owner_map':
 						 echo "<span class='title'>".__("Usage in Maps: ", SHMAPPER)."</span>";
@@ -573,12 +574,12 @@
 									break;
 								case "post":
 									
-									break;							
+									break;
 								case "taxonomy":
 									
 									break;
 								case "id":
-								default:									
+								default:
 									break;
 							}
 						}
@@ -645,20 +646,15 @@
 		}
 		static function true_save_box_data ( $post_id ) 
 		{
-			// проверяем, пришёл ли запрос со страницы с метабоксом
 			if ( !isset( $_POST[static::get_type().'_metabox_nonce' ] )
 			|| !wp_verify_nonce( $_POST[static::get_type().'_metabox_nonce' ], basename( __FILE__ ) ) )
 				return $post_id;
-			// проверяем, является ли запрос автосохранением
 			if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
 				return $post_id;
-			// проверяем, права пользователя, может ли он редактировать записи
 			if ( !current_user_can( 'edit_post', $post_id ) )
 				return $post_id;		
 			$lt					= static::get_instance( $post_id );
 			$metas				= static::save_admin_edit($lt);
-			//var_dump($metas);
-			//wp_die();
 			$lt->update_metas( $metas );
 			return $post_id;
 		}
@@ -692,11 +688,9 @@
 				<div class='spacer-5'></div>";
 			}
 			echo $html;
-			//echo "<div class='smc_description'>You must override static methods <b>view_admin_edit</b> and <b>save_admin_edit</b> in class <b>" .  get_called_class() . "</b>.</div>";
 		}
 		static function save_admin_edit($obj)
 		{
 			return array();
 		}
 	}
-?>

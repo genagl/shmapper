@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 function get_input_file_form()
 {
 	return '<div class="container"> <br />
@@ -13,28 +19,28 @@ function get_input_file_form()
 							<!-- image-preview-clear button -->
 							<button type="button" class="btn btn-default image-preview-clear" style="display:none;"> <span class="glyphicon glyphicon-remove"></span> Clear </button>
 							<!-- image-preview-input -->
-							<div class="btn btn-default image-preview-input"> <span class="glyphicon glyphicon-folder-open"></span> <span class="image-preview-input-title">Browse</span>
+							<div class="btn btn-default image-preview-input"> <span class="glyphicon glyphicon-folder-open"></span> <span class="image-preview-input-title">' . esc_html__( 'Browse', 'shmapper-by-teplitsa' ) . '</span>
 								<input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
 								<!-- rename it --> 
 							</div>
-							<button type="button" class="btn btn-labeled btn-primary"> <span class="btn-label"><i class="glyphicon glyphicon-upload"></i> </span>Upload</button>
+							<button type="button" class="btn btn-labeled btn-primary"> <span class="btn-label"><i class="glyphicon glyphicon-upload"></i> </span>' . esc_html__( 'Upload', 'shmapper-by-teplitsa' ) . '</button>
 							</span> </div>
 						<!-- /input-group image-preview [TO HERE]--> 
 						
 						<br />
 						
 						<!-- Drop Zone -->
-						<div class="upload-drop-zone" id="drop-zone"> Or drag and drop files here </div>
+						<div class="upload-drop-zone" id="drop-zone">' . esc_html__( 'Or drag and drop files here', 'shmapper-by-teplitsa' ) . '</div>
 						<br />
 						<!-- Progress Bar -->
 						<div class="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"> <span class="sr-only">10% Complete</span> </div>
+							<div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"> <span class="sr-only">10% ' . esc_html__( 'Complete', 'shmapper-by-teplitsa' ) . '</span> </div>
 						</div>
 						<br />
 
 					</div>
 				</div>
-			</div>       
+			</div>
 		</div>
 	</div>';
 }
@@ -53,43 +59,41 @@ function get_input_file_form2($image_input_name = "image-file", $media_id='-1', 
 	<input type='hidden' id='".$prefix."_media_id$id' name='$prefix$id' value='$media_id'/>";
 }
 
-
-
 function get_input_file_form3($image_input_name = "image-file")
 {
 	return '
 		<!-- bootstrap-imageupload. -->
 		<div class="imageupload panel panel-default">
 			<div class="panel-heading clearfix">
-				<h3 class="panel-title pull-left">' . __("Upload Image", FRMRU) . '</h3>
+				<h3 class="panel-title pull-left">' . __( 'Upload Image', 'shmapper-by-teplitsa' ) . '</h3>
 				<div class="btn-group pull-right">
-					<button type="button" class="btn btn-default active">' . __("File", FRMRU) . '</button>
-					<button type="button" class="btn btn-default">URL</button>
+					<button type="button" class="btn btn-default active">' . __( 'File', 'shmapper-by-teplitsa' ) . '</button>
+					<button type="button" class="btn btn-default">' . esc_html__( 'URL', 'shmapper-by-teplitsa' ) . '</button>
 				</div>
 			</div>
 			<div class="file-tab panel-body">
 				<label class="btn btn-default btn-file btn-lg">
-					<span>' . __("Browse", FRMRU).'</span>
+					<span>' . __( 'Browse', 'shmapper-by-teplitsa' ) . '</span>
 					<!-- The file is stored here. -->
 					<input type="file" name="' . $image_input_name . '">
 				</label>
-				<button type="button" class="btn btn-default">' . __("Remove") . '</button>
-				<button type="button" class="btn btn-default">' . __("Insert", FRMRU) . '</button>
+				<button type="button" class="btn btn-default">' . __( 'Remove' ) . '</button>
+				<button type="button" class="btn btn-default">' . __( 'Insert', 'shmapper-by-teplitsa' ) . '</button>
 			</div>
 			<div class="url-tab panel-body">
 				<div class="input-group">
-					<input type="text" class="form-control hasclear" placeholder="Image URL">
+					<input type="text" class="form-control hasclear" placeholder="' . esc_attr( 'Image URL', 'shmapper-by-teplitsa' ) . '">
 					<div class="input-group-btn">
-						<button type="button" class="btn btn-default">' . __("Submit", FRMRU).'</button>
+						<button type="button" class="btn btn-default">' . __( 'Submit', 'shmapper-by-teplitsa' ) . '</button>
 					</div>
 				</div>
-				<button type="button" class="btn btn-default ">' . __("Remove").'</button>
+				<button type="button" class="btn btn-default ">' . __( 'Remove' ).'</button>
 				<!-- The URL is stored here. -->
 				<input type="hidden" name="image-url">
 			</div>
 			<div class="panel-heading clearfix">
 				<div class="btn-group pull-right">
-					<button type="button" class="btn btn-default">' .__( "Submit", FRMRU ) . '</button>
+					<button type="button" class="btn btn-default">' . __( 'Submit', 'shmapper-by-teplitsa' ) . '</button>
 				</div>
 			</div>
 		</div>';

@@ -1,4 +1,9 @@
-<?php 
+<?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
 class ShMapperRequest extends SMC_Post
 {
@@ -310,7 +315,7 @@ class ShMapperRequest extends SMC_Post
 			} 
 			else 
 			{
-				//echo "Возможны атаки при загрузке файла!\n";
+				//echo "File upload attacks are possible!\n";
 			}
 			
 		}

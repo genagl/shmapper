@@ -114,6 +114,7 @@ function shm_is_session() {
 
 /**
  * Disable Gugenberg
+ *
  * @param bool   $current_status Current gutenberg status. Default true.
  * @param string $post_type      The post type being checked.
  */

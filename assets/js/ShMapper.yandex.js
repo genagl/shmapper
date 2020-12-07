@@ -220,7 +220,7 @@ jQuery(document).ready(function($)
 		
 		// Hand-made Boolon
 		var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
-			// Флаг 'raw' означает, что данные вставляют 'как есть' без экранирования html.
+			// The 'raw' flag means the data is inserted 'as is' without html escaping.
 			'<div class=ballon_header>{{ properties.balloonContentHeader|raw }}</div>' +
 				'<div class=ballon_body>{{ properties.balloonContentBody|raw }}</div>' +
 				'<div class="ballon_footer shm_ya_footer">{{ properties.balloonContentFooter|raw }}</div>'
@@ -480,4 +480,3 @@ jQuery(document).ready(function($)
 	}
 	
 })
-	

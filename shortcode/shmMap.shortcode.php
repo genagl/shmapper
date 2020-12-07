@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 function shmMap($args)
 {	
 	/**/
@@ -41,7 +47,7 @@ function shmMap($args)
 					"</div>
 					<div class='shm-form-element'>
 						<input type='submit' class='shm-request' value='" . __("Send request", SHMAPPER) . "'/>
-					</div>					
+					</div>
 				</form>
 			</div>
 		</div>";
