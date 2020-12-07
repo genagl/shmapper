@@ -41,32 +41,27 @@ jQuery(document).ready(function($)
 	$( '[name="shm_wnext"]' ).on( 'click', function() {
 		shm_send(['shm_wnext']);
 	});
-	$(".shm_doubled[post_id]").live({click:function(evt)
-	{
+	$( '.shm_doubled[post_id]' ).on( 'click' ,function(evt) {
 		evt.preventDefault();
-		shm_send(['shm_doubled', $(evt.currentTarget).attr("post_id")]);	
-	}});
-	$("[name='shm_wclose']").live({click:function(evt)
-	{
-		shm_send(['shm_wclose']);	
-	}});
-	$("#shm_settings_wizzard").live({click:function(evt)
-	{
-		shm_send(['shm_wrestart']);	
-	}});
-	$(".shm-change-input-change").live({click:function(evt)
-	{
+		shm_send( ['shm_doubled', $(evt.currentTarget).attr("post_id")] );
+	} );
+	$( '[name="shm_wclose"]' ).on( 'click', function(evt) {
+		shm_send( ['shm_wclose'] );
+	});
+	$( '#shm_settings_wizzard' ).on( 'click', function(evt) {
+		shm_send( ['shm_wrestart'] );
+	});
+	$( '.shm-change-input-change' ).on( 'click', function(evt) {
 		evt.preventDefault();
 		var command = $(evt.currentTarget).attr("c");
 		var num		= $(evt.currentTarget).parents("[shm-num]").attr("shm-num");
 		var post_id	= $(evt.currentTarget).parents("section[post_id]").attr("post_id");
-		shm_send([ command, num, post_id ]);	
-	}});
-	$(".admin_voc").live({change:function(evt)
-	{
+		shm_send([ command, num, post_id ]);
+	});
+	$( '.admin_voc' ).on( 'change', function(evt) {
 		$("#shm_vocabulary_cont").css("opacity", 0.7);
 		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);
-	}});
+	});
 	$("[name=shm_default_longitude]").on( 'change', function(evt) {
 		var shmDefaultLongitude = $('[name=shm_default_longitude]').val();
 		var shmDefaultLatitude  = $('[name=shm_default_latitude]').val();
@@ -79,52 +74,43 @@ jQuery(document).ready(function($)
 			shm_send(["shm_default_zoom", $(evt.currentTarget).val() ]);
 		},1000);
 	});
-	$("[name='map_api']").live({click:function(evt)
-	{
+	$( '[name="map_api"]' ).on( 'click', function(evt) {
 		$(".map_api_cont").css("opacity", 0.7);
 		shm_send(["map_api", $(evt.currentTarget).val()]);
-	}});
-	$("[name=shm_yandex_maps_api_key]").live({change:function(evt)
-	{
+	});
+	$( '[name="shm_yandex_maps_api_key"]' ).on( 'change', function(evt) {
 		$(".map_api_cont").css("opacity", 0.7);
-		shm_send(["shm_yandex_maps_api_key", $(evt.currentTarget).val() ]);	
-	}});	
-	$("#shm_map_is_crowdsourced").live({click:function(evt)
-	{
+		shm_send(["shm_yandex_maps_api_key", $(evt.currentTarget).val() ]);
+	});
+	$( '#shm_map_is_crowdsourced' ).on( 'click', function(evt) {
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
-		shm_send(["shm_map_is_crowdsourced", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});
-	$("#shm_map_marker_premoderation").live({click:function(evt)
-	{
+		shm_send(["shm_map_is_crowdsourced", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '#shm_map_marker_premoderation' ).on( 'click', function(evt) {
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
-		shm_send(["shm_map_marker_premoderation", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});
-	$("#shm_reload").live({click:function(evt)
-	{
+		shm_send(["shm_map_marker_premoderation", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '#shm_reload' ).on( 'click', function(evt) {
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
-		shm_send(["shm_reload", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});
-	$("#shm_settings_captcha").live({click:function(evt)
-	{
+		shm_send(["shm_reload", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '#shm_settings_captcha' ).on( 'click', function(evt) {
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
-		shm_send(["shm_settings_captcha", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});	
-	$("[name=shm_captcha_siteKey]").live({change:function(evt)
-	{
+		shm_send(["shm_settings_captcha", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '[name=shm_captcha_siteKey]' ).on( 'change', function(evt) {
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
 		shm_send(["shm_captcha_siteKey", $(evt.currentTarget).val() ]);	
-	}});	
-	$("[name=shm_captcha_secretKey]").live({change:function(evt)
-	{
+	});
+	$( '[name=shm_captcha_secretKey]' ).on( 'change', function(evt) {
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
-		shm_send(["shm_captcha_secretKey", $(evt.currentTarget).val() ]);	
-	}});
+		shm_send(["shm_captcha_secretKey", $(evt.currentTarget).val() ]);
+	});
 	
-	$("a.shm-csv-icon[map_id]").live({click:function(evt)
-	{
+	$( 'a.shm-csv-icon[map_id]' ).on( 'click', function(evt) {
 		evt.preventDefault();
 		shm_send(['shm_csv', $(evt.currentTarget).attr("map_id")]);
-	}});
+	});
 	create_point = function()
 	{
 		$(".shm-alert").removeClass("shm-alert");
@@ -164,8 +150,7 @@ jQuery(document).ready(function($)
 		}])
 	}
 	// map filter
-	$(".shm-map-panel[for] .point_type_swicher>input[type='checkbox']").live({change:function(evt)
-	{
+	$(".shm-map-panel[for] .point_type_swicher>input[type='checkbox']").on( 'change', function(evt) {
 		var $this = $(evt.currentTarget);
 		var uniq = $this.parents("[for]").attr("for");
 		var map = shm_maps[uniq];
@@ -179,7 +164,7 @@ jQuery(document).ready(function($)
 		}
 		var customEvent = new CustomEvent("shm_filter", {bubbles : true, cancelable : true, detail : dat})
 		document.documentElement.dispatchEvent(customEvent);	
-	}});
+	});
 	
 	//admin map editor
 	shm_map_add_point = function(elem)
@@ -264,8 +249,7 @@ jQuery(document).ready(function($)
 	}
 	
 	//point_type_swicher
-	$(".point_type_swicher .ganre_checkbox").live({click:function(evt)
-	{
+	$(".point_type_swicher .ganre_checkbox").on( 'click', function(evt) {
 		var types = [];
 		var $e = $(evt.currentTarget).parents(".point_type_swicher").find(".ganre_checkbox");
 		$e.each(function(num, elem)
@@ -274,12 +258,11 @@ jQuery(document).ready(function($)
 				types.push($(elem).attr("term_id"));
 		});
 		$(evt.currentTarget).parents(".point_type_swicher").find("[point]").val(types.join(","));
-	}});
+	});
 	
 	
 	//admin form element chooser
-	$("#form_editor select[selector]").live({change:function(evt)
-	{
+	$("#form_editor select[selector]").on( 'change', function(evt) {
 		var $this = $(evt.currentTarget);
 		var flds = $this.find("option:selected").attr("data-fields").split(",");
 		var $num =  $this.parents(".shm-row").attr("shm-num");	
@@ -288,15 +271,13 @@ jQuery(document).ready(function($)
 		{
 			$this.parents(".shm-row [shm-num="+$num + "]").find(".shm--" + elem).show();
 		});
-	}});
-	$("[name='tax_input[shm_point_type][]']").live({change:function(evt)
-	{
+	});
+	$("[name='tax_input[shm_point_type][]']").on( 'change', function(evt) {
 		var ch = $(evt.currentTarget).is(":checked");
 		$("[name='tax_input[shm_point_type][]']:checked").each( function(num, elem){$(elem).prop('checked', false)} );
 		$(evt.currentTarget).attr("checked", ch);
-	}});
-	$("[name=shm_esc_points]").live({change:function(evt)
-	{
+	});
+	$("[name=shm_esc_points]").on( 'change', function(evt) {
 		if($(evt.currentTarget).val() == 3)
 		{
 			$("#shm_esc_points_id").show();
@@ -305,19 +286,17 @@ jQuery(document).ready(function($)
 		{
 			$("#shm_esc_points_id").hide();
 		}
-	}})
+	});
 	//interface
-	$(".shm-close-btn").live({click:function(evt)
-	{
-		$(evt.currentTarget).parents(".shm-win").hide();	
-	}})
+	$(".shm-close-btn").on( 'click', function(evt) {
+		$(evt.currentTarget).parents(".shm-win").hide();
+	});
 	
 	//
 	//media loader
 	var prefix;
 	var cur_upload_id = 1;
-	$( ".my_image_upload" ).click(function() 
-	{
+	$( ".my_image_upload" ).on( 'click', function() {
 		var cur_upload_id = $(this).attr("image_id");
 		prefix = $(this).attr("prefix");// "pic_example";
 		var downloadingImage = new Image();
@@ -343,8 +322,7 @@ jQuery(document).ready(function($)
 		prefix = $(this).attr("prefix");// "pic_example";
 		$( elem ).height( $("#" + prefix  + $(elem).attr("image_id")).height() + 0);
 	})
-	$(".my_image_delete").click(function(evt)
-	{
+	$(".my_image_delete").on( 'click', function(evt) {
 		var $prefix = $(evt.currentTarget).attr("prefix");
 		var $default = $(evt.currentTarget).attr("default");
 		var $targ = $("#" + $prefix + " > img");
@@ -404,8 +382,7 @@ jQuery(document).ready(function($)
 		if(data.send)
 			$(".shm_modal_footer").append("<button class='button' onClick='" + data.sendHandler + "(" + data.sendArgs + ");'>"+ data.send + "</button>");
 		$(".shm_modal_footer").append("<button class='button' onclick='shm_close_modal();'>"+__("Close") + "</button>");
-		$(".shm_modal").click(function(evt)
-		{
+		$(".shm_modal").on( 'click', function(evt) {
 			$(evt.currentTarget).parents(".shm_modal_container").detach();
 		});
 	}
@@ -414,12 +391,7 @@ jQuery(document).ready(function($)
 		$(".shm_modal_container").detach();
 	}
 
-
 });
-
-
-
-
 
 
 function shm_send( params, type )
@@ -573,7 +545,7 @@ function shm_send( params, type )
 					break;				
 				default:
 					var customEvent = new CustomEvent("_shm_send_", {bubbles : true, cancelable : true, detail : dat})
-					document.documentElement.dispatchEvent(customEvent);					
+					document.documentElement.dispatchEvent(customEvent);
 					break;
 			}			
 			if(datas['exec'] && datas['exec'] != "")
@@ -614,9 +586,4 @@ jQuery(document).ready(function($) {
 			}
 		});
 	//}
-});
-
-//change location addr
-jQuery(document).ready(function($) {
-	
 });

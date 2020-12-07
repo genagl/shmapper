@@ -2,35 +2,30 @@
 jQuery(document).ready(function($)
 {
 	//ajax
-	$("[shm_notify_req]").live({click:evt =>
-	{
+	$("[shm_notify_req]").on( 'click', function(evt) {
 		var postid = $(evt.currentTarget).attr("shm_notify_req");	
 		shm_send(['shm_notify_req',postid]);
-	}});
-	$("[shm_nonotify_req]").live({click:evt =>
-	{
+	});
+
+	$("[shm_nonotify_req]").on( 'click', function(evt) {
 		var postid = $(evt.currentTarget).attr("shm_nonotify_req");	
 		shm_send(['shm_nonotify_req',postid]);
-	}});
-	$("[shm_trash_req]").live({click:evt =>
-	{
+	});
+
+	$("[shm_trash_req]").on( 'click', function(evt) {
 		var postid = $(evt.currentTarget).attr("shm_trash_req");	
 		shm_send(['shm_trash_req',postid]);
-	}});
-	
-	
-	
-	$("span.trash > .submitdelete").live({click : evt =>
-	{
+	});
+
+	$("span.trash > .submitdelete").on( 'click', function(evt) {
 		if(window.location.href.indexOf("/wp-admin/edit.php?post_type=shm_map") < 1) return;
 		evt.preventDefault();
 		var href = $(evt.currentTarget).attr("href");
 		var post_id = $(evt.currentTarget).parents("tr").attr("id");
 		var id = ( post_id.substring(5) );
 		shm_send( [ 'shm_delete_map', id, href] );
-	}})
-	
-	
+	});
+
 	/* ADMIN FROM CODEX */
 	/* https://codex.wordpress.org/Plugin_API/Action_Reference/bulk_edit_custom_box*/
 	if( inlineEditPost != undefined )
@@ -112,12 +107,10 @@ jQuery(document).ready(function($)
 	
 	$(".shm-types-radio").hide();
 	
-	$("[c='shm_add_before'], [c='shm_add_after']").live({click:evt =>
-	{
+	$("[c='shm_add_before'], [c='shm_add_after']").on( 'click', function(evt) {
 		evt.preventDefault();
 		var $this = $(evt.currentTarget)
 		var num		= $this.parents("[shm-num]").attr("shm-num");
-		//var num		= $this.parents("ul.shm-card").index($this.parent("ul.shm-card > li:visible")); //
 		var type_id	= $this.parents("[shm-num]").attr("type_id");
 		var post_id	= $this.parents("section[post_id]").attr("post_id");
 		var command	= $this.attr("c");
@@ -131,9 +124,9 @@ jQuery(document).ready(function($)
 					.attr("command", command)
 						.fadeIn("slow")
 							.offset({top:pos.top - $(".shm-types-radio").height() - 35, left:pos.left-100});
-	}});
-	$("[name='form_forms_form']").live({change:evt=>
-	{
+	});
+
+	$("[name='form_forms_form']").on( 'change', function(evt) {
 		var $this 	= $(evt.currentTarget);
 		var $rad	= $this.parents("[row_id]");
 		var row_id 	= $rad.attr("row_id");
@@ -147,11 +140,9 @@ jQuery(document).ready(function($)
 			$rad.hide();
 			clearTimeout(g);
 		}, 300);
-		
-	}})
+	});
 	
-	$("[c='shm_delete_me']").live({click:evt=>
-	{
+	$("[c='shm_delete_me']").on( 'click', function(evt) {
 		if( confirm(__("Are you shure?")) )
 		{
 			var $this 	= $(evt.currentTarget);
@@ -162,8 +153,8 @@ jQuery(document).ready(function($)
 				$this.parents("[shm-num]").detach();
 				clearTimeout(g);
 			}, 1200);
-		}			
-	}});
+		}
+	});
 });
 
 jQuery(function($){

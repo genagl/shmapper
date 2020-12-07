@@ -297,7 +297,7 @@ class ShMapper
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_register_script("touchpunch", plugins_url( '../assets/js/touchpunch.js', __FILE__ ), array());
 		wp_enqueue_script("touchpunch");	
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array( 'jquery-migrate'));
+		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array());
 		wp_enqueue_script("ShMapper");	
 		wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
 		wp_enqueue_style( "layerSwitcher");
@@ -791,10 +791,9 @@ class ShMapper
 					jQuery(arr)
 						.appendTo('body')
 							.offset({top:ofset.top - 8, left:lpos})
-					jQuery(elem).live({click:evt =>
-					{
-						shm_send(['shm_wnext']);	
-					}});
+					jQuery(elem).on( 'click', function(evt) {
+						shm_send(['shm_wnext']);
+					});
 				});
 			});
 		</script>";
