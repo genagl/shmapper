@@ -349,10 +349,21 @@ class ShMapperRequest extends SMC_Post
 	}
 	function get_notified_form()
 	{
-		if($notify = $this->get_meta("notified") > 0)
-		{
+		if($notify = $this->get_meta("notified") > 0) {
+
 			$user = get_user_by("id", $this->get_meta("notify_user"));
-			$html = "<p>" . $user->display_name . "</p><p>" . date("j.n.Y H:m", $this->get_meta("notify_date"));
+			$user_name = '';
+
+			$html = '';
+			if ( $user ) {
+				$html .= "<p>" . $user_name . "</p>";
+			} else {
+				$user_name = esc_html__( 'Visitor', 'shmapper-by-teplitsa' );
+			}
+			if ( $this->get_meta("notify_date") ) {
+				$html .= "<p>" . date("j.n.Y H:m", $this->get_meta("notify_date"));
+			}
+
 		}
 		else
 		{

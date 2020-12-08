@@ -174,7 +174,7 @@ function draw_shMap($map, $args )
 			);
 			document.documentElement.dispatchEvent(clear_form);
 			*/
-			
+
 			if(map_type == 1)
 				ymaps.ready( function(){ init_map( mData, points ) } );
 			else if (map_type == 2)

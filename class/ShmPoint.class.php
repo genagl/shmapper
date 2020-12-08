@@ -476,7 +476,7 @@ class ShmPoint extends SMC_Post
 					isAdmin			: 1,
 					isMap			: 0
 				};
-				
+
 				if(map_type == 1)
 					ymaps.ready(() => init_map( mData, points ));
 				else if (map_type == 2)

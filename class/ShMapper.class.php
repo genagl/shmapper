@@ -292,7 +292,7 @@ class ShMapper {
 			$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
 		}
 		//css
-		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array());
+		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array( 'dashicons' ) );
 		wp_enqueue_style( "ShMapper");
 		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array( 'jquery-ui-draggable', 'jquery-touch-punch'));
 		wp_enqueue_script("ShMapper");	
@@ -645,7 +645,23 @@ class ShMapper {
 
 								} else if (map_type == 2) {
 									// if is OpenStreetMap
-									var points = [];
+									var points 		= [],
+									p = {}; 
+									p.post_id 	= '';
+									p.post_title 	= '" . esc_html__( "Coordinates", SHMAPPER ) . "';
+									p.post_content 	= '';
+									p.latitude 		= '$latitude'; 
+									p.longitude 	= '$longitude'; 
+									p.location 		= ''; 
+									p.draggable 	= 1; 
+									p.type 			= '-1'; 
+									p.height 		= ''; 
+									p.width 		= ''; 
+									p.term_id 		= '-1'; 
+									p.icon 			= ''; 
+									p.color 		= '';
+
+									points.push(p);
 
 									var mData = {
 										mapType			: '$map_type',
@@ -667,19 +683,15 @@ class ShMapper {
 
 									init_map( mData, points );
 
-									// Add Center Marker.
-									var classes = 'dashicons dashicons-location shm-size-40 shm-color-danger';
-									var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });
-
 									// On zoom map.
 									myMap.on('zoom', function(e) {
 										$('[name=shm_default_zoom]').val( myMap.getZoom() ).trigger('change');
 									});
 
-									marker.on('dragend', function (e) {
+									/*marker.on('dragend', function (e) {
 										$('[name=shm_default_latitude]').val(marker.getLatLng().lat).trigger('change');
 										$('[name=shm_default_longitude]').val(marker.getLatLng().lng).trigger('change');
-									});
+									});*/
 								}
 								
 							});

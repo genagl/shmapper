@@ -46,7 +46,7 @@ class ShmForm
 			[ 
 				"type" 			=> SHMAPPER_TEXTAREA_TYPE_ID,
 				"require"		=> 1, 
-				"title"			=> __("Whrite description", SHMAPPER),
+				"title"			=> __("Write description", SHMAPPER),
 				"placeholde"	=> "",
 				"description"	=> "",
 			],	
