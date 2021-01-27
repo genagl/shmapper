@@ -58,7 +58,7 @@ No questions yet.
 
 == Changelog ==
 
-= 1.3.7 =
+= 1.4.0 =
 * Added support for importing data from Google Sheets.
 
 = 1.3.6 =
