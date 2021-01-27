@@ -58,6 +58,9 @@ No questions yet.
 
 == Changelog ==
 
+= 1.3.7 =
+* Added support for importing data from Google Sheets.
+
 = 1.3.6 =
 * WordPress 5.5 compatibility.
 
