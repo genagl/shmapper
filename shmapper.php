@@ -3,7 +3,7 @@
  * Plugin Name: ShMapper by Teplitsa
  * Plugin URI: http://genagl.ru/?p=652
  * Description: Location and logistics services for NKO
- * Version: 1.4.0
+ * Version: 1.3.7
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Author: Teplitsa. Technologies for Social Good
@@ -47,15 +47,17 @@ function init_textdomain_shmapper() {
 		load_plugin_textdomain( 'shmapper-by-teplitsa', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 }
-add_action('plugins_loaded', 'init_textdomain_shmapper');
+add_action( 'plugins_loaded', 'init_textdomain_shmapper' );
 
 // Paths.
 define( 'SHM_URLPATH', WP_PLUGIN_URL . '/' . plugin_basename( dirname(__FILE__) ) . '/' );
 define( 'SHM_REAL_PATH', WP_PLUGIN_DIR . '/' . plugin_basename(dirname(__FILE__) ) . '/' );
 define( 'SHMAPPER', 'shmapper-by-teplitsa' );
+define('SHMAPPERD', 'shmapper-drive' );
 define( 'SHM_MAP', 'shm_map' );
 define( 'SHM_POINT', 'shm_point' );
 define( 'SHM_POINT_TYPE', 'shm_point_type' );
+define( 'SHMAPPER_POINT_MESSAGE', 'shm_point_msg' );
 define( 'SHM_REQUEST', 'shm_request' );
 define( 'SHMAPPER_PLAIN_TEXT_TYPE_ID', 1 );
 define( 'SHMAPPER_NAME_TYPE_ID', 2 );
@@ -69,7 +71,7 @@ define( 'SHMAPPER_TITLE_TYPE_ID', 9 );
 define( 'SHM_CSV_STROKE_SEPARATOR', ';' );
 define( 'SHM_CSV_ROW_SEPARATOR', '
 ');
-define('SHMAPPER_VERSION', '1.3.3' );
+define( 'SHMAPPER_VERSION', '1.3.7' );
 
 require_once SHM_REAL_PATH . 'class/ShMapper.class.php';
 require_once SHM_REAL_PATH . 'class/ShMapper_ajax.class.php';
@@ -89,10 +91,14 @@ require_once SHM_REAL_PATH . 'class/ShmAdminPage.class.php';
 require_once SHM_REAL_PATH . 'shortcode/shm_shortcodes.php';
 require_once SHM_REAL_PATH . 'widget/ShMap.widget.php';
 
+require_once SHM_REAL_PATH . 'class/ShMapperDrive.class.php';
+
 register_activation_hook( __FILE__, array( 'ShMapper', 'activate' ) );
+register_activation_hook( __FILE__, array( 'ShMapperDrive', 'activate' ) );
 
 if ( function_exists( 'register_deactivation_hook' ) ) {
 	register_deactivation_hook(__FILE__, array( 'ShMapper', 'deactivate' ) );
+	register_deactivation_hook(__FILE__, array( 'ShMapperDrive', 'deactivate' ) );
 }
 
 /** Shamapper init */
@@ -107,6 +113,16 @@ function init_shmapper() {
 	ShmForm::init();
 }
 add_action( 'init', 'init_shmapper', 1 );
+
+/** Shamapper Drive init */
+function init_shmapper_drive() {
+	require_once SHM_REAL_PATH . 'class/ShMapperDrive_ajax.class.php';
+	require_once SHM_REAL_PATH . 'class/ShMapperPointMessage.class.php';
+	ShMapperDrive::get_instance();
+	ShMapperDrive_ajax::get_instance();
+	ShMapperPointMessage::init();
+}
+add_action( 'init', 'init_shmapper_drive', 2 );
 
 /** Is session */
 function shm_is_session() {
