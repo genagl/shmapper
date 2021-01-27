@@ -212,7 +212,7 @@ class ShMapper {
 				$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
 			}
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=ru_RU", array());
-			wp_enqueue_script("api-maps");	
+			wp_enqueue_script("api-maps");
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
 		}
@@ -303,11 +303,13 @@ class ShMapper {
 		if( static::$options['map_api'] == 1 )
 		{
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=ru_RU", array());
-			wp_enqueue_script("api-maps");			
+			wp_enqueue_script("api-maps");
+			wp_register_script( 'region', plugins_url( '../assets/js/region-selector.min.js', __FILE__ ), array());
+			wp_enqueue_script( 'region' );
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
 		}
-		else if(  static::$options['map_api'] == 2 )
+		else if( static::$options['map_api'] == 2 )
 		{
 			//css
 			wp_register_style("easyGeocoder", SHM_URLPATH . 'assets/css/easyGeocoder.css', array());
@@ -700,7 +702,7 @@ class ShMapper {
 						</div>
 						<div class='shm-1'></div>
 					</div>
-				</li>
+				</li>" . apply_filters( 'shmapper_admin', '' ) . "
 				<li>
 					<div class='shm-row' id='shm_vocabulary_cont'>
 						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-3 '>".

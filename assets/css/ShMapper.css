@@ -1064,6 +1064,8 @@ tfoot .shm-notify2:after
 	font-size:1rem;
 	font-weight:100;
 	font-family:sans-serif;
+	max-height: 380px;
+	overflow-y: auto;
 }
 .shm_modal_close
 {
