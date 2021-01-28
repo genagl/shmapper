@@ -171,7 +171,102 @@ jQuery(document).ready(function($)
 		  zoom: mData.zoom,
 		  type: 'yandex#' + mData.mapType
 		});
+
+	
+
+
+		//, {restrictMapArea: [[0, 0], [179, 179]]});
+
+		/*var map = myMap;
 		
+		 // Загрузим регионы.
+		 ymaps.borders.load('001', {
+			lang: 'ro',
+			quality: 0,
+			disputedBorders: ''
+		}).then(function (result) {
+
+			// Создадим многоугольник, который будет скрывать весь мир, кроме заданной страны.
+			var background = new ymaps.Polygon([
+				[
+					[85, -179.99],
+					[85, 179.99],
+					[-85, 179.99],
+					[-85, -179.99],
+					[85, -179.99]
+				]
+			], {}, {
+				fillColor: 'rgba(0,0,0,0.3)',
+				strokeWidth: 0,
+				//interactivityModel: 'default#transparent',
+				// Для того чтобы полигон отобразился на весь мир, нам нужно поменять
+				// алгоритм пересчета координат геометрии в пиксельные координаты.
+				//coordRendering: 'straightPath'
+			});
+	
+			// Найдём страну по её iso коду.
+			var region = result.features.filter(function (feature) { 
+				//console.log(feature.properties);
+				return feature.properties.iso3166 == 'MD'; })[0];
+				console.log(region);
+			// Добавим координаты этой страны в полигон, который накрывает весь мир.
+			// В полигоне образуется полость, через которую будет видно заданную страну.
+			var masks = region.geometry.coordinates;
+			masks.forEach(function(mask){
+				background.geometry.insert(1, mask);
+			});
+
+			
+	
+			// Добавим многоугольник на карту.
+			map.geoObjects.add(background);
+		}) ;
+
+		ymaps.regions.load('MD', {
+			lang: 'ru',
+			quality: 1
+		}).then(function (result) {
+			var background2 = new ymaps.Polygon([
+				[
+					[85, -179.99],
+					[85, 179.99],
+					[-85, 179.99],
+					[-85, -179.99],
+					[85, -179.99]
+				]
+			], {}, {
+				fillColor: '#cccccc',
+				strokeWidth: 0,
+				// Для того чтобы полигон отобразился на весь мир, нам нужно поменять
+				// алгоритм пересчета координат геометрии в пиксельные координаты.
+				coordRendering: 'straightPath'
+			});			var regions = result.geoObjects;
+			// Включим возможность перетаскивания регионов.
+			//regions.options.set('draggable', true);
+			// Проходим по коллекции регионов и ищем Иркутскую область (osmId = 145454).
+			regions.each(function (reg) {
+				console.log(reg.geometry._coordPath._coordinates[0])
+				var masks = reg.geometry._coordPath._coordinates;
+				//background2.geometry.insert(1, masks);
+				if (reg.properties.get('name') != "Чукотский автономный округ") {
+					masks.forEach(function(mask){
+						background2.geometry.insert(1, mask);
+					});
+						// Меняем цвет на красный
+					//reg.options.set('fillColor', '#ff001a')
+				}
+			});
+		
+			// Добавляем регионы на карту
+			myMap.geoObjects.add(background2);
+			myMap.geoObjects.add(regions); 
+		 });
+		*/
+
+		/*ymaps.modules.require('RS.RegionSelector', function (RegionSelector) {
+			new RegionSelector(myMap);
+		});*/
+
 		//search 
 		if(mData.isSearch)
 		{
