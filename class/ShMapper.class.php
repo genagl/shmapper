@@ -197,12 +197,16 @@ class ShMapper {
 	
 	static function add_admin_js_script()
 	{	
+		$locale = get_locale();
 		//css
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper");
 		//js
 		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('inline-edit-post'));
 		wp_enqueue_script("ShMapper");
+		wp_enqueue_media();
+		wp_enqueue_style( 'wp-color-picker');
+		wp_enqueue_script( 'wp-color-picker' );
 		wp_register_script("ShMapper.admin", plugins_url( '../assets/js/ShMapper.admin.js', __FILE__ ), array());
 		wp_enqueue_script("ShMapper.admin");
 		if( static::$options['map_api'] == 1 )
@@ -211,7 +215,7 @@ class ShMapper {
 			if ( isset( ShMapper::$options['shm_yandex_maps_api_key'] ) ) {
 				$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
 			}
-			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=ru_RU", array());
+			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=" . $locale, array());
 			wp_enqueue_script("api-maps");
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
@@ -283,10 +287,27 @@ class ShMapper {
 				'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
 				'Are you shure?' => __( "Are you shure?", SHMAPPER ),
 			)
-		);	
+		);
+
+		$is_admin = 'false';
+		if ( is_admin() ) {
+			$is_admin = 'true';
+		}
+
+		wp_localize_script(
+			'ShMapper.yandex',
+			'shmYa',
+			array(
+				'locale'   => get_locale(),
+				'language' => get_bloginfo( 'language' ),
+				'langIso'  => substr( get_bloginfo ( 'language' ), 0, 2 ),
+				'isAdmin'  => $is_admin,
+			)
+		);
 	}
 	static function add_frons_js_script()
 	{
+		$locale = get_locale();
 		$ymap_key = '';
 		if ( isset( ShMapper::$options['shm_yandex_maps_api_key'] ) ) {
 			$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
@@ -302,10 +323,8 @@ class ShMapper {
 		wp_enqueue_script("ShMapper.front");	
 		if( static::$options['map_api'] == 1 )
 		{
-			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=ru_RU", array());
+			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=" . $locale, array());
 			wp_enqueue_script("api-maps");
-			wp_register_script( 'region', plugins_url( '../assets/js/region-selector.min.js', __FILE__ ), array());
-			wp_enqueue_script( 'region' );
 			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
 			wp_enqueue_script("ShMapper.yandex");
 		}
@@ -376,7 +395,24 @@ class ShMapper {
 				'Close' => __( "Close" ),
 				'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
 			)
-		);	
+		);
+
+		$is_admin = 'false';
+		if ( is_admin() ) {
+			$is_admin = 'true';
+		}
+
+		wp_localize_script(
+			'ShMapper.yandex',
+			'shmYa',
+			array(
+				'locale'   => get_locale(),
+				'language' => get_bloginfo( 'language' ),
+				'langIso'  => substr( get_bloginfo ( 'language' ), 0, 2 ),
+				'isAdmin'  => $is_admin,
+			)
+		);
+
 	}
 	static function set_styles()
 	{

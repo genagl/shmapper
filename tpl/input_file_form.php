@@ -116,19 +116,18 @@ function _get_default()
 	return SHM_URLPATH."assets/img/empty.png";
 }
 
-function recurse_copy($src, $dst) 
-{ 
-    $dir = opendir($src); 
-    @mkdir($dst); 
-    while(false !== ( $file = readdir($dir)) ) { 
-        if (( $file != '.' ) && ( $file != '..' )) { 
-            if ( is_dir($src . '/' . $file) ) { 
-                recurse_copy($src . '/' . $file, $dst . '/' . $file); 
-            } 
-            else { 
-                copy($src . '/' . $file, $dst . '/' . $file); 
-            } 
-        } 
-    } 
-    closedir($dir); 
+function recurse_copy( $src, $dst ) { 
+	$dir = opendir($src); 
+	@mkdir($dst); 
+	while(false !== ( $file = readdir($dir)) ) { 
+		if (( $file != '.' ) && ( $file != '..' )) { 
+			if ( is_dir($src . '/' . $file) ) { 
+				recurse_copy($src . '/' . $file, $dst . '/' . $file); 
+			} 
+			else { 
+				copy($src . '/' . $file, $dst . '/' . $file); 
+			} 
+		} 
+	} 
+	closedir($dir); 
 }

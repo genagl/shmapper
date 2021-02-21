@@ -41,6 +41,11 @@ function draw_shMap($map, $args )
 	$longitude	= $longitude	? $longitude : 55;
 	$zoom		=  $zoom ? $zoom : 4;
 	$leg 		= "";
+	$highlight_country = $map->get_meta( 'highlight_country' );
+	$overlay_color     = $map->get_meta( 'overlay_color' );
+	$border_color      = $map->get_meta( 'border_color' );
+	$overlay_opacity   = $map->get_meta( 'overlay_opacity' );
+
 	if( $is_legend )
 	{
 		$include = $map->get_include_types();
@@ -53,7 +58,7 @@ function draw_shMap($map, $args )
 				}
 
 				$term = get_term($term_id);
-				if( !is_wp_error($term) ) { // echo '<pre>HERE: '.print_r($include, 1).'</pre>';
+				if( !is_wp_error($term) ) {
 					
 					$color = get_term_meta($term_id, "color", true);
 					$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
@@ -161,24 +166,64 @@ function draw_shMap($map, $args )
 				isZoomer		: ". ($is_zoomer ? 1 : 0). ",
 				isAdmin			: ". (is_admin() ? 1 : 0). ",
 				isMap			: true,
-				default_icon	: '$icon'
+				default_icon	: '$icon',
+				country         : '$highlight_country',
+				overlay         : '$overlay_color',
+				border          : '$border_color',
+				overlayOpacity : '$overlay_opacity',
 			};
-			/*
-			var clear_form = new CustomEvent(
-				'init_map', 
-				{
-					bubbles : true, 
-					cancelable : true, 
-					detail : {mData:mData, points:points}
-				}
-			);
-			document.documentElement.dispatchEvent(clear_form);
-			*/
 
-			if(map_type == 1)
-				ymaps.ready( function(){ init_map( mData, points ) } );
-			else if (map_type == 2)
+			if ( map_type == 1 ) {
+
+				ymaps.ready( function(){
+
+					init_map( mData, points );
+
+					ymaps.borders.load( '001' , {
+						lang: shmYa.langIso,
+						quality: 1
+					}).then(function (result) {
+
+						let selectOption   = '<option>...</option>';
+						let optionValue    = '';
+						let optionLabel    = '';
+						let optionSelected = '';
+						let optionCurrent  = mData.country;
+						let allCountries   = [];
+						let allOptions     = [];
+
+						for (var i = 0; i < result.features.length; i++) {
+							optionValue = result.features[i].properties.iso3166;
+							optionLabel = result.features[i].properties.name;
+							allOptions[ optionLabel ] = optionValue;
+							allCountries.push( optionLabel );
+						}
+
+						// Sort countries alphabetically
+						allCountries.sort();
+
+						// Create html options
+						allCountries.forEach( function( value, index ){
+							optionValue = allOptions[ value ];
+							optionSelected = '';
+							if ( optionCurrent == optionValue ) {
+								optionSelected = 'selected';
+							}
+							selectOption += '<option value=\"' + optionValue + '\" ' + optionSelected + '>' + value + '</option>';
+						});
+
+						// Add options to admin select
+						if ( $( '[name=highlight_country]' ).length ) {
+							$( '[name=highlight_country]' ).html( selectOption );
+						}
+
+					});
+
+				} );
+
+			} else if (map_type == 2) {
 				init_map( mData, points );
+			}
 			
 			// Disable submit post form on this page.
 			$('form#post').on('keyup keypress', function(e) {
@@ -190,7 +235,7 @@ function draw_shMap($map, $args )
 			});
 		});
 
-        jQuery(\"<style type='text/css'>.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {max-height: ".round($height * 1.5)."px !important;} </style>\").appendTo('head');
+		jQuery(\"<style type='text/css'>.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {max-height: ".round($height * 1.5)."px !important;} </style>\").appendTo('head');
 
 	</script>";
 	return $html;

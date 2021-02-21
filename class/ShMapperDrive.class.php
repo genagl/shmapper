@@ -107,9 +107,11 @@ class ShMapperDrive
 		return $init_object;
 	}
 	
-	static function shmapper_admin($text)
-	{
-		//google-sheets.php
+	static function shmapper_admin( $text ) {
+		$google_geo_adress = static::$options['google_geo_adress'] ? static::$options['google_geo_adress'] : 'D';
+		$shmd_post_title   = static::$options['shmd_post_title'] ? static::$options['shmd_post_title'] : 'B';
+		$shmd_post_date   = static::$options['post_date'] ? static::$options['post_date'] : 'E';
+
 		return $text . "
 				<li>
 					<div class='shm-row' id='shm_vocabulary_cont'>
@@ -193,7 +195,7 @@ class ShMapperDrive
 								googleColumnIdent_dropdown( [
 									'name'		=> 'shmd_post_title', 
 									"class" 	=> "shm_options", 
-									"selected" 	=> static::$options['shmd_post_title']
+									"selected" 	=> $shmd_post_title
 								]). 
 								"							
 								
@@ -216,9 +218,9 @@ class ShMapperDrive
 									"</label>
 								</div>" .
 								googleColumnIdent_dropdown( [
-									'name'		=> 'post_date', 
-									"class" 	=> "shm_options", 
-									"selected" 	=> static::$options['post_date']
+									'name'		=> 'post_date',
+									"class" 	=> "shm_options",
+									"selected" 	=> $shmd_post_date
 								]). 
 								"
 								
@@ -289,9 +291,9 @@ class ShMapperDrive
 										</div>
 										<div class='shm-8' >".
 											googleColumnIdent_dropdown([
-												'name'=>'google_geo_adress',
-												"class" => "shm_options", 
-												"selected" => static::$options['google_geo_adress']
+												'name'     =>'google_geo_adress',
+												"class"    => "shm_options", 
+												"selected" => $google_geo_adress
 											]).
 										"</div>
 									</div> 

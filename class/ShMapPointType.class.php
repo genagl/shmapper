@@ -354,11 +354,10 @@ class ShMapPointType
 				"/>
 				$after";
 		}
-		
-		if( isset($params['default_none'])	)
-		{
+
+		if ( isset( $params['default_none'] ) ) {
 			if ( ! isset( $class ) ) {
-				$class = '';
+				$class = 'ganre_checkbox';
 			}
 			$html .= "
 			<div class='$col_width'>
@@ -376,8 +375,8 @@ class ShMapPointType
 					"<div class='shm-clr' style='background:#ffffff;'></div>" .
 				"</label>
 			</div>";
-		}	
-		
+		}
+
 		$html .= "
 			<input type='hidden' id='".$params['prefix']."pointtype' name='".(empty($params['name']) ? '' : $params['name'])."' point='' value='".(is_array($params['selected']) ? implode(",", $params['selected']) : $params['selected']) . "' />
 		</div>";

@@ -122,9 +122,9 @@ jQuery(document).ready(function($)
 	function shm_place_marker_by_addr($this) {
 		var addr = $this.val();
 		console.log(addr);
-		
+
 		var $selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon.shmapperMarkerSelected');
-		
+
 		if(!$selectedMarker.length) {
 			$selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon').first();
 			$selectedMarker.addClass('shmapperMarkerSelected');
@@ -132,11 +132,9 @@ jQuery(document).ready(function($)
 		
 		ymaps.geocode(addr).then(function (res) {
 			var firstGeoObject = res.geoObjects.get(0);
-//			console.log("decoded");
-			
+
 			new_mark_coords = firstGeoObject.geometry.getCoordinates();
-//			console.log(new_mark_coords);
-			
+
 			var $map_id = $selectedMarker.parents("form.shm-form-request").attr("form_id");
 			map = shm_maps[$map_id];
 			
@@ -144,8 +142,7 @@ jQuery(document).ready(function($)
 			shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $selectedMarker);
 			
 		}, function (err) {
-//		    console.log("error");
-		    console.log(err);
+			console.log(err);
 		}); 
 	}
 
@@ -154,118 +151,120 @@ jQuery(document).ready(function($)
 		shm_place_marker_by_addr($(this));
 	});
 	$addrInput.keydown(function(e){
-	    if(e.keyCode == 13){
-	        e.preventDefault();
+		if(e.keyCode == 13){
+			e.preventDefault();
 			shm_place_marker_by_addr($(this));
-	    }
+		}
 	});
 	
+	var isDraggable = false;
+	if ( shmYa.isAdmin == 'true' ) {
+		isDraggable = true;
+	}
+
+	console.log(isDraggable);
+	console.log(shmYa.isAdmin);
+
 	//
 	init_map = function(mData, points)
 	{
+
+		var restrinctArea = [[-85, -179], [85, 179]];
+		if ( shmYa.isAdmin == 'true' ) {
+			restrinctArea = false;
+		}
+
 		var i=0, paramet;
-		var myMap = new ymaps.Map(mData.uniq, 
+		var myMap = new ymaps.Map( mData.uniq, 
 		{
-		  center: [ mData.latitude, mData.longitude],
-		  controls: [ ],
-		  zoom: mData.zoom,
-		  type: 'yandex#' + mData.mapType
+			center: [ mData.latitude, mData.longitude],
+			controls: [ ],
+			zoom: mData.zoom,
+			type: 'yandex#' + mData.mapType
+		}, {
+			restrictMapArea: restrinctArea
 		});
 
-	
-
-
-		//, {restrictMapArea: [[0, 0], [179, 179]]});
-
-		/*var map = myMap;
+		if ( mData.country && mData.overlay ) {
 		
-		 // Загрузим регионы.
-		 ymaps.borders.load('001', {
-			lang: 'ro',
-			quality: 0,
-			disputedBorders: ''
-		}).then(function (result) {
+			var map = myMap;
 
-			// Создадим многоугольник, который будет скрывать весь мир, кроме заданной страны.
-			var background = new ymaps.Polygon([
-				[
-					[85, -179.99],
-					[85, 179.99],
-					[-85, 179.99],
-					[-85, -179.99],
-					[85, -179.99]
-				]
-			], {}, {
-				fillColor: 'rgba(0,0,0,0.3)',
-				strokeWidth: 0,
-				//interactivityModel: 'default#transparent',
-				// Для того чтобы полигон отобразился на весь мир, нам нужно поменять
-				// алгоритм пересчета координат геометрии в пиксельные координаты.
-				//coordRendering: 'straightPath'
-			});
-	
-			// Найдём страну по её iso коду.
-			var region = result.features.filter(function (feature) { 
-				//console.log(feature.properties);
-				return feature.properties.iso3166 == 'MD'; })[0];
-				console.log(region);
-			// Добавим координаты этой страны в полигон, который накрывает весь мир.
-			// В полигоне образуется полость, через которую будет видно заданную страну.
-			var masks = region.geometry.coordinates;
-			masks.forEach(function(mask){
-				background.geometry.insert(1, mask);
-			});
-
-			
-	
-			// Добавим многоугольник на карту.
-			map.geoObjects.add(background);
-		}) ;
-
-		ymaps.regions.load('MD', {
-			lang: 'ru',
-			quality: 1
-		}).then(function (result) {
-			var background2 = new ymaps.Polygon([
-				[
-					[85, -179.99],
-					[85, 179.99],
-					[-85, 179.99],
-					[-85, -179.99],
-					[85, -179.99]
-				]
-			], {}, {
-				fillColor: '#cccccc',
-				strokeWidth: 0,
-				// Для того чтобы полигон отобразился на весь мир, нам нужно поменять
-				// алгоритм пересчета координат геометрии в пиксельные координаты.
-				coordRendering: 'straightPath'
-			});			var regions = result.geoObjects;
-			// Включим возможность перетаскивания регионов.
-			//regions.options.set('draggable', true);
-			// Проходим по коллекции регионов и ищем Иркутскую область (osmId = 145454).
-			regions.each(function (reg) {
-				console.log(reg.geometry._coordPath._coordinates[0])
-				var masks = reg.geometry._coordPath._coordinates;
-				//background2.geometry.insert(1, masks);
-				if (reg.properties.get('name') != "Чукотский автономный округ") {
-					masks.forEach(function(mask){
-						background2.geometry.insert(1, mask);
+			if (  mData.country === 'RU' ) {
+				
+				ymaps.regions.load( 'RU', {
+					lang: shmYa.langIso,
+					quality: 3,
+					disputedBorders: ''
+				}).then(function (result) {
+					var background = new ymaps.Polygon([
+						[
+							[85, -179.99],
+							[85, 179.99],
+							[-85, 179.99],
+							[-85, -179.99],
+							[85, -179.99]
+						]
+					], {}, {
+						fillColor: mData.overlay,
+						strokeWidth: 1,
+						strokeColor: mData.border,
+						opacity: mData.overlayOpacity,
+						coordRendering: 'straightPath'
 					});
-						// Меняем цвет на красный
-					//reg.options.set('fillColor', '#ff001a')
-				}
-			});
-		
-			// Добавляем регионы на карту
-			myMap.geoObjects.add(background2);
-			myMap.geoObjects.add(regions); 
-		 });
-		*/
 
-		/*ymaps.modules.require('RS.RegionSelector', function (RegionSelector) {
-			new RegionSelector(myMap);
-		});*/
+					var regions = result.geoObjects;
+
+					regions.each(function (reg) {
+						var masks = reg.geometry._coordPath._coordinates;
+						if ( reg.properties.get('osmId') != '151231' ) {
+							masks.forEach(function(mask){
+								background.geometry.insert(1, mask);
+							});
+						}
+					});
+
+					map.geoObjects.add( background );
+				});
+
+			} else {
+
+				// Load Countries.
+				ymaps.borders.load( '001' , {
+					lang: shmYa.langIso,
+					quality: 3,
+				} ).then( function( result ) {
+
+					var background = new ymaps.Polygon([
+						[
+							[85, -179.99],
+							[85, 179.99],
+							[-85, 179.99],
+							[-85, -179.99],
+							[85, -179.99]
+						]
+					], {}, {
+						fillColor: mData.overlay,
+						strokeWidth: 1,
+						strokeColor: mData.border,
+						opacity: mData.overlayOpacity,
+						coordRendering: 'straightPath'
+					});
+
+					// Find country by iso.
+					var region = result.features.filter(function (feature) { 
+						return feature.properties.iso3166 == mData.country; })[0];
+
+					// Add world overlay.
+					var masks = region.geometry.coordinates;
+					masks.forEach( function( mask ){
+						background.geometry.insert(1, mask);
+					});
+					map.geoObjects.add( background );
+
+				});
+
+			}
+		}
 
 		//search 
 		if(mData.isSearch)
@@ -309,7 +308,8 @@ jQuery(document).ready(function($)
 		{
 			myMap.behaviors.disable('scrollZoom');
 			myMap.behaviors.disable('drag');
-		}	
+		}
+
 		// add to global array
 		shm_maps[mData.uniq] = myMap;
 		
@@ -365,7 +365,7 @@ jQuery(document).ready(function($)
 					iconImageOffset: [-w/2, -h/2],
 					term_id:elem.term_id,
 					type:'point',
-					draggable: true
+					draggable: isDraggable
 				};
 			}
 			else if( mData.default_icon && !elem.color)
@@ -380,14 +380,13 @@ jQuery(document).ready(function($)
 					iconImageOffset: [-20, -20],
 					term_id:-1,
 					type:'point',
-					draggable: true
+					draggable: isDraggable
 				};
 				
 			}
 			else
 			{
 				paramet = {
-					draggable: true,
 					balloonMaxWidth: 250,
 					balloonItemContentLayout: customItemContentLayout,
 					hideIconOnBalloonOpen: false,
@@ -395,7 +394,7 @@ jQuery(document).ready(function($)
 					preset: 'islands#dotIcon',
 					term_id:elem.term_id,
 					type:'point',
-					draggable: true
+					draggable: isDraggable
 				}
 			}
 			
@@ -407,7 +406,7 @@ jQuery(document).ready(function($)
 						type: 'Point', // тип геометрии - точка
 						coordinates: [elem.latitude, elem.longitude] // координаты точки
 					},
-					draggable: true,
+					draggable: false,
 					balloonContentHeader: elem.post_title,
 					balloonContentBody: elem.post_content,
 					balloonContentFooter: '',

@@ -222,22 +222,28 @@ class ShmMap extends SMC_Post
 	static function view_admin_edit($obj)
 	{
 		require_once( SHM_REAL_PATH . "tpl/input_file_form.php" );
-		$height 		= $obj->get_meta("height") ? $obj->get_meta("height") : 400;
-		$latitude 		= $obj->get_meta("latitude");
-		$longitude 		= $obj->get_meta("longitude");
-		$zoom 			= $obj->get_meta("zoom");
-		$width 			= $obj->get_meta("width");
-		$is_search 		= $obj->get_meta("is_search");
-		$is_zoomer 		= $obj->get_meta("is_zoomer");
-		$is_layer_switcher = $obj->get_meta("is_layer_switcher");
-		$is_fullscreen 	= $obj->get_meta("is_fullscreen");
-		$is_csv 		= $obj->get_meta("is_csv");
-		$is_legend 		= $obj->get_meta("is_legend");
-		$is_filtered 	= $obj->get_meta("is_filtered");
-		$default_icon_id = $obj->get_meta("default_icon_id");
-		$is_clustered 	= $obj->get_meta("is_clustered");
-		$is_lock 		= $obj->get_meta("is_lock");
-		$form_title		= $obj->get_meta("form_title");
+		$map_source        = ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
+		$height            = $obj->get_meta( 'height' ) ? $obj->get_meta( 'height' ) : 400;
+		$latitude          = $obj->get_meta( 'latitude' );
+		$longitude         = $obj->get_meta( 'longitude' );
+		$zoom              = $obj->get_meta( 'zoom' );
+		$width             = $obj->get_meta( 'width' );
+		$is_search         = $obj->get_meta( 'is_search' );
+		$is_zoomer         = $obj->get_meta( 'is_zoomer' );
+		$is_layer_switcher = $obj->get_meta( 'is_layer_switcher' );
+		$is_fullscreen     = $obj->get_meta( 'is_fullscreen' );
+		$is_csv            = $obj->get_meta( 'is_csv' );
+		$is_legend         = $obj->get_meta( 'is_legend' );
+		$is_filtered       = $obj->get_meta( 'is_filtered' );
+		$default_icon_id   = $obj->get_meta( 'default_icon_id' );
+		$is_clustered      = $obj->get_meta( 'is_clustered' );
+		$is_lock           = $obj->get_meta( 'is_lock' );
+		$form_title        = $obj->get_meta( 'form_title' );
+		$highlight_country = $obj->get_meta( 'highlight_country' );
+		$overlay_color     = $obj->get_meta( 'overlay_color' ) ? $obj->get_meta( 'overlay_color' ) : '#d1d1d1';
+		$border_color      = $obj->get_meta( 'border_color' ) ? $obj->get_meta( 'border_color' ) : '#d1d1d1';
+		$overlay_opacity   = $obj->get_meta( 'overlay_opacity' ) ? $obj->get_meta( 'overlay_opacity' ) : '0.8';
+
 		$html 	= "
 			<div class='shm-row'>
 				<h3 class='shm-12'>". __("1.1. Pan map and choose zoom", SHMAPPER). "</h3>
@@ -342,7 +348,6 @@ class ShmMap extends SMC_Post
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_filtered, false) ."' name='is_filtered' id='is_filtered'/>
 					<label for='is_filtered'>" . __("Filters exists", SHMAPPER) . "</albel> 
-					
 				</div>
 			</div>
 			<div class='spacer-5'></div>
@@ -357,7 +362,51 @@ class ShmMap extends SMC_Post
 					__("Recommended size is 64х64 px, format is .png", SHMAPPER) . 
 				"</p>
 			</div>";
-		
+
+			if ( $map_source === 'map' ) {
+				$html 	.= "
+				<div class='spacer-5'></div>
+				<hr/>
+				<div class='spacer-5'></div>
+				<div class='shm-row'>
+
+					<h3 class='shm-12'>". __( "1.8. Highlight the country on the map", SHMAPPER ) . "</h3>
+
+					<div class='shm-12'>
+						<select class='small-text' name='highlight_country' data-value='" . esc_attr( $highlight_country ) . "'>
+							<option>" . esc_html__( "Loading countries ... ", SHMAPPER ) . "</option>
+						</select>
+						<p class='description'>".
+							__("Select country", SHMAPPER) . 
+						"</p>
+						<div class='spacer-5'></div>
+						<div class='spacer-5'></div>
+					</div>
+					<div class='shm-12'>
+						<div class='shm-admin-block'>
+							<input type='text' name='overlay_color' value='" . esc_attr( $overlay_color ) . "'>
+							<p class='description'>".
+								__("Choose map overlay color", SHMAPPER) . 
+							"</p>
+						</div>
+						<div class='shm-admin-block'>
+							<input type='text' name='border_color' value='" . esc_attr( $border_color ) . "'>
+							<p class='description'>".
+								__("Choose country border color", SHMAPPER) . 
+							"</p>
+						</div>
+						<div class='shm-admin-block'>
+							<input type='range' min='0.1' max='1' step='0.1' class='shm-range' name='overlay_opacity' value='" . esc_attr( $overlay_opacity ) . "'>
+							<p class='description'>".
+								__("Overlay opacity", SHMAPPER) . 
+							"</p>
+						</div>
+					</div>
+
+				</div>
+				";
+			}
+
 		return $html;
 	}
 	static function form_fields_box_func( $post )
@@ -503,6 +552,11 @@ class ShmMap extends SMC_Post
 			"default_icon_id"	=> sanitize_text_field($_POST['default_icon_id']),
 			"width"				=> sanitize_text_field($_POST['width']),
 			"height"			=> sanitize_text_field($_POST['height']),
+
+			'highlight_country' => sanitize_text_field( $_POST['highlight_country'] ),
+			'overlay_color'     => sanitize_hex_color( $_POST['overlay_color'] ),
+			'border_color'      => sanitize_hex_color( $_POST['border_color'] ),
+			'overlay_opacity'   => sanitize_text_field( $_POST['overlay_opacity'] ),
 
 			"is_form"			=> empty($_POST['is_form']) ? 0 : 1,
 			"form_title"		=> sanitize_text_field($_POST['form_title']),

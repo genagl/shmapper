@@ -445,7 +445,7 @@ class ShmPoint extends SMC_Post
 				p = {}; 
 				p.post_id 	= '" . esc_attr( $point->ID ) . "';
 				p.post_title 	= '" . esc_html( $post_title ) . "';
-				p.post_content 	= '" . wp_kses_post( $post_content ) . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_html( $location ) . "</div>';
+				p.post_content 	= '" . wp_kses_post( wp_slash( $post_content ) ) . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_html( $location ) . "</div>';
 				p.latitude 		= '" . esc_attr( $latitude ) . "'; 
 				p.longitude 	= '" . esc_attr( $longitude ) . "'; 
 				p.location 		= '" . esc_js($location) . "'; 
