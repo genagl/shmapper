@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: ShMapper by Teplitsa\n"
-"POT-Creation-Date: 2021-02-05 07:14+0200\n"
+"POT-Creation-Date: 2021-02-23 17:27+0200\n"
 "PO-Revision-Date: 2020-06-18 05:16+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -52,7 +52,7 @@ msgid "Parameters"
 msgstr ""
 
 #: class/ShMapPointType.class.php:37 class/ShMapPointType.class.php:38
-#: class/ShMapPointType.class.php:48 class/ShMapperDrive.class.php:227
+#: class/ShMapPointType.class.php:48 class/ShMapperDrive.class.php:253
 #: class/ShmPoint.class.php:126
 msgid "Map marker type"
 msgstr ""
@@ -291,7 +291,7 @@ msgstr ""
 msgid "Required Personal phone"
 msgstr ""
 
-#: class/ShMapper.class.php:173 class/ShMapperDrive.class.php:178
+#: class/ShMapper.class.php:173 class/ShMapperDrive.class.php:181
 #: class/ShmMap.class.php:76 class/ShmMap.class.php:77
 #: widget/ShMap.widget.php:72
 msgid "Map"
@@ -334,7 +334,7 @@ msgid "Accessed User"
 msgstr ""
 
 #: class/ShMapper.class.php:284 class/ShMapper.class.php:393
-#: class/ShMapperDrive.class.php:125
+#: class/ShMapperDrive.class.php:128
 msgid "Attantion"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgid "Are you shure?"
 msgstr ""
 
 #: class/ShMapper.class.php:444 class/ShMapper.class.php:445
-#: class/ShMapper.class.php:473 class/ShMapperDrive.class.php:435
+#: class/ShMapper.class.php:473 class/ShMapperDrive.class.php:442
 msgid "Settings"
 msgstr ""
 
@@ -541,161 +541,160 @@ msgstr ""
 msgid "Google Table ID source"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:117
+#: class/ShMapperDrive.class.php:120
 msgid "Parsing from Google table"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:119
+#: class/ShMapperDrive.class.php:122
 msgid "Columns of table parse to meta-fields"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:128
+#: class/ShMapperDrive.class.php:131
 msgid "Rules for Google snapshot structure."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:130
+#: class/ShMapperDrive.class.php:133
 msgid ""
 "Google-table must have access rights 'For everyone on the Internet' or 'For "
 "everyone who has a link'"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:131
+#: class/ShMapperDrive.class.php:134
 msgid "In file must be only one screen."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:132
+#: class/ShMapperDrive.class.php:135
 msgid "First row must have only legends of columns."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:133
+#: class/ShMapperDrive.class.php:136
 msgid ""
 "If Points are have different Point types you must reserve one column for "
 "Point type and fill it ID of this types."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:134
+#: class/ShMapperDrive.class.php:137
 msgid ""
 "If you want to have geo position you must reserve one column for adress or 2 "
 "columns for longitude and latitude."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:140
+#: class/ShMapperDrive.class.php:143
 msgid ""
 "Google table document ID. For example: <b class='shm-color-"
 "danger'>1dQupQpiGjPqIbVHCTRvpybr-cmk5zs8U</b> in https://docs.google.com/"
 "spreadsheets/d/1dQupQpiGjPqIbVHCTRvpybr-cmk5zs8U/edit#gid=7101094"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:159
+#: class/ShMapperDrive.class.php:162
 msgid "Skip first rows count"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:171
+#: class/ShMapperDrive.class.php:174
 msgid "Execute next rows count. Empty for all."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:190
+#: class/ShMapperDrive.class.php:194
+msgid "Column for unique id"
+msgstr ""
+
+#: class/ShMapperDrive.class.php:206
 msgid "Point title column"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:202
+#: class/ShMapperDrive.class.php:217
+msgid "Point description column"
+msgstr ""
+
+#: class/ShMapperDrive.class.php:228
 msgid "Post date column"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:215
+#: class/ShMapperDrive.class.php:241
 msgid "Is fix post date?"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:230
+#: class/ShMapperDrive.class.php:256
 msgid "add Map marker type"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:245
+#: class/ShMapperDrive.class.php:271
 msgid "Select method and columns for generate Points's geo position."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:258
+#: class/ShMapperDrive.class.php:284
 msgid "Latitude and Longitude"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:287
+#: class/ShMapperDrive.class.php:313
 msgid "Adress"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:305
+#: class/ShMapperDrive.class.php:329
 msgid "Select columns for choose Points's different types."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:318
+#: class/ShMapperDrive.class.php:342
 msgid "Use different Point Types for Points?"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:337
+#: class/ShMapperDrive.class.php:358
 msgid ""
 "List of columns in google table that need to parse to Point's description"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:343
+#: class/ShMapperDrive.class.php:363
 msgid "Column"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:346
+#: class/ShMapperDrive.class.php:366
 msgid "Include?"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:347 class/ShMapperDrive.class.php:353
+#: class/ShMapperDrive.class.php:367 class/ShMapperDrive.class.php:373
 msgid "necessarily"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:352
+#: class/ShMapperDrive.class.php:372
 msgid "Field name by latin"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:358
+#: class/ShMapperDrive.class.php:378
 msgid "Sub title for decription section"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:361
+#: class/ShMapperDrive.class.php:381
 msgid "Order"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:373
-msgid ""
-"Use column as unique for update Point or add Messages for included Points"
-msgstr ""
-
-#: class/ShMapperDrive.class.php:376
-msgid "Column for unique"
-msgstr ""
-
-#: class/ShMapperDrive.class.php:386
+#: class/ShMapperDrive.class.php:393
 msgid "If your Google spreadsheet has one text in the specified column"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:399
+#: class/ShMapperDrive.class.php:406
 msgid ""
 "Use only first row for creation new Point or updating included Point and "
 "ignore over."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:412
+#: class/ShMapperDrive.class.php:419
 msgid ""
 "Use only last row for creation new Point or updating included Point and "
 "ignore over."
 msgstr ""
 
-#: class/ShMapperDrive.class.php:425
+#: class/ShMapperDrive.class.php:432
 msgid ""
 "Use only first row for creation new Point or updating included Point. Over "
 "some rows use for creation new Message or updating included Messages for "
 "Point"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:438
+#: class/ShMapperDrive.class.php:445
 msgid "Preview results"
 msgstr ""
 
-#: class/ShMapperDrive.class.php:441
+#: class/ShMapperDrive.class.php:448
 msgid "Create or update Poins and Messages"
 msgstr ""
 
@@ -1345,7 +1344,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: tpl/shmMap.php:92
+#: tpl/shmMap.php:93
 #, php-format
 msgid "download %s.csv"
 msgstr ""

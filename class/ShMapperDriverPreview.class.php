@@ -30,7 +30,7 @@ class ShMapperDriverPreview
 					$nType 	= ShMapperDrive::$options[ 'point_type' ];
 					$type 	= get_term( $nType, SHM_POINT_TYPE );
 				}
-				$icon 	= ShMapPointType::get_icon($type, false, false);
+				$icon = ShMapPointType::get_icon($type, false, false);
 				$geocode = implode(" - " , static::getGeoPosition( $m ));
 				
 				if(ShMapperDrive::$options['is_google_post_date'])
@@ -56,6 +56,7 @@ class ShMapperDriverPreview
 					}
 					$ii++;
 				}
+				$cont = $m[ getSingleGoogleOrder(ShMapperDrive::$options['shmd_post_desc']) ];
 				$html .= "<div class='shmapper-drive-post-content' pid='" . $m[0] . "'>
 					<div class='title'>" . 
 						$icon . " " . $m[ getSingleGoogleOrder(ShMapperDrive::$options['shmd_post_title']) ] .
@@ -63,7 +64,7 @@ class ShMapperDriverPreview
 					<div class='content'>
 						$cont
 					</div> 
-					<div class=' small shm-color-cyan'>
+					<div class=' small shm-color-cyan shmapper-drive-modal-geocode'>
 						$geocode
 					</div>
 					<div class=' small shm-color-lightgrey'>".
@@ -145,7 +146,8 @@ class ShMapperDriverPreview
 						$ii++;
 					}
 					$post_title		= $m[ getSingleGoogleOrder(ShMapperDrive::$options['shmd_post_title']) ];
-					$post_content	= $cont ;
+					$post_content	= $m[ getSingleGoogleOrder(ShMapperDrive::$options['shmd_post_desc']) ];
+					//$post_content	= $cont ;
 					$point 			= ShMapperPointMessage::insert([
 						'post_name'    	=> $post_title,
 						'post_title'    => $post_title,
@@ -200,7 +202,8 @@ class ShMapperDriverPreview
 						$ii++;
 					}
 					$post_title		= $m[ getSingleGoogleOrder(ShMapperDrive::$options['shmd_post_title']) ];
-					$post_content	= $cont;
+					$post_content	= $m[ getSingleGoogleOrder(ShMapperDrive::$options['shmd_post_desc']) ];
+					//$post_content	= $cont;
 					$point 			= ShmPoint::insert([
 						'post_name'    	=> $post_title,
 						'post_title'    => $post_title,

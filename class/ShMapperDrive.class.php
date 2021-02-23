@@ -110,7 +110,8 @@ class ShMapperDrive
 	static function shmapper_admin( $text ) {
 		$google_geo_adress = static::$options['google_geo_adress'] ? static::$options['google_geo_adress'] : 'D';
 		$shmd_post_title   = static::$options['shmd_post_title'] ? static::$options['shmd_post_title'] : 'B';
-		$shmd_post_date   = static::$options['post_date'] ? static::$options['post_date'] : 'E';
+		$shmd_post_date    = static::$options['post_date'] ? static::$options['post_date'] : 'E';
+		$shmd_post_desc    = static::$options['shmd_post_desc'] ? static::$options['shmd_post_desc'] : 'F';
 
 		return $text . "
 				<li>
@@ -187,6 +188,19 @@ class ShMapperDrive
 										"posts"		=> ShmMap::get_all( )
 									]) .
 								"
+
+								<div>
+									<small class='shm-color-grey mb-2'>".
+										__("Column for unique id", SHMAPPER) .
+									"</small>
+								</div>" .
+									googleColumnIdent_dropdown( [
+										'name' 		=> "google_unique", 
+										"class" 	=> "shm_options", 
+										"selected" 	=> static::$options['google_unique']
+									] ) . 
+								"
+
 								<div>
 									<small class='shm-color-grey mt-2'>".
 										__("Point title column", SHMAPPER) .
@@ -197,8 +211,18 @@ class ShMapperDrive
 									"class" 	=> "shm_options", 
 									"selected" 	=> $shmd_post_title
 								]). 
-								"							
-								
+								"
+								<div>
+									<small class='shm-color-grey mt-2'>".
+										__("Point description column", SHMAPPER) .
+									"</small>
+								</div>" .
+								googleColumnIdent_dropdown( [
+									'name'		=> 'shmd_post_desc', 
+									"class" 	=> "shm_options", 
+									"selected" 	=> $shmd_post_desc
+								]) .
+								"
 								<div>
 									<small class='shm-color-grey mt-2'>".
 										__("Post date column", SHMAPPER) .
@@ -299,8 +323,6 @@ class ShMapperDrive
 									</div> 
 								</div> 
 								
-								<div class='spacer-30'></div> 
-								
 								<div>
 									<div class='spacer-10'></div>
 									<small class='shm-color-grey mt-2'>".
@@ -331,16 +353,12 @@ class ShMapperDrive
 										"</div>
 									</div> 
 								</div> 
-								
-								<div class='spacer-30'></div> 
-								
-								<div> 
+								<div class='hidden'> 
 									<small class='shm-color-grey mb-2'>".
 										__("List of columns in google table that need to parse to Point's description", SHMAPPER) .
 									"</small>
 								</div>
-								<div class='spacer-10'></div>
-								<div class='shm-row '>
+								<div class='shm-row hidden'>
 									<div class='shm-1'>".
 										__("Column", SHMAPPER) . 
 									"</div>
@@ -366,24 +384,11 @@ class ShMapperDrive
 								<div class='hidden'>".							
 									getGoogleRow(["n" => 0, 'include'=> 0, "id" => "google_null" ]) . 			
 								"</div>
-								<div id='google_row'></div>
+								<div id='google_row hidden'></div>
 								
 								<div class='spacer-30'></div> 
 								
 								<div>
-									<div class='shm-color-grey shm-title-4 mt-2'>".
-										__("Use column as unique for update Point or add Messages for included Points", SHMAPPER).
-									"</div>
-									<small class='shm-color-grey mb-2'>".
-										__("Column for unique", SHMAPPER) .
-									"</small>".
-									
-									googleColumnIdent_dropdown( [
-										'name' 		=> "google_unique", 
-										"class" 	=> "shm_options", 
-										"selected" 	=> static::$options['google_unique']
-									] ) . 
-									"<div class='spacer-20'></div>
 									<small class='shm-color-grey mb-2'>".
 										__("If your Google spreadsheet has one text in the specified column", SHMAPPER) .
 									"</small>
@@ -414,7 +419,7 @@ class ShMapperDrive
 											__("Use only last row for creation new Point or updating included Point and ignore over.", SHMAPPER).
 										"</label>
 									</div-->
-									<div class=' mb-2'>
+									<div class=' mb-2' style='margin-bottom:10px;'>
 										<input 
 											type='radio' 
 											id='doubled_2'
@@ -427,8 +432,8 @@ class ShMapperDrive
 											__("Use only first row for creation new Point or updating included Point. Over some rows use for creation new Message or updating included Messages for Point", SHMAPPER).
 										"</label>
 									</div>
-								</div>	
-							</div>		
+								</div>
+							</div>
 								<div 
 									class='my-2 ".(static::$options['google_table_id'] != "" ? "" : " hidden ")."' 
 									id='shmd_settings_wizzard' 
@@ -442,6 +447,7 @@ class ShMapperDrive
 									<div class='button' id='shmd_google_update'>" . 
 										__("Create or update Poins and Messages", SHMAPPER) .
 									"</div>
+									<span class='dashicons dashicons-update shmd-loader hidden'></span>
 								</div>	
 						</div>	
 						<div class='shm-1'>

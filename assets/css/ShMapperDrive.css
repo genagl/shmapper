@@ -71,3 +71,26 @@
 	padding:5px!important;
 	margin:auto!important;
 }
+.shm_modal_body .content {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.shmapper-drive-modal-geocode {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.shmd-loader {
+	margin: 5px;
+	animation: spin 1s linear infinite;
+}
+@-webkit-keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform:rotate(360deg);
+	}
+}
