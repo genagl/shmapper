@@ -58,8 +58,11 @@ No questions yet.
 
 == Changelog ==
 
-= 1.4.0 =
-* Added support for importing data from Google Sheets.
+
+= 1.4.1 =
+* Added: Support for importing data from Google Sheets.
+* Added: Highlighting the country on the map.
+* Fix: Unauthorized users could drag and drop markers on the map.
 
 = 1.3.6 =
 * WordPress 5.5 compatibility.
