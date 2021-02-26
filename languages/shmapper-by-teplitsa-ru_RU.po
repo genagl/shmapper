@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - shMapper by Teplitsa - Development (trunk)\n"
-"POT-Creation-Date: 2021-02-23 17:27+0200\n"
-"PO-Revision-Date: 2021-02-23 17:28+0200\n"
+"POT-Creation-Date: 2021-02-26 06:06+0200\n"
+"PO-Revision-Date: 2021-02-26 06:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -47,8 +47,7 @@ msgid "Parameters"
 msgstr "Параметры"
 
 #: class/ShMapPointType.class.php:37 class/ShMapPointType.class.php:38
-#: class/ShMapPointType.class.php:48 class/ShMapperDrive.class.php:253
-#: class/ShmPoint.class.php:126
+#: class/ShMapPointType.class.php:48 class/ShmPoint.class.php:126
 msgid "Map marker type"
 msgstr "Тип маркера"
 
@@ -290,7 +289,7 @@ msgstr "Телефон"
 msgid "Required Personal phone"
 msgstr "Требуется личный телефон"
 
-#: class/ShMapper.class.php:173 class/ShMapperDrive.class.php:181
+#: class/ShMapper.class.php:173 class/ShMapperDrive.class.php:178
 #: class/ShmMap.class.php:76 class/ShmMap.class.php:77
 #: widget/ShMap.widget.php:72
 msgid "Map"
@@ -333,7 +332,7 @@ msgid "Accessed User"
 msgstr "Доступ пользователя"
 
 #: class/ShMapper.class.php:284 class/ShMapper.class.php:393
-#: class/ShMapperDrive.class.php:128
+#: class/ShMapperDrive.class.php:125
 msgid "Attantion"
 msgstr "Внимание"
 
@@ -362,7 +361,7 @@ msgid "Are you shure?"
 msgstr "Вы уверены?"
 
 #: class/ShMapper.class.php:444 class/ShMapper.class.php:445
-#: class/ShMapper.class.php:473 class/ShMapperDrive.class.php:442
+#: class/ShMapper.class.php:473 class/ShMapperDrive.class.php:439
 msgid "Settings"
 msgstr "Настройки"
 
@@ -565,18 +564,14 @@ msgid "Google Table ID source"
 msgstr "Источник идентификатора таблицы Google"
 
 #: class/ShMapperDrive.class.php:120
-msgid "Parsing from Google table"
-msgstr "Разбор из таблицы Google"
+msgid "Export from Google Sheet"
+msgstr "Экспорт из таблицы Google"
 
-#: class/ShMapperDrive.class.php:122
-msgid "Columns of table parse to meta-fields"
-msgstr "Столбцы таблицы разбора на мета-поля"
-
-#: class/ShMapperDrive.class.php:131
+#: class/ShMapperDrive.class.php:128
 msgid "Rules for Google snapshot structure."
 msgstr "Правила для структуры снимков Google."
 
-#: class/ShMapperDrive.class.php:133
+#: class/ShMapperDrive.class.php:130
 msgid ""
 "Google-table must have access rights 'For everyone on the Internet' or 'For "
 "everyone who has a link'"
@@ -584,15 +579,15 @@ msgstr ""
 "Гугл-таблица должна иметь права доступа 'Для всех в интернете' или 'Для всех "
 "у кого есть ссылка"
 
-#: class/ShMapperDrive.class.php:134
+#: class/ShMapperDrive.class.php:131
 msgid "In file must be only one screen."
 msgstr "В файле должна быть только одна вкладка."
 
-#: class/ShMapperDrive.class.php:135
+#: class/ShMapperDrive.class.php:132
 msgid "First row must have only legends of columns."
 msgstr "Первая строка таблицы должна включать только легенды колонок."
 
-#: class/ShMapperDrive.class.php:136
+#: class/ShMapperDrive.class.php:133
 msgid ""
 "If Points are have different Point types you must reserve one column for "
 "Point type and fill it ID of this types."
@@ -601,7 +596,7 @@ msgstr ""
 "зарезервировать одну из колонок под тип Маркера и заполнять ячейки ID "
 "необходимого типа."
 
-#: class/ShMapperDrive.class.php:137
+#: class/ShMapperDrive.class.php:134
 msgid ""
 "If you want to have geo position you must reserve one column for adress or 2 "
 "columns for longitude and latitude."
@@ -609,7 +604,7 @@ msgstr ""
 "Если Вы хотите получить точную геопозицию Маркеров, необходимо "
 "зарезервировать одну колонку под адрес или 2 колонки - для широты и долготы"
 
-#: class/ShMapperDrive.class.php:143
+#: class/ShMapperDrive.class.php:140
 msgid ""
 "Google table document ID. For example: <b class='shm-color-"
 "danger'>1dQupQpiGjPqIbVHCTRvpybr-cmk5zs8U</b> in https://docs.google.com/"
@@ -620,95 +615,99 @@ msgstr ""
 "https://docs.google.com/spreadsheets/d/<b>1dQupQpiGjPqIbVHCTRvpybr-cmk5zs8U</"
 "b>/edit#gid=7101094"
 
-#: class/ShMapperDrive.class.php:162
+#: class/ShMapperDrive.class.php:159
 msgid "Skip first rows count"
 msgstr "Пропустить первые строки? Сколько?"
 
-#: class/ShMapperDrive.class.php:174
+#: class/ShMapperDrive.class.php:171
 msgid "Execute next rows count. Empty for all."
 msgstr ""
 "Работать со следующими строками? Укажите число строк или оставьте поле пустым"
 
-#: class/ShMapperDrive.class.php:194
+#: class/ShMapperDrive.class.php:191
 msgid "Column for unique id"
-msgstr "Колонка для уникального идентификатора"
+msgstr "Столбец для уникального идентификатора"
 
-#: class/ShMapperDrive.class.php:206
+#: class/ShMapperDrive.class.php:203
 msgid "Point title column"
 msgstr "Столбец заголовка маркера"
 
-#: class/ShMapperDrive.class.php:217
+#: class/ShMapperDrive.class.php:214
 msgid "Point description column"
-msgstr "Столбец описание маркера"
+msgstr "Столбец описания маркера"
 
-#: class/ShMapperDrive.class.php:228
+#: class/ShMapperDrive.class.php:225
 msgid "Post date column"
 msgstr "Столбец даты публикации"
 
-#: class/ShMapperDrive.class.php:241
+#: class/ShMapperDrive.class.php:238
 msgid "Is fix post date?"
 msgstr "Исправить дату публикации?"
 
-#: class/ShMapperDrive.class.php:256
-msgid "add Map marker type"
-msgstr "Добавить новый"
+#: class/ShMapperDrive.class.php:250
+msgid "Select marker type"
+msgstr "Выберите тип маркера"
 
-#: class/ShMapperDrive.class.php:271
+#: class/ShMapperDrive.class.php:252
+msgid "Add new marker"
+msgstr "Добавить новый маркер"
+
+#: class/ShMapperDrive.class.php:268
 msgid "Select method and columns for generate Points's geo position."
 msgstr "Выберите метод и колонку для генерации геопозиции Маркеров."
 
-#: class/ShMapperDrive.class.php:284
+#: class/ShMapperDrive.class.php:281
 msgid "Latitude and Longitude"
-msgstr "Широты и долгота"
+msgstr "Широта и долгота"
 
-#: class/ShMapperDrive.class.php:313
+#: class/ShMapperDrive.class.php:310
 msgid "Adress"
 msgstr "Адрес"
 
-#: class/ShMapperDrive.class.php:329
+#: class/ShMapperDrive.class.php:326
 msgid "Select columns for choose Points's different types."
 msgstr "Выберите столбцы для выбора разных типов точек."
 
-#: class/ShMapperDrive.class.php:342
-msgid "Use different Point Types for Points?"
-msgstr "Использовать различные типы маркеров для точек?"
+#: class/ShMapperDrive.class.php:339
+msgid "Select column with marker type"
+msgstr "Выберите столбец с типом маркера"
 
-#: class/ShMapperDrive.class.php:358
+#: class/ShMapperDrive.class.php:355
 msgid ""
 "List of columns in google table that need to parse to Point's description"
 msgstr ""
 "Список столбцов в таблице Google, которые необходимо разобрать для описанием "
 "точек."
 
-#: class/ShMapperDrive.class.php:363
+#: class/ShMapperDrive.class.php:360
 msgid "Column"
 msgstr "Колонка"
 
-#: class/ShMapperDrive.class.php:366
+#: class/ShMapperDrive.class.php:363
 msgid "Include?"
 msgstr "Включить?"
 
-#: class/ShMapperDrive.class.php:367 class/ShMapperDrive.class.php:373
+#: class/ShMapperDrive.class.php:364 class/ShMapperDrive.class.php:370
 msgid "necessarily"
 msgstr "обязательное поле"
 
-#: class/ShMapperDrive.class.php:372
+#: class/ShMapperDrive.class.php:369
 msgid "Field name by latin"
 msgstr "Название поля по латыни"
 
-#: class/ShMapperDrive.class.php:378
+#: class/ShMapperDrive.class.php:375
 msgid "Sub title for decription section"
 msgstr "Подзаголовок для секции в описании Маркера"
 
-#: class/ShMapperDrive.class.php:381
+#: class/ShMapperDrive.class.php:378
 msgid "Order"
 msgstr "Порядковый номер"
 
-#: class/ShMapperDrive.class.php:393
+#: class/ShMapperDrive.class.php:390
 msgid "If your Google spreadsheet has one text in the specified column"
 msgstr "Если в нескольких полях в данной колонке будет одинаковое содержимое"
 
-#: class/ShMapperDrive.class.php:406
+#: class/ShMapperDrive.class.php:403
 msgid ""
 "Use only first row for creation new Point or updating included Point and "
 "ignore over."
@@ -716,7 +715,7 @@ msgstr ""
 "Использовать только первую строку для создания нового Маркера или "
 "редактирования уже существующего и игнорировать остальные строки."
 
-#: class/ShMapperDrive.class.php:419
+#: class/ShMapperDrive.class.php:416
 msgid ""
 "Use only last row for creation new Point or updating included Point and "
 "ignore over."
@@ -724,7 +723,7 @@ msgstr ""
 "Использовать только последнюю строку для создания нового Маркера или "
 "редактирования уже существующего и игнорировать остальные строки."
 
-#: class/ShMapperDrive.class.php:432
+#: class/ShMapperDrive.class.php:429
 msgid ""
 "Use only first row for creation new Point or updating included Point. Over "
 "some rows use for creation new Message or updating included Messages for "
@@ -734,13 +733,13 @@ msgstr ""
 "редактирования уже существующего. Остальные строки использовать для создания "
 "или редактирования Сообщений для этого Маркера"
 
-#: class/ShMapperDrive.class.php:445
+#: class/ShMapperDrive.class.php:442
 msgid "Preview results"
 msgstr "Предпросмотр результата импора"
 
-#: class/ShMapperDrive.class.php:448
+#: class/ShMapperDrive.class.php:445
 msgid "Create or update Poins and Messages"
-msgstr "Создать или обновить Маркеры и Сообшения"
+msgstr "Создать или обновить Маркеры и Сообщения"
 
 #: class/ShMapperDrive_ajax.class.php:77
 msgid "Update successful!"
@@ -1437,6 +1436,18 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru"
 msgstr "https://te-st.ru"
+
+#~ msgid "Add marker type"
+#~ msgstr "Добавить тип маркера"
+
+#~ msgid "Use different Point Types for Points?"
+#~ msgstr "Использовать различные типы маркеров для точек?"
+
+#~ msgid "add Map marker type"
+#~ msgstr "Добавить новый"
+
+#~ msgid "Columns of table parse to meta-fields"
+#~ msgstr "Столбцы таблицы разбора на мета-поля"
 
 #~ msgid ""
 #~ "Use column as unique for update Point or add Messages for included Points"

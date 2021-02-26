@@ -116,12 +116,9 @@ class ShMapperDrive
 		return $text . "
 				<li>
 					<div class='shm-row' id='shm_vocabulary_cont'>
-						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-4 '>".
-							__("Parsing from Google table", SHMAPPER ) .
-							"<small class='small mt-2'>".
-								__("Columns of table parse to meta-fields", SHMAPPER ) .
-							"</small>
-						</div>
+						<div class='shm-2 shm-color-grey sh-right sh-align-middle shm-title-4'>" .
+							__("Export from Google Sheet", SHMAPPER ) .
+						"</div>
 						<div class='shm-9'>
 							<div class='callout-danger mb-2'>
 								<div class='shm-title'>".
@@ -247,14 +244,14 @@ class ShMapperDrive
 									"selected" 	=> $shmd_post_date
 								]). 
 								"
-								
+
 								<div class=''>
 									<small class='shm-color-grey mt-2'>".
-										__("Map marker type", SHMAPPER).
-									"</small> 
-									<a href='" . admin_url( 'edit-tags.php?taxonomy=shm_point_type' ) . "'>".
-										__("add Map marker type", SHMAPPER).
-									"</a>".
+										__("Select marker type", SHMAPPER).
+									" <a href='" . admin_url( 'edit-tags.php?taxonomy=shm_point_type' ) . "'>".
+										__("Add new marker", SHMAPPER).
+									"</a> </small> 
+									".
 									ShMapPointType::get_ganre_swicher([
 										'selected' 	=> static::$options['point_type'],
 										'prefix'	=> "point_type",
@@ -339,7 +336,7 @@ class ShMapperDrive
 												checked("1", static::$options['is_google_point_type'], 0).
 											"/>
 											<label for='is_google_point_type'>".
-												__("Use different Point Types for Points?", SHMAPPER).
+												__("Select column with marker type", SHMAPPER). // ion
 											"</label>
 										</div>
 									</div>
@@ -385,9 +382,9 @@ class ShMapperDrive
 									getGoogleRow(["n" => 0, 'include'=> 0, "id" => "google_null" ]) . 			
 								"</div>
 								<div id='google_row hidden'></div>
-								
-								<div class='spacer-30'></div> 
-								
+
+								<div class='spacer-10'></div>
+
 								<div>
 									<small class='shm-color-grey mb-2'>".
 										__("If your Google spreadsheet has one text in the specified column", SHMAPPER) .
