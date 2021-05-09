@@ -153,8 +153,8 @@ class ShmPoint extends SMC_Post
 			$q[] = " (NULL, '".$obj->id."', '$owner', '".time()."', '0', '1', '0')";
 		}
 		$query .= implode(",", $q);
-		$current = file_get_contents( ABSPATH. "alert.log" );
-		file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
+		//$current = file_get_contents( ABSPATH. "alert.log" );
+		//file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
 		$wpdb->query( $query );
 		return $query;
 	}
@@ -169,7 +169,7 @@ class ShmPoint extends SMC_Post
 			'longitude' => sanitize_text_field( $_POST['longitude'] ),
 			'location'  => sanitize_textarea_field( $_POST['location'] ),
 			'zoom'      => sanitize_text_field( $_POST['zoom'] ),
-			'approved'  => sanitize_text_field( $_POST['approved'] ),
+			'approved'  => sanitize_text_field( isset( $_POST['approved'] ) ? $_POST['approved'] : '' ),
 		);
 	}
 
