@@ -152,8 +152,8 @@ class ShMapperDriverPreview
 						'post_name'    	=> $post_title,
 						'post_title'    => $post_title,
 						'post_content'  => $post_content,
-						'latitude'  	=> $geocode[1],
-						'longitude'  	=> $geocode[0], 
+						'latitude'  	=> str_replace( ',', '.', $geocode[1] ),
+						'longitude'  	=> str_replace( ',', '.', $geocode[0] ),
 						SHM_POINT		=> $copies[0],
 						"google_table_id"=> static::$google_table_id
 					]);
@@ -207,8 +207,8 @@ class ShMapperDriverPreview
 						'post_name'    	=> $post_title,
 						'post_title'    => $post_title,
 						'post_content'  => $post_content,
-						'latitude'  	=> $geocode[1],
-						'longitude'  	=> $geocode[0], 
+						'latitude'  	=> str_replace( ',', '.', $geocode[1] ),
+						'longitude'  	=> str_replace( ',', '.', $geocode[0] ),
 						"google_table_id"=> static::$google_table_id
 					]);
 					wp_set_object_terms( $point->id, [ $type->term_id ], SHM_POINT_TYPE );

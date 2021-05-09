@@ -82,15 +82,15 @@ class ShmPoint extends SMC_Post
 			{
 				case "latitude":
 					$meta 		= $meta ? $meta : $default_latitude;
-					$opacity 	= " style='display:none;' " ;
+					$opacity 	= '';//" style='display:none;' " ;
 					break;
 				case "longitude":
 					$meta 		= $meta ? $meta : $default_longitude;
-					$opacity 	= " style='display:none;' " ;
+					$opacity 	= '';//" style='display:none;' " ;
 					break;
 				case "zoom":
 					$meta 		= $meta ? $meta : $default_zoom;
-					$opacity 	= " style='display:none;' " ;
+					$opacity 	= '';//" style='display:none;' " ;
 					break;
 				default:
 					$opacity 	= " ";
@@ -148,14 +148,16 @@ class ShmPoint extends SMC_Post
 		$query = "INSERT INTO ".$wpdb->prefix."point_map 
 		(`ID`, `point_id`, `map_id`, `date`, `session_id`, `approved_date`, `approve_user_id`) VALUES"; 
 		$q = [];
-		foreach($_POST['owner_id'] as $owner)
-		{
-			$q[] = " (NULL, '".$obj->id."', '$owner', '".time()."', '0', '1', '0')";
+		if ( isset( $_POST['owner_id'] ) ) {
+			foreach($_POST['owner_id'] as $owner)
+			{
+				$q[] = " (NULL, '".$obj->id."', '$owner', '".time()."', '0', '1', '0')";
+			}
+			$query .= implode(",", $q);
+			//$current = file_get_contents( ABSPATH. "alert.log" );
+			//file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
+			$wpdb->query( $query );
 		}
-		$query .= implode(",", $q);
-		//$current = file_get_contents( ABSPATH. "alert.log" );
-		//file_put_contents( ABSPATH. "alert.log", $current. $query."\n" );
-		$wpdb->query( $query );
 		return $query;
 	}
 
@@ -204,7 +206,7 @@ class ShmPoint extends SMC_Post
 				<li class='popular-categorys'>
 					<label class='selectit'>
 						<input value='$map->ID' type='$type' name='owner_id[]' $selected>
-						" . ( $map->post_title ? $map->post_title : '(карта без названия)')."
+						" . ( $map->post_title ? $map->post_title : '(untitled map)')."
 					</label>
 				</li>
 			";
