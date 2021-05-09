@@ -82,15 +82,18 @@ class ShmPoint extends SMC_Post
 			{
 				case "latitude":
 					$meta 		= $meta ? $meta : $default_latitude;
-					$opacity 	= '';//" style='display:none;' " ;
+					$opacity 	= " style='display:none;' " ;
 					break;
 				case "longitude":
 					$meta 		= $meta ? $meta : $default_longitude;
-					$opacity 	= '';//" style='display:none;' " ;
+					$opacity 	= " style='display:none;' " ;
 					break;
 				case "zoom":
 					$meta 		= $meta ? $meta : $default_zoom;
-					$opacity 	= '';//" style='display:none;' " ;
+					$opacity 	= " style='display:none;' " ;
+					break;
+				case "google_table_id":
+					$opacity 	= " style='display:none;' " ;
 					break;
 				default:
 					$opacity 	= " ";
