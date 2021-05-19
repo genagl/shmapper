@@ -162,9 +162,6 @@ jQuery(document).ready(function($)
 		isDraggable = true;
 	}
 
-	console.log(isDraggable);
-	console.log(shmYa.isAdmin);
-
 	//
 	init_map = function(mData, points)
 	{

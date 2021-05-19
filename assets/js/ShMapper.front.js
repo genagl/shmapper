@@ -82,8 +82,12 @@ jQuery(document).ready(function($)
 				var clear_form = new CustomEvent("clear_form", {bubbles : true, cancelable : true, detail : dat});
 				document.documentElement.dispatchEvent(clear_form);
 				
-				if(response.reload)
-					window.location.reload(window.location.href);
+				if( response.reload ) {
+					setTimeout( function(){
+						window.location.reload(window.location.href);
+					}, 3000 );
+				}
+
 			},
 			data: d,
 			error: function( jqXHR, status, errorThrown )
