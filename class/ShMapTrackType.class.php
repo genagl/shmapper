@@ -1,57 +1,47 @@
 <?php
 /**
- * ShMapper
+ * ShMapperTrack
  *
- * @package teplitsa
+ * @package KB PE
  */
 
-class ShMapPointType
+class ShMapTrackType
 {
 	static function init()
 	{
 		add_action('init',				array(__CLASS__, 'register_all'), 11 );
 		add_action( 'parent_file',		array(__CLASS__, 'tax_menu_correction'), 1);	
 		add_action( 'admin_menu', 		array(__CLASS__, 'tax_add_admin_menus'), 11);
-		add_filter("manage_edit-".SHM_POINT_TYPE."_columns", array( __CLASS__,'ctg_columns')); 
-		add_filter("manage_".SHM_POINT_TYPE."_custom_column",array( __CLASS__,'manage_ctg_columns'), 11.234, 3);
-		add_action( SHM_POINT_TYPE.'_add_form_fields', 		array( __CLASS__, 'new_ctg'), 10, 2 );
-		add_action( SHM_POINT_TYPE.'_edit_form_fields', 	array( __CLASS__, 'add_ctg'), 2, 2 );
-		add_action( 'edit_'.SHM_POINT_TYPE, 				array( __CLASS__, 'save_ctg'), 10);  
-		add_action( 'create_'.SHM_POINT_TYPE, 				array( __CLASS__, 'save_ctg'), 10);
-		add_action( 'before_delete_post',  					array( __CLASS__, 'before_delete_post') );
+		add_filter("manage_edit-".SHM_TRACK_TYPE."_columns", array( __CLASS__,'ctg_columns')); 
+		add_filter("manage_".SHM_TRACK_TYPE."_custom_column",array( __CLASS__,'manage_ctg_columns'), 11.234, 3);
+		add_action( SHM_TRACK_TYPE.'_add_form_fields', 		array( __CLASS__, 'new_ctg'), 10, 2 );
+		add_action( SHM_TRACK_TYPE.'_edit_form_fields', 	array( __CLASS__, 'add_ctg'), 2, 2 );
+		add_action( 'edit_'.SHM_TRACK_TYPE, 				array( __CLASS__, 'save_ctg'), 10);  
+		add_action( 'create_'.SHM_TRACK_TYPE, 				array( __CLASS__, 'save_ctg'), 10); 
 
-	}
-	
-	static function before_delete_post( $post_id )
-	{
-		global $wpdb;
-		$query = "
-		DELETE FROM " . $wpdb->prefix . "point_map 
-		WHERE point_id=$post_id;";
-		$wpdb->query($query);
-	}
+	} 
 	static function register_all()
 	{
-		//Map marker type
+		//Map track type
 		$labels = array(
-			'name'              => __("Map marker type", SHMAPPER),
-			'singular_name'     => __("Map marker type", SHMAPPER),
-			'search_items'      => __("Search Map marker type", SHMAPPER),
-			'all_items'         => __("All Map marker types", SHMAPPER),
-			'view_item '        => __("View Map marker type", SHMAPPER),
-			'parent_item'       => __("Parent Map marker type", SHMAPPER),
-			'parent_item_colon' => __("Parent Map marker type:", SHMAPPER),
-			'edit_item'         => __("Edit Map marker type", SHMAPPER),
-			'update_item'       => __("Update Map marker type", SHMAPPER),
-			'add_new_item'      => __("Add Map marker type", SHMAPPER),
-			'new_item_name'     => __("New Map marker type name", SHMAPPER),
-			'menu_name'         => __("Map marker type", SHMAPPER),
+			'name'              => __("Map track type", SHMAPPER_TRACKS),
+			'singular_name'     => __("Map track type", SHMAPPER_TRACKS),
+			'search_items'      => __("Search Map track type", SHMAPPER_TRACKS),
+			'all_items'         => __("All Map track types", SHMAPPER_TRACKS),
+			'view_item '        => __("View Map track type", SHMAPPER_TRACKS),
+			'parent_item'       => __("Parent Map track type", SHMAPPER_TRACKS),
+			'parent_item_colon' => __("Parent Map track type:", SHMAPPER_TRACKS),
+			'edit_item'         => __("Edit Map track type", SHMAPPER_TRACKS),
+			'update_item'       => __("Update Map track type", SHMAPPER_TRACKS),
+			'add_new_item'      => __("Add Map track type", SHMAPPER_TRACKS),
+			'new_item_name'     => __("New Map track type name", SHMAPPER_TRACKS),
+			'menu_name'         => __("Map track type", SHMAPPER_TRACKS),
 		);
-		register_taxonomy(SHM_POINT_TYPE, [ ], 
+		register_taxonomy(SHM_TRACK_TYPE, [ ], 
 		[
 			'label'                 => '',
 			'labels'                => $labels,
-			'description'           => __('Unique type of every Map markers', SHMAPPER),
+			'description'           => __('Unique type of every Map tracks', SHMAPPER_TRACKS),
 			'public'                => true,
 			'hierarchical'          => false,
 			'update_count_callback' => '',
@@ -68,7 +58,7 @@ class ShMapPointType
 	{
 		global $current_screen;
 		$taxonomy = $current_screen->taxonomy;
-		if ( $taxonomy == SHM_POINT_TYPE )
+		if ( $taxonomy == SHM_TRACK_TYPE )
 			$parent_file = 'shm_page';
 		return $parent_file;
 	}
@@ -76,20 +66,20 @@ class ShMapPointType
 	{
 		add_submenu_page( 
 			'shm_page', 
-			__("Map marker types", SHMAPPER), 
-			__("Map marker types", SHMAPPER), 
+			__("Map track types", SHMAPPER_TRACKS), 
+			__("Map track types", SHMAPPER_TRACKS), 
 			'manage_options', 
-			'edit-tags.php?taxonomy=' . SHM_POINT_TYPE
+			'edit-tags.php?taxonomy=' . SHM_TRACK_TYPE
 		);
-    }
+	}
 	static function ctg_columns($theme_columns) 
 	{
 		$new_columns = array
 		(
-			'cb' 			=> ' ',
-			'id' 			=> 'id',
-			'name' 			=> __('Name'),
-			'icon' 			=> __('Icon', SHMAPPER)
+			'cb'    => ' ',
+			'id'    => __('ID'),
+			'name'  => __('Name'),
+			'color' => __('Color', SHMAPPER)
 		);
 		return $new_columns;
 	}
@@ -99,14 +89,9 @@ class ShMapPointType
 			case 'id':
 				$out 		.= $term_id;
 				break;
-			case 'icon': 
-				$icon = get_term_meta( $term_id, 'icon', true ); 
+			case 'color':
 				$color = get_term_meta( $term_id, 'color', true );
-				$logo = wp_get_attachment_image_url( $icon, "full" );
-				echo "<div>
-					<img src='$logo' style='width:auto; height:60px; margin:10px;' />
-					<div style='width:80px;height:5px;background-color:$color;'></div>
-				</div>";
+				echo '<div style="width:80px;height:4px;background-color:' . $color . ';"></div>';
 				break;
 			default:
 				break;
@@ -117,40 +102,24 @@ class ShMapPointType
 	{
 		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
 		if ( ! isset( $color ) ) {
-			$color = '';
+			$color = '#0066ff';
 		}
 		?>
 		<div class="form-field term-description-wrap">
 			<label for="color">
 				<?php echo __("Color", SHMAPPER);  ?>
 			</label> 
-			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
+			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color; ?>">
 			</div>
-			<input type="color" name="color" value="<?php echo empty($color) ? '' : $color; ?>" />
-		</div>
-		<div class="form-field term-description-wrap">
-			<label for="height">
-				<?php echo __("Height", SHMAPPER);  ?>
-			</label> 
-			<input type="number" name="height" value="<?php echo empty($height) ? '' : $height; ?>" />
+			<input type="color" name="color" value="<?php echo $color; ?>">
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="width">
 				<?php echo __("Width", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="width" value="<?php echo empty($width) ? '' : $width;?>" />
+			<input type="number" name="width" value="<?php echo empty($width) ? '4' : $width;?>" min="1" max="8">
 		</div>
-		<div class="form-field term-description-wrap">
-			<label for="icon">
-				<?php echo __("Icon", SHMAPPER);  ?>
-			</label> 
-			<div class='shm-flex'>
-			<?php
-				echo get_input_file_form2( "icon", empty($icon) ? '' : $icon, "icon", 0 );
-			?>
-			</div>
-		</div>
-		
+	
 		<?php
 	}
 	static function add_ctg( $term, $tax_name )
@@ -159,12 +128,10 @@ class ShMapPointType
 		if($term)
 		{
 			$term_id = $term->term_id;
-			$icon = get_term_meta($term_id, "icon", true);
 			$color = get_term_meta($term_id, "color", true);
 			$height = get_term_meta($term_id, "height", true);
-			$height = !$height ? 30 : $height;
 			$width = get_term_meta($term_id, "width", true);
-			$width = !$width ? 30 : $width;
+			$width = !$width ? 4 : $width;
 		}
 		?>
 		<tr class="form-field">
@@ -181,44 +148,20 @@ class ShMapPointType
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
-				<label for="height">
-					<?php echo __("Height", SHMAPPER);  ?>
-				</label> 
-			</th>
-			<td>
-				<input type="number" name="height" value="<?php echo $height ?>" />
-			</td>
-		</tr>
-		<tr class="form-field">
-			<th scope="row" valign="top">
 				<label for="width">
 					<?php echo __("Width", SHMAPPER);  ?>
 				</label> 
 			</th>
 			<td>
-				<input type="number" name="width" value="<?php echo $width ?>" />
-			</td>
-		</tr>
-		<tr class="form-field">
-			<th scope="row" valign="top">
-				<label for="icon">
-					<?php echo __("Icon", SHMAPPER);  ?>
-				</label> 
-			</th>
-			<td>
-				<?php
-					echo get_input_file_form2( "icon", $icon, "icon", 0 );
-				?>
+				<input type="number" name="width" value="<?php echo $width ?>" min="1" max="8">
 			</td>
 		</tr>
 		<?php
 	}
 	static function save_ctg( $term_id ) 
 	{
-	    update_term_meta($term_id, "icon", 	sanitize_text_field($_POST['icon0']));
-	    update_term_meta($term_id, "color", sanitize_hex_color($_POST['color']));
-	    update_term_meta($term_id, "height", sanitize_text_field($_POST['height']));
-	    update_term_meta($term_id, "width", sanitize_text_field($_POST['width']));
+		update_term_meta($term_id, "color", sanitize_hex_color($_POST['color']));
+		update_term_meta($term_id, "width", sanitize_text_field($_POST['width']));
 	}
 	static function get_icon($term, $is_locked=false)
 	{
@@ -231,11 +174,8 @@ class ShMapPointType
 			$cur_bgnd = $d[0];
 		}
 		$class		= $is_locked ? " shm-muffle " : "";
-		if ( $cur_bgnd ) {
-			$color = 'transparent';
-		}
 		return "
-		<div class='ganre_picto $class' term='". SHM_POINT_TYPE ."' term_id='$term->term_id' >
+		<div class='ganre_picto $class' term='". SHM_TRACK_TYPE ."' term_id='$term->term_id' >
 			<div 
 				class='shm_type_icon' 
 				style='background-color:$color; background-image:url($cur_bgnd);'
@@ -247,7 +187,7 @@ class ShMapPointType
 	static function get_all_ids()
 	{
 		return get_terms([
-			"taxonomy" 		=> SHM_POINT_TYPE,
+			"taxonomy" 		=> SHM_TRACK_TYPE,
 			"hide_empty"	=> false,
 			"fields"		=> "ids"
 			
@@ -256,11 +196,14 @@ class ShMapPointType
 	static function wp_dropdown($params=-1)
 	{
 		if(!is_array($params))
-			$params=[ "id" => "ganres", "name" => "ganres", "class"=> "form-control", "taxonomy"=> SHM_POINT_TYPE];
-		$all = get_terms(['taxonomy' => $params['taxonomy'], 'hide_empty' => false ]);
-		$multiple = $params['multiple'] ? " multiple " : "" ;
-		$selector =$params['selector']  ? " selector='" . $params['selector'] . "' " : " s='ee' ";
-		$html = "<select name='".$params['name']."' id='".$params['id']."' $multiple class='".$params['class']."' $selector>";
+			$params=[ "id" => "ganres", "name" => "ganres", "class"=> "form-control", "taxonomy"=> SHM_TRACK_TYPE];
+		$all = get_terms(['taxonomy' => SHM_TRACK_TYPE, 'hide_empty' => false ]);
+		$multiple = isset( $params['multiple'] ) ? " multiple " : "" ;
+		$selector = isset( $params['selector'] )  ? " selector='" . $params['selector'] . "' " : " s='ee' ";
+		$attr_id = isset( $params['id'] ) ?  $params['id'] : '';
+		$attr_class = isset( $params['class'] ) ?  $params['class'] : '';
+		$html = "<select name='".$params['name']."' id='".$attr_id."' $multiple class='".$attr_class."'  style='".$params['style']."' $selector>";
+		$html .= "<option value='-1' >--</option>";
 		foreach($all as $term)
 		{
 			$selected = in_array($term->term_id, $params['selected']) ? "selected" : "";
@@ -268,24 +211,6 @@ class ShMapPointType
 		}
 		$html .="</select>";
 		return $html;
-	}
-	static function get_all_data()
-	{
-		$types = get_terms([
-			"taxonomy" 		=> SHM_POINT_TYPE,
-			"hide_empty"	=> false 			
-		]);
-		$ret = [];
-		foreach($types as $type)
-		{
-			$ret[] = [
-				"id"		=> $type->term_id,
-				"title" 	=> $type->name,
-				"content"	=> $type->description,
-				"icon"		=> static::get_icon_src( $type->term_id )
-			]; 
-		}
-		return $ret;
 	}
 	static function get_icon_src($term_id, $size=-1)
 	{
@@ -304,7 +229,7 @@ class ShMapPointType
 		$includes = empty($params['includes']) ? '' : $params['includes'];
 		$row_class = isset($params['row_class']) ? $params['row_class'] : "" ;
 		$row_style = isset($params['row_style']) ? $params['row_style'] : ""; ;
-		$ganres	= get_terms(["taxonomy" => SHM_POINT_TYPE, 'hide_empty' => false ]);
+		$ganres	= get_terms(["taxonomy" => SHM_TRACK_TYPE, 'hide_empty' => false ]);
 		$html 	= "<div class='shm-row point_type_swicher $row_class' style='$row_style'>";
 		switch($params['col_width'])
 		{
@@ -356,13 +281,6 @@ class ShMapPointType
 					$after = "
 						<label for='" . $params['prefix'] . "_" . $ganre->term_id . "' title='" . $ganre->name . "'>".
 							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr-little' style='background:$color;'></div>").
-						"</label>";
-					break;
-				case "stroke-large":
-					$class = "ganre_checkbox";
-					$after = "
-						<label for='" . $params['prefix'] . "_" . $ganre->term_id . "' title='" . $ganre->name . "'>".
-							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr' style='background:$color;'></div>").
 						"</label>";
 					break;
 				default:

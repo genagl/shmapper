@@ -52,6 +52,6 @@ function shmMap($args)
 			</div>
 		</div>";
 	}
-
+	$html = apply_filters("shm_final_after_front_map", $html, $args);
 	return $html;
 }

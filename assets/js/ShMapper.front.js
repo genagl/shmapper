@@ -11,9 +11,8 @@ jQuery(document).ready(function($)
 	
 	//send new request
 	$('form.shm-form-request').on( 'submit', function(evt) {
-
 		evt.preventDefault();
-		
+
 		var $this = $(evt.currentTarget);
 		$this.find("[required]").each(function(num, elem)
 		{
@@ -106,7 +105,7 @@ function add_message(msg)
 		clearTimeout(setmsg);
 		jQuery("<div class='msg'>" + msg + "</div>").appendTo("body").hide().fadeIn("slow");
 		setmsg = setTimeout( function() {
-			jQuery(".msg").fadeOut(700, jQuery(".msg").detach());
+			jQuery(".msg").fadeOut( 700 );
 		}, 6000);
 	}
 }

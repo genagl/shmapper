@@ -369,15 +369,19 @@ jQuery(document).ready(function($)
 			data={content: data};
 		}
 		if(!data.title) data.title = __("Attantion");
-		$("html").append("<div class='shm_modal_container'></div>");
+		$("html").append("<div class='shm_modal_container " + data['class'] + "'></div>");
 		$(".shm_modal_container").append("<div class='shm_modal'></div>");
 		$(".shm_modal_container").append("<div class='shm_modal_screen wp-core-ui'></div>");
 		$(".shm_modal_screen").append("<div class='shm_modal_header shm-color-grey'>" + data.title + "</div>");
 		$(".shm_modal_header").append("<div class='shm_modal_close' onclick='shm_close_modal();'>x</div>");
 		$(".shm_modal_screen").append("<div class='shm_modal_body'>" + data.content + "</div>");
 		$(".shm_modal_screen").append("<div class='shm_modal_footer'></div>");
-		if(data.send)
-			$(".shm_modal_footer").append("<button class='button' onClick='" + data.sendHandler + "(" + data.sendArgs + ");'>"+ data.send + "</button>");
+		if (data.send) {
+			$(".shm_modal_footer").append(
+				"<button class='button' onClick='" + data.sendHandler + "(" + data.sendArgs + ");'>"+ data.send + "</button>"
+			);
+		}
+		$(".shm_modal_footer").append(data.footer);
 		$(".shm_modal_footer").append("<button class='button' onclick='shm_close_modal();'>"+__("Close") + "</button>");
 		$(".shm_modal").on( 'click', function(evt) {
 			$(evt.currentTarget).parents(".shm_modal_container").detach();
@@ -582,7 +586,7 @@ jQuery(document).ready(function($) {
 		$shmapperIcons.click(function(e) {
 			e.preventDefault();
 			$(this).closest('.shm-form-placemarks').find('.shm-type-icon').removeClass('shmapperMarkerSelected');
-			$(this).parents("form.shm-form-request").find('input[name="shm_point_loc"]').removeClass("hidden");
+			$(this).parents("form.shm-form-request").find('input[name="shm_point_loc"]').removeClass("_hidden");
 			
 			if(!$(this).hasClass('shmapperDragged')) {
 				$(this).addClass('shmapperMarkerSelected');

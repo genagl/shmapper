@@ -48,7 +48,8 @@ class ShMapper_ajax
 				"map_id"		=> (int)$res->get_meta("map"),
 			]);
 			
-			if($attach_id = get_post_thumbnail_id($res->id)) {
+			if($attach_id = get_post_thumbnail_id($res->id)) 
+			{
 				set_post_thumbnail($point->id, (int)$attach_id);
 			}
 			

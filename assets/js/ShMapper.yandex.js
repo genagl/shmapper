@@ -93,7 +93,7 @@ jQuery(document).ready(function($)
 			lat.val(new_mark_coords[0]);
 			lon.val(new_mark_coords[1]);
 			if(!$this.data("straight_geocoding")) {
-				loc.val(shm_address).removeClass("hidden").hide().fadeIn("slow");
+				loc.val(shm_address).removeClass("_hidden").hide().fadeIn("slow");
 			}
 			type.val($this.attr("shm_type_id"));
 		})			
@@ -456,7 +456,10 @@ jQuery(document).ready(function($)
 			if($selectedMarker.size()) {
 				shmapperPlaceMarkerOnMap({"clientX": evt.get('domEvent').get('pageX'), "clientY": evt.get('domEvent').get('pageY') - window.scrollY}, {"helper": $selectedMarker});
 			}
-		});				
+		});
+
+		var finish_draw_map = new CustomEvent("finish_draw_map", {bubbles : true, cancelable : true, detail : {data:mData, points:points} });
+		document.documentElement.dispatchEvent(finish_draw_map);
 	}
 
 	is_admin = function(myMap, mData)

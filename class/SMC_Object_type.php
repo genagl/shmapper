@@ -21,12 +21,20 @@
 				static::$_instance = new static;
 			return static::$_instance;
 		}
+		function get_class_by_name( $name )
+		{
+			return $this->object[$name]['class']['type'];
+		}
+		
 		function init_options($array)
 		{
 			
 		}
 		function get($string)
 		{
+			if ( ! isset( $this->object[$string] ) ) {
+				return;
+			}
 			return $this->object[$string];
 		}
 		function get_meta($string)

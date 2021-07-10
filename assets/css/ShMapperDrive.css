@@ -79,6 +79,9 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+.shm-m-0 {
+	margin:0!important;
+}
 .shmd-loader {
 	margin: 5px;
 	animation: spin 1s linear infinite;

@@ -127,6 +127,7 @@ class ShMapper {
 		if(!is_array($init_object)) $init_object = [];
 		$point						= [];
 		$point['t']					= ['type'=>'post'];	
+		$point['class']				= ['type' => 'ShmPoint'];
 		$point['location']			= ['type' => 'string', "name" => __("Location", SHMAPPER)];
 		$point['latitude']			= ['type'=>'string', "name" => __("Latitude", SHMAPPER)];
 		$point['longitude']			= ['type'=>'string', "name" => __("Longitude", SHMAPPER)];
@@ -135,6 +136,7 @@ class ShMapper {
 		
 		$map						= [];
 		$map['t']					= ['type'=>'post'];	
+		$map['class']				= ['type' => 'ShmMap'];
 		$map['latitude']			= ['type'=>'string', "distination" => "map", "name" => __("Latitude", SHMAPPER)];
 		$map['longitude']			= ['type'=>'string', "distination" => "map", "name" => __("Longitude", SHMAPPER)];
 		$map['zoom']				= ['type'=>'number', "distination" => "map", "name" => __("Zoom", SHMAPPER)];
@@ -170,6 +172,7 @@ class ShMapper {
 		
 		$req						= [];
 		$req['t']					= ['type' => 'post'];
+		$req['class']				= ['type' => 'ShMapperRequest'];
 		$req['map']					= ['type' => 'post', "object" => SHM_REQUEST, "color"=> "#5880a2", "name" => __("Map", SHMAPPER)];	
 		$req['title']				= ['type' => 'string', "name" => __("Title")];	
 		$req['description']			= ['type' => 'string', "name" => __("Description", SHMAPPER)];	
@@ -184,6 +187,13 @@ class ShMapper {
 		$req['notify_date']			= ['type' => 'number', "name" => __("Aprove date", SHMAPPER)];	
 		$req['notify_user']			= ['type' => 'id', "object" => "user", "name" => __("Accessed User", SHMAPPER)];	
 		$init_object[SHM_REQUEST]	= $req;
+		
+		
+		$point						= [];
+		$point['t']					= ['type' => 'taxonomy'];	
+		$point['class']				= ['type' => 'ShMapPointType']; 
+		$point['color']				= ['type' => 'color', "name" => __("Color", SHMAPPER)];	
+		$init_object[ SHM_POINT_TYPE ]		= $point;
 	
 		return $init_object;
 		
@@ -202,12 +212,12 @@ class ShMapper {
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper");
 		//js
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('inline-edit-post'));
+		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('inline-edit-post'), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapper");
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker');
 		wp_enqueue_script( 'wp-color-picker' );
-		wp_register_script("ShMapper.admin", plugins_url( '../assets/js/ShMapper.admin.js', __FILE__ ), array());
+		wp_register_script("ShMapper.admin", plugins_url( '../assets/js/ShMapper.admin.js', __FILE__ ), array(), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapper.admin");
 		if( static::$options['map_api'] == 1 )
 		{
@@ -217,7 +227,7 @@ class ShMapper {
 			}
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=" . $locale, array());
 			wp_enqueue_script("api-maps");
-			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
+			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array(), SHMAPPER_VERSION);
 			wp_enqueue_script("ShMapper.yandex");
 		}
 		else if(  static::$options['map_api'] == 2 )
@@ -280,13 +290,16 @@ class ShMapper {
 		wp_localize_script( 
 			'ShMapper', 
 			'voc', 
-			array(
-				'Attantion' => __( "Attantion", SHMAPPER ),
-				'Send' => __( "Send" ),
-				'Close' => __( "Close" ),
-				'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
-				'Are you shure?' => __( "Are you shure?", SHMAPPER ),
-			)
+			apply_filters(
+				"shm_voc",
+				[
+					'Attantion' => __( "Attantion", SHMAPPER ),
+					'Send' => __( "Send" ),
+					'Close' => __( "Close" ),
+					'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
+					'Are you shure?' => __( "Are you shure?", SHMAPPER ),
+				]
+			)	
 		);
 
 		$is_admin = 'false';
@@ -385,15 +398,26 @@ class ShMapper {
 				'url' => admin_url('admin-ajax.php')
 			)
 		);
+		wp_localize_script(
+			'ShMapper',
+			'shmapper',
+			array(
+				'url'			=> SHM_URLPATH, 
+				SHM_POINT_TYPE	=> ShMapPointType::get_all_data()
+			)
+		);
 		wp_localize_script( 'ShMapper', 'shm_maps', array() );
 		wp_localize_script( 
 			'ShMapper', 
 			'voc', 
-			array(
-				'Attantion' => __( "Attantion", SHMAPPER ),
-				'Send' => __( "Send" ),
-				'Close' => __( "Close" ),
-				'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
+			apply_filters(
+				"shm_voc", 
+				[					
+					'Attantion'		=> __( "Attantion", SHMAPPER ),
+					'Send' 			=> __( "Send" ),
+					'Close' 		=> __( "Close" ),
+					'Error: no map' => __( "Error: the form is not associated with the card. To link a map and a form, there should be 2 shortcodes on one page (map - [shmMap id = '6' map = 'true' uniq = 'for example, 777'] and form - [shmMap id = '94' form = 'true' uniq = 'for example, 777']), in which the uniq parameter will match", SHMAPPER ),
+				]
 			)
 		);
 
@@ -464,6 +488,24 @@ class ShMapper {
 		}
 
 		$map_type = ShmMap::get_map_types()[ self::$options['map_api'] ][0];
+		$vocab = apply_filters(
+			"", [
+				"shm_personal_text" => __("Save personal data garantee", SHMAPPER),
+				"shm_succ_request_text" => __("Successful send map request", SHMAPPER),
+				"shm_error_request_text" => __("Error send map request", SHMAPPER)
+			]
+		);
+		$vocabulary = '';
+		foreach($vocab as $key => $value)
+		{
+			$vocabulary .= "
+				<p>
+				<div><small class='shm-color-grey'>".
+					$value .
+				"</small></div>
+				<input class='sh-form admin_voc' name='shm_succ_request_text' value='".static::$options[$key]. "'/>
+			";
+		}
 
 		echo "<div class='shm-container shm-padding-20'>
 			<div class='shm-row'>
@@ -579,7 +621,7 @@ class ShMapper {
 							<small class='shm-color-grey'>".
 								sprintf(__("What is Google reCAPTCHA? How recived keys for your site? See %sthis instruction%s.", SHMAPPER), "<a href='https://webdesign.tutsplus.com/" . substr(get_bloginfo("language"), 0, 2) . "/tutorials/how-to-integrate-no-captcha-recaptcha-in-your-website--cms-23024'>", "</a>") .
 							"</small>
-							<div class='" . (empty(static::$options['shm_captcha_siteKey']) || empty(static::$options['shm_captcha_secretKey']) ? "" : "hidden") . "'>
+							<div class='" . (empty(static::$options['shm_captcha_siteKey']) || empty(static::$options['shm_captcha_secretKey']) ? "" : "_hidden") . "'>
 								<small class='shm-color-danger' id='recaptcha_danger'>".
 									__("Your reCAPTCHA doesn't work yet. In order to make it work, please get the API keys at google.com/recaptcha", SHMAPPER).
 								"</small>
@@ -596,22 +638,7 @@ class ShMapper {
 							__("Vocabulary", SHMAPPER) .
 						"</div>
 						<div class='shm-9' id='shm_voc'>
-							<div><small class='shm-color-grey '>".
-								__("Save personal data garantee", SHMAPPER) .
-							"</small></div>
-							<input class='sh-form admin_voc' name='shm_personal_text' value='".static::$options['shm_personal_text']."'/>
-							
-							<p>							
-							<div><small class='shm-color-grey'>".
-								__("Successful send map request", SHMAPPER) .
-							"</small></div>							
-							<input class='sh-form admin_voc' name='shm_succ_request_text' value='".static::$options['shm_succ_request_text']. "'/>
-							
-							<p>							
-							<div><small class='shm-color-grey'>".
-								__("Error send map request", SHMAPPER) .
-							"</small></div>							
-							<input class='sh-form admin_voc' name='shm_error_request_text' value='".static::$options['shm_error_request_text']. "'/>
+							$vocabulary
 						</div>	
 						<div class='shm-1'>
 							

@@ -75,6 +75,10 @@ class ShMapperPointMessage extends SMC_Post
 				default:
 					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
 			}
+
+			if ( ! isset( $opacity ) ) {
+				$opacity = '';
+			}
 			
 			$html .="<div class='shm-row' $opacity>
 				<div class='shm-3 sh-right sh-align-middle'>".$value['name'] . "</div>
