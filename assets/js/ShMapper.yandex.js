@@ -92,7 +92,9 @@ jQuery(document).ready(function($)
 			var loc = $this.parents("form.shm-form-request").find("[name=shm_point_loc]");
 			lat.val(new_mark_coords[0]);
 			lon.val(new_mark_coords[1]);
-			loc.val(shm_address).removeClass("hidden").hide().fadeIn("slow");
+			if(!$this.data("straight_geocoding")) {
+				loc.val(shm_address).removeClass("_hidden").hide().fadeIn("slow");
+			}
 			type.val($this.attr("shm_type_id"));
 		})			
 	}
@@ -109,88 +111,158 @@ jQuery(document).ready(function($)
 			},
 			stop: (evt, ui) =>
 			{
-				$this = $(ui.helper);
-				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
-				map = shm_maps[$map_id];
-				//
-				//console.log(evt.clientX, evt.clientY + window.scrollY);
-				var globalPixelPoint = map.converter.pageToGlobal( [evt.clientX, evt.clientY + window.scrollY] );
-				new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
-				map.geoObjects.remove(shm_placemark);
-				var bg = $this.css('background-image');
-				if( bg !== "none")
-				{
-					bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
-					shm_paramet = {
-						balloonMaxWidth: 250,
-						hideIconOnBalloonOpen: false,
-						iconLayout: 'default#imageWithContent',
-						iconShadow:true,
-						iconImageHref: bg,
-						iconImageSize:[40,40], 
-						iconImageOffset: [-20, -20],
-						draggable:true,
-						term_id:$this.attr("shm_type_id"),
-						type:'point',
-						fill:true,
-						fillColor: "#FF0000",
-						opacity:0.22
-					};
-				}
-				else
-				{
-					shm_paramet = {
-						balloonMaxWidth: 250,
-						hideIconOnBalloonOpen: false,
-						iconColor: $this.attr("shm_clr") ? $this.attr("shm_clr"):'#FF0000',
-						preset: 'islands#dotIcon',
-						draggable:true,
-						term_id:$this.attr("shm_type_id"),
-						type:'point',
-						fill:true,
-						fillColor: "#FF0000",
-						iconShadow:true,
-						opacity:0.22
-					}
-				}
-				
-				shm_placemark = new ymaps.GeoObject({
-					geometry: 
-					{
-						type: 'Point',
-						coordinates: new_mark_coords,
-					}
-				} , 
-				shm_paramet);
-				
-				shm_placemark.events.add("dragend", evt =>
-				{
-					var pos = evt.get("position");
-					var globalPixelPoint = map.converter.pageToGlobal( [pos[0], pos[1]] );
-					new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
-					//console.log(pos);
-					//console.log( evt.originalEvent.target.options.get("type") );
-					addAdress( $this, new_mark_coords );
-				});
-				addAdress( $this, new_mark_coords );
-				map.geoObjects.add(shm_placemark); 
-				$this.css({left:0, top:0}).hide().fadeIn("slow");
-				$this.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");
+				$(ui.helper).addClass('shmapperDragged');
+				shmapperPlaceMarkerOnMap(evt, ui);
+				$('.shm-type-icon.shmapperMarkerSelected').removeClass('shmapperMarkerSelected');
 			}
 		});	
 	}
+	
+	// place marker by addr
+	function shm_place_marker_by_addr($this) {
+		var addr = $this.val();
+		console.log(addr);
+
+		var $selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon.shmapperMarkerSelected');
+
+		if(!$selectedMarker.length) {
+			$selectedMarker = $this.closest('.shm-form-request').find('.shm-form-placemarks .shm-type-icon').first();
+			$selectedMarker.addClass('shmapperMarkerSelected');
+		}
+		
+		ymaps.geocode(addr).then(function (res) {
+			var firstGeoObject = res.geoObjects.get(0);
+
+			new_mark_coords = firstGeoObject.geometry.getCoordinates();
+
+			var $map_id = $selectedMarker.parents("form.shm-form-request").attr("form_id");
+			map = shm_maps[$map_id];
+			
+			$selectedMarker.data("straight_geocoding", "true");
+			shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $selectedMarker);
+			
+		}, function (err) {
+			console.log(err);
+		}); 
+	}
+
+	var $addrInput = $("input[name='shm_point_loc']");
+	$addrInput.change(function(){
+		shm_place_marker_by_addr($(this));
+	});
+	$addrInput.keydown(function(e){
+		if(e.keyCode == 13){
+			e.preventDefault();
+			shm_place_marker_by_addr($(this));
+		}
+	});
+	
+	var isDraggable = false;
+	if ( shmYa.isAdmin == 'true' ) {
+		isDraggable = true;
+	}
+
 	//
 	init_map = function(mData, points)
 	{
+
+		var restrinctArea = [[-85, -179], [85, 179]];
+		if ( shmYa.isAdmin == 'true' ) {
+			restrinctArea = false;
+		}
+
 		var i=0, paramet;
-		var myMap = new ymaps.Map(mData.uniq, 
+		var myMap = new ymaps.Map( mData.uniq, 
 		{
-		  center: [ mData.latitude, mData.longitude],
-		  controls: [ ],
-		  zoom: mData.zoom,
-		  type: 'yandex#' + mData.mapType
+			center: [ mData.latitude, mData.longitude],
+			controls: [ ],
+			zoom: mData.zoom,
+			type: 'yandex#' + mData.mapType
+		}, {
+			restrictMapArea: restrinctArea
 		});
+
+		if ( mData.country && mData.overlay ) {
 		
+			var map = myMap;
+
+			if (  mData.country === 'RU' ) {
+				
+				ymaps.regions.load( 'RU', {
+					lang: shmYa.langIso,
+					quality: 3,
+					disputedBorders: ''
+				}).then(function (result) {
+					var background = new ymaps.Polygon([
+						[
+							[85, -179.99],
+							[85, 179.99],
+							[-85, 179.99],
+							[-85, -179.99],
+							[85, -179.99]
+						]
+					], {}, {
+						fillColor: mData.overlay,
+						strokeWidth: 1,
+						strokeColor: mData.border,
+						opacity: mData.overlayOpacity,
+						coordRendering: 'straightPath'
+					});
+
+					var regions = result.geoObjects;
+
+					regions.each(function (reg) {
+						var masks = reg.geometry._coordPath._coordinates;
+						if ( reg.properties.get('osmId') != '151231' ) {
+							masks.forEach(function(mask){
+								background.geometry.insert(1, mask);
+							});
+						}
+					});
+
+					map.geoObjects.add( background );
+				});
+
+			} else {
+
+				// Load Countries.
+				ymaps.borders.load( '001' , {
+					lang: shmYa.langIso,
+					quality: 3,
+				} ).then( function( result ) {
+
+					var background = new ymaps.Polygon([
+						[
+							[85, -179.99],
+							[85, 179.99],
+							[-85, 179.99],
+							[-85, -179.99],
+							[85, -179.99]
+						]
+					], {}, {
+						fillColor: mData.overlay,
+						strokeWidth: 1,
+						strokeColor: mData.border,
+						opacity: mData.overlayOpacity,
+						coordRendering: 'straightPath'
+					});
+
+					// Find country by iso.
+					var region = result.features.filter(function (feature) { 
+						return feature.properties.iso3166 == mData.country; })[0];
+
+					// Add world overlay.
+					var masks = region.geometry.coordinates;
+					masks.forEach( function( mask ){
+						background.geometry.insert(1, mask);
+					});
+					map.geoObjects.add( background );
+
+				});
+
+			}
+		}
+
 		//search 
 		if(mData.isSearch)
 		{
@@ -233,13 +305,14 @@ jQuery(document).ready(function($)
 		{
 			myMap.behaviors.disable('scrollZoom');
 			myMap.behaviors.disable('drag');
-		}	
+		}
+
 		// add to global array
 		shm_maps[mData.uniq] = myMap;
 		
 		// Hand-made Boolon
 		var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
-			// Флаг 'raw' означает, что данные вставляют 'как есть' без экранирования html.
+			// The 'raw' flag means the data is inserted 'as is' without html escaping.
 			'<div class=ballon_header>{{ properties.balloonContentHeader|raw }}</div>' +
 				'<div class=ballon_body>{{ properties.balloonContentBody|raw }}</div>' +
 				'<div class="ballon_footer shm_ya_footer">{{ properties.balloonContentFooter|raw }}</div>'
@@ -277,7 +350,7 @@ jQuery(document).ready(function($)
 			{
 				var h = parseInt(elem.height);
 				var w = elem.width ? parseInt(elem.width) : h;
-				console.log( w, h );
+//				console.log( w, h );
 				paramet = {
 					balloonMaxWidth: 250,
 					balloonItemContentLayout: customItemContentLayout,
@@ -289,7 +362,7 @@ jQuery(document).ready(function($)
 					iconImageOffset: [-w/2, -h/2],
 					term_id:elem.term_id,
 					type:'point',
-					draggable: true
+					draggable: isDraggable
 				};
 			}
 			else if( mData.default_icon && !elem.color)
@@ -304,14 +377,13 @@ jQuery(document).ready(function($)
 					iconImageOffset: [-20, -20],
 					term_id:-1,
 					type:'point',
-					draggable: true
+					draggable: isDraggable
 				};
 				
 			}
 			else
 			{
 				paramet = {
-					draggable: true,
 					balloonMaxWidth: 250,
 					balloonItemContentLayout: customItemContentLayout,
 					hideIconOnBalloonOpen: false,
@@ -319,7 +391,7 @@ jQuery(document).ready(function($)
 					preset: 'islands#dotIcon',
 					term_id:elem.term_id,
 					type:'point',
-					draggable: true
+					draggable: isDraggable
 				}
 			}
 			
@@ -331,7 +403,7 @@ jQuery(document).ready(function($)
 						type: 'Point', // тип геометрии - точка
 						coordinates: [elem.latitude, elem.longitude] // координаты точки
 					},
-					draggable: true,
+					draggable: false,
 					balloonContentHeader: elem.post_title,
 					balloonContentBody: elem.post_content,
 					balloonContentFooter: '',
@@ -348,6 +420,11 @@ jQuery(document).ready(function($)
 				})
 				myPlacemark.events.add("dragend", evt =>
 				{
+
+					var shmCoordinates = evt.get('target').geometry.getCoordinates();
+					$("[name='shm_default_latitude']").val(shmCoordinates[0]).trigger('change');
+					$("[name='shm_default_longitude']").val(shmCoordinates[1]).trigger('change');
+
 					var pos = evt.get("position");
 					var globalPixelPoint = myMap.converter.pageToGlobal( [pos[0], pos[1]] );
 					var new_mark_coords = myMap.options.get('projection').fromGlobalPixels(globalPixelPoint, myMap.getZoom());
@@ -355,22 +432,42 @@ jQuery(document).ready(function($)
 					$("[name='longitude']").val(new_mark_coords[1].toFixed(6));
 					initAddress(new_mark_coords);
 				});
+
+				// On change zoom.
+				myMap.events.add('boundschange', function(e){
+					zoom = myMap.getZoom();
+					$('[name=shm_default_zoom]').val( zoom ).trigger('change');
+				});
 			}
+
 			if( mData.isClausterer )
 			{
 				clusterer.add(myPlacemark);
 			}			
-			else
+			else 
 				myMap.geoObjects.add(myPlacemark);
 		})
 		if( mData.isClausterer )	myMap.geoObjects.add(clusterer);
 		if(mData.isAdmin)
-			is_admin(myMap, mData);	
+			is_admin(myMap, mData);
+		
+		myMap.events.add('click', evt => {
+			var $selectedMarker = $('.shm-type-icon.shmapperMarkerSelected');
+			if($selectedMarker.size()) {
+				shmapperPlaceMarkerOnMap({"clientX": evt.get('domEvent').get('pageX'), "clientY": evt.get('domEvent').get('pageY') - window.scrollY}, {"helper": $selectedMarker});
+			}
+		});
+
+		var finish_draw_map = new CustomEvent("finish_draw_map", {bubbles : true, cancelable : true, detail : {data:mData, points:points} });
+		document.documentElement.dispatchEvent(finish_draw_map);
 	}
+
 	is_admin = function(myMap, mData)
 	{
+
 		if(mData.isMap)
 		{
+
 			myMap.events.add( 'boundschange', function(event)
 			{
 				 coords = myMap.getCenter();
@@ -399,5 +496,81 @@ jQuery(document).ready(function($)
 			
 		}
 	}
-})
 	
+	function shmapperPlaceMarkerOnMap(evt, ui) {
+		$this = $(ui.helper);
+		var $map_id = $this.parents("form.shm-form-request").attr("form_id");
+		map = shm_maps[$map_id];
+		//
+//		console.log(evt.clientX, evt.clientY + window.scrollY);
+		var globalPixelPoint = map.converter.pageToGlobal( [evt.clientX, evt.clientY + window.scrollY] );
+		new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
+		shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $this);
+	}
+	
+	function shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $markerIcon) {
+		map.geoObjects.remove(shm_placemark);
+		var bg = $markerIcon.css('background-image');
+		if( bg !== "none")
+		{
+			bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+			shm_paramet = {
+				balloonMaxWidth: 250,
+				hideIconOnBalloonOpen: false,
+				iconLayout: 'default#imageWithContent',
+				iconShadow:true,
+				iconImageHref: bg,
+				iconImageSize:[40,40], 
+				iconImageOffset: [-20, -20],
+				draggable:true,
+				term_id:$markerIcon.attr("shm_type_id"),
+				type:'point',
+				fill:true,
+				fillColor: "#FF0000",
+				opacity:0.22
+			};
+		}
+		else
+		{
+			shm_paramet = {
+				balloonMaxWidth: 250,
+				hideIconOnBalloonOpen: false,
+				iconColor: $markerIcon.attr("shm_clr") ? $markerIcon.attr("shm_clr"):'#FF0000',
+				preset: 'islands#dotIcon',
+				draggable:true,
+				term_id:$markerIcon.attr("shm_type_id"),
+				type:'point',
+				fill:true,
+				fillColor: "#FF0000",
+				iconShadow:true,
+				opacity:0.22
+			}
+		}
+		
+		shm_placemark = new ymaps.GeoObject({
+			geometry: 
+			{
+				type: 'Point',
+				coordinates: new_mark_coords,
+			}
+		} , 
+		shm_paramet);
+		
+		shm_placemark.events.add("dragend", evt =>
+		{
+			var pos = evt.get("position");
+			var globalPixelPoint = map.converter.pageToGlobal( [pos[0], pos[1]] );
+			new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
+			//console.log(pos);
+			//console.log( evt.originalEvent.target.options.get("type") );
+			addAdress( $markerIcon, new_mark_coords );
+		});
+		addAdress( $markerIcon, new_mark_coords );
+		map.geoObjects.add(shm_placemark); 
+		$markerIcon.css({left:0, top:0}).hide().fadeIn("slow");
+		$markerIcon.parents(".shm-form-placemarks").removeAttr("required").removeClass("shm-alert");		
+		
+		$markerIcon.data("straight_geocoding", "");
+	}
+	
+})

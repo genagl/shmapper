@@ -1,4 +1,9 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
 function draw_shMap($map, $args )
 {
@@ -36,6 +41,11 @@ function draw_shMap($map, $args )
 	$longitude	= $longitude	? $longitude : 55;
 	$zoom		=  $zoom ? $zoom : 4;
 	$leg 		= "";
+	$highlight_country = $map->get_meta( 'highlight_country' );
+	$overlay_color     = $map->get_meta( 'overlay_color' );
+	$border_color      = $map->get_meta( 'border_color' );
+	$overlay_opacity   = $map->get_meta( 'overlay_opacity' );
+
 	if( $is_legend )
 	{
 		$include = $map->get_include_types();
@@ -43,9 +53,18 @@ function draw_shMap($map, $args )
 		{
 			foreach($include as $term_id)
 			{
+				if( !$term_id ) {
+					continue;
+				}
+
 				$term = get_term($term_id);
-				$color = get_term_meta($term_id, "color", true);
-				$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
+				if( !is_wp_error($term) ) {
+					
+					$color = get_term_meta($term_id, "color", true);
+					$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
+
+				}
+
 			}
 			$legend = "
 			<div class='shm-legend' style='width:$width;'>
@@ -63,11 +82,17 @@ function draw_shMap($map, $args )
 			"includes"		=> $includes,
 			"col_width"		=> 2
 		], "checkbox",  "stroke" );
-	}
-	if($is_csv  = $map->get_meta("is_csv"))
-	{
-		$csv	= "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download  %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
-	}
+	} else {
+        $filters = '';
+    }
+
+    $is_csv = $map->get_meta("is_csv");
+    $csv = "";
+    
+    if($is_csv) {
+        $csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
+    }
+
 	$points		= $map->get_map_points();
 	if($is_filtered || $is_csv)
 	{
@@ -85,26 +110,26 @@ function draw_shMap($map, $args )
 
 "];
 
-//line javascript
-	foreach($points as $point)
-	{
+	//line javascript.
+	foreach ( $points as $point ) {
 		$p .= " 
 			var p = {}; 
-			p.post_id 	= '" . $point->ID . "';
-			p.post_title 	= '" . $point->post_title . "';
-			p.post_content 	= '" . $point->post_content . " <a href=\"" .get_permalink($point->ID) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . $point->location . "</div>';
-			p.latitude 		= '" . $point->latitude . "'; 
-			p.longitude 	= '" . $point->longitude . "'; 
-			p.location 		= '" . $point->location . "'; 
-			p.type 			= '" . $point->type . "'; 
-			p.term_id 		= '" . $point->term_id . "'; 
-			p.icon 			= '" . $point->icon . "'; 
-			p.color 		= '" . $point->color . "'; 
-			p.height 		= " . $point->height . "; 
-			p.width 		= " . $point->width . "; 
+			p.post_id 	= '" . esc_attr( $point->ID ) . "';
+			p.post_title 	= '" . esc_html( $point->post_title ) . "';
+			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js( do_shortcode( $point->post_content ) ) ) . "</div> <a href=\"" . get_permalink( $point->ID ) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js( $point->location ) . "</div>';
+			p.latitude 		= '" . esc_attr( $point->latitude ) . "';
+			p.longitude 	= '" . esc_attr( $point->longitude ) . "';
+			p.location 		= '" . esc_js( $point->location ) . "';
+			p.type 			= '" . esc_attr( $point->type ) . "';
+			p.term_id 		= '" . esc_attr( $point->term_id ) . "';
+			p.icon 			= '" . esc_attr( $point->icon ) . "';
+			p.color 		= '" . esc_attr( $point->color ) . "';
+			p.height 		= " . esc_attr( $point->height ) . ";
+			p.width 		= " . esc_attr( $point->width ) . ";
 			points.push(p);
 			";
 	}
+
 	$desabled = $is_lock ? "
 					myMap.behaviors.disable('scrollZoom');
 					myMap.behaviors.disable('drag');
@@ -115,7 +140,10 @@ function draw_shMap($map, $args )
 		$is_admin = " is_admin( myMap, $map->id );";
 	}
 	$default_icon_id 	= $map->get_meta("default_icon_id");
-	$icon				= wp_get_attachment_image_src($default_icon_id, [60, 60])[0];
+	$icon = '';
+	if ( wp_get_attachment_image_src($default_icon_id ) ) {
+		$icon = wp_get_attachment_image_src($default_icon_id, [60, 60] )[0];
+	}
 	$html 		.= "
 	<script type='text/javascript'>
 		jQuery(document).ready( function($)
@@ -139,25 +167,76 @@ function draw_shMap($map, $args )
 				isAdmin			: ". (is_admin() ? 1 : 0). ",
 				isMap			: true,
 				default_icon	: '$icon',
+				country         : '$highlight_country',
+				overlay         : '$overlay_color',
+				border          : '$border_color',
+				overlayOpacity : '$overlay_opacity',
 			};
-			/*
-			var clear_form = new CustomEvent(
-				'init_map', 
-				{
-					bubbles : true, 
-					cancelable : true, 
-					detail : {mData:mData, points:points}
-				}
-			);
-			document.documentElement.dispatchEvent(clear_form);
-			*/
-			
-			if(map_type == 1)
-				ymaps.ready( function(){ init_map( mData, points ) } );
-			else if (map_type == 2)
+
+			if ( map_type == 1 ) {
+
+				ymaps.ready( function(){
+
+					init_map( mData, points );
+
+					ymaps.borders.load( '001' , {
+						lang: shmYa.langIso,
+						quality: 1
+					}).then(function (result) {
+
+						let selectOption   = '<option>...</option>';
+						let optionValue    = '';
+						let optionLabel    = '';
+						let optionSelected = '';
+						let optionCurrent  = mData.country;
+						let allCountries   = [];
+						let allOptions     = [];
+
+						for (var i = 0; i < result.features.length; i++) {
+							optionValue = result.features[i].properties.iso3166;
+							optionLabel = result.features[i].properties.name;
+							allOptions[ optionLabel ] = optionValue;
+							allCountries.push( optionLabel );
+						}
+
+						// Sort countries alphabetically
+						allCountries.sort();
+
+						// Create html options
+						allCountries.forEach( function( value, index ){
+							optionValue = allOptions[ value ];
+							optionSelected = '';
+							if ( optionCurrent == optionValue ) {
+								optionSelected = 'selected';
+							}
+							selectOption += '<option value=\"' + optionValue + '\" ' + optionSelected + '>' + value + '</option>';
+						});
+
+						// Add options to admin select
+						if ( $( '[name=highlight_country]' ).length ) {
+							$( '[name=highlight_country]' ).html( selectOption );
+						}
+
+					});
+
+				} );
+
+			} else if (map_type == 2) {
 				init_map( mData, points );
+			}
 			
+			// Disable submit post form on this page.
+			$('form#post').on('keyup keypress', function(e) {
+				var keyCode = e.keyCode || e.which;
+				if (keyCode === 13) { 
+				e.preventDefault();
+					return false;
+				}
+			});
 		});
+
+		jQuery(\"<style type='text/css'>.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {max-height: ".round($height * 1.5)."px !important;} </style>\").appendTo('head');
+
 	</script>";
 	return $html;
 }

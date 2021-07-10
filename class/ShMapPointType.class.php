@@ -1,4 +1,9 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
 class ShMapPointType
 {
@@ -17,7 +22,7 @@ class ShMapPointType
 
 	}
 	
-	function before_delete_post( $post_id ) 
+	static function before_delete_post( $post_id )
 	{
 		global $wpdb;
 		$query = "
@@ -32,31 +37,31 @@ class ShMapPointType
 			'name'              => __("Map marker type", SHMAPPER),
 			'singular_name'     => __("Map marker type", SHMAPPER),
 			'search_items'      => __("Search Map marker type", SHMAPPER),
-			'all_items'         => __("all Map marker types", SHMAPPER),
-			'view_item '        => __("view Map marker type", SHMAPPER),
-			'parent_item'       => __("parent Map marker type", SHMAPPER),
-			'parent_item_colon' => __("parent Map marker type:", SHMAPPER),
-			'edit_item'         => __("edit Map marker type", SHMAPPER),
-			'update_item'       => __("update Map marker type", SHMAPPER),
-			'add_new_item'      => __("add Map marker type", SHMAPPER),
-			'new_item_name'     => __("new Map marker type name", SHMAPPER),
+			'all_items'         => __("All Map marker types", SHMAPPER),
+			'view_item '        => __("View Map marker type", SHMAPPER),
+			'parent_item'       => __("Parent Map marker type", SHMAPPER),
+			'parent_item_colon' => __("Parent Map marker type:", SHMAPPER),
+			'edit_item'         => __("Edit Map marker type", SHMAPPER),
+			'update_item'       => __("Update Map marker type", SHMAPPER),
+			'add_new_item'      => __("Add Map marker type", SHMAPPER),
+			'new_item_name'     => __("New Map marker type name", SHMAPPER),
 			'menu_name'         => __("Map marker type", SHMAPPER),
 		);
 		register_taxonomy(SHM_POINT_TYPE, [ ], 
 		[
-			'label'                 => '', // определяется параметром $labels->name
+			'label'                 => '',
 			'labels'                => $labels,
-			'description'           => __('Unique type of every Map markers', SHMAPPER), // описание таксономии
+			'description'           => __('Unique type of every Map markers', SHMAPPER),
 			'public'                => true,
 			'hierarchical'          => false,
 			'update_count_callback' => '',
 			'show_in_nav_menus'     => true,
 			'rewrite'               => true,
 			'capabilities'          => array(),
-			'meta_box_cb'           => "post_categories_meta_box", // callback функция. Отвечает за html код метабокса (с версии 3.8): post_categories_meta_box или post_tags_meta_box. Если указать false, то метабокс будет отключен вообще
-			'show_admin_column'     => true, // Позволить или нет авто-создание колонки таксономии в таблице ассоциированного типа записи. (с версии 3.5)
+			'meta_box_cb'           => "post_categories_meta_box",
+			'show_admin_column'     => true,
 			'_builtin'              => false,
-			'show_in_quick_edit'    => true, // по умолчанию значение show_ui
+			'show_in_quick_edit'    => true,
 		] );
 	}
 	static function tax_menu_correction($parent_file) 
@@ -96,8 +101,8 @@ class ShMapPointType
 				break;
 			case 'icon': 
 				$icon = get_term_meta( $term_id, 'icon', true ); 
-				$color = get_term_meta( $term_id, 'color', true ); 
-				$logo = wp_get_attachment_image_src($icon, "full")[0];
+				$color = get_term_meta( $term_id, 'color', true );
+				$logo = wp_get_attachment_image_url( $icon, "full" );
 				echo "<div>
 					<img src='$logo' style='width:auto; height:60px; margin:10px;' />
 					<div style='width:80px;height:5px;background-color:$color;'></div>
@@ -106,11 +111,14 @@ class ShMapPointType
 			default:
 				break;
 		}
-		return $out;    
+		return $out;
 	}
 	static function new_ctg( $tax_name )
 	{
 		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
+		if ( ! isset( $color ) ) {
+			$color = '';
+		}
 		?>
 		<div class="form-field term-description-wrap">
 			<label for="color">
@@ -118,19 +126,19 @@ class ShMapPointType
 			</label> 
 			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
 			</div>
-			<input type="color" name="color" value="<?php echo $color ?>" />
+			<input type="color" name="color" value="<?php echo empty($color) ? '' : $color; ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="height">
 				<?php echo __("Height", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="height" value="<?php echo $height ?>" />
+			<input type="number" name="height" value="<?php echo empty($height) ? '' : $height; ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="width">
 				<?php echo __("Width", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="width" value="<?php echo $width ?>" />
+			<input type="number" name="width" value="<?php echo empty($width) ? '' : $width;?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="icon">
@@ -138,7 +146,7 @@ class ShMapPointType
 			</label> 
 			<div class='shm-flex'>
 			<?php
-				echo get_input_file_form2( "icon", $icon, "icon", 0 );
+				echo get_input_file_form2( "icon", empty($icon) ? '' : $icon, "icon", 0 );
 			?>
 			</div>
 		</div>
@@ -207,10 +215,10 @@ class ShMapPointType
 	}
 	static function save_ctg( $term_id ) 
 	{
-		update_term_meta($term_id, "icon", 	$_POST['icon0']);
-		update_term_meta($term_id, "color", $_POST['color']);
-		update_term_meta($term_id, "height", $_POST['height']);
-		update_term_meta($term_id, "width", $_POST['width']);
+	    update_term_meta($term_id, "icon", 	sanitize_text_field($_POST['icon0']));
+	    update_term_meta($term_id, "color", sanitize_hex_color($_POST['color']));
+	    update_term_meta($term_id, "height", sanitize_text_field($_POST['height']));
+	    update_term_meta($term_id, "width", sanitize_text_field($_POST['width']));
 	}
 	static function get_icon($term, $is_locked=false)
 	{
@@ -218,8 +226,14 @@ class ShMapPointType
 		$color 		= get_term_meta($term->term_id, "color", true);
 		$icon  		= (int)get_term_meta($term->term_id, "icon", true);
 		$d 			= wp_get_attachment_image_src($icon, array(100, 100));
-		$cur_bgnd 	= $d[0];
+		$cur_bgnd = '';
+		if ( $d ) {
+			$cur_bgnd = $d[0];
+		}
 		$class		= $is_locked ? " shm-muffle " : "";
+		if ( $cur_bgnd ) {
+			$color = 'transparent';
+		}
 		return "
 		<div class='ganre_picto $class' term='". SHM_POINT_TYPE ."' term_id='$term->term_id' >
 			<div 
@@ -255,6 +269,24 @@ class ShMapPointType
 		$html .="</select>";
 		return $html;
 	}
+	static function get_all_data()
+	{
+		$types = get_terms([
+			"taxonomy" 		=> SHM_POINT_TYPE,
+			"hide_empty"	=> false 			
+		]);
+		$ret = [];
+		foreach($types as $type)
+		{
+			$ret[] = [
+				"id"		=> $type->term_id,
+				"title" 	=> $type->name,
+				"content"	=> $type->description,
+				"icon"		=> static::get_icon_src( $type->term_id )
+			]; 
+		}
+		return $ret;
+	}
 	static function get_icon_src($term_id, $size=-1)
 	{
 		$size 		= $size == -1 ? get_term_meta( $term_id, "height", true ) : $size;
@@ -264,10 +296,12 @@ class ShMapPointType
 	}
 	static function get_ganre_swicher($params = -1, $type="checkbox", $form_factor="large")
 	{
-		if(!is_array($params))
-			$params = ["prefix" =>"ganre" ];
+		if( !is_array($params) || empty($params['prefix']) ) {
+			$params = array('prefix' => 'ganre');
+		}
+
 		$selected = is_array($params['selected']) ?  $params['selected'] : explode(",", $params['selected']);
-		$includes = $params['includes'] ;
+		$includes = empty($params['includes']) ? '' : $params['includes'];
 		$row_class = isset($params['row_class']) ? $params['row_class'] : "" ;
 		$row_style = isset($params['row_style']) ? $params['row_style'] : ""; ;
 		$ganres	= get_terms(["taxonomy" => SHM_POINT_TYPE, 'hide_empty' => false ]);
@@ -299,7 +333,10 @@ class ShMapPointType
 			$icon 		= get_term_meta($ganre->term_id, "icon", true);
 			$color 		= get_term_meta($ganre->term_id, "color", true);
 			$d 			= wp_get_attachment_image_src($icon, array(100, 100));
-			$cur_bgnd 	= $d[0];
+			$cur_bgnd = '';
+			if ( $d ) {
+				$cur_bgnd = $d[0];
+			}
 			$before 	= "";
 			$after 		= "";
 			switch( $form_factor )
@@ -321,6 +358,13 @@ class ShMapPointType
 							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr-little' style='background:$color;'></div>").
 						"</label>";
 					break;
+				case "stroke-large":
+					$class = "ganre_checkbox";
+					$after = "
+						<label for='" . $params['prefix'] . "_" . $ganre->term_id . "' title='" . $ganre->name . "'>".
+							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr' style='background:$color;'></div>").
+						"</label>";
+					break;
 				default:
 					$class = "ganre_checkbox";
 					break;
@@ -338,9 +382,11 @@ class ShMapPointType
 				"/>
 				$after";
 		}
-		
-		if( isset($params['default_none'])	)
-		{
+
+		if ( isset( $params['default_none'] ) ) {
+			if ( ! isset( $class ) ) {
+				$class = 'ganre_checkbox';
+			}
 			$html .= "
 			<div class='$col_width'>
 				<input 
@@ -357,11 +403,13 @@ class ShMapPointType
 					"<div class='shm-clr' style='background:#ffffff;'></div>" .
 				"</label>
 			</div>";
-		}	
-		
+		}
+
 		$html .= "
-			<input type='hidden' id='" . $params['prefix'] . "pointtype' name='" . $params['name'] . "' point='' value='" . $params['selected'] . "' />
+			<input type='hidden' id='".$params['prefix']."pointtype' name='".(empty($params['name']) ? '' : $params['name'])."' point='' value='".(is_array($params['selected']) ? implode(",", $params['selected']) : $params['selected']) . "' />
 		</div>";
+
 		return $html;
+
 	}
 }

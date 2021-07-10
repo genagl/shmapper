@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 class ShmMap extends SMC_Post
 {
 	static function get_map_types()
@@ -83,8 +89,8 @@ class ShmMap extends SMC_Post
 		$args = array(
 			 'labels' => $labels
 			,'public' => true
-			,'show_ui' => true // показывать интерфейс в админке
-			,'has_archive' => true 
+			,'show_ui' => true
+			,'has_archive' => true
 			,'exclude_from_search' => false
 			,'menu_position' => 17
 			,'menu_icon' => "dashicons-location-alt"
@@ -176,7 +182,7 @@ class ShmMap extends SMC_Post
 	static function admin_redirect()
 	{
 		global $pagenow, $submenu ;
-		if("shm_page" == $_GET["page"] && "admin.php" === $pagenow)
+		if( !empty($_GET["page"]) && "shm_page" == $_GET["page"] && "admin.php" === $pagenow)
 		{
 			wp_redirect( admin_url( '/admin.php?page=shm_settings_page' ) );
 		}
@@ -216,23 +222,29 @@ class ShmMap extends SMC_Post
 	static function view_admin_edit($obj)
 	{
 		require_once( SHM_REAL_PATH . "tpl/input_file_form.php" );
-		$height 		= $obj->get_meta("height") ? $obj->get_meta("height") : 400;
-		$latitude 		= $obj->get_meta("latitude");
-		$longitude 		= $obj->get_meta("longitude");
-		$zoom 			= $obj->get_meta("zoom");
-		$width 			= $obj->get_meta("width");
-		$is_search 		= $obj->get_meta("is_search");
-		$is_zoomer 		= $obj->get_meta("is_zoomer");
-		$is_layer_switcher = $obj->get_meta("is_layer_switcher");
-		$is_fullscreen 	= $obj->get_meta("is_fullscreen");
-		$is_csv 		= $obj->get_meta("is_csv");
-		$is_legend 		= $obj->get_meta("is_legend");
-		$is_filtered 	= $obj->get_meta("is_filtered");
-		$default_icon_id = $obj->get_meta("default_icon_id");
-		$is_clustered 	= $obj->get_meta("is_clustered");
-		$is_lock 		= $obj->get_meta("is_lock");
-		$form_title		= $obj->get_meta("form_title");
-		$html 	.= "
+		$map_source        = ShmMap::get_map_types()[ ShMapper::$options['map_api'] ][0];
+		$height            = $obj->get_meta( 'height' ) ? $obj->get_meta( 'height' ) : 400;
+		$latitude          = $obj->get_meta( 'latitude' );
+		$longitude         = $obj->get_meta( 'longitude' );
+		$zoom              = $obj->get_meta( 'zoom' );
+		$width             = $obj->get_meta( 'width' );
+		$is_search         = $obj->get_meta( 'is_search' );
+		$is_zoomer         = $obj->get_meta( 'is_zoomer' );
+		$is_layer_switcher = $obj->get_meta( 'is_layer_switcher' );
+		$is_fullscreen     = $obj->get_meta( 'is_fullscreen' );
+		$is_csv            = $obj->get_meta( 'is_csv' );
+		$is_legend         = $obj->get_meta( 'is_legend' );
+		$is_filtered       = $obj->get_meta( 'is_filtered' );
+		$default_icon_id   = $obj->get_meta( 'default_icon_id' );
+		$is_clustered      = $obj->get_meta( 'is_clustered' );
+		$is_lock           = $obj->get_meta( 'is_lock' );
+		$form_title        = $obj->get_meta( 'form_title' );
+		$highlight_country = $obj->get_meta( 'highlight_country' );
+		$overlay_color     = $obj->get_meta( 'overlay_color' ) ? $obj->get_meta( 'overlay_color' ) : '#d1d1d1';
+		$border_color      = $obj->get_meta( 'border_color' ) ? $obj->get_meta( 'border_color' ) : '#d1d1d1';
+		$overlay_opacity   = $obj->get_meta( 'overlay_opacity' ) ? $obj->get_meta( 'overlay_opacity' ) : '0.8';
+
+		$html 	= "
 			<div class='shm-row'>
 				<h3 class='shm-12'>". __("1.1. Pan map and choose zoom", SHMAPPER). "</h3>
 				<div class='shm-12'>".
@@ -336,7 +348,6 @@ class ShmMap extends SMC_Post
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_filtered, false) ."' name='is_filtered' id='is_filtered'/>
 					<label for='is_filtered'>" . __("Filters exists", SHMAPPER) . "</albel> 
-					
 				</div>
 			</div>
 			<div class='spacer-5'></div>
@@ -351,7 +362,51 @@ class ShmMap extends SMC_Post
 					__("Recommended size is 64х64 px, format is .png", SHMAPPER) . 
 				"</p>
 			</div>";
-		
+
+			if ( $map_source === 'map' ) {
+				$html 	.= "
+				<div class='spacer-5'></div>
+				<hr/>
+				<div class='spacer-5'></div>
+				<div class='shm-row'>
+
+					<h3 class='shm-12'>". __( "1.8. Highlight the country on the map", SHMAPPER ) . "</h3>
+
+					<div class='shm-12'>
+						<select class='small-text' name='highlight_country' data-value='" . esc_attr( $highlight_country ) . "'>
+							<option>" . esc_html__( "Loading countries ... ", SHMAPPER ) . "</option>
+						</select>
+						<p class='description'>".
+							__("Select country", SHMAPPER) . 
+						"</p>
+						<div class='spacer-5'></div>
+						<div class='spacer-5'></div>
+					</div>
+					<div class='shm-12'>
+						<div class='shm-admin-block'>
+							<input type='text' name='overlay_color' value='" . esc_attr( $overlay_color ) . "'>
+							<p class='description'>".
+								__("Choose map overlay color", SHMAPPER) . 
+							"</p>
+						</div>
+						<div class='shm-admin-block'>
+							<input type='text' name='border_color' value='" . esc_attr( $border_color ) . "'>
+							<p class='description'>".
+								__("Choose country border color", SHMAPPER) . 
+							"</p>
+						</div>
+						<div class='shm-admin-block'>
+							<input type='range' min='0.1' max='1' step='0.1' class='shm-range' name='overlay_opacity' value='" . esc_attr( $overlay_opacity ) . "'>
+							<p class='description'>".
+								__("Overlay opacity", SHMAPPER) . 
+							"</p>
+						</div>
+					</div>
+
+				</div>
+				";
+			}
+
 		return $html;
 	}
 	static function form_fields_box_func( $post )
@@ -376,100 +431,102 @@ class ShmMap extends SMC_Post
 		$is_phone_iclude = $obj->get_meta("is_phone_iclude");
 		$personal_phone = $obj->get_meta("personal_phone");
 		$is_phone_required = $obj->get_meta("is_phone_required");
-		$html 	.= "
+		$html 	= "
 			<div class='shm-row'>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' name='is_form' id='is_form' " . checked(1, $is_form, 0) . " /> 
 					<label for='is_form'>". __("Enable crowdsourcing function (free add Users new Markers)", SHMAPPER). "</label>
 				</div>				
 			</div>
-			<div class='spacer-5'></div>
-			<div class='shm-row'>
-				<h3 class='shm-12'>". __("2.1. What is the name of your information form?", SHMAPPER). "</h3>
-				<div class='shm-12'>
-					<input type='text' value='".$form_title . "' name='form_title' id='form_title' class='shmw-100 shm-form'/>
-					<p class='description'>" .
-						__("For example &laquo;All beaches by the river&raquo;", SHMAPPER) .
-					"</p>
-				</div>
-			</div>
-			<div class='spacer-5'></div>
-			<div class='shm-row'>
-				<h3 class='shm-12'>". __("2.2. Will I notify the author about new posts?", SHMAPPER). "</h3>
-				<div class='shm-12'>
-					<input type='checkbox' value='1' ". checked(1, $notify_owner, false) ."' name='notify_owner' id='notify_owner'/>
-					<label for='notify_owner'>" . __("Notify owner of Map", SHMAPPER) . "</label>
-				</div>
-			</div>
-			<div class='spacer-5'></div>
-			<div class='shm-row'>
-				<h3 class='shm-12'>". __("2.3. What information can users enter?", SHMAPPER). "</h3>
-				<div class='shm-12'>
-					<p class='description'>" .
-						__("You can create your own forms using form elements: & laquo; Text line & raquo;, & laquo; Text field & raquo;, & laquo; Upload files & raquo;, & laquo; Categories of Markers & raquo;", SHMAPPER) .
-					"</p>
-				</div>
-				<div class='shm-12'>".			
-					static::formEditor( $form_forms ? $form_forms : ShmForm::get_default() ).
-				"</div>
-			</div>
-			<div class='spacer-5'></div>
-			<div class='shm-row'>
-				<h3 class='shm-12'>". __("2.4. Can users leave their contact information?", SHMAPPER). "</h3>
-				<div class='shm-12'>
-					<input type='checkbox' value='1' ". checked(1, $is_personal_data, false) ."' name='is_personal_data' id='is_personal_data'/>
-					<label for='is_personal_data'>" . __("Users can leave their contact details for feedback.", SHMAPPER) . "</label>
-				</div>
-			</div>
-			<div class='spacer-5'></div>
-			<div class='shm-row'>
-				<h3 class='shm-12'>". __("2.5. What data users will have to put?", SHMAPPER). "</h3>
-				<div class='shm-12'>
-					<div class='shm-incblock sh-center'>
-						<label for='is_name_iclude'>" . __("Include", SHMAPPER) . "</label><br>
-						<input type='checkbox' value='1' ". checked(1, $is_name_iclude, false) ."' name='is_name_iclude' id='is_name_iclude'/>
-					</div>
-					
-					<div class='shm-incblock'>
-						<label for='personal_name'>" . __("Personal name", SHMAPPER) . "</label><br>
-						<input type='text' value='$personal_name' name='personal_name' id='personal_name' class='shm-admin-block'/>
-					</div>
-					
-					<div class='shm-incblock'>
-						<label for='is_name_required'>" . __("Required", SHMAPPER) . "</label><br>
-						<input type='checkbox' value='1' ". checked(1, $is_name_required, false) ."' name='is_name_required' id='is_name_required'/>
+			<div class='shm-map-form-admin'> 
+				<div class='spacer-5'></div>
+				<div class='shm-row'>
+					<h3 class='shm-12'>". __("2.1. What is the name of your information form?", SHMAPPER). "</h3>
+					<div class='shm-12'>
+						<input type='text' value='".$form_title . "' name='form_title' id='form_title' class='shmw-100 shm-form'/>
+						<p class='description'>" .
+							__("For example &laquo;All beaches by the river&raquo;", SHMAPPER) .
+						"</p>
 					</div>
 				</div>
-				<div class='shm-12'>
-					<div class='shm-incblock sh-center'>
-						<label for='is_email_iclude'>" . __("Include", SHMAPPER) . "</label><br>
-						<input type='checkbox' value='1' ". checked(1, $is_email_iclude, false) ."' name='is_email_iclude' id='is_email_iclude'/>
-					</div>
-					
-					<div class='shm-incblock'>
-						<label for='personal_email'>" . __("Personal email", SHMAPPER) . "</label><br>
-						<input type='text' value='$personal_email' name='personal_email' id='personal_email' class='shm-admin-block'/>
-					</div>
-					
-					<div class='shm-incblock'>
-						<label for='is_email_required'>" . __("Required", SHMAPPER) . "</label><br>
-						<input type='checkbox' value='1' ". checked(1, $is_email_required, false) ."' name='is_email_required' id='is_email_required'/>
+				<div class='spacer-5'></div>
+				<div class='shm-row'>
+					<h3 class='shm-12'>". __("2.2. Will I notify the author about new posts?", SHMAPPER). "</h3>
+					<div class='shm-12'>
+						<input type='checkbox' value='1' ". checked(1, $notify_owner, false) ."' name='notify_owner' id='notify_owner'/>
+						<label for='notify_owner'>" . __("Notify owner of Map", SHMAPPER) . "</label>
 					</div>
 				</div>
-				<div class='shm-12'>
-					<div class='shm-incblock sh-center'>
-						<label for='is_phone_iclude'>" . __("Include", SHMAPPER) . "</label><br>
-						<input type='checkbox' value='1' ". checked(1, $is_phone_iclude, false) ."' name='is_phone_iclude' id='is_phone_iclude'/>
+				<div class='spacer-5'></div>
+				<div class='shm-row'>
+					<h3 class='shm-12'>". __("2.3. What information can users enter?", SHMAPPER). "</h3>
+					<div class='shm-12'>
+						<p class='description'>" .
+							__("You can create your own forms using form elements: Heading, Text field, Textarea, Upload file, Markers, Track drawer.", SHMAPPER) .
+						"</p>
 					</div>
-					
-					<div class='shm-incblock'>
-						<label for='personal_phone'>" . __("Personal phone", SHMAPPER) . "</label><br>
-						<input type='text' value='$personal_phone' name='personal_phone' id='personal_phone' class='shm-admin-block'/>
+					<div class='shm-12'>".			
+						static::formEditor( $form_forms ? $form_forms : ShmForm::get_default() ).
+					"</div>
+				</div>
+				<div class='spacer-5'></div>
+				<div class='shm-row'>
+					<h3 class='shm-12'>". __("2.4. Can users leave their contact information?", SHMAPPER). "</h3>
+					<div class='shm-12'>
+						<input type='checkbox' value='1' ". checked(1, $is_personal_data, false) ."' name='is_personal_data' id='is_personal_data'/>
+						<label for='is_personal_data'>" . __("Users can leave their contact details for feedback.", SHMAPPER) . "</label>
 					</div>
-					
-					<div class='shm-incblock'>
-						<label for='is_phone_required'>" . __("Required", SHMAPPER) . "</label><br>
-						<input type='checkbox' value='1' ". checked(1, $is_phone_required, false) ."' name='is_phone_required' id='is_phone_required'/>
+				</div>
+				<div class='spacer-5'></div>
+				<div class='shm-row shm-map-resonals'>
+					<h3 class='shm-12'>". __("2.5. What data users will have to put?", SHMAPPER). "</h3>
+					<div class='shm-12'>
+						<div class='shm-incblock sh-center'>
+							<label for='is_name_iclude'>" . __("Include", SHMAPPER) . "</label><br>
+							<input type='checkbox' value='1' ". checked(1, $is_name_iclude, false) ."' name='is_name_iclude' id='is_name_iclude'/>
+						</div>
+						
+						<div class='shm-incblock'>
+							<label for='personal_name'>" . __("Personal name", SHMAPPER) . "</label><br>
+							<input type='text' value='$personal_name' name='personal_name' id='personal_name' class='shm-admin-block'/>
+						</div>
+						
+						<div class='shm-incblock'>
+							<label for='is_name_required'>" . __("Required", SHMAPPER) . "</label><br>
+							<input type='checkbox' value='1' ". checked(1, $is_name_required, false) ."' name='is_name_required' id='is_name_required'/>
+						</div>
+					</div>
+					<div class='shm-12'>
+						<div class='shm-incblock sh-center'>
+							<label for='is_email_iclude'>" . __("Include", SHMAPPER) . "</label><br>
+							<input type='checkbox' value='1' ". checked(1, $is_email_iclude, false) ."' name='is_email_iclude' id='is_email_iclude'/>
+						</div>
+						
+						<div class='shm-incblock'>
+							<label for='personal_email'>" . __("Personal email", SHMAPPER) . "</label><br>
+							<input type='text' value='$personal_email' name='personal_email' id='personal_email' class='shm-admin-block'/>
+						</div>
+						
+						<div class='shm-incblock'>
+							<label for='is_email_required'>" . __("Required", SHMAPPER) . "</label><br>
+							<input type='checkbox' value='1' ". checked(1, $is_email_required, false) ."' name='is_email_required' id='is_email_required'/>
+						</div>
+					</div>
+					<div class='shm-12'>
+						<div class='shm-incblock sh-center'>
+							<label for='is_phone_iclude'>" . __("Include", SHMAPPER) . "</label><br>
+							<input type='checkbox' value='1' ". checked(1, $is_phone_iclude, false) ."' name='is_phone_iclude' id='is_phone_iclude'/>
+						</div>
+						
+						<div class='shm-incblock'>
+							<label for='personal_phone'>" . __("Personal phone", SHMAPPER) . "</label><br>
+							<input type='text' value='$personal_phone' name='personal_phone' id='personal_phone' class='shm-admin-block'/>
+						</div>
+						
+						<div class='shm-incblock'>
+							<label for='is_phone_required'>" . __("Required", SHMAPPER) . "</label><br>
+							<input type='checkbox' value='1' ". checked(1, $is_phone_required, false) ."' name='is_phone_required' id='is_phone_required'/>
+						</div>
 					</div>
 				</div>
 			</div>";
@@ -481,38 +538,43 @@ class ShmMap extends SMC_Post
 	static function save_admin_edit($obj)
 	{
 		return [
-			"map_type"			=> $_POST['map_type'],
-			"latitude"			=> $_POST['latitude'],
-			"longitude"			=> $_POST['longitude'],
-			"zoom"				=> $_POST['zoom'],
-			"is_legend"			=> $_POST['is_legend'] ? 1 : 0,
-			"is_filtered"		=> $_POST['is_filtered'] ? 1 : 0,
-			"is_csv"			=> $_POST['is_csv'] ? 1 : 0,
-			"is_lock"			=> $_POST['is_lock'] ? 1 : 0,
-			"is_clustered"		=> $_POST['is_clustered'] ? 1 : 0,
-			"is_search"			=> $_POST['is_search'] ? 1 : 0,
-			"is_zoomer"			=> $_POST['is_zoomer'] ? 1 : 0,
-			"is_layer_switcher"	=> $_POST['is_layer_switcher'] ? 1 : 0,
-			"is_fullscreen"		=> $_POST['is_fullscreen'] ? 1 : 0,
-			"default_icon_id"	=> $_POST['default_icon_id'],
-			"width"				=> $_POST['width'],
-			"height"			=> $_POST['height'],
-			
-			"is_form"			=> $_POST['is_form'] ? 1 : 0,
-			"form_title"		=> $_POST['form_title'],
-			"form_contents"		=> $_POST['form_contents'],			
-			"notify_owner"		=> $_POST['notify_owner'] ? 1: 0,			
-			"form_forms"		=> $_POST['form_forms'],			
-			"is_personal_data"	=> $_POST['is_personal_data'],			
-			"is_name_iclude"	=> $_POST['is_name_iclude'],			
-			"personal_name"		=> $_POST['personal_name'],			
-			"is_name_required"	=> $_POST['is_name_required'],			
-			"is_email_iclude"	=> $_POST['is_email_iclude'],			
-			"personal_email"	=> $_POST['personal_email'],			
-			"is_email_required"	=> $_POST['is_email_required'],			
-			"is_phone_iclude"	=> $_POST['is_phone_iclude'],			
-			"personal_phone"	=> $_POST['personal_phone'],			
-			"is_phone_required"	=> $_POST['is_phone_required'],			
+			"map_type"			=> empty($_POST['map_type']) ? '' : $_POST['map_type'],
+			"latitude"			=> sanitize_text_field($_POST['latitude']),
+			"longitude"			=> sanitize_text_field($_POST['longitude']),
+			"zoom"				=> sanitize_text_field($_POST['zoom']),
+			"is_legend"			=> empty($_POST['is_legend']) ? 0 : 1,
+			"is_filtered"		=> empty($_POST['is_filtered']) ? 0 : 1,
+			"is_csv"			=> empty($_POST['is_csv']) ? 0 : 1,
+			"is_lock"			=> empty($_POST['is_lock']) ? 0 : 1,
+			"is_clustered"		=> empty($_POST['is_clustered']) ? 0 : 1,
+			"is_search"			=> empty($_POST['is_search']) ? 0 : 1,
+			"is_zoomer"			=> empty($_POST['is_zoomer']) ? 0 : 1,
+			"is_layer_switcher"	=> empty($_POST['is_layer_switcher']) ? 0 : 1,
+			"is_fullscreen"		=> empty($_POST['is_fullscreen']) ? 0 : 1,
+			"default_icon_id"	=> sanitize_text_field($_POST['default_icon_id']),
+			"width"				=> sanitize_text_field($_POST['width']),
+			"height"			=> sanitize_text_field($_POST['height']),
+
+			'highlight_country' => sanitize_text_field( isset( $_POST['highlight_country'] ) ? $_POST['highlight_country'] : '' ),
+			'overlay_color'     => sanitize_hex_color( isset( $_POST['overlay_color'] ) ? $_POST['overlay_color'] : '' ),
+			'border_color'      => sanitize_hex_color( isset( $_POST['border_color'] ) ? $_POST['border_color'] : '' ),
+			'overlay_opacity'   => sanitize_text_field( isset( $_POST['overlay_opacity'] ) ? $_POST['overlay_opacity'] : '' ),
+
+			"is_form"			=> empty($_POST['is_form']) ? 0 : 1,
+			"form_title"		=> sanitize_text_field($_POST['form_title']),
+			"form_contents"		=> sanitize_textarea_field(empty($_POST['form_contents']) ? '' : $_POST['form_contents']),
+			"notify_owner"		=> empty($_POST['notify_owner']) ? 0 : 1,
+			"form_forms"		=> empty($_POST['form_forms']) ? '' : $_POST['form_forms'],
+			"is_personal_data"	=> sanitize_text_field(empty($_POST['is_personal_data']) ? '' : $_POST['is_personal_data']),
+			"is_name_iclude"	=> sanitize_text_field(empty($_POST['is_name_iclude']) ? '' : $_POST['is_name_iclude']),
+			"personal_name"		=> sanitize_text_field(empty($_POST['personal_name']) ? '' : $_POST['personal_name']),
+			"is_name_required"	=> sanitize_text_field(empty($_POST['is_name_required']) ? '' : $_POST['is_name_required']),
+			"is_email_iclude"	=> sanitize_text_field(empty($_POST['is_email_iclude']) ? '' : $_POST['is_email_iclude']),
+			"personal_email"	=> sanitize_text_field(empty($_POST['personal_email']) ? '' : $_POST['personal_email']),
+			"is_email_required"	=> sanitize_text_field(empty($_POST['is_email_required']) ? '' : $_POST['is_email_required']),
+			"is_phone_iclude"	=> sanitize_text_field(empty($_POST['is_phone_iclude']) ? '' : $_POST['is_phone_iclude']),
+			"personal_phone"	=> sanitize_text_field(empty($_POST['personal_phone']) ? '' : $_POST['personal_phone']),
+			"is_phone_required"	=> sanitize_text_field(empty($_POST['is_phone_required']) ? '' : $_POST['is_phone_required']),
 		];
 	}
 	static function post_row_actions($actions, $post)
@@ -548,10 +610,9 @@ class ShmMap extends SMC_Post
 	}
 	static function formEditor($data)
 	{
-		$html 	.= "
+		$html 	= "
 		<div style='display:block;  border:#888 1px solid; padding:0px;' id='form_editor'>
 			<ul class='shm-card'>";
-		//for( $i = 0; $i < 5; $i ++ )
 		$i 		= 0;
 		foreach($data as $dat)
 		{
@@ -567,17 +628,31 @@ class ShmMap extends SMC_Post
 	function get_include_types()
 	{
 		$form_forms = $this->get_meta("form_forms");
-		foreach($form_forms as $element)
-		{
-			if( $element['type'] == 8 )
+		
+		if($form_forms) {
+			foreach($form_forms as $element)
 			{
-				return explode(",", $element["placemarks"]);
+				if( $element['type'] == 8 )
+				{
+					return explode(",", $element["placemarks"]);
+				}
 			}
 		}
+		
 		return false;
 	}
 	function get_csv()
 	{
+
+		$upload_dir = wp_upload_dir();
+		if(
+			!file_exists($upload_dir['basedir']."/shmapper-by-teplitsa")
+			&& !wp_mkdir_p($upload_dir['basedir']."/shmapper-by-teplitsa")
+		) {
+			echo '<pre>'.print_r('FAIL', 1).'</pre>';
+			return false;
+		}
+
 		$points		= $this->get_points();
 		$csv 		= [implode(SHM_CSV_STROKE_SEPARATOR, [ "#", __("Title", SHMAPPER), __("Description", SHMAPPER),  __("Location", SHMAPPER),  __("Longitude", SHMAPPER),  __("Latitude", SHMAPPER) ])];
 		$i = 0;
@@ -594,8 +669,8 @@ class ShmMap extends SMC_Post
 			]);
 		}
 		$csv_data 	= iconv ("UTF-8", "cp1251", implode( SHM_CSV_ROW_SEPARATOR, $csv));
-		$path 		= WP_CONTENT_DIR . "/uploads/shmapper/shmap_" . $p->id . ".csv";
-		$href		= "/wp-content/uploads/shmapper/shmap_" . $p->id . ".csv";
+		$path 		= $upload_dir['basedir'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
+		$href		= $upload_dir['baseurl'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
 		file_put_contents( $path, $csv_data );		
 		return $href;
 			
@@ -610,7 +685,7 @@ class ShmMap extends SMC_Post
 			$zip->addFile( $path );
 			$zip->close();
 			if(file_exists($zip_name))
-				return "/wp-content/uploads/shmapper/" . $zip_name;
+				return $upload_dir['basedir'] . "/shmapper-by-teplitsa/" . $zip_name;
 			else
 				return $href;
 		}
@@ -670,7 +745,9 @@ class ShmMap extends SMC_Post
 					ShmMap::wp_dropdown([
 						"class"		=> "shm-form",
 						"id"		=> "shm_esc_points_id",
-						"style"		=> "display:none;"
+						"style"		=> "display:none;",
+						"posts"     => ShmMap::get_all(),
+						"exclude_post_id"   => $this->id,
 												
 					]) . 
 				"<div class='spacer-10'></div>
@@ -679,7 +756,7 @@ class ShmMap extends SMC_Post
 		<!--div class='shm-row'>
 			<div class='shm-12'>
 				<div class='spacer-10'></div>
-				<a class='button' href='$href'>delete</a>
+				<a class='button' href='$href'>" . esc_html__( 'delete', 'shmapper-by-teplitsa' ) . "</a>
 				<div class='spacer-10'></div>
 			</div>
 		</div-->";
@@ -689,10 +766,7 @@ class ShmMap extends SMC_Post
 	{
 		$points = $this->get_points();
 		$p = [];
-		$str = ["
-","
-
-"];
+		
 		foreach($points as $point)
 		{
 			$pn = ShmPoint::get_instance($point);
@@ -701,7 +775,7 @@ class ShmMap extends SMC_Post
 			$pnt 	= new StdClass;
 			$pnt->ID			= $pn->id;
 			$pnt->post_title	= $pn->get("post_title");
-			$pnt->post_content	= str_replace( $str , " " , wp_trim_words($pn->get("post_content"), 20) ); 
+			$pnt->post_content  = wpautop( $pn->get("post_content") );
 			$pnt->latitude 		= $pn->get_meta("latitude");
 			$pnt->longitude 	= $pn->get_meta("longitude");
 			$pnt->location 		= $pn->get_meta("location");
@@ -712,7 +786,16 @@ class ShmMap extends SMC_Post
 			$pnt->width 		= $pnt->width 	? $pnt->width 	: 30;
 			$pnt->type 			= $type ? $type->name : "";
 			$pnt->term_id 		= $type ? $type->term_id: -1;
-			$pnt->icon 			= $type ? ShMapPointType::get_icon_src( $type->term_id )[0] : "";
+
+			$pnt_icon = '';
+			if ( $type ) {
+				$pnt_icon_src = ShMapPointType::get_icon_src( $type->term_id );
+				if ( is_array( $pnt_icon_src ) ) {
+					$pnt_icon = $pnt_icon_src[0];
+				}
+			}
+
+			$pnt->icon = $pnt_icon;
 			//$pnt->width 		= ShMapPointType::get_icon_src( $type->term_id )[2]/ShMapPointType::get_icon_src( $type->term_id )[1] * $pnt->height ;
 			//$pnt->width 		= $pnt->width ? $pnt->width : $pnt->height;
 			$p[] 	= $pnt;
@@ -761,9 +844,9 @@ class ShmMap extends SMC_Post
 				break;
 			case 3:
 				$count = $wpdb->get_var("SELECT COUNT(point_id) FROM ".$wpdb->prefix."point_map WHERE map_id=".$this->id);
-				$query = "UPDATE " . $wpdb->prefix . "point_map SET map_id=".$data['anover']. " WHERE map_id=".$this->id;
+				$query = "UPDATE " . $wpdb->prefix . "point_map SET map_id=".((int)sanitize_text_field($data['anover'])). " WHERE map_id=".$this->id;
 				$res = $wpdb->query($query);
-				$map2 = static::get_instance($data['anover']);
+				$map2 = static::get_instance(sanitize_text_field($data['anover']));
 				$message = sprintf(__("Succesfuly delete map and %s points migrates to %s", SHMAPPER), $count, $map2->get("post_title") );
 				break;
 		}
@@ -773,7 +856,10 @@ class ShmMap extends SMC_Post
 	static function the_content($content)
 	{
 		global $post;
-		$t = ($post->post_type == SHM_MAP && (is_single() || is_archive() )) ? '[shmMap id="' . $post->ID . '" map form ]'  : "";
+		$t = '';
+		if ( $post ) {
+			$t = ($post->post_type == SHM_MAP && (is_single() || is_archive() )) ? '[shmMap id="' . $post->ID . '" map form ]'  : "";
+		}
 		return $t . $content;
 	}
 	static function get_type_radio($params=-1)
@@ -793,12 +879,12 @@ class ShmMap extends SMC_Post
 		if( ShMapper::$options['map_api'] != 2 )
 		{
 			$html .= "<div class='shm-admin-block'>
-					<h3>Yandex Map</h3>";
+					<h3>" . esc_html__( 'Yandex Map', 'shmapper-by-teplitsa' ) . "</h3>";
 			$i 		= 0;
-			
+
 			foreach(static::get_map_types()[ 1 ] as $type)
 			{
-				$selected = $params[ 'selected' ][1][0] == $type ? " checked " : "";
+				$selected = !empty($params['selected']) && !empty($params['selected'][1][0]) && $params[ 'selected' ][1][0] == $type ? " checked " : "";
 				$name 	= $params[ 'name' ];
 				$id 	= $params[ 'id' ];
 				$html 	.= "
@@ -815,11 +901,13 @@ class ShmMap extends SMC_Post
 		else
 		{
 			$html .= "<div class='shm-admin-block'>
-					<h3>Open Street Map</h3>";
+					<h3>" . esc_html__( 'Open Street Map', 'shmapper-by-teplitsa' ) . "</h3>";
+			
+			$i 		= 0;
 			
 			foreach(static::get_map_types()[ 2 ] as $type)
 			{
-				$selected = $params[ 'selected' ][2][0] ==$type  ? " checked " : "";
+				$selected = isset($params[ 'selected' ][2][0]) && $params[ 'selected' ][2][0] == $type  ? " checked " : "";
 				$name 	= $params[ 'name' ];
 				$id 	= $params[ 'id' ];
 				$html 	.= "

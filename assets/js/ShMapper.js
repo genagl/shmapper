@@ -23,81 +23,94 @@ function open_media_uploader_image()
     media_uploader.open();
 }
 
+function shmapperIsMobileView() {
+	var isMobile = false;
+	
+	if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) 
+	 || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) { 
+		isMobile = true;
+	}
+	
+	return isMobile;
+}
+
 
 jQuery(document).ready(function($)
 {	
 	// ajax
-	$("[name='shm_wnext']").live({click:function(evt)
-	{
-		shm_send(['shm_wnext']);	
-	}});
-	$(".shm_doubled[post_id]").live({click:function(evt)
-	{
+	$( '[name="shm_wnext"]' ).on( 'click', function() {
+		shm_send(['shm_wnext']);
+	});
+	$( '.shm_doubled[post_id]' ).on( 'click' ,function(evt) {
 		evt.preventDefault();
-		shm_send(['shm_doubled', $(evt.currentTarget).attr("post_id")]);	
-	}});
-	$("[name='shm_wclose']").live({click:function(evt)
-	{
-		shm_send(['shm_wclose']);	
-	}});
-	$("#shm_settings_wizzard").live({click:function(evt)
-	{
-		shm_send(['shm_wrestart']);	
-	}});
-	$(".shm-change-input-change").live({click:function(evt)
-	{
+		shm_send( ['shm_doubled', $(evt.currentTarget).attr("post_id")] );
+	} );
+	$( '[name="shm_wclose"]' ).on( 'click', function(evt) {
+		shm_send( ['shm_wclose'] );
+	});
+	$( '#shm_settings_wizzard' ).on( 'click', function(evt) {
+		shm_send( ['shm_wrestart'] );
+	});
+	$( '.shm-change-input-change' ).on( 'click', function(evt) {
 		evt.preventDefault();
 		var command = $(evt.currentTarget).attr("c");
 		var num		= $(evt.currentTarget).parents("[shm-num]").attr("shm-num");
 		var post_id	= $(evt.currentTarget).parents("section[post_id]").attr("post_id");
-		shm_send([ command, num, post_id ]);	
-	}});
-	$(".admin_voc").live({change:function(evt)
-	{
+		shm_send([ command, num, post_id ]);
+	});
+	$( '.admin_voc' ).on( 'change', function(evt) {
 		$("#shm_vocabulary_cont").css("opacity", 0.7);
-		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);	
-	}});
-	$("[name='map_api']").live({click:function(evt)
-	{
+		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);
+	});
+	$("[name=shm_default_longitude]").on( 'change', function(evt) {
+		var shmDefaultLongitude = $('[name=shm_default_longitude]').val();
+		var shmDefaultLatitude  = $('[name=shm_default_latitude]').val();
+		shm_send([ 'shm_default_coordinates', [ shmDefaultLongitude, shmDefaultLatitude ] ]);
+		//console.log(shmDefaultLongitude);
+		//console.log(shmDefaultLatitude) ;
+	});
+	$("[name=shm_default_zoom]").on( 'change', function(evt) {
+		setTimeout(function(){
+			shm_send(["shm_default_zoom", $(evt.currentTarget).val() ]);
+		},1000);
+	});
+	$( '[name="map_api"]' ).on( 'click', function(evt) {
 		$(".map_api_cont").css("opacity", 0.7);
-		shm_send(["map_api", $(evt.currentTarget).val()]);	
-	}});
-	$("#shm_map_is_crowdsourced").live({click:function(evt)
-	{
+		shm_send(["map_api", $(evt.currentTarget).val()]);
+	});
+	$( '[name="shm_yandex_maps_api_key"]' ).on( 'change', function(evt) {
+		$(".map_api_cont").css("opacity", 0.7);
+		shm_send(["shm_yandex_maps_api_key", $(evt.currentTarget).val() ]);
+	});
+	$( '#shm_map_is_crowdsourced' ).on( 'click', function(evt) {
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
-		shm_send(["shm_map_is_crowdsourced", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});
-	$("#shm_map_marker_premoderation").live({click:function(evt)
-	{
+		shm_send(["shm_map_is_crowdsourced", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '#shm_map_marker_premoderation' ).on( 'click', function(evt) {
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
-		shm_send(["shm_map_marker_premoderation", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});
-	$("#shm_reload").live({click:function(evt)
-	{
+		shm_send(["shm_map_marker_premoderation", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '#shm_reload' ).on( 'click', function(evt) {
 		$("#shm_map_is_crowdsourced_cont").css("opacity", 0.7);
-		shm_send(["shm_reload", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});
-	$("#shm_settings_captcha").live({click:function(evt)
-	{
+		shm_send(["shm_reload", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '#shm_settings_captcha' ).on( 'click', function(evt) {
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
-		shm_send(["shm_settings_captcha", $(evt.currentTarget).is(":checked") ? 1 : 0]);	
-	}});	
-	$("[name=shm_captcha_siteKey]").live({change:function(evt)
-	{
+		shm_send(["shm_settings_captcha", $(evt.currentTarget).is(":checked") ? 1 : 0]);
+	});
+	$( '[name=shm_captcha_siteKey]' ).on( 'change', function(evt) {
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
 		shm_send(["shm_captcha_siteKey", $(evt.currentTarget).val() ]);	
-	}});	
-	$("[name=shm_captcha_secretKey]").live({change:function(evt)
-	{
+	});
+	$( '[name=shm_captcha_secretKey]' ).on( 'change', function(evt) {
 		$("#shm_settings_captcha_cont").css("opacity", 0.7);
-		shm_send(["shm_captcha_secretKey", $(evt.currentTarget).val() ]);	
-	}});
+		shm_send(["shm_captcha_secretKey", $(evt.currentTarget).val() ]);
+	});
 	
-	$("a.shm-csv-icon[map_id]").live({click:function(evt)
-	{
+	$( 'a.shm-csv-icon[map_id]' ).on( 'click', function(evt) {
 		evt.preventDefault();
 		shm_send(['shm_csv', $(evt.currentTarget).attr("map_id")]);
-	}});
+	});
 	create_point = function()
 	{
 		$(".shm-alert").removeClass("shm-alert");
@@ -137,8 +150,7 @@ jQuery(document).ready(function($)
 		}])
 	}
 	// map filter
-	$(".shm-map-panel[for] .point_type_swicher>input[type='checkbox']").live({change:function(evt)
-	{
+	$(".shm-map-panel[for] .point_type_swicher>input[type='checkbox']").on( 'change', function(evt) {
 		var $this = $(evt.currentTarget);
 		var uniq = $this.parents("[for]").attr("for");
 		var map = shm_maps[uniq];
@@ -152,7 +164,7 @@ jQuery(document).ready(function($)
 		}
 		var customEvent = new CustomEvent("shm_filter", {bubbles : true, cancelable : true, detail : dat})
 		document.documentElement.dispatchEvent(customEvent);	
-	}});
+	});
 	
 	//admin map editor
 	shm_map_add_point = function(elem)
@@ -228,7 +240,7 @@ jQuery(document).ready(function($)
 				style.innerHTML = '.__class'+ elem.post_id + ' { color:' + clr + '; }';
 				document.getElementsByTagName('head')[0].appendChild(style);
 				var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
-				var myIcon = L.divIcon({className: classes, iconSize:L.point(30, 40) });//
+				var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });//
 				L.marker([ elem.latitude, elem.longitude ], {icon: myIcon})
 					.addTo(shm_maps[elem.mapid])
 						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
@@ -237,8 +249,7 @@ jQuery(document).ready(function($)
 	}
 	
 	//point_type_swicher
-	$(".point_type_swicher .ganre_checkbox").live({click:function(evt)
-	{
+	$(".point_type_swicher .ganre_checkbox").on( 'click', function(evt) {
 		var types = [];
 		var $e = $(evt.currentTarget).parents(".point_type_swicher").find(".ganre_checkbox");
 		$e.each(function(num, elem)
@@ -247,12 +258,11 @@ jQuery(document).ready(function($)
 				types.push($(elem).attr("term_id"));
 		});
 		$(evt.currentTarget).parents(".point_type_swicher").find("[point]").val(types.join(","));
-	}});
+	});
 	
 	
 	//admin form element chooser
-	$("#form_editor select[selector]").live({change:function(evt)
-	{
+	$("#form_editor select[selector]").on( 'change', function(evt) {
 		var $this = $(evt.currentTarget);
 		var flds = $this.find("option:selected").attr("data-fields").split(",");
 		var $num =  $this.parents(".shm-row").attr("shm-num");	
@@ -261,15 +271,13 @@ jQuery(document).ready(function($)
 		{
 			$this.parents(".shm-row [shm-num="+$num + "]").find(".shm--" + elem).show();
 		});
-	}});
-	$("[name='tax_input[shm_point_type][]']").live({change:function(evt)
-	{
+	});
+	$("[name='tax_input[shm_point_type][]']").on( 'change', function(evt) {
 		var ch = $(evt.currentTarget).is(":checked");
 		$("[name='tax_input[shm_point_type][]']:checked").each( function(num, elem){$(elem).prop('checked', false)} );
 		$(evt.currentTarget).attr("checked", ch);
-	}});
-	$("[name=shm_esc_points]").live({change:function(evt)
-	{
+	});
+	$("[name=shm_esc_points]").on( 'change', function(evt) {
 		if($(evt.currentTarget).val() == 3)
 		{
 			$("#shm_esc_points_id").show();
@@ -278,19 +286,17 @@ jQuery(document).ready(function($)
 		{
 			$("#shm_esc_points_id").hide();
 		}
-	}})
+	});
 	//interface
-	$(".shm-close-btn").live({click:function(evt)
-	{
-		$(evt.currentTarget).parents(".shm-win").hide();	
-	}})
+	$(".shm-close-btn").on( 'click', function(evt) {
+		$(evt.currentTarget).parents(".shm-win").hide();
+	});
 	
 	//
 	//media loader
 	var prefix;
 	var cur_upload_id = 1;
-	$( ".my_image_upload" ).click(function() 
-	{
+	$( ".my_image_upload" ).on( 'click', function() {
 		var cur_upload_id = $(this).attr("image_id");
 		prefix = $(this).attr("prefix");// "pic_example";
 		var downloadingImage = new Image();
@@ -316,8 +322,7 @@ jQuery(document).ready(function($)
 		prefix = $(this).attr("prefix");// "pic_example";
 		$( elem ).height( $("#" + prefix  + $(elem).attr("image_id")).height() + 0);
 	})
-	$(".my_image_delete").click(function(evt)
-	{
+	$(".my_image_delete").on( 'click', function(evt) {
 		var $prefix = $(evt.currentTarget).attr("prefix");
 		var $default = $(evt.currentTarget).attr("default");
 		var $targ = $("#" + $prefix + " > img");
@@ -330,8 +335,7 @@ jQuery(document).ready(function($)
 	// input file
 	$(".shm-form-file > input[type='file']").each(function(num, elem)
 	{
-		$(elem).live({change:function(evt)
-		{
+		$(elem).on('change', function(evt) {
 			var file	= evt.target.files[0];	
 			if(!file)	return;
 			shm_img		= evt.target.files;
@@ -352,13 +356,10 @@ jQuery(document).ready(function($)
 				return function(e) 
 				{ 
 					aImg.src = e.target.result; 
-					//console.log(aImg.src);
-					//reader.g.setState({url:aImg.src});
-					//reader.g.props.onChange( aImg.src, aImg.file,  );
 				}; 
 			})(img);
 			reader.readAsDataURL(file);
-		}})
+		})
 	});
 	//
 	shm_add_modal = function (data)
@@ -368,18 +369,21 @@ jQuery(document).ready(function($)
 			data={content: data};
 		}
 		if(!data.title) data.title = __("Attantion");
-		$("html").append("<div class='shm_modal_container'></div>");
+		$("html").append("<div class='shm_modal_container " + data['class'] + "'></div>");
 		$(".shm_modal_container").append("<div class='shm_modal'></div>");
 		$(".shm_modal_container").append("<div class='shm_modal_screen wp-core-ui'></div>");
 		$(".shm_modal_screen").append("<div class='shm_modal_header shm-color-grey'>" + data.title + "</div>");
 		$(".shm_modal_header").append("<div class='shm_modal_close' onclick='shm_close_modal();'>x</div>");
 		$(".shm_modal_screen").append("<div class='shm_modal_body'>" + data.content + "</div>");
 		$(".shm_modal_screen").append("<div class='shm_modal_footer'></div>");
-		if(data.send)
-			$(".shm_modal_footer").append("<button class='button' onClick='" + data.sendHandler + "(" + data.sendArgs + ");'>"+ data.send + "</button>");
+		if (data.send) {
+			$(".shm_modal_footer").append(
+				"<button class='button' onClick='" + data.sendHandler + "(" + data.sendArgs + ");'>"+ data.send + "</button>"
+			);
+		}
+		$(".shm_modal_footer").append(data.footer);
 		$(".shm_modal_footer").append("<button class='button' onclick='shm_close_modal();'>"+__("Close") + "</button>");
-		$(".shm_modal").click(function(evt)
-		{
+		$(".shm_modal").on( 'click', function(evt) {
 			$(evt.currentTarget).parents(".shm_modal_container").detach();
 		});
 	}
@@ -388,18 +392,15 @@ jQuery(document).ready(function($)
 		$(".shm_modal_container").detach();
 	}
 
-
 });
-
-
-
-
 
 
 function shm_send( params, type )
 {
-	console.log(params, type);
+	var $ = jQuery;
+	//console.log(params, type);
 	jQuery.post	(
+
 		myajax.url,
 		{
 			action	: 'myajax',
@@ -408,7 +409,8 @@ function shm_send( params, type )
 		},
 		function( response ) 
 		{
-			console.log(response);
+			var $ = jQuery;
+			//console.log(response);
 			try
 			{
 				var dat = JSON.parse(response);
@@ -420,7 +422,7 @@ function shm_send( params, type )
 			//alert(dat);
 			var command	= dat[0];
 			var datas	= dat[1];
-			//console.log(command);
+			console.log(command);
 			switch(command)
 			{
 				case "test":
@@ -492,7 +494,7 @@ function shm_send( params, type )
 						window.location.href = datas['href'];
 					$(".shm_wizzard").detach();
 					$(".shm_wizzard_current").removeClass("shm_wizzard_current");
-					break;	
+					break;
 				case "shm_delete_map_hndl":
 					shm_close_modal();
 					jQuery("#post-"+datas['id']).slideUp( 800 ).hide("slow");
@@ -515,6 +517,16 @@ function shm_send( params, type )
 					break;	
 				case "map_api":
 					$(".map_api_cont").css("opacity", 1);
+					setTimeout( function() {
+						window.location.reload(window.location.href);
+					}, 500 );
+				case "shm_yandex_maps_api_key":
+					$(".map_api_cont").css("opacity", 1);
+					if(datas['hide_dang'])
+						$("#shm_settings_yandex_map_api_key_cont .shm-color-alert").hide();
+					else
+						$("#shm_settings_yandex_map_api_key_cont .shm-color-alert").fadeIn("slow");
+					break;				
 				case "shm_voc":
 					$("#shm_vocabulary_cont").css("opacity", 1);
 					break;	
@@ -534,7 +546,7 @@ function shm_send( params, type )
 					break;				
 				default:
 					var customEvent = new CustomEvent("_shm_send_", {bubbles : true, cancelable : true, detail : dat})
-					document.documentElement.dispatchEvent(customEvent);					
+					document.documentElement.dispatchEvent(customEvent);
 					break;
 			}			
 			if(datas['exec'] && datas['exec'] != "")
@@ -547,13 +559,38 @@ function shm_send( params, type )
 			}
 			if(datas.msg)
 			{
-				jQuery(".msg").detach();
-				clearTimeout(setmsg);
-				jQuery("<div class='msg'>" + datas.msg + "</div>").appendTo("body").hide().fadeIn("slow");
+
+				clearTimeout( setmsg );
+
+				if ( $( 'body > .msg' ).length ) {
+					$( 'body > .msg' ).remove();
+				}
+				$('<div class="msg">' + datas.msg + '</div>').appendTo('body');
+
 				setmsg = setTimeout( function() {
-					jQuery(".msg").fadeOut(700, jQuery(".msg").detach());
+					$( 'body > .msg' ).fadeOut( 700 );
 				}, 6000);
+
 			}
 		}		
 	);
 } 
+
+// click marker event for mobiles
+jQuery(document).ready(function($) {
+	//if(shmapperIsMobileView()) {
+		var $shmapperIcons = $(".shm-type-icon");
+		$shmapperIcons.on('mousedown', function(e) {
+			$(this).removeClass('shmapperDragged');
+		});
+		$shmapperIcons.click(function(e) {
+			e.preventDefault();
+			$(this).closest('.shm-form-placemarks').find('.shm-type-icon').removeClass('shmapperMarkerSelected');
+			$(this).parents("form.shm-form-request").find('input[name="shm_point_loc"]').removeClass("_hidden");
+			
+			if(!$(this).hasClass('shmapperDragged')) {
+				$(this).addClass('shmapperMarkerSelected');
+			}
+		});
+	//}
+});

@@ -1,4 +1,10 @@
-<?php 
+<?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 	class SMC_Post
 	{
 		public $id;
@@ -27,7 +33,13 @@
 		}
 		public static function get_instance($id)
 		{
-			$obj				= is_numeric($id) ?	$id :	$id->ID;
+			$id_ID = '';
+			if ( is_numeric($id) ) {
+				$id_ID = $id;
+			} elseif ( isset( $id->ID ) ) {
+				$id_ID = $id->ID;
+			}
+			$obj = $id_ID;
 			if(!static::$instances)	static::$instances = array();
 			if(!isset(static::$instances[$obj]))
 				static::$instances[$obj] = new static($obj);
@@ -41,7 +53,7 @@
 					'post_name'    	=> $data['post_name'],
 					'post_title'    => $data['post_title'],
 					'post_content'  => $data['post_content'],
-					'post_status'   => 'publish',
+					'post_status'   => isset($data['post_status']) ? $data['post_status'] : 'publish',
 					"post_author"	=> $data['post_author'] ? $data['post_author'] : get_current_user_id()
 				)
 			);
@@ -77,7 +89,20 @@
 				return wp_delete_post($id->ID);
 			}
 		}
-		
+		static function update($data, $id)
+		{
+			$cd = [];
+			foreach($data as $key => $val)
+			{
+				if(in_array($key, ["post_type", 'post_name', 'post_title', 'post_content', 'post_status', "post_author", "thumbnail"]))
+					$cd[$key]	= $val;
+			}
+			$cd['ID']	= $id;
+			$id		= wp_update_post( $cd );
+			$post	= static::get_instance($id); 		
+			$post->update_metas($data);
+			return $post;
+		}
 		function update_metas($meta_array)
 		{
 			$data	= array();
@@ -92,14 +117,12 @@
 				{
 					continue;
 				}
-				//insertLog("update_metas", array($meta, $val));
 				$this->update_meta($meta, $val);
 			}
 			if(count($data))
 			{
 				$data['ID'] = $this->id;
 				$id			= wp_update_post($data);
-				//insertLog("update_metas", $id);
 			}
 		}
 		public function get_meta($name)
@@ -113,7 +136,7 @@
 		}
 		public function get($field)
 		{
-			return $this->body->$field;
+			return is_object($this->body) ? $this->body->$field : NULL;
 		}
 		function set($field)
 		{
@@ -229,11 +252,9 @@
 					$ar["compare"]	= "=";
 					$arr[]			= $ar;
 				}
-				//$args['meta_query']	= array('relation'		=> 'AND');
 				$args['meta_query'][] = $arr;
 				
 			}
-			//insertLog("SMC_Post", array("action" => "get_all_ids", "args"=>$args));
 			static::$all_ids		= get_posts($args);
 			return static::$all_ids;
 		}
@@ -265,24 +286,38 @@
 		*/
 		static function wp_dropdown($params="-1")
 		{
-			if(!is_array($params))
+			if( !is_array($params) ) {
 				$params	= array();
-			$hubs		= $params['posts'] ? $params['posts'] : self::get_all($params['args']);
+			}
+
+			if(isset($params["exclude_post_id"]) && !is_array($params["exclude_post_id"])) {
+				$params["exclude_post_id"] = array($params["exclude_post_id"]);
+			}
+			
+			$hubs = empty($params['posts']) ?
+				(empty($params['args']) ? array() : self::get_all($params['args'])) :
+				$params['posts'];
+			
 			$html		= "<select ";
-			if($params['class'])
+			if( !empty($params['class']) )
 				$html	.= "class='".$params['class']."' ";
-			if($params['style'])
+			if( !empty($params['style']) )
 				$html	.= "style='".$params['style']."' ";
-			if($params['name'])
+			if( !empty($params['name']) )
 				$html	.= "name='".$params['name']."' ";
-			if($params['id'])
+			if( !empty($params['id']) )
 				$html	.= "id='".$params['id']."' ";
 			$html		.= " >";
-			$zero 		= $params['select_none'] ? $params['select_none'] : "---";
-			$html		.= "<option value='-1'>$zero</option>";			
+			$zero 		= empty($params['select_none']) ? '---' : $params['select_none'];
+			$html		.= "<option value='-1'>$zero</option>";
+
 			foreach($hubs as $hub)
 			{
-				$idd 	= $params['display_id'] ? $hub->ID . ". " : "";
+				if(isset($params["exclude_post_id"]) && in_array($hub->ID, $params["exclude_post_id"])) {
+					continue;
+				}
+				
+				$idd 	= empty($params['display_id']) ? '' : $hub->ID.'. ';
 				$html	.= "
 				<option value='" . $hub->ID . "' " . selected($hub->ID, $params['selected'], 0) . ">
 					$idd" . $hub->post_title .
@@ -344,7 +379,7 @@
 			add_action("wp_ajax_save_bulk_edit", 				array(get_called_class(), 'save_bulk_edit_book') );
 			return;	
 		}
-		 	
+			
 		static function add_views_column( $columns )
 		{
 			require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
@@ -359,6 +394,8 @@
 			foreach($obj as $key=>$value)
 			{
 				if($key == 't' ||$key == 'class' ) continue;
+				if(isset($value['hidden']) && $value['hidden'] || (isset($value['thread']) && $value['thread'] === false))
+					continue;
 				$posts_columns[$key] = isset($value['name']) ? $value['name'] : $key;
 			}
 			return $posts_columns;				
@@ -408,7 +445,7 @@
 								if($meta)
 								{
 									$p = get_post($meta);
-									$post_title = $p->post_title;
+									$post_title = is_object($p) ? $p->post_title : '';
 									$color = $obj[$column_name]['color'];
 									echo "
 										<strong>$post_title</strong>
@@ -425,7 +462,11 @@
 								break;
 							case "id":
 							default:
-								$elem			= $SMC_Object_type->get_object($meta, $obj[$column_name]["object"] );
+								//$elem			= $SMC_Object_type->get_object($meta, $obj[$column_name]["object"] );
+								
+								if ( ! isset(  $obj[$column_name]["object"] ) ) {
+									$obj[$column_name]["object"] = 'default';
+								}
 								switch( $obj[$column_name]["object"])
 								{
 									case "user":
@@ -442,6 +483,8 @@
 										{
 											$p = get_post($meta);
 											$post_title = $p->post_title;
+											$color = get_post_meta($meta, "color", true);
+											
 											echo "
 											<strong>$post_title</strong>
 											<br>
@@ -450,33 +493,56 @@
 										}
 										break;
 									case "taxonomy":
-									default:
-										$term = get_term_by("term_id", $meta, $elem);
-										echo $term ? "<h6>".$term->name ."</h6> <div class='IDs'><span>ID</span>".$meta. "</div>
-											<div style='background-color:#$color; width:15px;height:15px;'></div>" : $meta;
+										if($meta)
+										{
+											$p = get_term_by("term_id", $meta, $column_name);
+
+											$post_title = '';
+											$color      = '';
+											if ( $p ) {
+												$post_title = $p->name;
+											}
+											if ( get_term_meta( $meta, "color", true) ) {
+												$color = get_term_meta( $meta, "color", true);
+											}
+
+											echo "
+											<strong>$post_title</strong>
+											<br>
+											<div style='background-color: $color' class='IDs'><span>ID</span>".$meta. "</div> ";
+										}
 										break;
-								}
-								break;
+									default:
+										echo apply_filters(
+											"smc_post_fill_views_column",
+											"-- booboo --",
+											$column_name,
+											$post_id, 
+											$obj, 
+											$meta
+										);
+										
+								}	 
 						}
 					}
 					break;
 			}
 		}
 		
-		// добавляем возможность сортировать колонку
+		// add the ability to sort the column
 		static function add_views_sortable_column($sortable_columns)
 		{
 			
 			return $sortable_columns;
 		}
 		
-		// изменяем запрос при сортировке колонки	
+		// change the query when sorting a column
 		static function add_column_views_request( $object )
 		{
 			
 		}	
 		
-		//bulk actions
+		// bulk actions
 		static function register_my_bulk_actions( $bulk_actions )
 		{
 			$bulk_actions['double'] = __("Double", SHMAPPER);
@@ -485,7 +551,7 @@
 		
 		static  function my_bulk_action_handler( $redirect_to, $doaction, $post_ids )
 		{
-			// ничего не делаем если это не наше действие
+			// do nothing if it is not our action
 			if( $doaction !== 'double' )
 				return $redirect_to;
 			foreach( $post_ids as $post_id )
@@ -522,7 +588,6 @@
 			<fieldset class="inline-edit-col-left">
 			  <div class="inline-edit-col shm-column-<?php echo $column_name; ?>">
 				<?php 
-				// Например здесь получить ID записи ... ?
 				 switch ( $column_name ) {
 					 case 'owner_map':
 						 echo "<span class='title'>".__("Usage in Maps: ", SHMAPPER)."</span>";
@@ -559,12 +624,12 @@
 									break;
 								case "post":
 									
-									break;							
+									break;
 								case "taxonomy":
 									
 									break;
 								case "id":
-								default:									
+								default:
 									break;
 							}
 						}
@@ -631,26 +696,22 @@
 		}
 		static function true_save_box_data ( $post_id ) 
 		{
-			// проверяем, пришёл ли запрос со страницы с метабоксом
 			if ( !isset( $_POST[static::get_type().'_metabox_nonce' ] )
 			|| !wp_verify_nonce( $_POST[static::get_type().'_metabox_nonce' ], basename( __FILE__ ) ) )
 				return $post_id;
-			// проверяем, является ли запрос автосохранением
 			if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
 				return $post_id;
-			// проверяем, права пользователя, может ли он редактировать записи
 			if ( !current_user_can( 'edit_post', $post_id ) )
 				return $post_id;		
 			$lt					= static::get_instance( $post_id );
 			$metas				= static::save_admin_edit($lt);
-			//var_dump($metas);
-			//wp_die();
 			$lt->update_metas( $metas );
 			return $post_id;
 		}
 		static function view_admin_edit($obj)
 		{			
 			require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
+			$html = '';
 			$SMC_Object_type	= SMC_Object_Type::get_instance();
 			$bb				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];	
 			foreach($bb as $key=>$value)
@@ -666,8 +727,15 @@
 					case "boolean":
 						$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>";
 						break;
-					default:
-						$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
+					default: 
+						$h = apply_filters(
+							"smc-post-admin-edit", 
+							"<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>", 
+							$meta, 
+							$obj, 
+							$key, 
+							$value
+						);
 				}
 				$html .="<div class='shm-row'>
 					<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
@@ -678,11 +746,9 @@
 				<div class='spacer-5'></div>";
 			}
 			echo $html;
-			//echo "<div class='smc_description'>You must override static methods <b>view_admin_edit</b> and <b>save_admin_edit</b> in class <b>" .  get_called_class() . "</b>.</div>";
 		}
 		static function save_admin_edit($obj)
 		{
 			return array();
 		}
 	}
-?>
