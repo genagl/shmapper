@@ -46,9 +46,17 @@ function draw_shMap($map, $args )
 	$border_color      = $map->get_meta( 'border_color' );
 	$overlay_opacity   = $map->get_meta( 'overlay_opacity' );
 
-	if( $is_legend )
-	{
-		$include = $map->get_include_types();
+	if( $is_legend ) {
+
+		$points = $map->get_map_points();
+		$include = array();
+
+		foreach ( $points as $point ) {
+			$include[] = $point->term_id;
+		}
+
+		$include = array_unique( $include );
+
 		if(is_array($include) && count($include))
 		{
 			foreach($include as $term_id)
@@ -74,7 +82,16 @@ function draw_shMap($map, $args )
 	}
 	if( $is_filtered )
 	{
-		$includes = $map->get_include_types();
+
+		$points = $map->get_map_points();
+		$includes = array();
+
+		foreach ( $points as $point ) {
+			$includes[] = $point->term_id;
+		}
+
+		$includes = array_unique( $includes );
+
 		$filters = ShMapPointType::get_ganre_swicher([
 			'prefix'		=> 'filtered'.$uniq, 
 			'row_style'		=> "float:right;margin-left: 5px;margin-right: 0px;",
@@ -83,15 +100,15 @@ function draw_shMap($map, $args )
 			"col_width"		=> 2
 		], "checkbox",  "stroke" );
 	} else {
-        $filters = '';
-    }
+		$filters = '';
+	}
 
-    $is_csv = $map->get_meta("is_csv");
-    $csv = "";
-    
-    if($is_csv) {
-        $csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
-    }
+	$is_csv = $map->get_meta("is_csv");
+	$csv = "";
+	
+	if($is_csv) {
+		$csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
+	}
 
 	$points		= $map->get_map_points();
 	if($is_filtered || $is_csv)

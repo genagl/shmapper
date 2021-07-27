@@ -301,10 +301,13 @@ class ShMapPointType
 		}
 
 		$selected = is_array($params['selected']) ?  $params['selected'] : explode(",", $params['selected']);
+
 		$includes = empty($params['includes']) ? '' : $params['includes'];
+
 		$row_class = isset($params['row_class']) ? $params['row_class'] : "" ;
 		$row_style = isset($params['row_style']) ? $params['row_style'] : ""; ;
 		$ganres	= get_terms(["taxonomy" => SHM_POINT_TYPE, 'hide_empty' => false ]);
+
 		$html 	= "<div class='shm-row point_type_swicher $row_class' style='$row_style'>";
 		switch($params['col_width'])
 		{
@@ -326,8 +329,7 @@ class ShMapPointType
 				break;
 			
 		}
-		foreach($ganres as $ganre)
-		{
+		foreach($ganres as $ganre) {
 			if( is_array($includes) && !in_array( $ganre->term_id, $includes ) ) continue;
 						
 			$icon 		= get_term_meta($ganre->term_id, "icon", true);
