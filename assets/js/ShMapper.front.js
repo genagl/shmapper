@@ -5,7 +5,7 @@ jQuery(document).ready(function($)
 	//destroy all orphan map forms
 	$("form[form_id]").each(function(num, elem)
 	{
-		if($("#"+ $(elem).attr("form_id")).size() < 1)
+		if($("#"+ $(elem).attr("form_id")).length < 1)
 			$(elem).empty().append( __("Error: no map") );
 	})
 	

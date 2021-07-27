@@ -37,7 +37,7 @@ jQuery(document).ready(function($)
 		}
 	});
 	
-	if($(".shm-type-icon").size())
+	if ( $( '.shm-type-icon' ).length )
 	{
 		L.DomEvent.on(document, 'pushing', function(ev)
 		{
@@ -174,7 +174,7 @@ jQuery(document).ready(function($)
 					$("[name='zoom']").val( myMap.getZoom() );
 					
 					var $selectedMarker = $('.shm-type-icon.shmapperMarkerSelected');
-					if($selectedMarker.size()) {
+					if ( $selectedMarker.length ) {
 						shmapperPlaceMarkerOnMap(evt, {"helper": $selectedMarker});
 					}
 					

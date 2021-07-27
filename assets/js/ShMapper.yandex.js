@@ -98,8 +98,8 @@ jQuery(document).ready(function($)
 			type.val($this.attr("shm_type_id"));
 		})			
 	}
-	if($(".shm-type-icon").size())
-	{
+
+	if( $('.shm-type-icon').length ) {
 		$(".shm-type-icon").draggable(
 		{
 			revert: false,
@@ -453,7 +453,7 @@ jQuery(document).ready(function($)
 		
 		myMap.events.add('click', evt => {
 			var $selectedMarker = $('.shm-type-icon.shmapperMarkerSelected');
-			if($selectedMarker.size()) {
+			if( $selectedMarker.length ) {
 				shmapperPlaceMarkerOnMap({"clientX": evt.get('domEvent').get('pageX'), "clientY": evt.get('domEvent').get('pageY') - window.scrollY}, {"helper": $selectedMarker});
 			}
 		});

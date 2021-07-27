@@ -135,8 +135,8 @@ jQuery(document).ready(function($)
 		var post_id	= $this.parents("section[post_id]").attr("post_id");
 		var command	= $this.attr("c");
 		var pos = $this.offset();
-		console.log( $this.parents("ul.shm-card").find("li:visible").size() );
-		console.log( $this.parents("ul.shm-card > li:visible") );
+		// console.log( $this.parents("ul.shm-card").find("li:visible").length );
+		// console.log( $this.parents("ul.shm-card > li:visible") );
 		console.log( num );
 		$(".shm-types-radio")
 			.attr("row_id", num)
