@@ -26,7 +26,7 @@ class ShMaperTrack extends SMC_Post
 		if( $data['type'] == SHMAPPER_TRACKS_DRAW)
 		{
 			if( ShMapper::$options['map_api'] != 1 ) 
-				return "<li shm-num='$id' type_id='" . $type['id'] . "'>
+				return "<li shm-num='$id'>
 					" . esc_html__( 'Shmapper Track exists only in Yandex map API', SHMAPPER ) . "
 				</li>";
 			
