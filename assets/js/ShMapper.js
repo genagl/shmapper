@@ -422,7 +422,7 @@ function shm_send( params, type )
 			//alert(dat);
 			var command	= dat[0];
 			var datas	= dat[1];
-			console.log(command);
+
 			switch(command)
 			{
 				case "test":
