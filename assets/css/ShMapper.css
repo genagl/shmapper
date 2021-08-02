@@ -1319,6 +1319,17 @@ tfoot .shm-notify2:after
 	background-repeat: no-repeat;
 	background-position:center;
 }
+
+.type-shm_point .shm_type_icon {
+	background-size: contain;
+	width: 30px;
+	height: 30px;
+	margin-right: 5px;
+}
+.type-shm_point .column-type {
+	vertical-align: middle;
+}
+
 .shm_type_icon2
 {
 	width:75px;
@@ -1584,6 +1595,15 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 	top:2px;
 	left:2px;
 }
+
+input[type=radio].shm-marker-checkbox + label img {
+	object-fit: contain;
+	width: 30px !important;
+	height: 30px !important;
+	top: 10px !important;
+	left: 10px !important;
+}
+
 .shm-muffle
 {
 	-webkit-filter: grayscale(90%); /* Safari 6.0 - 9.0 */

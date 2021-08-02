@@ -344,7 +344,7 @@ class ShMapPointType
 			switch( $form_factor )
 			{
 				case "large":
-					$class = "ganre_checkbox";
+					$class = "ganre_checkbox shm-marker-checkbox";
 					$before = "<div class='$col_width'>";
 					$after = "
 						<label for='" . $params['prefix'] . "_" . $ganre->term_id . "'>
