@@ -66,18 +66,19 @@ function draw_shMap($map, $args )
 				}
 
 				$term = get_term($term_id);
-				if( !is_wp_error($term) ) {
-					
+				if( ! is_wp_error( $term ) && $term ) {
 					$color = get_term_meta($term_id, "color", true);
 					$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
 
 				}
 
 			}
-			$legend = "
-			<div class='shm-legend' style='width:$width;'>
-				$leg
-			</div>";
+			if ( $leg ) {
+				$legend = "
+				<div class='shm-legend' style='width:$width;'>
+					$leg
+				</div>";
+			}
 		};
 	}
 	if( $is_filtered )
