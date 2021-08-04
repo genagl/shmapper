@@ -285,9 +285,12 @@ class ShMapperRequest extends SMC_Post
 			],  
 			$data
 		);
-		if(!$arr['forbiddance'])
-			$new_req = parent::insert($arr);
 		
+		$new_req = (object)[];
+		if ( isset( $arr['forbiddance'] ) && ! $arr['forbiddance'] ) {
+			$new_req = parent::insert($arr);
+		}
+
 		$arr = apply_filters(
 			"shm_after_insert_request", 
 			[

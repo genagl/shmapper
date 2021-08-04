@@ -68,10 +68,10 @@ class ShMapper_ajax
 			$data['elem'][$i] = str_replace("{{shmapper_comma}}", ",", $v);
 		}
 		
-		if( ShMapper::$options['shm_settings_captcha'] )
+		if ( isset( ShMapper::$options['shm_settings_captcha'] ) && ShMapper::$options['shm_settings_captcha'] )
 		{
 			require_once( SHM_REAL_PATH . "assets/recaptcha-php/recaptcha.class.php" );
-			$reCaptcha = new ReCaptcha( ShMapper::$options['shm_captcha_secretKey'] );					
+			$reCaptcha = new ReCaptcha( ShMapper::$options['shm_captcha_secretKey'] );
 			$response = $reCaptcha->verifyResponse(
 				$_SERVER["REMOTE_ADDR"],
 				$data['cap']
@@ -92,12 +92,13 @@ class ShMapper_ajax
 		{
 			$res = static::insert_marker($data);
 			$msg	= ShMapper::$options['shm_succ_request_text'];
+			$grec = ShMapper_Assistants::shm_after_request_form("");
 		}
 		
 		//load image
-		if( $res AND $res->id > 1 ) {
+		// if( $res AND $res->id > 1 ) {
 			
-		}
+		// }
 		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );
 		$answer = [
 			"reload"		=> ShMapper::$options['shm_reload'] ? 1 : 0,
