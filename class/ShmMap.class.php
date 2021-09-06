@@ -695,10 +695,8 @@ class ShmMap extends SMC_Post
 	function get_points_args()
 	{
 		global $wpdb;
-		return explode(",", $wpdb->get_var("SELECT GROUP_CONCAT( mp.point_id ) 
-		FROM ".$wpdb->prefix."point_map as mp
-		WHERE map_id=$this->id
-		GROUP BY map_id"));
+		$points_ids = $wpdb->get_col( "SELECT point_id FROM {$wpdb->prefix}point_map WHERE map_id = $this->id" );
+		return $points_ids;
 	}
 	function get_points()
 	{
@@ -713,10 +711,8 @@ class ShmMap extends SMC_Post
 	
 	function get_point_count()
 	{
-		global $wpdb;
-		return  $wpdb->get_var("SELECT COUNT(*)
-		FROM ".$wpdb->prefix."point_map as mp
-		WHERE map_id=$this->id;");		
+		$point_count = count( (array) $this->get_points_args() );
+		return $point_count;
 	}
 	function get_delete_form( $href )
 	{
