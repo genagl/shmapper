@@ -10,6 +10,7 @@ class ShMapper {
 	{
 		global $wpdb;
 		init_textdomain_shmapper();
+
 		$wpdb->query("CREATE TABLE IF NOT EXISTS `".$wpdb->prefix."point_map` (
 			`ID` int(255) unsigned NOT NULL AUTO_INCREMENT,
 			`point_id` int(255) unsigned NOT NULL,
@@ -20,17 +21,12 @@ class ShMapper {
 			`approve_user_id` int(255) unsigned NOT NULL,
 			PRIMARY KEY (`ID`)
 		) ENGINE=MyISAM DEFAULT CHARSET=cp1251 AUTO_INCREMENT=1 ;");
-				update_option(SHMAPPER,[
-// 			"map_api"	=> 1,
-			"map_api"	=> 2,
-			"shm_map_is_crowdsourced"	=> 0,
-			"shm_map_marker_premoderation"	=> 1,
-			"shm_reload"	=> 1,
-			"wizzard" => 1,
-			"shm_personal_text" => __( 'I give my consent to the site administrator to process, including automated, my personal data in accordance with Federal Law of 27.07.2006 N 152-FZ "On Personal Data".', 'shmapper-by-teplitsa' ),
-			"shm_succ_request_text" => __( 'Your request has been successfully registered.', 'shmapper-by-teplitsa' ),
-			"shm_error_request_text" => __( 'Unknown error.', 'shmapper-by-teplitsa' ),
-		]);
+
+		if ( ! get_option( SHMAPPER ) ) {
+			$options = self::default_options();
+			update_option( SHMAPPER, $options );
+		};
+
 		$upload = wp_upload_dir();
 		$upload_dir = $upload['basedir'];
 		$upload_dir = $upload_dir . '/shmapper';
@@ -48,16 +44,36 @@ class ShMapper {
 			static::$instance = new static;
 		return static::$instance;
 	}
+
+	static function default_options() {
+		$options = array(
+			'map_api'                      => 2,
+			'shm_map_is_crowdsourced'      => 0,
+			'shm_map_marker_premoderation' => 1,
+			'shm_reload'                   => 1,
+			'wizzard'                      => 1,
+			'shm_personal_text'            => esc_html__( 'I give my consent to the site administrator to process, including automated, my personal data in accordance with Federal Law of 27.07.2006 N 152-FZ "On Personal Data".', 'shmapper-by-teplitsa' ),
+			'shm_succ_request_text'        => esc_html__( 'Your request has been successfully registered.', 'shmapper-by-teplitsa' ),
+			'shm_error_request_text'       => esc_html__( 'Unknown error.', 'shmapper-by-teplitsa' ),
+		);
+		return $options;
+	}
+
 	static function update_options()
 	{
 		update_option( SHMAPPER, static::$options );
-		static::$options = get_option(SHMAPPER);
+		static::$options = get_option( SHMAPPER );
 	}
 	function __construct()
-	{	
-		static::$options = get_option(SHMAPPER);
-// 		static::$options['map_api'] = 2; // hot fix to disable Maps.Yandex
-		
+	{
+		static::$options = get_option( SHMAPPER );
+
+		foreach ( $this->default_options() as $option => $value ) {
+			if ( ! isset( static::$options[ $option ] ) ) {
+				static::$options[ $option ] = $value;
+			}
+		}
+
 		add_action( "init", 						[__CLASS__, "add_shortcodes"], 80);
 		add_action( "wp_head",						[__CLASS__, "set_styles"]);
 		add_filter( "smc_add_post_types",	 		[__CLASS__, "init_obj"], 10);
@@ -68,8 +84,6 @@ class ShMapper {
 		add_action( "admin_footer", 				[__CLASS__, "add_wizzard"]);
 		add_action( 'wp_before_admin_bar_render', 	[__CLASS__, 'my_admin_bar_render'], 11);
 	}
-	
-	
 
 	static function my_admin_bar_render()
 	{
@@ -219,6 +233,7 @@ class ShMapper {
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_register_script("ShMapper.admin", plugins_url( '../assets/js/ShMapper.admin.js', __FILE__ ), array(), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapper.admin");
+
 		if( static::$options['map_api'] == 1 )
 		{
 			$ymap_key = '';
@@ -782,7 +797,9 @@ class ShMapper {
 	}
 	static function add_wizzard()
 	{
-		if(!static::$options['wizzard']) return;
+		if( ! static::$options['wizzard'] ) {
+			return;
+		}
 		//update_option("shm_wizard_step", 0);
 		$steps_line = '';
 		$step	= (int)get_option("shm_wizard_step");
