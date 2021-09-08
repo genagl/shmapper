@@ -133,7 +133,7 @@ function draw_shMap($map, $args )
 		$p .= " 
 			var p = {}; 
 			p.post_id 	= '" . esc_attr( $point->ID ) . "';
-			p.post_title 	= '" . sanitize_text_field( $point->post_title ) . "';
+			p.post_title 	= '" . esc_html( sanitize_text_field( $point->post_title ) ) . "';
 			p.post_content 	= '<div class=\"shml-popup-post-content\">" . html_entity_decode( esc_js( do_shortcode( $point->post_content ) ) ) . "</div> <a href=\"" . get_permalink( $point->ID ) . "\" class=\"shm-no-uline\"> <span class=\"dashicons dashicons-location\"></span></a><div class=\"shm_ya_footer\">" . esc_js( $point->location ) . "</div>';
 			p.latitude 		= '" . esc_attr( $point->latitude ) . "';
 			p.longitude 	= '" . esc_attr( $point->longitude ) . "';
