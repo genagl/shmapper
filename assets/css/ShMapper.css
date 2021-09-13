@@ -1234,14 +1234,25 @@ tfoot .shm-notify2:after
 }
 .shm-legend
 {
-	#position:absolute;
-	#left:0;
-	#bottom:0;
-	padding:5px;
+	padding:5px 7px;
 	background-color:#222;
-	display:block;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	box-sizing: border-box;
 	z-index:1;
 	--width: 100%;
+}
+.shm-legend__item
+{
+	display: flex;
+	align-items: center;
+}
+.shm-legend__item .shm-icon svg {
+	display: block;
+	width: 26px;
+	height: 26px;
+	margin-right: -5px;
 }
 .shm-inline
 {

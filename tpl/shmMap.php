@@ -67,8 +67,22 @@ function draw_shMap($map, $args )
 
 				$term = get_term($term_id);
 				if( ! is_wp_error( $term ) && $term ) {
-					$color = get_term_meta($term_id, "color", true);
-					$leg .= "<div class='shm-icon' style='background-color:$color;'><img src='" . ShMapPointType:: get_icon_src ($term_id, 20)[0] . "' width='20' /></div> <span  class='shm-icon-name'>" . $term->name . "</span>";
+					$color = get_term_meta( $term_id, 'color', true);
+
+					$icon_image = ShMapPointType::get_icon_default_marker( $color );
+
+					$icon_url = ShMapPointType::get_icon_url( $term_id );
+					if ( $icon_url ) {
+						$icon_image = '<img src="' . esc_attr( $icon_url ) . '" width="20">';
+					}
+
+					$icon_html = '<div class="shm-icon">' . $icon_image . '</div>';
+
+					$icon_name = '<span  class="shm-icon-name">' . esc_html( $term->name ) . '</span>';
+
+					$legend_item_html = $icon_html . $icon_name;
+
+					$leg .= '<div class="shm-legend__item"> ' . $legend_item_html . '</div>';
 
 				}
 
@@ -84,6 +98,8 @@ function draw_shMap($map, $args )
 	if( $is_filtered )
 	{
 
+		$filters = '';
+
 		$points = $map->get_map_points();
 		$includes = array();
 
@@ -93,15 +109,15 @@ function draw_shMap($map, $args )
 
 		$includes = array_unique( $includes );
 
-		$filters = ShMapPointType::get_ganre_swicher([
-			'prefix'		=> 'filtered'.$uniq, 
-			'row_style'		=> "float:right;margin-left: 5px;margin-right: 0px;",
-			"selected"		=> ShMapPointType::get_all_ids(),
-			"includes"		=> $includes,
-			"col_width"		=> 2
-		], "checkbox",  "stroke" );
-	} else {
-		$filters = '';
+		if ( $includes ) {
+			$filters = ShMapPointType::get_ganre_swicher([
+				'prefix'		=> 'filtered'.$uniq, 
+				'row_style'		=> "float:right;margin-left: 5px;margin-right: 0px;",
+				"selected"		=> ShMapPointType::get_all_ids(),
+				"includes"		=> $includes,
+				"col_width"		=> 2
+			], "checkbox",  "stroke" );
+		}
 	}
 
 	$is_csv = $map->get_meta("is_csv");
@@ -111,7 +127,8 @@ function draw_shMap($map, $args )
 		$csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
 	}
 
-	$points		= $map->get_map_points();
+	$points = $map->get_map_points();
+
 	if($is_filtered || $is_csv)
 	{
 		$html .="
@@ -123,10 +140,6 @@ function draw_shMap($map, $args )
 	<div class='shm_container' id='$uniq' shm_map_id='$id' style='height:" . $height . "px; width:$width;'>
 	</div>$legend ";
 	$p = "";
-	$str = ["
-","
-
-"];
 
 	//line javascript.
 	foreach ( $points as $point ) {
@@ -256,5 +269,7 @@ function draw_shMap($map, $args )
 		jQuery(\"<style type='text/css'>.shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .shml-body {max-height: ".round($height * 1.5)."px !important;} </style>\").appendTo('head');
 
 	</script>";
+
+	$html = '<div class="shm-map">' . $html . '</div>';
 	return $html;
 }

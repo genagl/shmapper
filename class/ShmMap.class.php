@@ -700,13 +700,17 @@ class ShmMap extends SMC_Post
 	}
 	function get_points()
 	{
-		$args = [
-			"post_type" 	=> SHM_POINT,
-			"post_status"	=> "publish",
-			"numberposts"	=> -1,
-			"post__in"		=> $this->get_points_args()
-		];
-		return get_posts($args);
+		$points = array();
+		if ( $this->get_points_args() ) {
+			$args = array(
+				'post_type'   => SHM_POINT,
+				'post_status' => 'publish',
+				'numberposts' => -1,
+				'post__in'    => $this->get_points_args(),
+			);
+			$points = get_posts( $args );
+		}
+		return $points;
 	}
 	
 	function get_point_count()
