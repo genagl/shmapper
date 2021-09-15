@@ -127,7 +127,7 @@ jQuery(document).ready(function($)
 	
 	$(".shm-types-radio").hide();
 	
-	$("[c='shm_add_before'], [c='shm_add_after']").on( 'click', function(evt) {
+	$(document).on( 'click', '[c="shm_add_before"], [c="shm_add_after"]', function(evt) {
 		evt.preventDefault();
 		var $this = $(evt.currentTarget)
 		var num		= $this.parents("[shm-num]").attr("shm-num");
