@@ -190,6 +190,12 @@ class ShmForm
 		if ( !isset( $data['gpx'] ) ) {
 			$data['gpx'] = '';
 		}
+		if ( !isset( $data['title'] ) ) {
+			$data['title'] = '';
+		}
+		if ( !isset( $data['description'] ) ) {
+			$data['description'] = '';
+		}
 
 		$type 	= static::get_type_by("id", $data['type']);
 		$fields = $type['fields'];
