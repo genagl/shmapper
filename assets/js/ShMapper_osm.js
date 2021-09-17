@@ -11,17 +11,18 @@ jQuery(document).ready(function($)
 	//filter	
 	document.documentElement.addEventListener("shm_filter", function(e) 
 	{	
-		var dat = e.detail;	
+		var dat = e.detail;
 		all_markers[dat.uniq].forEach(function(elem)
 		{
 			if(elem.options.term_id == dat.term_id )
 			{
-				if(dat.$this.is(":checked"))
+				if( dat.$this.is(":checked")) {
 					//elem._icon.classList.remove("hidden");
-					$(elem._icon).css("opacity",1);
-				else
+					$(elem._icon).css("opacity",1).css('pointer-events', '');
+				} else {
 					//elem._icon.classList.add("hidden");
-					$(elem._icon).css("opacity", 0.125);
+					$(elem._icon).css("opacity", 0.125).css('pointer-events', 'none');
+				}
 			}
 		});
 	});
@@ -222,7 +223,34 @@ jQuery(document).ready(function($)
 			zoomControl:mData.isZoomer,
 			dragging:!mData.isDesabled,
 			//boxZoom:true,
-		});			
+		});
+
+		// Update disabled icons.
+		myMap.on('zoom', function(evt) { // move zoomanim zoomend zoomend zoomstart zoom
+			console.log(evt);
+
+			var thisMapId = this._container.id;
+			var thisMapFilter = $('[for=' + thisMapId + ']');
+			var disabledIcons = [];
+
+			thisMapFilter.find('.ganre_checkbox2').each( function () {
+				if ( ! this.checked ) {
+					disabledIcons.push( $(this).val() );
+				}
+				
+			});
+
+			all_markers[ thisMapId ].forEach( function( elem ) {
+
+				if ( disabledIcons.includes( elem.options.term_id ) ) {
+					setTimeout(function(){
+						$( elem._icon ).css( 'opacity', 0.125 ).css('pointer-events', 'none');
+					},10);
+				}
+			});
+
+		} );
+
 		shm_maps[mData.uniq] = myMap;
 		all_markers[mData.uniq]	= [];
 		
@@ -256,6 +284,7 @@ jQuery(document).ready(function($)
 				myMap.tilt.enable();
 			myMap.mp.enable();
 		}
+
 		//clusters
 		if( mData.isClausterer )
 		{

@@ -325,7 +325,15 @@ class ShMapPointType
 			$params = array('prefix' => 'ganre');
 		}
 
-		$selected = is_array($params['selected']) ?  $params['selected'] : explode(",", $params['selected']);
+		if ( ! isset( $params['selected'] ) ) {
+			$params['selected'] = array();
+		}
+
+		if ( ! isset( $params['col_width'] ) ) {
+			$params['col_width'] = '';
+		}
+
+		$selected = is_array($params['selected']) ? $params['selected'] : explode(",", $params['selected']);
 
 		$includes = empty($params['includes']) ? '' : $params['includes'];
 

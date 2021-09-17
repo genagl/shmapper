@@ -163,7 +163,7 @@ jQuery(document).ready(function($)
 			map		: map
 		}
 		var customEvent = new CustomEvent("shm_filter", {bubbles : true, cancelable : true, detail : dat})
-		document.documentElement.dispatchEvent(customEvent);	
+		document.documentElement.dispatchEvent(customEvent);
 	});
 	
 	//admin map editor
