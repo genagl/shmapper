@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: ShMapper by Teplitsa\n"
-"POT-Creation-Date: 2021-07-09 22:16+0300\n"
+"POT-Creation-Date: 2021-09-18 15:06+0300\n"
 "PO-Revision-Date: 2020-06-18 05:16+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.4.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: shmapper.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,35 +20,35 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: class/SMC_Post.php:385 class/ShMapper.class.php:177
+#: class/SMC_Post.php:391 class/ShMapper.class.php:191
 #: class/ShMapperTracks.class.php:114 class/ShmMap.class.php:109
-#: class/ShmMap.class.php:657 class/ShmPoint.class.php:324
+#: class/ShmMap.class.php:673 class/ShmPoint.class.php:324
 msgid "Title"
 msgstr ""
 
-#: class/SMC_Post.php:542 class/ShmMap.class.php:583
+#: class/SMC_Post.php:548 class/ShmMap.class.php:599
 msgid "Double"
 msgstr ""
 
-#: class/SMC_Post.php:587 class/ShMaperTrack.class.php:54
+#: class/SMC_Post.php:593 class/ShMaperTrack.class.php:54
 #: class/ShmPoint.class.php:254 class/ShmPoint.class.php:511
 #: class/ShmPoint.class.php:528
 msgid "Usage in Maps: "
 msgstr ""
 
-#: class/SMC_Post.php:605
+#: class/SMC_Post.php:611
 msgid "&mdash; No Change &mdash;"
 msgstr ""
 
-#: class/SMC_Post.php:608
+#: class/SMC_Post.php:614
 msgid "No"
 msgstr ""
 
-#: class/SMC_Post.php:611
+#: class/SMC_Post.php:617
 msgid "Yes"
 msgstr ""
 
-#: class/SMC_Post.php:676 class/SMC_Post.php:681
+#: class/SMC_Post.php:682 class/SMC_Post.php:687
 msgid "Parameters"
 msgstr ""
 
@@ -112,24 +112,24 @@ msgstr ""
 
 #: class/ShMapPointType.class.php:125 class/ShMapPointType.class.php:173
 #: class/ShMapTrackType.class.php:82 class/ShMapTrackType.class.php:110
-#: class/ShMapTrackType.class.php:140 class/ShMapper.class.php:195
+#: class/ShMapTrackType.class.php:140 class/ShMapper.class.php:209
 #: class/ShMapperTracks.class.php:160
 msgid "Color"
 msgstr ""
 
 #: class/ShMapPointType.class.php:133 class/ShMapPointType.class.php:185
-#: class/ShMapper.class.php:147 class/ShmMap.class.php:264
+#: class/ShMapper.class.php:161 class/ShmMap.class.php:265
 #: widget/ShMap.widget.php:84
 msgid "Height"
 msgstr ""
 
 #: class/ShMapPointType.class.php:139 class/ShMapPointType.class.php:195
 #: class/ShMapTrackType.class.php:118 class/ShMapTrackType.class.php:152
-#: class/ShMapper.class.php:146 class/ShmMap.class.php:269
+#: class/ShMapper.class.php:160 class/ShmMap.class.php:270
 msgid "Width"
 msgstr ""
 
-#: class/ShMapPointType.class.php:402 class/ShMapTrackType.class.php:320
+#: class/ShMapPointType.class.php:437 class/ShMapTrackType.class.php:320
 msgid "None"
 msgstr ""
 
@@ -188,8 +188,8 @@ msgid "ID"
 msgstr ""
 
 #: class/ShMaperTrack.class.php:30 class/ShMaperTrack.class.php:64
-#: class/ShMaperTrack.class.php:185 class/ShMaperTrack.class.php:403
-#: class/ShMaperTrack.class.php:631 class/ShMaperTrack.class.php:709
+#: class/ShMaperTrack.class.php:185 class/ShMaperTrack.class.php:407
+#: class/ShMaperTrack.class.php:639 class/ShMaperTrack.class.php:721
 msgid "Shmapper Track exists only in Yandex map API"
 msgstr ""
 
@@ -201,318 +201,318 @@ msgstr ""
 msgid "Download *.gpx file"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:431
+#: class/ShMaperTrack.class.php:435
 msgid "Add track's markers"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:481
+#: class/ShMaperTrack.class.php:489
 msgid "Anonymous author"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:584 class/ShMaperTrack.class.php:585
+#: class/ShMaperTrack.class.php:592 class/ShMaperTrack.class.php:593
 msgid "Map track"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:586 class/ShMaperTrack.class.php:587
-#: class/ShMaperTrack.class.php:589
+#: class/ShMaperTrack.class.php:594 class/ShMaperTrack.class.php:595
+#: class/ShMaperTrack.class.php:597
 msgid "add Map track"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:588
+#: class/ShMaperTrack.class.php:596
 msgid "edit Map track"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:590
+#: class/ShMaperTrack.class.php:598
 msgid "all Map tracks"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:591
+#: class/ShMaperTrack.class.php:599
 msgid "view Map track"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:592
+#: class/ShMaperTrack.class.php:600
 msgid "search Map track"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:593
+#: class/ShMaperTrack.class.php:601
 msgid "Map track not found"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:594
+#: class/ShMaperTrack.class.php:602
 msgid "no found Map track in trash"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:595
+#: class/ShMaperTrack.class.php:603
 msgid "Map tracks"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:616
+#: class/ShMaperTrack.class.php:624
 msgid "Track drawer"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:644 class/ShMapperTracks.class.php:100
+#: class/ShMaperTrack.class.php:656 class/ShMapperTracks.class.php:100
 msgid "Start draw new Track"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:651
+#: class/ShMaperTrack.class.php:663
 msgid "Сhoose local GPX-file"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:662 class/ShMapperTracks.class.php:106
+#: class/ShMaperTrack.class.php:674 class/ShMapperTracks.class.php:106
 msgid "Set range fliping of route's dots"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:671 class/ShMapperTracks.class.php:107
+#: class/ShMaperTrack.class.php:683 class/ShMapperTracks.class.php:107
 msgid "edit"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:682
+#: class/ShMaperTrack.class.php:694
 msgid "Upload GPX-file"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:715
+#: class/ShMaperTrack.class.php:727
 msgid "Draw button label"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:719
+#: class/ShMaperTrack.class.php:731
 msgid "start draw button label"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:728
+#: class/ShMaperTrack.class.php:740
 msgid "Input label"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:732
+#: class/ShMaperTrack.class.php:744
 msgid "input label"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:741
+#: class/ShMaperTrack.class.php:753
 msgid "Added GPX-input form"
 msgstr ""
 
-#: class/ShMaperTrack.class.php:746
+#: class/ShMaperTrack.class.php:758
 msgid "Disabled markers"
 msgstr ""
 
-#: class/ShMapper.class.php:30
+#: class/ShMapper.class.php:55
 msgid ""
 "I give my consent to the site administrator to process, including automated, "
 "my personal data in accordance with Federal Law of 27.07.2006 N 152-FZ \"On "
 "Personal Data\"."
 msgstr ""
 
-#: class/ShMapper.class.php:31
+#: class/ShMapper.class.php:56
 msgid "Your request has been successfully registered."
 msgstr ""
 
-#: class/ShMapper.class.php:32
+#: class/ShMapper.class.php:57
 msgid "Unknown error."
 msgstr ""
 
-#: class/ShMapper.class.php:82 class/ShMapper.class.php:455
-#: class/ShMapper.class.php:456
+#: class/ShMapper.class.php:96 class/ShMapper.class.php:470
+#: class/ShMapper.class.php:471
 msgid "Shmapper"
 msgstr ""
 
-#: class/ShMapper.class.php:88 class/ShmMap.class.php:78
+#: class/ShMapper.class.php:102 class/ShmMap.class.php:78
 #: class/ShmMap.class.php:79 class/ShmMap.class.php:81
 msgid "add Map"
 msgstr ""
 
-#: class/ShMapper.class.php:94
+#: class/ShMapper.class.php:108
 msgid "Maps"
 msgstr ""
 
-#: class/ShMapper.class.php:100
+#: class/ShMapper.class.php:114
 msgid "edit Maps in page"
 msgstr ""
 
-#: class/ShMapper.class.php:119 class/ShMapperRequest.class.php:30
+#: class/ShMapper.class.php:133 class/ShMapperRequest.class.php:30
 #: class/ShMapperRequest.class.php:35
 msgid "all Map Requests"
 msgstr ""
 
-#: class/ShMapper.class.php:131 class/ShMapper.class.php:181
+#: class/ShMapper.class.php:145 class/ShMapper.class.php:195
 #: class/ShMapperRequest.class.php:93 class/ShMapperTracks.class.php:151
-#: class/ShmMap.class.php:657 class/ShmPoint.class.php:270
+#: class/ShmMap.class.php:673 class/ShmPoint.class.php:270
 msgid "Location"
 msgstr ""
 
-#: class/ShMapper.class.php:132 class/ShMapper.class.php:140
-#: class/ShMapper.class.php:179 class/ShMapper.class.php:664
+#: class/ShMapper.class.php:146 class/ShMapper.class.php:154
+#: class/ShMapper.class.php:193 class/ShMapper.class.php:679
 #: class/ShMapperRequest.class.php:89 class/ShMapperTracks.class.php:152
-#: class/ShmMap.class.php:657 class/ShmPoint.class.php:266
+#: class/ShmMap.class.php:673 class/ShmPoint.class.php:266
 msgid "Latitude"
 msgstr ""
 
-#: class/ShMapper.class.php:133 class/ShMapper.class.php:141
-#: class/ShMapper.class.php:180 class/ShMapper.class.php:662
+#: class/ShMapper.class.php:147 class/ShMapper.class.php:155
+#: class/ShMapper.class.php:194 class/ShMapper.class.php:677
 #: class/ShMapperRequest.class.php:91 class/ShMapperTracks.class.php:153
-#: class/ShmMap.class.php:657 class/ShmPoint.class.php:268
+#: class/ShmMap.class.php:673 class/ShmPoint.class.php:268
 msgid "Longitude"
 msgstr ""
 
-#: class/ShMapper.class.php:134 class/ShMapper.class.php:142
-#: class/ShMapper.class.php:666
+#: class/ShMapper.class.php:148 class/ShMapper.class.php:156
+#: class/ShMapper.class.php:681
 msgid "Zoom"
 msgstr ""
 
-#: class/ShMapper.class.php:143 class/ShmMap.class.php:118
-#: class/ShmMap.class.php:339
+#: class/ShMapper.class.php:157 class/ShmMap.class.php:118
+#: class/ShmMap.class.php:354
 msgid "Legend exists"
 msgstr ""
 
-#: class/ShMapper.class.php:144 class/ShmMap.class.php:350
+#: class/ShMapper.class.php:158 class/ShmMap.class.php:365
 msgid "Filters exists"
 msgstr ""
 
-#: class/ShMapper.class.php:145 class/ShmMap.class.php:113
-#: class/ShmMap.class.php:328
+#: class/ShMapper.class.php:159 class/ShmMap.class.php:113
+#: class/ShmMap.class.php:341
 msgid "Export csv"
 msgstr ""
 
-#: class/ShMapper.class.php:148 class/ShmMap.class.php:285
+#: class/ShMapper.class.php:162 class/ShmMap.class.php:286
 msgid "Map search"
 msgstr ""
 
-#: class/ShMapper.class.php:149 class/ShmMap.class.php:299
+#: class/ShMapper.class.php:163 class/ShmMap.class.php:300
 msgid "Map full screen"
 msgstr ""
 
-#: class/ShMapper.class.php:150
+#: class/ShMapper.class.php:164
 msgid "Map zoom slider"
 msgstr ""
 
-#: class/ShMapper.class.php:151 class/ShmMap.class.php:293
+#: class/ShMapper.class.php:165 class/ShmMap.class.php:294
 msgid "Map layer switcher"
 msgstr ""
 
-#: class/ShMapper.class.php:152 class/ShmMap.class.php:307
+#: class/ShMapper.class.php:166 class/ShmMap.class.php:308
 msgid "Lock zoom and drag"
 msgstr ""
 
-#: class/ShMapper.class.php:153 class/ShmMap.class.php:303
+#: class/ShMapper.class.php:167 class/ShmMap.class.php:304
 msgid "Formating Marker to cluster"
 msgstr ""
 
-#: class/ShMapper.class.php:154
+#: class/ShMapper.class.php:168
 msgid "Default Marker icon"
 msgstr ""
 
-#: class/ShMapper.class.php:156 class/ShmMap.class.php:123
+#: class/ShMapper.class.php:170 class/ShmMap.class.php:123
 msgid "Form exists"
 msgstr ""
 
-#: class/ShMapper.class.php:157 class/ShmMap.class.php:128
-#: class/ShmMap.class.php:457
+#: class/ShMapper.class.php:171 class/ShmMap.class.php:128
+#: class/ShmMap.class.php:472
 msgid "Notify owner of Map"
 msgstr ""
 
-#: class/ShMapper.class.php:158
+#: class/ShMapper.class.php:172
 msgid "Form Title"
 msgstr ""
 
-#: class/ShMapper.class.php:159
+#: class/ShMapper.class.php:173
 msgid "Form generator"
 msgstr ""
 
-#: class/ShMapper.class.php:160 class/ShmMap.class.php:477
+#: class/ShMapper.class.php:174 class/ShmMap.class.php:492
 msgid "Users can leave their contact details for feedback."
 msgstr ""
 
-#: class/ShMapper.class.php:161
+#: class/ShMapper.class.php:175
 msgid "Unclude Personal name"
 msgstr ""
 
-#: class/ShMapper.class.php:162 class/ShmMap.class.php:490
+#: class/ShMapper.class.php:176 class/ShmMap.class.php:505
 msgid "Personal name"
 msgstr ""
 
-#: class/ShMapper.class.php:163
+#: class/ShMapper.class.php:177
 msgid "Required Personal name"
 msgstr ""
 
-#: class/ShMapper.class.php:164
+#: class/ShMapper.class.php:178
 msgid "Unclude Personal e-mail"
 msgstr ""
 
-#: class/ShMapper.class.php:165
+#: class/ShMapper.class.php:179
 msgid "Personal e-mail"
 msgstr ""
 
-#: class/ShMapper.class.php:166
+#: class/ShMapper.class.php:180
 msgid "Required Personal e-mail"
 msgstr ""
 
-#: class/ShMapper.class.php:167
+#: class/ShMapper.class.php:181
 msgid "Unclude Personal phone"
 msgstr ""
 
-#: class/ShMapper.class.php:168 class/ShmMap.class.php:522
+#: class/ShMapper.class.php:182 class/ShmMap.class.php:537
 msgid "Personal phone"
 msgstr ""
 
-#: class/ShMapper.class.php:169
+#: class/ShMapper.class.php:183
 msgid "Required Personal phone"
 msgstr ""
 
-#: class/ShMapper.class.php:176 class/ShMapperDrive.class.php:187
+#: class/ShMapper.class.php:190 class/ShMapperDrive.class.php:187
 #: class/ShMapperTracks.class.php:142 class/ShmMap.class.php:76
 #: class/ShmMap.class.php:77 widget/ShMap.widget.php:72
 msgid "Map"
 msgstr ""
 
-#: class/ShMapper.class.php:178 class/ShmForm.class.php:233
-#: class/ShmForm.class.php:309 class/ShmForm.class.php:382
-#: class/ShmMap.class.php:657 class/ShmPoint.class.php:328
+#: class/ShMapper.class.php:192 class/ShmForm.class.php:249
+#: class/ShmForm.class.php:325 class/ShmForm.class.php:398
+#: class/ShmMap.class.php:673 class/ShmPoint.class.php:328
 msgid "Description"
 msgstr ""
 
-#: class/ShMapper.class.php:182 class/ShMapperTracks.class.php:116
+#: class/ShMapper.class.php:196 class/ShMapperTracks.class.php:116
 #: class/ShMapperTracks.class.php:143 class/ShMapperTracks.class.php:150
 #: class/ShmPoint.class.php:251 class/ShmPoint.class.php:332
 msgid "Type"
 msgstr ""
 
-#: class/ShMapper.class.php:183
+#: class/ShMapper.class.php:197
 msgid "Session"
 msgstr ""
 
-#: class/ShMapper.class.php:184 class/ShMapperRequest.class.php:72
+#: class/ShMapper.class.php:198 class/ShMapperRequest.class.php:72
 #: class/ShmMap.class.php:132
 msgid "Author"
 msgstr ""
 
-#: class/ShMapper.class.php:185
+#: class/ShMapper.class.php:199
 msgid "Contacts"
 msgstr ""
 
-#: class/ShMapper.class.php:186
+#: class/ShMapper.class.php:200
 msgid "Aproved"
 msgstr ""
 
-#: class/ShMapper.class.php:187
+#: class/ShMapper.class.php:201
 msgid "Aprove date"
 msgstr ""
 
-#: class/ShMapper.class.php:188
+#: class/ShMapper.class.php:202
 msgid "Accessed User"
 msgstr ""
 
-#: class/ShMapper.class.php:296 class/ShMapper.class.php:416
+#: class/ShMapper.class.php:311 class/ShMapper.class.php:431
 #: class/ShMapperDrive.class.php:134
 msgid "Attantion"
 msgstr ""
 
-#: class/ShMapper.class.php:297 class/ShMapper.class.php:417
+#: class/ShMapper.class.php:312 class/ShMapper.class.php:432
 msgid "Send"
 msgstr ""
 
-#: class/ShMapper.class.php:298 class/ShMapper.class.php:418
+#: class/ShMapper.class.php:313 class/ShMapper.class.php:433
 msgid "Close"
 msgstr ""
 
-#: class/ShMapper.class.php:299 class/ShMapper.class.php:419
+#: class/ShMapper.class.php:314 class/ShMapper.class.php:434
 msgid ""
 "Error: the form is not associated with the card. To link a map and a form, "
 "there should be 2 shortcodes on one page (map - [shmMap id = '6' map = "
@@ -520,178 +520,178 @@ msgid ""
 "uniq = 'for example, 777']), in which the uniq parameter will match"
 msgstr ""
 
-#: class/ShMapper.class.php:300
+#: class/ShMapper.class.php:315
 msgid "Are you shure?"
 msgstr ""
 
-#: class/ShMapper.class.php:468 class/ShMapper.class.php:469
-#: class/ShMapper.class.php:515 class/ShMapperDrive.class.php:448
+#: class/ShMapper.class.php:483 class/ShMapper.class.php:484
+#: class/ShMapper.class.php:530 class/ShMapperDrive.class.php:448
 msgid "Settings"
 msgstr ""
 
-#: class/ShMapper.class.php:493
+#: class/ShMapper.class.php:508
 msgid "Save personal data garantee"
 msgstr ""
 
-#: class/ShMapper.class.php:494
+#: class/ShMapper.class.php:509
 msgid "Successful send map request"
 msgstr ""
 
-#: class/ShMapper.class.php:495
+#: class/ShMapper.class.php:510
 msgid "Error send map request"
 msgstr ""
 
-#: class/ShMapper.class.php:524
+#: class/ShMapper.class.php:539
 msgid "Map API"
 msgstr ""
 
-#: class/ShMapper.class.php:537
+#: class/ShMapper.class.php:552
 msgid "OpenStreetMap"
 msgstr ""
 
-#: class/ShMapper.class.php:545
+#: class/ShMapper.class.php:560
 msgid "Yandex.Maps API Key"
 msgstr ""
 
-#: class/ShMapper.class.php:547
+#: class/ShMapper.class.php:562
 msgid "ATTENTION: you must specify a key for working with the Yandex.Maps API."
 msgstr ""
 
-#: class/ShMapper.class.php:547
+#: class/ShMapper.class.php:562
 msgid "Learn more here:"
 msgstr ""
 
-#: class/ShMapper.class.php:558
+#: class/ShMapper.class.php:573
 msgid "Interactive"
 msgstr ""
 
-#: class/ShMapper.class.php:566
+#: class/ShMapper.class.php:581
 msgid "Enable global mode for non-interactive maps"
 msgstr ""
 
-#: class/ShMapper.class.php:570
+#: class/ShMapper.class.php:585
 msgid ""
 "users will not be able to add posts to any map. If the checkbox is enabled, "
 "the interactivity block does not even appear on the maps."
 msgstr ""
 
-#: class/ShMapper.class.php:578
+#: class/ShMapper.class.php:593
 msgid "Pre-modertion from Map owner."
 msgstr ""
 
-#: class/ShMapper.class.php:582
+#: class/ShMapper.class.php:597
 msgid "all messages will be added in the Draft status"
 msgstr ""
 
-#: class/ShMapper.class.php:586
+#: class/ShMapper.class.php:601
 msgid ""
 "ATTENTION: disable this option only at your own peril and risk, because "
 "there is a threat of spam attacks"
 msgstr ""
 
-#: class/ShMapper.class.php:594
+#: class/ShMapper.class.php:609
 msgid "Reload page after User send request."
 msgstr ""
 
-#: class/ShMapper.class.php:606
+#: class/ShMapper.class.php:621
 msgid "Protection"
 msgstr ""
 
-#: class/ShMapper.class.php:613
+#: class/ShMapper.class.php:628
 msgid "Include captcha in form (plugin uses only reCAPTCHA v2 keys)"
 msgstr ""
 
-#: class/ShMapper.class.php:622
+#: class/ShMapper.class.php:637
 #, php-format
 msgid ""
 "What is Google reCAPTCHA? How recived keys for your site? See %sthis "
 "instruction%s."
 msgstr ""
 
-#: class/ShMapper.class.php:626
+#: class/ShMapper.class.php:641
 msgid ""
 "Your reCAPTCHA doesn't work yet. In order to make it work, please get the "
 "API keys at google.com/recaptcha"
 msgstr ""
 
-#: class/ShMapper.class.php:638
+#: class/ShMapper.class.php:653
 msgid "Vocabulary"
 msgstr ""
 
-#: class/ShMapper.class.php:653 class/ShMapper.class.php:676
-#: class/ShMapper.class.php:716
+#: class/ShMapper.class.php:668 class/ShMapper.class.php:691
+#: class/ShMapper.class.php:731
 msgid "Coordinates"
 msgstr ""
 
-#: class/ShMapper.class.php:660
+#: class/ShMapper.class.php:675
 msgid "Set default coordinates"
 msgstr ""
 
-#: class/ShMapper.class.php:772
+#: class/ShMapper.class.php:787
 msgid "Wizzard"
 msgstr ""
 
-#: class/ShMapper.class.php:775
+#: class/ShMapper.class.php:790
 msgid "Restart wizzard"
 msgstr ""
 
-#: class/ShMapper.class.php:822 class/ShMapper.class.php:830
+#: class/ShMapper.class.php:839 class/ShMapper.class.php:847
 msgid "Close wizzard"
 msgstr ""
 
-#: class/ShMapper.class.php:823 class/ShMapper.class.php:829
+#: class/ShMapper.class.php:840 class/ShMapper.class.php:846
 msgid "Go to current page"
 msgstr ""
 
-#: class/ShMapper.class.php:826 class/ShMapper_ajax.class.php:173
+#: class/ShMapper.class.php:843 class/ShMapper_ajax.class.php:174
 msgid "Next step"
 msgstr ""
 
-#: class/ShMapper.class.php:828
+#: class/ShMapper.class.php:845
 msgid "Prevous step"
 msgstr ""
 
-#: class/ShMapper.class.php:880
+#: class/ShMapper.class.php:897
 msgid "Welcome to the Shmapper Configuration Wizard"
 msgstr ""
 
-#: class/ShMapper.class.php:881
+#: class/ShMapper.class.php:898
 msgid ""
 "First, you need to specify the general settings. Click on the button <span "
 "class = 'dashicons dashicons-controls-play'> </span> to go to the desired "
 "section"
 msgstr ""
 
-#: class/ShMapper.class.php:887
+#: class/ShMapper.class.php:904
 msgid "Configure Shmapper"
 msgstr ""
 
-#: class/ShMapper.class.php:888
+#: class/ShMapper.class.php:905
 msgid ""
 "Change the settings that do not suit you. To connect reCAPTCHA, you need to "
 "create an account on Google.com"
 msgstr ""
 
-#: class/ShMapper.class.php:894
+#: class/ShMapper.class.php:911
 msgid "Create your first map"
 msgstr ""
 
-#: class/ShMapper.class.php:895
+#: class/ShMapper.class.php:912
 msgid "Click the \"Add Map\" button at the very top of the page"
 msgstr ""
 
-#: class/ShMapper.class.php:901 class/ShMapper.class.php:909
+#: class/ShMapper.class.php:918 class/ShMapper.class.php:926
 msgid "New map"
 msgstr ""
 
-#: class/ShMapper.class.php:902
+#: class/ShMapper.class.php:919
 msgid ""
 "Select a visible area on the map. <p> Create the first Marker by pointing to "
 "the desired location on the map with the right mouse button. <p> Fill in the "
 "fields and click \"Create\"."
 msgstr ""
 
-#: class/ShMapper.class.php:910
+#: class/ShMapper.class.php:927
 msgid ""
 "Fill in the provided fields in sequence. In the \"Request Form\" section, "
 "create a simple feedback form by which Visitors will be able to inform you "
@@ -956,29 +956,29 @@ msgstr ""
 msgid "GEO location"
 msgstr ""
 
-#: class/ShMapperRequest.class.php:357
+#: class/ShMapperRequest.class.php:360
 msgid "Uknown User"
 msgstr ""
 
-#: class/ShMapperRequest.class.php:365
+#: class/ShMapperRequest.class.php:368
 #, php-format
 msgid "<%s> Request to your Map from [%s] [%s]"
 msgstr ""
 
-#: class/ShMapperRequest.class.php:367
+#: class/ShMapperRequest.class.php:370
 #, php-format
 msgid "You may see this %s"
 msgstr ""
 
-#: class/ShMapperRequest.class.php:386
+#: class/ShMapperRequest.class.php:389
 msgid "Visitor"
 msgstr ""
 
-#: class/ShMapperRequest.class.php:399
+#: class/ShMapperRequest.class.php:402
 msgid "Approve"
 msgstr ""
 
-#: class/ShMapperRequest.class.php:401
+#: class/ShMapperRequest.class.php:404
 msgid "Trash"
 msgstr ""
 
@@ -1117,76 +1117,76 @@ msgstr ""
 msgid "Your requests to this Map "
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:180
+#: class/ShMapper_ajax.class.php:181
 msgid "Congratulation! That's all!"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:198
+#: class/ShMapper_ajax.class.php:199
 msgid "Wizzard closed"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:209
+#: class/ShMapper_ajax.class.php:210
 msgid "Wizzard restarted"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:223
+#: class/ShMapper_ajax.class.php:224
 msgid "Approve succesfully and insert new Map marker"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:235
+#: class/ShMapper_ajax.class.php:236
 msgid "Request put to Trash"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:340
+#: class/ShMapper_ajax.class.php:341
 #, php-format
 msgid "Are you want delete %s?"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:342
+#: class/ShMapper_ajax.class.php:343
 msgid "Delete"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:358
+#: class/ShMapper_ajax.class.php:359
 msgid "add Map Point"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:360
+#: class/ShMapper_ajax.class.php:361
 msgid "Create"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:388
+#: class/ShMapper_ajax.class.php:389
 msgid "Success"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:399
+#: class/ShMapper_ajax.class.php:400
 msgid "Change Vocabulaty: "
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:420
+#: class/ShMapper_ajax.class.php:421
 msgid "Yandex.Maps API key Saved"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:432 class/ShMapper_ajax.class.php:443
+#: class/ShMapper_ajax.class.php:433 class/ShMapper_ajax.class.php:444
 msgid "New coordinates saved"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:453
+#: class/ShMapper_ajax.class.php:454
 msgid "Users can add Placemarks"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:463
+#: class/ShMapper_ajax.class.php:464
 msgid "Pre-moderation on"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:473
+#: class/ShMapper_ajax.class.php:474
 msgid "Reload mode"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:483
+#: class/ShMapper_ajax.class.php:484
 msgid "captha added"
 msgstr ""
 
-#: class/ShMapper_ajax.class.php:493 class/ShMapper_ajax.class.php:504
+#: class/ShMapper_ajax.class.php:494 class/ShMapper_ajax.class.php:505
 msgid "Set key"
 msgstr ""
 
@@ -1226,96 +1226,96 @@ msgstr ""
 msgid "Markers"
 msgstr ""
 
-#: class/ShmForm.class.php:193 class/ShmForm.class.php:268
-#: class/ShmForm.class.php:350
+#: class/ShmForm.class.php:209 class/ShmForm.class.php:284
+#: class/ShmForm.class.php:366
 msgid "Type of element"
 msgstr ""
 
-#: class/ShmForm.class.php:203 class/ShmForm.class.php:281
-#: class/ShmForm.class.php:344
+#: class/ShmForm.class.php:219 class/ShmForm.class.php:297
+#: class/ShmForm.class.php:360
 msgid "Label of element"
 msgstr ""
 
-#: class/ShmForm.class.php:205 class/ShmForm.class.php:283
-#: class/ShmForm.class.php:346
+#: class/ShmForm.class.php:221 class/ShmForm.class.php:299
+#: class/ShmForm.class.php:362
 msgid "write title"
 msgstr ""
 
-#: class/ShmForm.class.php:212 class/ShmForm.class.php:291
-#: class/ShmForm.class.php:365
+#: class/ShmForm.class.php:228 class/ShmForm.class.php:307
+#: class/ShmForm.class.php:381
 msgid "Placeholder"
 msgstr ""
 
-#: class/ShmForm.class.php:214 class/ShmForm.class.php:293
-#: class/ShmForm.class.php:367
+#: class/ShmForm.class.php:230 class/ShmForm.class.php:309
+#: class/ShmForm.class.php:383
 msgid "write placeholder"
 msgstr ""
 
-#: class/ShmForm.class.php:218 class/ShmForm.class.php:297
-#: class/ShmForm.class.php:371
+#: class/ShmForm.class.php:234 class/ShmForm.class.php:313
+#: class/ShmForm.class.php:387
 msgid "Placemark types"
 msgstr ""
 
-#: class/ShmForm.class.php:235 class/ShmForm.class.php:311
-#: class/ShmForm.class.php:384
+#: class/ShmForm.class.php:251 class/ShmForm.class.php:327
+#: class/ShmForm.class.php:400
 msgid "write description"
 msgstr ""
 
-#: class/ShmForm.class.php:242
+#: class/ShmForm.class.php:258
 msgid "Element is required"
 msgstr ""
 
-#: class/ShmForm.class.php:244 class/ShmForm.class.php:316
+#: class/ShmForm.class.php:260 class/ShmForm.class.php:332
 msgid "Add before"
 msgstr ""
 
-#: class/ShmForm.class.php:245 class/ShmForm.class.php:317
+#: class/ShmForm.class.php:261 class/ShmForm.class.php:333
 msgid "Add after"
 msgstr ""
 
-#: class/ShmForm.class.php:246 class/ShmForm.class.php:318
+#: class/ShmForm.class.php:262 class/ShmForm.class.php:334
 msgid "Delete me"
 msgstr ""
 
-#: class/ShmForm.class.php:275 class/ShmForm.class.php:339
+#: class/ShmForm.class.php:291 class/ShmForm.class.php:355
 msgid "require"
 msgstr ""
 
-#: class/ShmForm.class.php:336
+#: class/ShmForm.class.php:352
 msgid "enable"
 msgstr ""
 
-#: class/ShmForm.class.php:388
+#: class/ShmForm.class.php:404
 msgid "The name of the parameter that refers to this element"
 msgstr ""
 
-#: class/ShmForm.class.php:446
+#: class/ShmForm.class.php:478
 msgid "Сhoose files"
 msgstr ""
 
-#: class/ShmForm.class.php:465 class/ShmForm.class.php:485
-#: class/ShmForm.class.php:518 class/ShmForm.class.php:529
-#: class/ShmForm.class.php:539
+#: class/ShmForm.class.php:497 class/ShmForm.class.php:517
+#: class/ShmForm.class.php:550 class/ShmForm.class.php:561
+#: class/ShmForm.class.php:571
 msgid "This required field"
 msgstr ""
 
-#: class/ShmForm.class.php:482
+#: class/ShmForm.class.php:514
 msgid "Drag icon and place it to map."
 msgstr ""
 
-#: class/ShmForm.class.php:514
+#: class/ShmForm.class.php:546
 msgid "Your name"
 msgstr ""
 
-#: class/ShmForm.class.php:525
+#: class/ShmForm.class.php:557
 msgid "Your e-mail"
 msgstr ""
 
-#: class/ShmForm.class.php:535
+#: class/ShmForm.class.php:567
 msgid "Your phone"
 msgstr ""
 
-#: class/ShmForm.class.php:626
+#: class/ShmForm.class.php:658
 msgid ""
 "Drag choosed icon and place it to map or click it and enter exact address."
 msgstr ""
@@ -1380,162 +1380,170 @@ msgstr ""
 msgid "Step 2. May anover Users add information for Map."
 msgstr ""
 
-#: class/ShmMap.class.php:249
+#: class/ShmMap.class.php:250
 msgid "1.1. Pan map and choose zoom"
 msgstr ""
 
-#: class/ShmMap.class.php:261
+#: class/ShmMap.class.php:262
 msgid "1.2. Set size for map's div (per pixels)"
 msgstr ""
 
-#: class/ShmMap.class.php:266 class/ShmMap.class.php:271
+#: class/ShmMap.class.php:267 class/ShmMap.class.php:272
 msgid "Empty for "
 msgstr ""
 
-#: class/ShmMap.class.php:281
+#: class/ShmMap.class.php:282
 msgid "1.3. Include interface"
 msgstr ""
 
-#: class/ShmMap.class.php:289
+#: class/ShmMap.class.php:290
 msgid "Map zoom slider enabled"
 msgstr ""
 
-#: class/ShmMap.class.php:311
+#: class/ShmMap.class.php:312
 msgid "Choose layers"
 msgstr ""
 
-#: class/ShmMap.class.php:325
-msgid "1.4. May User download data in *.csv?"
+#: class/ShmMap.class.php:327
+msgid "1.4. Map title"
 msgstr ""
 
-#: class/ShmMap.class.php:336
-msgid "1.5. Will the legend be displayed?"
+#: class/ShmMap.class.php:329
+msgid "Show map title"
 msgstr ""
 
-#: class/ShmMap.class.php:347
-msgid "1.6. Will Marker type filter be displayed?"
+#: class/ShmMap.class.php:338
+msgid "1.5. May User download data in *.csv?"
 msgstr ""
 
-#: class/ShmMap.class.php:357
-msgid "1.7. Default Marker icon"
+#: class/ShmMap.class.php:351
+msgid "1.6. Will the legend be displayed?"
 msgstr ""
 
 #: class/ShmMap.class.php:362
-msgid "Recommended size is 64х64 px, format is .png"
+msgid "1.7. Will Marker type filter be displayed?"
 msgstr ""
 
-#: class/ShmMap.class.php:373
-msgid "1.8. Highlight the country on the map"
+#: class/ShmMap.class.php:372
+msgid "1.8. Default Marker icon"
 msgstr ""
 
 #: class/ShmMap.class.php:377
+msgid "Recommended size is 64х64 px, format is .png"
+msgstr ""
+
+#: class/ShmMap.class.php:388
+msgid "1.9. Highlight the country on the map"
+msgstr ""
+
+#: class/ShmMap.class.php:392
 msgid "Loading countries ... "
 msgstr ""
 
-#: class/ShmMap.class.php:380
+#: class/ShmMap.class.php:395
 msgid "Select country"
 msgstr ""
 
-#: class/ShmMap.class.php:389
+#: class/ShmMap.class.php:404
 msgid "Choose map overlay color"
 msgstr ""
 
-#: class/ShmMap.class.php:395
+#: class/ShmMap.class.php:410
 msgid "Choose country border color"
 msgstr ""
 
-#: class/ShmMap.class.php:401
+#: class/ShmMap.class.php:416
 msgid "Overlay opacity"
 msgstr ""
 
-#: class/ShmMap.class.php:438
+#: class/ShmMap.class.php:453
 msgid "Enable crowdsourcing function (free add Users new Markers)"
 msgstr ""
 
-#: class/ShmMap.class.php:444
+#: class/ShmMap.class.php:459
 msgid "2.1. What is the name of your information form?"
 msgstr ""
 
-#: class/ShmMap.class.php:448
+#: class/ShmMap.class.php:463
 msgid "For example &laquo;All beaches by the river&raquo;"
 msgstr ""
 
-#: class/ShmMap.class.php:454
+#: class/ShmMap.class.php:469
 msgid "2.2. Will I notify the author about new posts?"
 msgstr ""
 
-#: class/ShmMap.class.php:462
+#: class/ShmMap.class.php:477
 msgid "2.3. What information can users enter?"
 msgstr ""
 
-#: class/ShmMap.class.php:465
+#: class/ShmMap.class.php:480
 msgid ""
 "You can create your own forms using form elements: Heading, Text field, "
 "Textarea, Upload file, Markers, Track drawer."
 msgstr ""
 
-#: class/ShmMap.class.php:474
+#: class/ShmMap.class.php:489
 msgid "2.4. Can users leave their contact information?"
 msgstr ""
 
-#: class/ShmMap.class.php:482
+#: class/ShmMap.class.php:497
 msgid "2.5. What data users will have to put?"
 msgstr ""
 
-#: class/ShmMap.class.php:485 class/ShmMap.class.php:501
-#: class/ShmMap.class.php:517
+#: class/ShmMap.class.php:500 class/ShmMap.class.php:516
+#: class/ShmMap.class.php:532
 msgid "Include"
 msgstr ""
 
-#: class/ShmMap.class.php:495 class/ShmMap.class.php:511
-#: class/ShmMap.class.php:527
+#: class/ShmMap.class.php:510 class/ShmMap.class.php:526
+#: class/ShmMap.class.php:542
 msgid "Required"
 msgstr ""
 
-#: class/ShmMap.class.php:506
+#: class/ShmMap.class.php:521
 msgid "Personal email"
 msgstr ""
 
-#: class/ShmMap.class.php:726
+#: class/ShmMap.class.php:742
 msgid "What do with placemarks of deleting Map?"
 msgstr ""
 
-#: class/ShmMap.class.php:731
+#: class/ShmMap.class.php:747
 msgid "Delete all Points"
 msgstr ""
 
-#: class/ShmMap.class.php:737
+#: class/ShmMap.class.php:753
 msgid "Escape all Points without Owner Map"
 msgstr ""
 
-#: class/ShmMap.class.php:743
+#: class/ShmMap.class.php:759
 msgid "Switch all Points to anover Map"
 msgstr ""
 
-#: class/ShmMap.class.php:759
+#: class/ShmMap.class.php:775
 msgid "delete"
 msgstr ""
 
-#: class/ShmMap.class.php:838
+#: class/ShmMap.class.php:854
 #, php-format
 msgid "Succesfuly delete map width %s points"
 msgstr ""
 
-#: class/ShmMap.class.php:843
+#: class/ShmMap.class.php:859
 #, php-format
 msgid "Succesfuly delete map and %s points are orphans now"
 msgstr ""
 
-#: class/ShmMap.class.php:850
+#: class/ShmMap.class.php:866
 #, php-format
 msgid "Succesfuly delete map and %s points migrates to %s"
 msgstr ""
 
-#: class/ShmMap.class.php:882
+#: class/ShmMap.class.php:898
 msgid "Yandex Map"
 msgstr ""
 
-#: class/ShmMap.class.php:904
+#: class/ShmMap.class.php:920
 msgid "Open Street Map"
 msgstr ""
 
@@ -1588,7 +1596,7 @@ msgstr ""
 msgid "No map on ID "
 msgstr ""
 
-#: shortcode/shmMap.shortcode.php:49
+#: shortcode/shmMap.shortcode.php:57
 msgid "Send request"
 msgstr ""
 
@@ -1632,7 +1640,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: tpl/shmMap.php:93
+#: tpl/shmMap.php:126
 #, php-format
 msgid "download %s.csv"
 msgstr ""
