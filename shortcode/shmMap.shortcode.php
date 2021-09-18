@@ -6,16 +6,16 @@
  */
 
 function shmMap($args)
-{	
+{
 	/**/
 	$args = shortcode_atts( array(
-		'heigth' 	=> 450,
-		"id"		=> -1,
-		"map"		=> false,
-		"form"		=> false,
-		"uniq"		=> false
+		'heigth'   => 450,
+		"id"       => -1,
+		"map"      => false,
+		"form"     => false,
+		"uniq"     => false,
 	), $args, 'shmMap' );
-	
+
 	$id				= $args['id'];
 	$args['uniq']	= $args['uniq'] ? $args['uniq'] : substr( MD5(rand(0, 100000000)), 0, 8 );
 	$uniq			= $args['uniq'];
@@ -24,12 +24,20 @@ function shmMap($args)
 	{
 		return __("No map on ID ", SHMAPPER) . $args['id'];
 	}
-	$map_enb	= $args["map"]  || ( !$args["map"] && !$args["form"]) ? 1 : 0; 
-	$form_enb	= $args["form"] || ( !$args["map"] && !$args["form"]) ? 1 : 0; 
-	$html 		= "<div class='shm-title-6 shm-map-title'>" . $map->get("post_title")  . "</div>";
+	$map_enb	= $args["map"]  || ( !$args["map"] && !$args["form"]) ? 1 : 0;
+	$form_enb	= $args["form"] || ( !$args["map"] && !$args["form"]) ? 1 : 0;
+
+	$html = '';
+
+	$is_title = ( $map->get_meta( 'is_title' ) !== '' ) ? $map->get_meta( 'is_title' ) : '1';
+
+	if ( $is_title ) {
+		$html .= '<div class="shm-title-6 shm-map-title">' . esc_html( $map->get( 'post_title' ) ) . '</div>';
+	}
+
 	if($map_enb)
 	{
-		$html 	.= $map->draw($args);		
+		$html 	.= $map->draw($args);
 	}
 	if( $form_enb && $map->get_meta("is_form") && !ShMapper::$options['shm_map_is_crowdsourced'])
 	{

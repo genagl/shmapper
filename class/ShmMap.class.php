@@ -233,6 +233,7 @@ class ShmMap extends SMC_Post
 		$is_layer_switcher = $obj->get_meta( 'is_layer_switcher' );
 		$is_fullscreen     = $obj->get_meta( 'is_fullscreen' );
 		$is_csv            = $obj->get_meta( 'is_csv' );
+		$is_title          = ( $obj->get_meta( 'is_title' ) !== '' ) ? $obj->get_meta( 'is_title' ) : '1';
 		$is_legend         = $obj->get_meta( 'is_legend' );
 		$is_filtered       = $obj->get_meta( 'is_filtered' );
 		$default_icon_id   = $obj->get_meta( 'default_icon_id' );
@@ -319,21 +320,35 @@ class ShmMap extends SMC_Post
 			</div>
 			
 			<div class='spacer-5'></div>
-			<hr/>
+			<hr>
 			<div class='spacer-5'></div>
+
 			<div class='shm-row'>
-				<h3 class='shm-12'>". __("1.4. May User download data in *.csv?", SHMAPPER). "</h3>
+				<h3 class='shm-12'>". __("1.4. Map title", SHMAPPER). "</h3>
+				<div class='shm-12'>
+					<label for='is_title'><input type='checkbox' value='1' " . checked( 1, $is_title, false ) . "' name='is_title' id='is_title'/> " . __( "Show map title", SHMAPPER ) . "</albel>
+				</div>
+			</div>
+
+			<div class='spacer-5'></div>
+			<hr>
+			<div class='spacer-5'></div>
+
+			<div class='shm-row'>
+				<h3 class='shm-12'>". __("1.5. May User download data in *.csv?", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_csv, false) ."' name='is_csv' id='is_csv'/>
 					<label for='is_csv'>" . __("Export csv", SHMAPPER) . "</albel> 
 					
 				</div>
-			</div>			
+			</div>
+
 			<div class='spacer-5'></div>
-			<hr/>
+			<hr>
 			<div class='spacer-5'></div>
+
 			<div class='shm-row'>
-				<h3 class='shm-12'>". __("1.5. Will the legend be displayed?", SHMAPPER). "</h3>
+				<h3 class='shm-12'>". __("1.6. Will the legend be displayed?", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_legend, false) ."' name='is_legend' id='is_legend'/>
 					<label for='is_legend'>" . __("Legend exists", SHMAPPER) . "</albel> 
@@ -344,7 +359,7 @@ class ShmMap extends SMC_Post
 			<hr/>
 			<div class='spacer-5'></div>
 			<div class='shm-row'>
-				<h3 class='shm-12'>". __("1.6. Will Marker type filter be displayed?", SHMAPPER). "</h3>
+				<h3 class='shm-12'>". __("1.7. Will Marker type filter be displayed?", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_filtered, false) ."' name='is_filtered' id='is_filtered'/>
 					<label for='is_filtered'>" . __("Filters exists", SHMAPPER) . "</albel> 
@@ -354,7 +369,7 @@ class ShmMap extends SMC_Post
 			<hr/>
 			<div class='spacer-5'></div>
 			<div class='shm-row'>
-				<h3 class='shm-12'>". __("1.7. Default Marker icon", SHMAPPER). "</h3>
+				<h3 class='shm-12'>". __("1.8. Default Marker icon", SHMAPPER). "</h3>
 				<div class='shm-12'>".
 					get_input_file_form2( "" , $default_icon_id, "default_icon_id").
 				"</div>
@@ -370,7 +385,7 @@ class ShmMap extends SMC_Post
 				<div class='spacer-5'></div>
 				<div class='shm-row'>
 
-					<h3 class='shm-12'>". __( "1.8. Highlight the country on the map", SHMAPPER ) . "</h3>
+					<h3 class='shm-12'>". __( "1.9. Highlight the country on the map", SHMAPPER ) . "</h3>
 
 					<div class='shm-12'>
 						<select class='small-text' name='highlight_country' data-value='" . esc_attr( $highlight_country ) . "'>
@@ -545,6 +560,7 @@ class ShmMap extends SMC_Post
 			"is_legend"			=> empty($_POST['is_legend']) ? 0 : 1,
 			"is_filtered"		=> empty($_POST['is_filtered']) ? 0 : 1,
 			"is_csv"			=> empty($_POST['is_csv']) ? 0 : 1,
+			"is_title"			=> empty($_POST['is_title']) ? 0 : 1,
 			"is_lock"			=> empty($_POST['is_lock']) ? 0 : 1,
 			"is_clustered"		=> empty($_POST['is_clustered']) ? 0 : 1,
 			"is_search"			=> empty($_POST['is_search']) ? 0 : 1,
@@ -804,7 +820,7 @@ class ShmMap extends SMC_Post
 	}
 	function draw($args=-1)
 	{
-		if(!is_array($args)) $args = [ "height" => 450, "id" => $this->id ];
+		if(!is_array($args)) $args = [ "height" => 450, "id" => $this->id, "is_title" => 'true' ];
 		require_once(SHM_REAL_PATH . "tpl/shmMap.php");
 		return draw_shMap($this, $args);
 	}
