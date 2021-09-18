@@ -28,7 +28,7 @@ gulp.task( 'sass', function () {
 // Watchers
 gulp.task( 'watch', () => {
 	gulp.watch(
-		[ input ],
+		[ cssInput ],
 		gulp.series([ 'sass' ] )
 	);
 });
