@@ -1,0 +1,24 @@
+{
+  "name": "shmapper-by-teplitsa",
+  "version": "1.0.0",
+  "description": "**Scroll down for english description, please**",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teplitsa/shmapper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Teplitsa/shmapper/issues"
+  },
+  "homepage": "https://github.com/Teplitsa/shmapper#readme",
+  "devDependencies": {
+    "sass": "^1.41.1",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^5.0.0"
+  }
+}
