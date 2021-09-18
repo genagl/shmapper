@@ -95,10 +95,9 @@ function draw_shMap($map, $args )
 			}
 		};
 	}
-	if( $is_filtered )
-	{
 
-		$filters = '';
+	$filters = '';
+	if( $is_filtered ) {
 
 		$points = $map->get_map_points();
 		$includes = array();
@@ -123,20 +122,19 @@ function draw_shMap($map, $args )
 	$is_csv = $map->get_meta("is_csv");
 	$csv = "";
 	
-	if($is_csv) {
+	if( $is_csv ) {
 		$csv = "<a class='shm-csv-icon shm-hint' data-title='".sprintf(__("download %s.csv", SHMAPPER), $title)."' href='' map_id='$id'></a>";
 	}
 
 	$points = $map->get_map_points();
 
-	if($is_filtered || $is_csv)
-	{
+	if( $filters || $csv ) {
 		$html .="
 			<div class='shm-map-panel' for='$uniq' style='width:$width;'>
 				$filters $csv
 			</div>";
 	}
-	$html 		.= "
+	$html .= "
 	<div class='shm_container' id='$uniq' shm_map_id='$id' style='height:" . $height . "px; width:$width;'>
 	</div>$legend ";
 	$p = "";
@@ -270,6 +268,5 @@ function draw_shMap($map, $args )
 
 	</script>";
 
-	$html = '<div class="shm-map">' . $html . '</div>';
 	return $html;
 }
