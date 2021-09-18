@@ -37,23 +37,11 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-/** Load textdomain */
-function init_textdomain_shmapper() {
-	if ( function_exists('load_textdomain') ) {
-		load_textdomain( 'shmapper-by-teplitsa', WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/shmapper-by-teplitsa-' . get_locale() . '.mo' );
-	}
-
-	if ( function_exists( 'load_plugin_textdomain' ) ) {
-		load_plugin_textdomain( 'shmapper-by-teplitsa', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
-}
-add_action( 'plugins_loaded', 'init_textdomain_shmapper' );
-
 // Paths.
 define( 'SHM_URLPATH', WP_PLUGIN_URL . '/' . plugin_basename( dirname(__FILE__) ) . '/' );
 define( 'SHM_REAL_PATH', WP_PLUGIN_DIR . '/' . plugin_basename(dirname(__FILE__) ) . '/' );
 define( 'SHMAPPER', 'shmapper-by-teplitsa' );
-define('SHMAPPERD', 'shmapper-drive' );
+define( 'SHMAPPERD', 'shmapper-drive' );
 define( 'SHM_MAP', 'shm_map' );
 define( 'SHM_POINT', 'shm_point' );
 define( 'SHM_POINT_TYPE', 'shm_point_type' );
@@ -71,7 +59,13 @@ define( 'SHMAPPER_TITLE_TYPE_ID', 9 );
 define( 'SHM_CSV_STROKE_SEPARATOR', ';' );
 define( 'SHM_CSV_ROW_SEPARATOR', '
 ');
-define( 'SHMAPPER_VERSION', '1.4.4' );
+define( 'SHMAPPER_VERSION', '1.4.5' );
+
+/** Load textdomain */
+function shm_load_plugin_textdomain() {
+	load_plugin_textdomain( 'shmapper-by-teplitsa', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'shm_load_plugin_textdomain' );
 
 require_once SHM_REAL_PATH . 'class/ShMapper.class.php';
 require_once SHM_REAL_PATH . 'class/ShMapper_ajax.class.php';
