@@ -141,7 +141,7 @@ jQuery(document).ready(function($)
 				shmapperPlaceMarkerOnMapByCoords(myMap, new_mark_coords, $(ui.helper), isNew);
 			}
 			function shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, _markerIcon, isNew=false) 
-			{ 
+			{
 				MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
 					'<div style="background-color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
 				);
