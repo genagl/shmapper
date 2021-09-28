@@ -42,18 +42,22 @@ jQuery(document).ready(function($)
 	{
 		L.DomEvent.on(document, 'pushing', function(ev)
 		{
-			L.DomEvent.stopPropagation(ev);	
+			L.DomEvent.stopPropagation(ev);
 		});
 		//
 		$(".shm-type-icon").draggable(
 		{
 			revert: false,
+			cursorAt: {
+				left: 35,
+				top: 35
+			},
 			start: function(evt, ui)
 			{
 				$this = $(ui.helper);
 				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
 				map = shm_maps[$map_id];	
-				map.mp.enable();		
+				map.mp.enable();
 			},
 			stop: function(evt, ui)
 			{
@@ -61,7 +65,7 @@ jQuery(document).ready(function($)
 				$('.shm-type-icon.shmapperMarkerSelected').removeClass('shmapperMarkerSelected');
 				shmapperPlaceMarkerOnMap(evt, ui);
 			}
-		});	
+		});
 	}
 	
 	// place marker by addr
