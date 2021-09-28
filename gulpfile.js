@@ -1,5 +1,10 @@
+var path = require('path');
+var name = path.basename(__dirname);
+
 var gulp = require('gulp');
 var sass = require('gulp-sass')(require('sass'));
+var zip = require('gulp-zip');
+
 
 var cssInput = './src/sass/**/*.scss';
 var cssOutput = './assets/css/';
@@ -35,3 +40,23 @@ gulp.task( 'watch', () => {
 
 // Default
 gulp.task( 'default', gulp.series( 'sass', 'watch' ) );
+
+// Archive
+gulp.task('zip', function(e){
+
+	const distFiles = [
+		'**',
+		'!src/**',
+		'!node_modules/**',
+		'!.gitignore',
+		'!gulpfile.js',
+		'!CHANGELOG.md',
+		'!package.json',
+		'!package-lock.json',
+		'!**.zip'
+	];
+
+	return gulp.src( distFiles, { base: '../' } )
+		.pipe( zip( name + '.zip' ) )
+		.pipe( gulp.dest( './' ) )
+});
