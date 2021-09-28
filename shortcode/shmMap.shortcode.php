@@ -41,25 +41,25 @@ function shmMap($args)
 	}
 	if( $form_enb && $map->get_meta("is_form") && !ShMapper::$options['shm_map_is_crowdsourced'])
 	{
-		$form_title = $map->get_meta("form_title");
-		$form_forms = $map->get_meta("form_forms");
-		$html 	.= "
-		<div class='shm-row '>
-			<div class='shm-12'>
-				<form class='shm-form-request' id='form$id' form_id='ShmMap$id$uniq' map_id='$id'>					
-					<div class='shm-title'>
-						$form_title
-					</div>
-					<div id='form_forms'>".
-						ShmForm::form( $form_forms, $map ).
-					"</div>
-					<div class='shm-form-element'>
-						<input type='submit' class='shm-request' value='" . __("Send request", SHMAPPER) . "'/>
-					</div>
-				</form>
-			</div>
-		</div>";
+		$form_title = $map->get_meta( 'form_title' );
+		if ( $form_title ) {
+			$form_title = '<div class="shm-form-title">' . esc_html( $form_title ) . '</div>';
+		}
+		$form_forms = $map->get_meta( 'form_forms' );
+		$html .= '
+		<div class="shm-form-container">
+			<form class="shm-form-request" id="form' . esc_attr( $id ) . '" form_id="ShmMap' . esc_attr( $id . $uniq ) . '" map_id="' . esc_attr( $id ) . '">
+				' . $form_title . '
+				<div id="form_forms">' . ShmForm::form( $form_forms, $map ) . '</div>
+				<div class="shm-form-element">
+					<input type="submit" class="shm-form-submit shm-request" value="' . esc_attr__( 'Send request', SHMAPPER ) . '">
+				</div>
+			</form>
+		</div>';
 	}
+
+	$html = '<div class="shm-map-block">' . $html . '</div>';
+
 	$html = apply_filters("shm_final_after_front_map", $html, $args);
 	return $html;
 }
