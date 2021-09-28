@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/Teplitsa/shmapper#readme",
   "devDependencies": {
-    "sass": "^1.41.1",
     "gulp": "^4.0.2",
-    "gulp-sass": "^5.0.0"
+    "gulp-sass": "^5.0.0",
+    "gulp-zip": "^5.1.0",
+    "sass": "^1.41.1"
   }
 }
