@@ -4,7 +4,7 @@ class ShMapperDrive
 	public static function activate()
 	{
 		global $wpdb;
-		init_textdomain_shmapper();
+
 		$options = get_option(SHMAPPERD);
 		if(!is_array($options))
 		{
