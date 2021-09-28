@@ -129,16 +129,16 @@ class ShMapPointType
 			<input type="color" name="color" value="<?php echo empty($color) ? '' : $color; ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
-			<label for="height">
-				<?php echo __("Height", SHMAPPER);  ?>
-			</label> 
-			<input type="number" name="height" value="<?php echo empty($height) ? '' : $height; ?>" />
-		</div>
-		<div class="form-field term-description-wrap">
 			<label for="width">
 				<?php echo __("Width", SHMAPPER);  ?>
 			</label> 
 			<input type="number" name="width" value="<?php echo empty($width) ? '' : $width;?>" />
+		</div>
+		<div class="form-field term-description-wrap">
+			<label for="height">
+				<?php echo __("Height", SHMAPPER);  ?>
+			</label> 
+			<input type="number" name="height" value="<?php echo empty($height) ? '' : $height; ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="icon">
