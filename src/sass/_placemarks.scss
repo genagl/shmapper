@@ -1,0 +1,29 @@
+/** Placemarks */
+.shm-form-placemarks {
+	display: inline-flex;
+	flex-wrap: wrap;
+	padding: 0 0 10px 0;
+	position: relative;
+
+	.shm-type-icon {
+		float: left;
+		width: 70px;
+		height: 70px;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-color: transparent;
+		margin: 3px;
+		border: 1px dashed #8599A4;
+		border-radius: 4px;
+		cursor: pointer;
+		opacity: 1;
+		box-sizing: border-box;
+
+		&:hover {
+			background-color: #fff;
+		}
+		&:active {
+			background-color: transparent;
+		}
+	}
+}
