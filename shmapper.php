@@ -3,7 +3,7 @@
  * Plugin Name: ShMapper by Teplitsa
  * Plugin URI: http://genagl.ru/?p=652
  * Description: Location and logistics services for NKO
- * Version: 1.4.5
+ * Version: 1.4.5.1
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Author: Teplitsa. Technologies for Social Good
@@ -59,13 +59,15 @@ define( 'SHMAPPER_TITLE_TYPE_ID', 9 );
 define( 'SHM_CSV_STROKE_SEPARATOR', ';' );
 define( 'SHM_CSV_ROW_SEPARATOR', '
 ');
-define( 'SHMAPPER_VERSION', '1.4.5' );
+define( 'SHMAPPER_VERSION', '1.4.5.1' );
 
 /** Load textdomain */
 function shm_load_plugin_textdomain() {
 	load_plugin_textdomain( 'shmapper-by-teplitsa', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'shm_load_plugin_textdomain' );
+
+require_once SHM_REAL_PATH . 'inc/shm-functions.php';
 
 require_once SHM_REAL_PATH . 'class/ShMapper.class.php';
 require_once SHM_REAL_PATH . 'class/ShMapper_ajax.class.php';
@@ -124,17 +126,3 @@ function shm_is_session() {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	return is_plugin_active( 'wp-session-manager/wp-session-manager.php' );
 }
-
-/**
- * Disable Gugenberg
- *
- * @param bool   $current_status Current gutenberg status. Default true.
- * @param string $post_type      The post type being checked.
- */
-function shmapper_disable_gutenberg( $current_status, $post_type ) {
-	if ( in_array( $post_type, array( SHM_POINT ), true ) ) {
-		return false;
-	}
-	return $current_status;
-}
-add_filter( 'use_block_editor_for_post_type', 'shmapper_disable_gutenberg', 10, 2);

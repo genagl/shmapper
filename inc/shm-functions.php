@@ -37,3 +37,28 @@ function shm_is_local(){
 	}
 	return $shm_is_local;
 };
+
+
+/**
+ * Disable Gugenberg
+ *
+ * @param bool   $current_status Current gutenberg status. Default true.
+ * @param string $post_type      The post type being checked.
+ */
+function shmapper_disable_gutenberg( $current_status, $post_type ) {
+	if ( in_array( $post_type, array( SHM_POINT ), true ) ) {
+		return false;
+	}
+	return $current_status;
+}
+add_filter( 'use_block_editor_for_post_type', 'shmapper_disable_gutenberg', 10, 2);
+
+/**
+ * Add support upload mime type files gpx and kml.
+ */
+function shm_upload_mimes( $mime_types ) {
+	$mime_types['gpx'] = 'text/gpx';
+	$mime_types['kml'] = 'text/xml';
+	return $mime_types;
+}
+add_filter( 'upload_mimes', 'shm_upload_mimes' );
