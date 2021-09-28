@@ -28,7 +28,7 @@ jQuery(document).ready(function($)
 		"change", 
 		function(evt)
 		{
-			var file	= evt.target.files[0];
+			var file = evt.target.files[0];
 
 			//console.log( file.name, $(evt.currentTarget).parent().find( "label.shm_nowrap" ) );
 			//console.log( file.name );
@@ -39,6 +39,7 @@ jQuery(document).ready(function($)
 			reader.onload = (function(event) 
 			{ 
 				$( ".shm-form-request[form_id='" + map_id + "'] .shmapper_tracks_edit").fadeOut();
+				$(evt.currentTarget).parents(".shm-track-upload-cont").removeClass('shm-track-has-slider');
 				$(evt.currentTarget).parents(".shm-track-upload-cont").find(".shm-track-pult").fadeOut();
 				$(evt.currentTarget).parents(".shm-track-upload-cont").find(".shm-track-error").fadeOut();
 				try
@@ -72,7 +73,9 @@ jQuery(document).ready(function($)
 						var val = form_forms.find(".form-field-6 textarea.sh-form").val();
 						form_forms.find(".form-field-6 textarea.sh-form").val( val + "<p>" + desc + "</p>" );
 					}
-					form_forms.find(".shm-form-track").css("width", "50%");
+
+					//form_forms.find(".shm-form-track").css("width", "50%");
+
 					form_forms.find(".shm-range").on({
 						change: function(evt2)
 						{
@@ -90,6 +93,7 @@ jQuery(document).ready(function($)
 						}
 					});
 					
+					form_forms.find(".shm-track-upload-cont").addClass('shm-track-has-slider');
 					setInterval(function()
 					{
 						form_forms.find(".shm-track-pult").fadeIn("slow")
@@ -105,7 +109,7 @@ jQuery(document).ready(function($)
 					{
 						return [ parseFloat(elem.lat,5), parseFloat(elem.lon, 5)];
 					});
-					//console.log(val, trackPoliline, trkpt);
+
 					map_id 		= $(evt.target).parents("[form_id]").attr("map_id");
 					var myMap 	= shm_maps[ $(evt.target).parents("[form_id]").attr("form_id") ];		
 					$_this		= $(evt.target);		
@@ -115,12 +119,12 @@ jQuery(document).ready(function($)
 				}
 				catch(e)
 				{
-					console.log(e);
+
 					var message = __("Uncorrect gpx-file: ") + e.message; 
-					form_forms.find(".shm-form-track").css("width", "25%");
+					//form_forms.find(".shm-form-track").css("width", "25%");
 					setTimeout(function(message)
 					{
-						//console.log(message);
+
 						$(evt.currentTarget).parents(".shm-track-upload-cont").find(".shm-track-error")
 							.fadeIn("slow")
 								.text( message );
@@ -174,7 +178,7 @@ jQuery(document).ready(function($)
 				}
 				$(targ).attr("sel", "0");
 				let defCoords = shm_maps[ uniq ].container.getParentElement().getAttribute("coords").split(",").map( e => parseFloat(e) );
-				console.log( defCoords)
+
 				shm_maps[ uniq ].setCenter(
 					defCoords, 
 					defCoords[2],
@@ -190,7 +194,7 @@ jQuery(document).ready(function($)
 				{
 					shm_maps[ uniq ].geoObjects.each(function(gO)
 					{
-						// console.log(gO.options._options.track_id, track_id);
+
 						if(gO.options._options.track_id == track_id)
 						{
 							shm_maps[ uniq ].setBounds( gO.geometry.getBounds(), { duration : 1000 } ); 
@@ -431,7 +435,9 @@ jQuery(document).ready(function($)
 			var uniq = $( "[map_id='" + evt.detail[2]).attr("form_id");
 			if( shm_maps[ uniq ] )
 			{
-				shm_maps[ uniq ].geoObjects.remove(myPolyline);
+				if ( shm_maps[ uniq ].geoObjects ) {
+					shm_maps[ uniq ].geoObjects.remove(myPolyline);
+				}
 			}
 		}
 	);
@@ -442,7 +448,7 @@ jQuery(document).ready(function($)
 	*/
 	document.documentElement.addEventListener("_shm_track_map_", function(evt) 
 	{
-		// console.log( evt.detail );
+
 		shm_track_map = new ymaps.Map(
 			"shm-track-modal-map", 
 			{
@@ -568,7 +574,6 @@ jQuery(document).ready(function($)
 			map.geoObjects.add(shm_placemark);  
 			shm_placemark.events.add("dragend", e =>
 			{
-				//console.log( e.get("target").geometry.getCoordinates() );
 				update_track_placmarks_json( map );
 			});
 			
@@ -601,7 +606,6 @@ jQuery(document).ready(function($)
 			if(e.geometry && e.geometry.getType() == "Point" )
 			{ 
 				var pnt = map.geoObjects.get(i); 
-				// console.log(pnt);
 				dd.push({
 					shm_type_id 	: pnt.properties._data.term_id,
 					icon			: pnt.options._options.iconImageHref,
@@ -661,11 +665,11 @@ jQuery(document).ready(function($)
 		var dat = evt.detail;
 		var command	= dat[0];
 		var datas	= dat[1];
-		//console.log(evt.detail);
+
 		switch(command)
 		{
 			case "shm_get_map_tracks":
-				//console.log(datas);
+
 				datas.tracks.map(function(elem)
 				{ 
 
@@ -773,13 +777,13 @@ jQuery(document).ready(function($)
 
 var getVertexData = function(vertex)
 {
-	//console.log("vertex: ", vertex);
+
 	let coords = vertex.geometry.getCoordinates();
 	var vertexData = newTrackVertexes.filter(e =>
 	{
 		return e[0] == coords[0] && e[1] == coords[1]
 	})[0];
-	//console.log( vertexData );
+
 	return vertexData ? vertexData : [];
 }
 var start_update_vertex = function(vertex)	
