@@ -186,6 +186,43 @@ jQuery(document).ready(function($)
 		$(this).attr('value', this.value);
 	});
 
+	/**
+	 * Select/Upload KML File
+	 */
+	$('body').on('click', '.shm-load-kml-button', function(e){
+		e.preventDefault();
+
+		var titleText  = $(this).attr('data-title');
+		var buttonText = $(this).attr('data-button');
+
+		var button = $(this),
+			custom_uploader = wp.media({
+				title: titleText,
+				library : {
+					type : 'text/xml',
+				},
+			button: {
+				text: buttonText,
+			},
+			multiple: false
+		}).on('select', function() {
+			var attachment = custom_uploader.state().get('selection').first().toJSON();
+			$('.shm-input-kml-url').val( attachment.url );
+			console.log(this)
+			button.next().removeClass('hidden');
+		})
+		.open();
+	});
+
+	/**
+	 * Clear Input KML File
+	 */
+	$('body').on('click', '.shm-clear-kml-button', function(e){
+		e.preventDefault();
+		$(this).addClass( 'hidden' );
+		$('.shm-input-kml-url').val( '' );
+	});
+
 });
 
 jQuery(function($){
