@@ -66,8 +66,8 @@ class ShMapTrackType
 	{
 		add_submenu_page( 
 			'shm_page', 
-			__("Map track types", SHMAPPER_TRACKS), 
-			__("Map track types", SHMAPPER_TRACKS), 
+			__("Map track types", SHMAPPER), 
+			__("Map track types", SHMAPPER), 
 			'manage_options', 
 			'edit-tags.php?taxonomy=' . SHM_TRACK_TYPE
 		);

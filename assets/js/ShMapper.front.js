@@ -50,7 +50,8 @@ jQuery(document).ready(function($)
 		{
 			d.append( key, value );
 		});
-		// AJAX запрос
+
+		//AJAX request
 		$.ajax({
 			url         : shm_set_req.url,
 			type        : 'POST',

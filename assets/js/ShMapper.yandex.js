@@ -90,32 +90,58 @@ jQuery(document).ready(function($)
 			var lon = $this.parents("form.shm-form-request").find("[name=shm_point_lon]");
 			var type = $this.parents("form.shm-form-request").find("[name=shm_point_type]");
 			var loc = $this.parents("form.shm-form-request").find("[name=shm_point_loc]");
+			var rel = $this.parents("form.shm-form-request").find("[data-rel=shm_point_loc]");
 			lat.val(new_mark_coords[0]);
 			lon.val(new_mark_coords[1]);
 			if(!$this.data("straight_geocoding")) {
 				loc.val(shm_address).removeClass("_hidden").hide().fadeIn("slow");
+				rel.removeClass("_hidden");
 			}
 			type.val($this.attr("shm_type_id"));
 		})			
 	}
 
 	if( $('.shm-type-icon').length ) {
+
 		$(".shm-type-icon").draggable(
 		{
 			revert: false,
-			start: (evt, ui) => 
-			{
+			cursorAt: {
+				left: 35,
+				top: 35
+			},
+			start: (evt, ui) => {
 				$this = $(ui.helper);
 				var $map_id = $this.parents("form.shm-form-request").attr("form_id");
-				
 			},
-			stop: (evt, ui) =>
-			{
+			drag: (evt, ui) => {
+				$this = $(ui.helper);
+				$this.draggable("option", "cursorAt", {
+					left: ui.helper.width() / 2,
+					top: ui.helper.height() / 2
+				});
+			},
+			stop: (evt, ui) => {
 				$(ui.helper).addClass('shmapperDragged');
 				shmapperPlaceMarkerOnMap(evt, ui);
 				$('.shm-type-icon.shmapperMarkerSelected').removeClass('shmapperMarkerSelected');
 			}
-		});	
+		});
+
+
+	// $(document).on( "drag", ".shm-type-icon", function( event, ui ) {
+
+	// 	console.log(ui.helper.width());
+	// 	console.log(ui.helper.height());
+	// 		$(this).draggable("option", "cursorAt", {
+
+	// 				// left: ui.helper.width() / 2,
+	// 				// top: ui.helper.height() / 2
+	// 				left: 35,
+	// 				top: 35
+	// 			  });
+	// 		});
+
 	}
 	
 	// place marker by addr
@@ -460,6 +486,13 @@ jQuery(document).ready(function($)
 
 		var finish_draw_map = new CustomEvent("finish_draw_map", {bubbles : true, cancelable : true, detail : {data:mData, points:points} });
 		document.documentElement.dispatchEvent(finish_draw_map);
+
+		if ( mData.kmlUrl ) {
+			ymaps.geoXml.load( mData.kmlUrl ).then(function (res) {
+				myMap.geoObjects.add(res.geoObjects);
+			});
+		}
+
 	}
 
 	is_admin = function(myMap, mData)
@@ -509,6 +542,13 @@ jQuery(document).ready(function($)
 	}
 	
 	function shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $markerIcon) {
+		var iconWidth = $($markerIcon).data('icon-width');
+		var iconHeight = $($markerIcon).data('icon-height');
+		var iconWidthHalf = ( Number( iconWidth ) / 2 ) * -1;
+		var iconHeightHalf = ( Number( iconHeight ) / 2 ) * -1;
+		console.log( $($markerIcon).data('icon-width') );
+		console.log( $($markerIcon).data('icon-height') );
+
 		map.geoObjects.remove(shm_placemark);
 		var bg = $markerIcon.css('background-image');
 		if( bg !== "none")
@@ -520,8 +560,8 @@ jQuery(document).ready(function($)
 				iconLayout: 'default#imageWithContent',
 				iconShadow:true,
 				iconImageHref: bg,
-				iconImageSize:[40,40], 
-				iconImageOffset: [-20, -20],
+				iconImageSize:[ iconWidth, iconHeight],
+				iconImageOffset: [ iconWidthHalf, iconHeightHalf ],
 				draggable:true,
 				term_id:$markerIcon.attr("shm_type_id"),
 				type:'point',

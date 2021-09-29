@@ -644,28 +644,34 @@ class ShMaperTrack extends SMC_Post
 				$switched_enabled_markers = $element['switched_enabled_markers'];
 			}
 
-            $el_gpx = '';
-            if ( isset( $element['gpx'] ) ) {
-                $el_gpx = $element['gpx'];
-            }
+			$el_gpx = '';
+			if ( isset( $element['gpx'] ) ) {
+				$el_gpx = $element['gpx'];
+			}
 			$require		= isset($element['require']) && $element['require'] == 1 ? " required " : ""; 
 			$file_require	= isset($element['file_require']) && $element['file_require'] == 1 ? " required " : ""; 
 			$type 			= ShmForm::get_type_by("id", $element['type']);
 			$data_types = " data-types='" . implode( ",", $type['fields'] ) . "' ";
-			$shmW = $el_gpx ? " shm-w-50 " : " shm-w-100 ";
+
+			//$shmW = $el_gpx ? " shm-w-50 " : " shm-w-100 ";
+
+			$shmW = '';
+
 			$btnText = $element['draw_button_label'] ? $element['draw_button_label'] : __( 'Start draw new Track', SHMAPPER_TRACKS);
 			$editBtn = "<div class='shmapper_tracks_edit $shmW' $switched_enabled_markers>
-				<div class='button'>" . $btnText . "</div>
+				<div class='button shm-form-button'>" . $btnText . "</div>
 			</div>
 			";
+
 			if( isset( $element['gpx']) && $element['gpx'] )
 			{
 				$flop = $element['placeholder'] ? $element['placeholder'] : __("Сhoose local GPX-file", SHMAPPER_TRACKS);
-				$file_map 	=  "<span class='dashicons dashicons-upload'></span> " . $flop; 
+				$file_map = $flop; 
 				$uploader = "<div class='shm-form-file shm-form-track' $switched_enabled_markers> 
-					<label class='button' flop='$flop'>$file_map</label>
-					<input type='file' class='sh-form-file' name='__elem[]'  accept='.gpx' $file_require  $data_types/> 
+					<label class='button shm-form-file-label' flop='$flop'>$file_map</label>
+					<input type='file' class='sh-form-file' name='__elem[]' accept='.gpx' $file_require  $data_types title='" . __("Сhoose files", SHMAPPER) . "'/> 
 				</div>";
+
 				$pult = "
 				<div class='shm-track-pult'>
 					<div class='shm-form-slider'>
@@ -673,28 +679,29 @@ class ShMaperTrack extends SMC_Post
 							<div class='shm-descr-pult'>".
 								__("Set range fliping of route's dots", SHMAPPER_TRACKS) . 
 							"</div>
-							<div class='shm-range-label sh-right shmw-50' >
+							
+						</div>
+						<div class='shm-flex shm-align-items-center'>
+							<input type='range' value='100' min='1' max='1000' name='shm-range' class='shm-range' style='display: inline-flex; '/>
+							<div class='shm-range-label sh-right' >
 								100
 							</div>
-						</div>
-						<div class='shm-flex'>
-							<input type='range' value='100' min='1' max='1000' name='shm-range' class='shm-range shm-margin-x-20' style='display: inline-flex; '/>
-							<div class='shmw-50 shm-button shm-track-edit' >".
-								__("edit", SHMAPPER_TRACKS) . 
+							<div class='shm-button shm-track-edit' >".
+								__("edit", SHMAPPER) . 
 							"</div>
 						</div>
 					
 					</div>
 				</div>
-				<div class='shm-track-error'>
-				
-				</div>";			
-				$html1 = "<div class='shmapper_tracks_upld _hidden'>
-					<div class='button'>".
-						__("Upload GPX-file", SHMAPPER_TRACKS) .
-					"</div>
-				</div>
-				<div class='shm-flex shm-track-upload-cont  $shmW'>
+				<div class='shm-track-error'></div>
+				";
+
+				// $html1 = "<div class='shmapper_tracks_upld _hidden'>
+				// 	<div class='button'>".
+				// 		__("Upload GPX-file", SHMAPPER_TRACKS) .
+				// 	"</div>
+				// </div>
+				$html1 = "<div class='shm-track-upload-cont $shmW'>
 					$uploader 
 					$pult
 				</div>
@@ -708,7 +715,7 @@ class ShMaperTrack extends SMC_Post
 			if ( isset( $data['shmtrack_edit'] ) ) {
 				$value_data = $data['shmtrack_edit'];
 			}
-			$html1 = "<div class='shm-flex'>" . $html1. $editBtn . "</div><input type='hidden' name='elem[]' value='" . $value_data . "' $require $data_types class='sh-form shmw-100'/>";
+			$html1 = "<div class=''>" . $html1. $editBtn . "</div><input type='hidden' name='elem[]' value='" . $value_data . "' $require $data_types class='sh-form shmw-100'/>";
 		}
 		return $html1;
 	}

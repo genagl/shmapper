@@ -244,6 +244,7 @@ class ShmMap extends SMC_Post
 		$overlay_color     = $obj->get_meta( 'overlay_color' ) ? $obj->get_meta( 'overlay_color' ) : '#d1d1d1';
 		$border_color      = $obj->get_meta( 'border_color' ) ? $obj->get_meta( 'border_color' ) : '#d1d1d1';
 		$overlay_opacity   = $obj->get_meta( 'overlay_opacity' ) ? $obj->get_meta( 'overlay_opacity' ) : '0.8';
+		$kml_url           = $obj->get_meta( '_shm_kml_url' );
 
 		$html 	= "
 			<div class='shm-row'>
@@ -422,6 +423,39 @@ class ShmMap extends SMC_Post
 				";
 			}
 
+			if ( shm_get_map_type() === 1 ) {
+
+				$hide_clear = ' hidden';
+				if ( $kml_url ) {
+					$hide_clear = '';
+				}
+				$html 	.= '
+				<div class="spacer-5"></div>
+				<hr>
+				<div class="spacer-5"></div>
+
+				<div class="shm-row">
+
+					<h3 class="shm-12">' . esc_html__( '1.10. Load elements on the map from file .KML', SHMAPPER ) . '</h3>
+					<div class="shm-12">
+
+						<div class="shm-form-inline">
+							<input type="text" value="' . esc_url( $kml_url ) . '" name="shm_kml_url" class="large-text shm-input-kml-url" readonly>
+							<button class="button button-secondary shm-load-kml-button" data-title="' .  esc_html__( 'Select KML File', SHMAPPER ) . '" data-button="' .  esc_html__( 'Insert KML File Url', SHMAPPER ) . '">' . esc_html__( 'Upload KML File', SHMAPPER ) . '</button>
+							<button class="button button-link button-link-delete shm-clear-kml-button' . $hide_clear . '">' . esc_html__( 'Clear', SHMAPPER ) . '</button>
+						</div>
+
+						<p class="description">
+							<a href="https://yandex.com/map-constructor/" target="_blank">' . esc_html__( 'Yandex Map Constructor', SHMAPPER ) . '</a>
+						</p>
+						<div class="spacer-5"></div>
+						<div class="spacer-5"></div>
+					</div>
+
+				</div>
+				';
+			}
+
 		return $html;
 	}
 	static function form_fields_box_func( $post )
@@ -575,6 +609,7 @@ class ShmMap extends SMC_Post
 			'overlay_color'     => sanitize_hex_color( isset( $_POST['overlay_color'] ) ? $_POST['overlay_color'] : '' ),
 			'border_color'      => sanitize_hex_color( isset( $_POST['border_color'] ) ? $_POST['border_color'] : '' ),
 			'overlay_opacity'   => sanitize_text_field( isset( $_POST['overlay_opacity'] ) ? $_POST['overlay_opacity'] : '' ),
+			'_shm_kml_url'      => esc_url_raw( isset( $_POST['shm_kml_url'] ) ? $_POST['shm_kml_url'] : '' ),
 
 			"is_form"			=> empty($_POST['is_form']) ? 0 : 1,
 			"form_title"		=> sanitize_text_field($_POST['form_title']),

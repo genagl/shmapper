@@ -9,8 +9,7 @@ class ShMapper {
 	public static function activate()
 	{
 		global $wpdb;
-		init_textdomain_shmapper();
-
+		//shm_load_plugin_textdomain();
 		$wpdb->query("CREATE TABLE IF NOT EXISTS `".$wpdb->prefix."point_map` (
 			`ID` int(255) unsigned NOT NULL AUTO_INCREMENT,
 			`point_id` int(255) unsigned NOT NULL,
@@ -55,6 +54,7 @@ class ShMapper {
 			'shm_personal_text'            => esc_html__( 'I give my consent to the site administrator to process, including automated, my personal data in accordance with Federal Law of 27.07.2006 N 152-FZ "On Personal Data".', 'shmapper-by-teplitsa' ),
 			'shm_succ_request_text'        => esc_html__( 'Your request has been successfully registered.', 'shmapper-by-teplitsa' ),
 			'shm_error_request_text'       => esc_html__( 'Unknown error.', 'shmapper-by-teplitsa' ),
+			'shm_settings_captcha'         => '',
 		);
 		return $options;
 	}
@@ -225,6 +225,8 @@ class ShMapper {
 		//css
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper");
+		wp_register_style("ShMapper-admin", SHM_URLPATH . 'assets/css/ShMapper-admin.css', array(), SHMAPPER_VERSION);
+		wp_enqueue_style( "ShMapper-admin");
 		//js
 		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('inline-edit-post'), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapper");
@@ -277,7 +279,7 @@ class ShMapper {
 			
 			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
 			wp_enqueue_script("Leaflet.fs");
-			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array());
+			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array(), SHMAPPER_VERSION);
 			wp_enqueue_script("ShMapper.osm");	
 		}
 		wp_localize_script( "ShMapper", "map_type", array(static::$options['map_api']) );
@@ -341,19 +343,19 @@ class ShMapper {
 			$ymap_key = ShMapper::$options['shm_yandex_maps_api_key'];
 		}
 		//css
-		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array( 'dashicons' ) );
+		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array( 'dashicons' ), SHMAPPER_VERSION );
 		wp_enqueue_style( "ShMapper");
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array( 'jquery-ui-draggable', 'jquery-touch-punch'));
+		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array( 'jquery-ui-draggable', 'jquery-touch-punch'), SHMAPPER_VERSION );
 		wp_enqueue_script("ShMapper");	
 		wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
 		wp_enqueue_style( "layerSwitcher");
-		wp_register_script("ShMapper.front", plugins_url( '../assets/js/ShMapper.front.js', __FILE__ ), array());
+		wp_register_script("ShMapper.front", plugins_url( '../assets/js/ShMapper.front.js', __FILE__ ), array(), SHMAPPER_VERSION );
 		wp_enqueue_script("ShMapper.front");	
 		if( static::$options['map_api'] == 1 )
 		{
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=" . $locale, array());
 			wp_enqueue_script("api-maps");
-			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array());
+			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array(), SHMAPPER_VERSION );
 			wp_enqueue_script("ShMapper.yandex");
 		}
 		else if( static::$options['map_api'] == 2 )
@@ -384,7 +386,7 @@ class ShMapper {
 			wp_enqueue_script("layerSwitcher");	
 			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
 			wp_enqueue_script("Leaflet.fs");
-			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array());
+			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array(), SHMAPPER_VERSION );
 			wp_enqueue_script("ShMapper.osm");
 
 		}

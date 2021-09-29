@@ -11,9 +11,10 @@ function draw_shMap($map, $args )
 	if(!is_array($shm_all_maps))	$shm_all_maps =[];
 	array_push($shm_all_maps, $map->id);
 	
-	$html		= "";
-	$legend		= "";
-	
+	$html   = "";
+	$legend = "";
+	$p      = "";
+
 	$mapType	= $map->get_meta("map_type");
 	$mapType	= $mapType && ShMapper::$options['map_api']  == array_keys($mapType)[0]
 		? $mapType 
@@ -45,6 +46,7 @@ function draw_shMap($map, $args )
 	$overlay_color     = $map->get_meta( 'overlay_color' );
 	$border_color      = $map->get_meta( 'border_color' );
 	$overlay_opacity   = $map->get_meta( 'overlay_opacity' );
+	$shm_kml_url       = $map->get_meta( '_shm_kml_url' );
 
 	if( $is_legend ) {
 
@@ -134,10 +136,14 @@ function draw_shMap($map, $args )
 				$filters $csv
 			</div>";
 	}
-	$html .= "
-	<div class='shm_container' id='$uniq' shm_map_id='$id' style='height:" . $height . "px; width:$width;'>
-	</div>$legend ";
-	$p = "";
+
+	$shm_has_legend = '';
+	if ( $legend ) {
+		$shm_has_legend = ' shm-map-has-legend';
+	}
+	$html .= '<div class="shm-map-container shm_container' . esc_attr( $shm_has_legend ) . '" id="' . esc_attr( $uniq ) . '" shm_map_id="' . esc_attr( $id ) . '" style="height:' . $height . 'px;width:' . $width . ';"></div>';
+
+	$html .= $legend;
 
 	//line javascript.
 	foreach ( $points as $point ) {
@@ -173,7 +179,8 @@ function draw_shMap($map, $args )
 	if ( wp_get_attachment_image_src($default_icon_id ) ) {
 		$icon = wp_get_attachment_image_src($default_icon_id, [60, 60] )[0];
 	}
-	$html 		.= "
+
+	$html .= "
 	<script type='text/javascript'>
 		jQuery(document).ready( function($)
 		{
@@ -199,7 +206,8 @@ function draw_shMap($map, $args )
 				country         : '$highlight_country',
 				overlay         : '$overlay_color',
 				border          : '$border_color',
-				overlayOpacity : '$overlay_opacity',
+				overlayOpacity  : '$overlay_opacity',
+				kmlUrl          : '$shm_kml_url'
 			};
 
 			if ( map_type == 1 ) {

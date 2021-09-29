@@ -1,0 +1,7 @@
+/** Shmapper Admin Styles */
+.shm-form-inline {
+	display: flex;
+}
+.shm-form-inline > .button {
+	margin-left: 5px;
+}

@@ -71,7 +71,7 @@
 {
 	background-color:#FF0000;
 }
-.shm-form-file.shm-form-track 
+/*.shm-form-file.shm-form-track 
 {
 	padding: 0;
 	position: relative;
@@ -92,43 +92,42 @@
 }
 .shm-form-file.shm-form-track .button {
 	width:  100%;
-}
+}*/
 .shm-form-file.shm-form-track > img:first-child {
 	display: none;
 }
-.shm-track-pult,
-.shm-track-error
-{
+.shm-track-pult {
 	display:none;
-	width:50%;
-	overflow:hidden; 
-	margin: 0 0 5px 2px;
+	overflow:hidden;
+	width: 100%;
+	margin-top: 10px;
 	-webkit-transition: all 300ms ease-out;
-	-moz-transition: all 300ms ease-out;
-	-ms-transition: all 300ms ease-out;
-	-o-transition: all 300ms ease-out;
 	transition: all 300ms ease-out;
-	
 }
-.shm-track-error
-{
-	
-	background-color:#FF0000;
+.shm-descr-pult {
+	margin-bottom: 4px;
+	margin-left: 0;
+	margin-right: 20px!important;
+	color: var(--shm-field-border-color);
+	flex-direction: column;
+	display: flex;
+	justify-content: center;
+	font-size: 14px; 
+	vertical-align: top;
+	width: 100%;
+}
+.shm-track-error {
+	overflow:hidden;
+	color:#ff0000;
 	display:none;
-	width:75%;
-	margin: 0 0 5px 2px;
-	color:#FFF;
-	text-align:center;
-	padding-top:7px;
-	
+	width:100%;
+	flex: 1;
+	margin: 0;
+	font-size: 14px;
+	-webkit-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
 }
-.shm-form-track:hover
-{
-	background-color:#DDD;
-	color: #111;
-}
-.shm-form-track > input[type=file]
-{
+.shm-form-track > input[type=file] {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -136,7 +135,60 @@
 	left: 0;
 	opacity: 0;
 }
-.shmapper_tracks_edit,
+.shmapper_tracks_edit {
+	display: inline-flex;
+}
+.shm-track-has-slider {
+	width: 100%;
+}
+
+.shm-form-slider .shm-range[type=range] {
+	margin-right: 20px;
+	background-color: var(--shm-field-border-color);
+}
+.shm-form-slider .shm-range-label {
+	margin-right: 20px;
+}
+.shm-form-slider .shm-range[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	background-color: var(--shm-color-primary);
+	width: 17px;
+	height: 17px;
+	border-radius: 50%;
+	border: 1px solid var(--shm-color-primary-hover);
+	cursor: pointer;
+	transition: 0.3s ease-in-out;
+}
+.shm-form-slider .shm-range[type=range]::-webkit-slider-thumb:hover {
+	background-color: var(--shm-color-primary-hover);
+	border: 2px solid var(--shm-color-primary-hover);
+}
+.shm-form-slider .shm-range[type=range]::-webkit-slider-thumb:active {
+	transform: scale(1.2);
+}
+
+.shm-form-slider .shm-track-edit {
+	font-size: 12px;
+	line-height: 1.8;
+	min-height: initial;
+	margin: 0;
+	padding: 3px 10px;
+	border-width: 1px;
+	border-style: solid;
+	-webkit-appearance: none;
+	border-radius: 3px;
+	white-space: nowrap;
+	box-sizing: border-box;
+	color: var(--shm-color-primary);
+	border-color: var(--shm-color-primary);
+	background: #fff;
+}
+.shm-form-slider .shm-track-edit:hover {
+	color: var(--shm-color-primary-hover)
+	border-color: var(--shm-color-primary-hover)
+}
+
+/*.shmapper_tracks_edit,
 .shmapper_tracks_upld
 {
 	font-size: 1rem;
@@ -146,8 +198,6 @@
 	color: #a5a2a2;
 	border-radius: 2px;
 	cursor: pointer;
-	margin-left: 3px;
-	margin-bottom: 4px;
 	display: flex;
 	align-items: center;
 	text-align: center;
@@ -159,8 +209,8 @@
 	-ms-transition: all 500ms ease-out;
 	-o-transition: all 500ms ease-out;
 	transition: all 500ms ease-out;
-}
-.shmapper_tracks_edit {
+}*/
+/*.shmapper_tracks_edit {
 	align-self: flex-start;
 }
 .shmapper_tracks_edit:hover,
@@ -168,29 +218,32 @@
 {
 	background-color: #DDD;    
 	color: #111;
-}
+}*/
 .shmapper_tracks_edit.active
 {
 	opacity:0.25;
 }
-.shmapper_tracks_edit > .button,
+/*.shmapper_tracks_edit > .button,
 label.shm_nowrap.button
 {
 	width:100%;
 	min-height: 100%;
 	height: auto;
 	margin:0;
-}
-.shm-track-upload-cont
-{
-	width: 100%;	
+}*/
+.shm-track-upload-cont {
+	display: inline-flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: flex-start;
+	/*width: 100%;	
 	flex-grow: 100;
 	display: flex;
 	-webkit-transition: all 500ms ease-out;
 	-moz-transition: all 500ms ease-out;
 	-ms-transition: all 500ms ease-out;
 	-o-transition: all 500ms ease-out;
-	transition: all 500ms ease-out;
+	transition: all 500ms ease-out;*/
 }
 .shm-w-50
 {
@@ -229,20 +282,6 @@ label.shm_nowrap.button
 .shm-modal-map
 {
 	
-} 
-.shm-descr-pult
-{
-	margin-top: 8px;
-	margin-bottom: 4px;
-	margin-left: 20px!important;
-	margin-right: 20px!important;
-	flex-direction: column;
-	display: flex;
-	justify-content: center;
-	opacity: 0.7;
-	font-size: 0.75rem; 
-	vertical-align: top; 
-	width: 100%;
 }
 .subdialog
 {

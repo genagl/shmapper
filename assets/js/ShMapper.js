@@ -330,37 +330,54 @@ jQuery(document).ready(function($)
 		$targ.attr("src", $default);
 		$input.val("");
 	});
-	
-	
+
 	// input file
-	$(".shm-form-file > input[type='file']").each(function(num, elem)
-	{
-		$(elem).on('change', function(evt) {
-			var file	= evt.target.files[0];	
-			if(!file)	return;
-			shm_img		= evt.target.files;
-			var img 	= document.createElement("img");
-			img.height	= 50;
-			//img.id 		= this.props.prefix + 'imagex';
-			img.style	= "height:50px; margin-right:5px;";
-			img.alt 	= '';
-			img.file 	= file;
-			img.files	= evt.target.files;
-			$(evt.currentTarget).parent().find("img").detach();
-			$(evt.currentTarget).parent().find("label").text("");
-			$(evt.currentTarget).parent().prepend(img);
-			var reader = new FileReader();
-			reader.g = this;
-			reader.onload = (function(aImg) 
-			{ 
-				return function(e) 
-				{ 
-					aImg.src = e.target.result; 
-				}; 
-			})(img);
-			reader.readAsDataURL(file);
-		})
+	$(".shm-form-file > input[type='file']").each( function( num, elem ) {
+
+		$(elem).on('click', function(evt) {
+
+			var fileName = $(this).val();
+
+			if ( fileName ) {
+
+				$(this).val('');
+				$(evt.currentTarget).parent().find("img").detach();
+				$(evt.currentTarget).parent().find("label").show();
+				evt.preventDefault();
+
+			} else {
+
+				$(elem).on('change', function(evt) {
+					var file	= evt.target.files[0];
+					if(!file)	return;
+					shm_img		= evt.target.files;
+					var img 	= document.createElement("img");
+					img.className = "shm-form-file-img";
+					img.height	= 50;
+					//img.id 		= this.props.prefix + 'imagex';
+					img.style	= "height:50px;";
+					img.alt 	= '';
+					img.file 	= file;
+					img.files	= evt.target.files;
+					$(evt.currentTarget).parent().find("img").detach();
+					$(evt.currentTarget).parent().find("label.shm_nowrap").hide();
+					$(evt.currentTarget).parent().prepend(img);
+					var reader = new FileReader();
+					reader.g = this;
+					reader.onload = (function(aImg) 
+					{ 
+						return function(e) 
+						{ 
+							aImg.src = e.target.result; 
+						}; 
+					})(img);
+					reader.readAsDataURL(file);
+				})
+			}
+		});
+		
 	});
+
 	//
 	shm_add_modal = function (data)
 	{
@@ -587,7 +604,8 @@ jQuery(document).ready(function($) {
 			e.preventDefault();
 			$(this).closest('.shm-form-placemarks').find('.shm-type-icon').removeClass('shmapperMarkerSelected');
 			$(this).parents("form.shm-form-request").find('input[name="shm_point_loc"]').removeClass("_hidden");
-			
+			$(this).parents("form.shm-form-request").find('[data-rel="shm_point_loc"]').removeClass("_hidden");
+
 			if(!$(this).hasClass('shmapperDragged')) {
 				$(this).addClass('shmapperMarkerSelected');
 			}
