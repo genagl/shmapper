@@ -53,6 +53,7 @@ gulp.task('zip', function(e){
 		'!CHANGELOG.md',
 		'!package.json',
 		'!package-lock.json',
+		'!README.md',
 		'!**.zip'
 	];
 
