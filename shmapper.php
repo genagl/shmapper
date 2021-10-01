@@ -3,7 +3,7 @@
  * Plugin Name: ShMapper by Teplitsa
  * Plugin URI: http://genagl.ru/?p=652
  * Description: Location and logistics services for NKO
- * Version: 1.4.5.1
+ * Version: 1.4.6
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Author: Teplitsa. Technologies for Social Good
@@ -59,13 +59,19 @@ define( 'SHMAPPER_TITLE_TYPE_ID', 9 );
 define( 'SHM_CSV_STROKE_SEPARATOR', ';' );
 define( 'SHM_CSV_ROW_SEPARATOR', '
 ');
-define( 'SHMAPPER_VERSION', '1.4.5.1' );
+define( 'SHMAPPER_VERSION', '1.4.6' );
 
 /** Load textdomain */
-function shm_load_plugin_textdomain() {
-	load_plugin_textdomain( 'shmapper-by-teplitsa', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+function shm_load_textdomain_mofile( $mofile, $domain ) {
+	if ( 'shmapper-by-teplitsa' === $domain ) {
+		$locale = apply_filters( 'plugin_locale', determine_locale(), $domain );
+		if ( 'de_DE' === $locale ) {
+			$mofile = WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/' . $domain . '-' . $locale . '.mo';
+		}
+	}
+	return $mofile;
 }
-add_action( 'plugins_loaded', 'shm_load_plugin_textdomain' );
+add_filter( 'load_textdomain_mofile', 'shm_load_textdomain_mofile', 10, 2 );
 
 require_once SHM_REAL_PATH . 'inc/shm-functions.php';
 
