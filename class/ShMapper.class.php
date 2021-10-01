@@ -918,7 +918,7 @@ class ShMapper {
 			],
 			[
 				"title"				=> esc_html__( 'New map', 'shmapper-by-teplitsa' ),
-				"text"				=> __( 'Select a visible area on the map. <p> Create the first Marker by pointing to the desired location on the map with the right mouse button. <p> Fill in the fields and click "Create".', 'shmapper-by-teplitsa' ),
+				"text"				=> __( 'Select a visible area on the map. <p>Create the first Marker by pointing to the desired location on the map with the right mouse button.</p><p>Fill in the fields and click "Create".</p>', 'shmapper-by-teplitsa' ),
 				"selector"			=> '#adminmenuwrap a[href=\"edit.php?post_type=shm_map\"]',
 				"alt_selector"		=> 'body.post-type-shm_map #publish',
 				"parent_selector"	=> '#adminmenuwrap .toplevel_page_shm_page',

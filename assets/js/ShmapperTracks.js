@@ -223,7 +223,7 @@ jQuery(document).ready(function($)
 		$_this.on("click", evt =>
 		{		 	
 			var boo = !myPolyline && !isTrackEdit;				
-			boo = myPolyline ? confirm(__("Delete prevous track?")) : true;
+			boo = myPolyline ? confirm(__("Delete previous track?")) : true;
 			if( boo )
 			{
 				start_draw_track();		
@@ -377,7 +377,7 @@ jQuery(document).ready(function($)
 		myPolyline.events.add("click", function(event)
 		{			
 			var newTitle = $(".form-field-9").length > 0 ? $(".form-field-9").find(".sh-form").val() : __("New track");
-			var newDescr = $(".form-field-6").length > 0 ? $(".form-field-6").find(".sh-form").val() : __("New descr");
+			var newDescr = $(".form-field-6").length > 0 ? $(".form-field-6").find(".sh-form").val() : __("New description");
 			shm_add_modal({
 				class: "shm-max",
 				title:  newTitle,

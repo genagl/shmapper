@@ -591,15 +591,15 @@ class ShMaperTrack extends SMC_Post
 		$labels = array(
 			'name' => __('Map track', SHMAPPER_TRACKS),
 			'singular_name' => __("Map track", SHMAPPER_TRACKS),
-			'add_new' => __("add Map track", SHMAPPER_TRACKS),
-			'add_new_item' => __("add Map track", SHMAPPER_TRACKS),
-			'edit_item' => __("edit Map track", SHMAPPER_TRACKS),
-			'new_item' => __("add Map track", SHMAPPER_TRACKS),
-			'all_items' => __("all Map tracks", 'shmapper-by-teplitsa'),
-			'view_item' => __("view Map track", SHMAPPER_TRACKS),
-			'search_items' => __("search Map track", SHMAPPER_TRACKS),
+			'add_new' => __("Add Map track", SHMAPPER_TRACKS),
+			'add_new_item' => __("Add Map track", SHMAPPER_TRACKS),
+			'edit_item' => __("Edit Map track", SHMAPPER_TRACKS),
+			'new_item' => __("Add Map track", SHMAPPER_TRACKS),
+			'all_items' => __("All Map tracks", 'shmapper-by-teplitsa'),
+			'view_item' => __("View Map track", SHMAPPER_TRACKS),
+			'search_items' => __("Search Map track", SHMAPPER_TRACKS),
 			'not_found' =>  __("Map track not found", SHMAPPER_TRACKS),
-			'not_found_in_trash' => __("no found Map track in trash", SHMAPPER_TRACKS),
+			'not_found_in_trash' => __("No found Map track in trash", SHMAPPER_TRACKS),
 			'menu_name' => __("Map tracks", SHMAPPER_TRACKS)
 		);
 		$args = array(

@@ -23,7 +23,7 @@ class ShMapperPointMessage extends SMC_Post
 			'edit_item' => __("Edit Map marker message", SHMAPPER),
 			'new_item' => __("Add Map marker message", SHMAPPER),
 			'all_items' => __("All Map marker messages", SHMAPPER),
-			'view_item' => __("view Map marker message", SHMAPPER),
+			'view_item' => __("View Map marker message", SHMAPPER),
 			'search_items' => __("Search Map marker message", SHMAPPER),
 			'not_found' =>  __("Map marker message not found", SHMAPPER),
 			'not_found_in_trash' => __("No found Map marker message in trash", SHMAPPER),
