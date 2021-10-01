@@ -91,7 +91,7 @@ function draw_shMap($map, $args )
 			}
 			if ( $leg ) {
 				$legend = "
-				<div class='shm-legend' style='width:$width;'>
+				<div class='shm-legend'>
 					$leg
 				</div>";
 			}
@@ -132,7 +132,7 @@ function draw_shMap($map, $args )
 
 	if( $filters || $csv ) {
 		$html .="
-			<div class='shm-map-panel' for='$uniq' style='width:$width;'>
+			<div class='shm-map-panel' for='$uniq'>
 				$filters $csv
 			</div>";
 	}
@@ -141,7 +141,7 @@ function draw_shMap($map, $args )
 	if ( $legend ) {
 		$shm_has_legend = ' shm-map-has-legend';
 	}
-	$html .= '<div class="shm-map-container shm_container' . esc_attr( $shm_has_legend ) . '" id="' . esc_attr( $uniq ) . '" shm_map_id="' . esc_attr( $id ) . '" style="height:' . $height . 'px;width:' . $width . ';"></div>';
+	$html .= '<div class="shm-map-container shm_container' . esc_attr( $shm_has_legend ) . '" id="' . esc_attr( $uniq ) . '" shm_map_id="' . esc_attr( $id ) . '" style="height:' . $height . 'px;"></div>';
 
 	$html .= $legend;
 

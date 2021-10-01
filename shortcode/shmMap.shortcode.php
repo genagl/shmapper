@@ -31,6 +31,12 @@ function shmMap($args)
 
 	$is_title = ( $map->get_meta( 'is_title' ) !== '' ) ? $map->get_meta( 'is_title' ) : '1';
 
+	$style_attr = '';
+	if ( $map->get_meta( 'width' ) ) {
+		$width =  $map->get_meta( 'width' );
+		$style_attr = ' style="--shm-map-max-width:' . $width . 'px"';
+	}
+
 	if ( $is_title ) {
 		$html .= '<div class="shm-title-6 shm-map-title">' . esc_html( $map->get( 'post_title' ) ) . '</div>';
 	}
@@ -58,7 +64,7 @@ function shmMap($args)
 		</div>';
 	}
 
-	$html = '<div class="shm-map-block">' . $html . '</div>';
+	$html = '<div class="shm-map-block"' . $style_attr . '>' . $html . '</div>';
 
 	$html = apply_filters("shm_final_after_front_map", $html, $args);
 	return $html;

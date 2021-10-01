@@ -1,5 +1,6 @@
 /** Shmapper Styles */
 :root {
+	--shm-map-max-width: 100%;
 	--shm-border-radius: 20px;
 	--shm-color-primary: #f43724;
 	--shm-color-primary-hover: #db3120;
@@ -867,6 +868,10 @@ textarea:-ms-input-placeholder {
 	padding: 40px;
 	margin-top: 30px;
 	border-radius: var(--shm-border-radius);
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 960px;
 }
 .shm-map-block .shm-form-request {
 	padding: 0;
@@ -1902,13 +1907,14 @@ input[type=radio].shm-marker-checkbox + label img {
 .shm-map-panel {
 	z-index: 3;
 	height: 30px;
+	width: 100%;
 	text-align: right;
 	text-align: left;
 }
 
 /** Map Container */
 .shm-map-block {
-	max-width: 960px;
+	max-width: var(--shm-map-max-width);
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -1916,6 +1922,7 @@ input[type=radio].shm-marker-checkbox + label img {
 	display: block;
 	position: relative;
 	height: 400px;
+	width: 100%;
 	border: 1px solid var(--shm-field-border-color);
 	border-radius: var(--shm-border-radius);
 	overflow: hidden;
@@ -1931,6 +1938,7 @@ input[type=radio].shm-marker-checkbox + label img {
 
 /** Map Legend */
 .shm-legend {
+	width: 100%;
 	padding: 5px 7px;
 	background-color: var(--shm-legend-background);
 	display: flex;

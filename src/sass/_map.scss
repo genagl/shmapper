@@ -2,7 +2,7 @@
 .shm-map {
 
 	&-block {
-		max-width: 960px;
+		max-width: var(--shm-map-max-width);
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -11,11 +11,13 @@
 		display: block;
 		position: relative;
 		height: 400px;
+		width: 100%;
 		border: 1px solid var(--shm-field-border-color);
 		border-radius: var(--shm-border-radius);
 		overflow: hidden;
 		-webkit-backface-visibility: hidden;
 		-webkit-transform: translate3d(0, 0, 0);
+		box-sizing: border-box;
 
 		&.shm-map-has-legend {
 			border-bottom-right-radius: 0;

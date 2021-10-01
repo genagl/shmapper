@@ -249,9 +249,11 @@ class ShmMap extends SMC_Post
 		$html 	= "
 			<div class='shm-row'>
 				<h3 class='shm-12'>". __("1.1. Pan map and choose zoom", SHMAPPER). "</h3>
-				<div class='shm-12'>".
-					$obj->draw( [ 'height'=>$height, 'id' => $obj->id ] ).
-				"</div>
+				<div class='shm-12'>
+					<div class='shm-map-block'>
+					" . $obj->draw( [ 'height'=>$height, 'id' => $obj->id ] ) . "
+					</div>
+				</div>
 				<div class='shm-12'>
 					<input type='hidden' value='". $latitude ."' name='latitude' />
 					<input type='hidden' value='". $longitude ."' name='longitude' />
