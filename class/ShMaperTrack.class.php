@@ -611,7 +611,7 @@ class ShMaperTrack extends SMC_Post
 			,'menu_position' => 25 
 			,'show_in_menu' => "shm_page" 
 			,'supports' => [ 'title', 'editor' ]
-			,'capability_type' => 'post'
+			,'capability_type' => 'page'
 			,'taxonomies'          => [],
 		);
 		register_post_type(SHMAPPER_TRACKS_TRACK, $args);

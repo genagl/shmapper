@@ -44,7 +44,7 @@ class ShMapperTracksPoint extends SMC_Post
 			,'show_in_menu' => false
 			,'show_in_rest' => true
 			,'supports' => array(  'title', "editor", "thumbnail")
-			,'capability_type' => 'post'
+			,'capability_type' => 'page'
 		); 
 		register_post_type(SHMAPPER_TRACKS_POINT, $args);
 	}

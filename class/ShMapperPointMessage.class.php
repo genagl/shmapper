@@ -40,7 +40,7 @@ class ShMapperPointMessage extends SMC_Post
 			,'show_in_menu' => "shm_page"
 			,'show_in_rest' => true
 			,'supports' => array(  'title', "editor", "thumbnail")
-			,'capability_type' => 'post'
+			,'capability_type' => 'page'
 		);
 		register_post_type(SHMAPPER_POINT_MESSAGE, $args);
 	}
