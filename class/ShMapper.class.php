@@ -897,7 +897,7 @@ class ShMapper {
 		return [
 			[
 				"title"				=> esc_html__( 'Welcome to the Shmapper Configuration Wizard', 'shmapper-by-teplitsa' ),
-				"text"				=> __( "First, you need to specify the general settings. Click on the button <span class = 'dashicons dashicons-controls-play'> </span> to go to the desired section", "shmapper-by-teplitsa" ),
+				"text"				=> __( "First, you need to specify the general settings. Click on the button <span class='dashicons dashicons-controls-play'> </span> to go to the desired section", "shmapper-by-teplitsa" ),
 				"selector"			=> ' a[href="admin.php?page=shm_page"].toplevel_page_shm_page',
 				"parent_selector"	=> '#toplevel_page_shm_page',
 				"href"				=> admin_url( 'admin.php?page=shm_page' ),
