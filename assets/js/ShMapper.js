@@ -60,7 +60,8 @@ jQuery(document).ready(function($)
 	});
 	$( '.admin_voc' ).on( 'change', function(evt) {
 		$("#shm_vocabulary_cont").css("opacity", 0.7);
-		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), $(evt.currentTarget).val()]);
+		let value = $(evt.currentTarget).val().replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+		shm_send(["shm_voc", $(evt.currentTarget).attr("name"), value ]);
 	});
 	$("[name=shm_default_longitude]").on( 'change', function(evt) {
 		var shmDefaultLongitude = $('[name=shm_default_longitude]').val();
@@ -415,17 +416,20 @@ jQuery(document).ready(function($)
 function shm_send( params, type )
 {
 	var $ = jQuery;
+
+	console.log(params);
 	//console.log(params, type);
 	jQuery.post	(
-
 		myajax.url,
 		{
 			action	: 'myajax',
 			nonce	: myajax.nonce,
 			params	: params
 		},
+
 		function( response ) 
 		{
+
 			var $ = jQuery;
 			//console.log(response);
 			try
@@ -589,7 +593,7 @@ function shm_send( params, type )
 				}, 6000);
 
 			}
-		}		
+		}
 	);
 } 
 
