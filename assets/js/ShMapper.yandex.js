@@ -384,7 +384,7 @@ jQuery(document).ready(function($)
 					iconColor:elem.color,
 					iconLayout: 'default#image',
 					iconImageHref: elem.icon,
-					iconImageSize:[w, h], //[50,50], 
+					iconImageSize:[w, h],
 					iconImageOffset: [-w/2, -h/2],
 					term_id:elem.term_id,
 					type:'point',
