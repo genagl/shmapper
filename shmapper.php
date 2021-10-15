@@ -99,11 +99,6 @@ require_once SHM_REAL_PATH . 'shmapperTracks.plugin.php';
 register_activation_hook( __FILE__, array( 'ShMapper', 'activate' ) );
 register_activation_hook( __FILE__, array( 'ShMapperDrive', 'activate' ) );
 
-if ( function_exists( 'register_deactivation_hook' ) ) {
-	register_deactivation_hook(__FILE__, array( 'ShMapper', 'deactivate' ) );
-	register_deactivation_hook(__FILE__, array( 'ShMapperDrive', 'deactivate' ) );
-}
-
 /** Shamapper init */
 function init_shmapper() {
 	ShMapper::get_instance();
@@ -132,3 +127,11 @@ function shm_is_session() {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	return is_plugin_active( 'wp-session-manager/wp-session-manager.php' );
 }
+
+/**
+ * On activation plugin
+ */
+function shm_register_activation_hook() {
+	shm_flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'shm_register_activation_hook' );

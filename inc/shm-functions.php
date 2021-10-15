@@ -38,7 +38,6 @@ function shm_is_local(){
 	return $shm_is_local;
 };
 
-
 /**
  * Disable Gugenberg
  *
@@ -62,3 +61,17 @@ function shm_upload_mimes( $mime_types ) {
 	return $mime_types;
 }
 add_filter( 'upload_mimes', 'shm_upload_mimes' );
+
+/**
+ * Rewrite rules.
+ */
+function shm_flush_rewrite_rules(){
+	ShmMap::add_class();
+	ShMaperTrack::add_class();
+	ShMapperRequest::add_class();
+	ShMapperTracksPoint::add_class();
+	ShmPoint::add_class();
+	ShMapPointType::register_all();
+	ShMapTrackType::register_all();
+	flush_rewrite_rules();
+}
