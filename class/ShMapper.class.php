@@ -515,13 +515,12 @@ class ShMapper {
 		$vocabulary = '';
 		foreach($vocab as $key => $value)
 		{
-			$vocabulary .= "
-				<p>
-				<div><small class='shm-color-grey'>".
-					$value .
-				"</small></div>
-				<input class='sh-form admin_voc' name='shm_succ_request_text' value='".static::$options[$key]. "'/>
-			";
+			$vocabulary .= '
+				<div>
+					<small class="shm-color-grey">' . $value . '</small>
+				</div>
+				<input class="sh-form admin_voc" name="' . $key . '" value="' . static::$options[$key] . '">
+			';
 		}
 
 		echo "<div class='shm-container shm-padding-20'>
