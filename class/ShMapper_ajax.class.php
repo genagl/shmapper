@@ -35,7 +35,7 @@ class ShMapper_ajax
 	
 	static function insert_marker($data) {
 		$res 	= ShMapperRequest::insert($data);
-		
+
 		if( !ShMapper::$options['shm_map_marker_premoderation'] ) {
 			$point = ShmPoint::insert([
 				"post_title"	=> (string)$res->get("post_title"),
@@ -52,10 +52,8 @@ class ShMapper_ajax
 			{
 				set_post_thumbnail($point->id, (int)$attach_id);
 			}
-			
 			SMC_Post::delete($res->id);
 		}
-		
 		return $res;
 	}
 	
@@ -79,8 +77,8 @@ class ShMapper_ajax
 			switch( $response->success )
 			{
 				case(true):
-					$res    = static::insert_marker($data);
-					$msg 	= ShMapper::$options['shm_succ_request_text'];
+					$res = static::insert_marker($data);
+					$msg = ShMapper::$options['shm_succ_request_text'];
 					break;
 				default:
 					$msg 	= ShMapper::$options['shm_error_request_text'] . " : " . $response->errorCodes->msg;
@@ -127,7 +125,7 @@ class ShMapper_ajax
 					'log'	=> $ex->getTrace ()
 				  )
 			];
-			$d_obj		= json_encode( $d );				
+			$d_obj		= json_encode( $d );
 			print $d_obj;
 			wp_die();
 		}
@@ -141,7 +139,7 @@ class ShMapper_ajax
 		
 		$params	= $_POST['params'];
 		$action = sanitize_text_field($params[0]);
-		$d		= array( $action, array() );				
+		$d		= array( $action, array() );
 		switch($action)
 		{				
 			case "test":	
@@ -210,8 +208,8 @@ class ShMapper_ajax
 						"msg"	=> __("Wizzard restarted", SHMAPPER),
 					)
 				);
-				break; 	
-			case "shm_notify_req":	
+				break;
+			case "shm_notify_req":
 				$req_id = sanitize_text_field($params[1]);
 				$req = ShMapperRequest::get_instance($req_id);
 				$new_id = $req->notify();
@@ -340,7 +338,7 @@ class ShMapper_ajax
 						"text"		=> [ 
 							"title" 	=> sprintf(__("Are you want delete %s?", SHMAPPER), $map->get("post_title") ), 
 							"content" 	=> $map->get_delete_form( $href ),
-							"send" 		=> __("Delete"),
+							"send" 		=> __("Delete", SHMAPPER),
 							"sendHandler" => "shm_delete_map_hand",
 							"sendArgs" 	=> $id
 						],
@@ -356,7 +354,7 @@ class ShMapper_ajax
 					$action,
 					array( 
 						"text" => [
-							'title' 	=> esc_html__( 'add Map Point', SHMAPPER ),
+							'title' 	=> esc_html__( 'Add Map Point', SHMAPPER ),
 							"content" 	=> ShmPoint::get_insert_form( $params[1] ),
 							"send" 		=> esc_html__( 'Create', SHMAPPER ),
 							"sendHandler" => "create_point"
@@ -390,9 +388,10 @@ class ShMapper_ajax
 					)
 				);
 				break;
-			case "shm_voc":	
+			case "shm_voc":
 				$voc = sanitize_text_field($params[1]);
 				ShMapper::$options[$voc] = sanitize_text_field($params[2]);
+				//print_r(sanitize_text_field($params[2]));
 				ShMapper::update_options();
 				$d = array(	
 					$action,
@@ -451,17 +450,17 @@ class ShMapper_ajax
 				$d = array(	
 					$action,
 					array( 
-						"msg"	=> __(sanitize_text_field($params[1]) ? "Users can add Placemarks" : "Users don't can add Placemarks", SHMAPPER),
+						"msg"	=> sanitize_text_field($params[1]) ? esc_html__("Users can add Placemarks", SHMAPPER ) : esc_html__( "Users don't can add Placemarks", SHMAPPER),
 					)
 				);
 				break; 
-			case "shm_map_marker_premoderation":	
+			case "shm_map_marker_premoderation":
 				ShMapper::$options['shm_map_marker_premoderation'] = sanitize_text_field($params[1]);
 				ShMapper::update_options();
 				$d = array(	
 					$action,
-					array( 
-						"msg"	=>  __(sanitize_text_field($params[1]) ? "Pre-moderation on" : "Pre-moderation off", SHMAPPER),
+					array(
+						"msg"	=> sanitize_text_field($params[1]) ? __( "Pre-moderation on", SHMAPPER ) : __("Pre-moderation off", SHMAPPER),
 					)
 				);
 				break; 
@@ -471,7 +470,7 @@ class ShMapper_ajax
 				$d = array(	
 					$action,
 					array( 
-						"msg"	=>  __(sanitize_text_field($params[1]) ? "Reload mode" : "Not relaod mode", SHMAPPER),
+						"msg"	=> sanitize_text_field($params[1]) ? __("Reload mode", SHMAPPER ) : __("Not relaod mode", SHMAPPER),
 					)
 				);
 				break; 
@@ -481,7 +480,7 @@ class ShMapper_ajax
 				$d = array(	
 					$action,
 					array( 
-						"msg"	=> __(sanitize_text_field($params[1]) ? "captha added" : "captcha removed", SHMAPPER),
+						"msg"	=> sanitize_text_field($params[1]) ? __("Captcha added", SHMAPPER ) : __("Captcha removed", SHMAPPER),
 					)
 				);
 				break; 
@@ -511,7 +510,7 @@ class ShMapper_ajax
 				do_action("shm_ajax_submit", $params);
 				break;
 		}
-		$d_obj		= json_encode(apply_filters("shm_ajax_data", $d, $params));				
+		$d_obj		= json_encode(apply_filters("shm_ajax_data", $d, $params));	
 		print $d_obj;
 		wp_die();
 	}
