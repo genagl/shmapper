@@ -323,6 +323,17 @@ textarea:-ms-input-placeholder
 	opacity:1;
 }
 
+.shm-filter-item-svg {
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	top: 0px;
+	left: 1px;
+	background-size: 16px auto;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
 .shm-bubble 
 {
 	-moz-transform: scale(0);
@@ -1094,7 +1105,7 @@ input[type=checkbox].ganre_checkbox2:checked + label,
 input[type=radio].ganre_checkbox2:not(checked) + label 
 {
 	position: relative;
-	padding: 0 0 0 56px;
+	padding: 0 0 0 60px;
 	height: 55px;
 	vertical-align: middle;
 	display: table-cell;
@@ -1106,7 +1117,6 @@ input[type=checkbox].ganre_checkbox.checked + label:before,
 input[type=checkbox].ganre_checkbox:not(checked) + label:before, 
 input[type=checkbox].ganre_checkbox:checked + label:before, 
 input[type=radio].ganre_checkbox:not(checked) + label:before, 
-
 input[type=checkbox].ganre_checkbox2:not(checked) + label:before, 
 input[type=checkbox].ganre_checkbox2:checked + label:before, 
 input[type=radio].ganre_checkbox2:not(checked) + label:before 
@@ -1119,8 +1129,9 @@ input[type=radio].ganre_checkbox2:not(checked) + label:before
 	height: 50px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	background: #CDD1DA;
-	box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+	background: #f0f0f1;
+	border: 1px dashed #8599A4;
+	//box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
 }
 /* Меняем фон чекбокса, когда он включен. */
 input[type=checkbox].ganre_checkbox.checked + label:before, 
@@ -1130,7 +1141,8 @@ input[type=radio].ganre_checkbox:checked + label:before,
 input[type=checkbox].ganre_checkbox2:checked + label:before, 
 input[type=radio].ganre_checkbox2:checked + label:before 
 {
-	background: #8ca0ce;
+	background: #fff;
+	border: 1px solid #8599A4;
 }
 
 input[type=checkbox].ganre_checkbox:not(.checked) + label img,
@@ -1148,8 +1160,8 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 	position:absolute;
 	top:14px;
 	left:15px;
-	-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-	filter: grayscale(100%);
+	-webkit-filter: grayscale(50%); /* Safari 6.0 - 9.0 */
+	filter: grayscale(50%);
 	opacity:0.5;
 	-webkit-transition: all 300ms ease-out;
 	-moz-transition: all 300ms ease-out;
@@ -1157,6 +1169,15 @@ input[type=radio].ganre_checkbox2:not(checked) + label img
 	-o-transition: all 300ms ease-out;
 	transition: all 300ms ease-out;
 }
+
+input[type=radio].ganre_checkbox:not(:checked) + label .shm-marker-svg,
+input[type=checkbox].ganre_checkbox2:not(:checked) + label .shm-filter-item-svg {
+	opacity: .5;
+	-webkit-filter: grayscale(30%); /* Safari 6.0 - 9.0 */
+	filter: grayscale(30%);
+}
+
+
 input[type=checkbox].ganre_checkbox.checked + label img,
 input[type=checkbox].ganre_checkbox:checked + label img,
 input[type=radio].ganre_checkbox:checked + label img,
@@ -1202,7 +1223,7 @@ input[type=radio].shm-marker-checkbox + label img {
 	width: 30px !important;
 	height: 30px !important;
 	top: 10px !important;
-	left: 10px !important;
+	left: 11px !important;
 }
 
 .shm-muffle
@@ -1433,6 +1454,12 @@ input[type=radio].shm-marker-checkbox + label img {
 	background-color: #888888;
 }
 
+.leaflet-popup {
+	&-tip-container {
+		bottom: -19px;
+	}
+}
+
 
 /* admin footer */
 .shmapper-admin-footer {
@@ -1492,6 +1519,16 @@ input[type=radio].shm-marker-checkbox + label img {
 	display: block;
 	top: -8px;
 	left: calc( 100% + 10px );
+}
+
+.shm-marker-svg {
+	position: absolute;
+	top: 0px;
+	left: 0;
+	width: 52px;
+	height: 52px;
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 
 @import 'panel';

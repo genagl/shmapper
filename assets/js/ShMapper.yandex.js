@@ -103,7 +103,7 @@ jQuery(document).ready(function($)
 
 	if( $('.shm-type-icon').length ) {
 
-		$(".shm-type-icon").draggable(
+		$(".shm-form-request .shm-type-icon").draggable(
 		{
 			revert: false,
 			cursorAt: {
@@ -390,6 +390,10 @@ jQuery(document).ready(function($)
 					type:'point',
 					draggable: isDraggable
 				};
+
+				if ( elem.default_icon ) {
+					paramet.iconImageOffset = [-w/2, -h+3];
+				}
 			}
 			else if( mData.default_icon && !elem.color)
 			{

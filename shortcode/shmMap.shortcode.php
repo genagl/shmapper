@@ -45,8 +45,10 @@ function shmMap($args)
 	{
 		$html 	.= $map->draw($args);
 	}
+
 	if( $form_enb && $map->get_meta("is_form") && !ShMapper::$options['shm_map_is_crowdsourced'])
 	{
+			
 		$form_title = $map->get_meta( 'form_title' );
 		if ( $form_title ) {
 			$form_title = '<div class="shm-form-title">' . esc_html( $form_title ) . '</div>';

@@ -504,6 +504,8 @@ class ShMapper {
 			$longitude = static::$options['shm_default_longitude'];
 		}
 
+		$default_marker = shm_get_default_marker();
+
 		$map_type = ShmMap::get_map_types()[ self::$options['map_api'] ][0];
 		$vocab = apply_filters(
 			"", [
@@ -695,12 +697,13 @@ class ShMapper {
 									p.longitude 	= '$longitude'; 
 									p.location 		= ''; 
 									p.draggable 	= 1; 
-									p.type 			= '-1'; 
-									p.height 		= ''; 
-									p.width 		= ''; 
-									p.term_id 		= '-1'; 
-									p.icon 			= ''; 
-									p.color 		= '';
+									p.type 			= '-1';
+									p.term_id 		= '-1';
+									p.height 		= '" . $default_marker["height"] . "';
+									p.width 		= '" . $default_marker["width"] . "';
+									p.icon 			= \"" . $default_marker["icon"] . "\";
+									p.default_icon  = \"" . $default_marker["icon"] . "\";
+									p.color 		= '" . $default_marker["color"] . "';
 
 									points.push(p);
 
@@ -728,19 +731,20 @@ class ShMapper {
 									// if is OpenStreetMap
 									var points 		= [],
 									p = {}; 
-									p.post_id 	= '';
-									p.post_title 	= '" . esc_html__( "Coordinates", SHMAPPER ) . "';
-									p.post_content 	= '';
-									p.latitude 		= '$latitude'; 
-									p.longitude 	= '$longitude'; 
-									p.location 		= ''; 
-									p.draggable 	= 1; 
-									p.type 			= '-1'; 
-									p.height 		= ''; 
-									p.width 		= ''; 
-									p.term_id 		= '-1'; 
-									p.icon 			= ''; 
-									p.color 		= '';
+									p.post_id       = '';
+									p.post_title    = '" . esc_html__( "Coordinates", SHMAPPER ) . "';
+									p.post_content  = '';
+									p.latitude      = '$latitude'; 
+									p.longitude     = '$longitude'; 
+									p.location      = '';
+									p.draggable     = 1;
+									p.type          = '-1';
+									p.term_id       = '-1';
+									p.height        = '" . $default_marker["height"] . "';
+									p.width         = '" . $default_marker["width"] . "';
+									p.icon          = \"" . $default_marker["icon"] . "\";
+									p.color         = '" . $default_marker["color"] . "';
+									p.default_icon  = \"" . $default_marker["icon"] . "\";
 
 									points.push(p);
 

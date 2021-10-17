@@ -720,7 +720,11 @@ class ShmForm
 			foreach($terms as $term_id)
 			{
 				$clr  = get_term_meta($term_id, "color", true);
-				$icon = '';
+
+
+				$default_marker = shm_get_default_marker( $clr );
+
+				$icon = '&quot;' . $default_marker['icon'] . '&quot;';
 				if ( ShMapPointType::get_icon_src($term_id) ) {
 					$icon = ShMapPointType::get_icon_src($term_id)[0];
 				}
@@ -770,6 +774,13 @@ class ShmForm
 						$icon_width = "";
 						$icon_height = "";
 					}
+
+					$default_marker = shm_get_default_marker();
+
+					$icon = '&quot;' . $default_marker['icon'] . '&quot;';
+
+					$icon_width = $default_marker['width'];
+					$icon_height = $default_marker['height'];
 
 					$style_attr = 'style="background-image:url(' . $icon . ');background-size: '. $icon_width . 'px ' . $icon_height . 'px;"';
 

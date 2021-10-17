@@ -291,12 +291,12 @@ class ShmPoint extends SMC_Post
 					$image_background_src = wp_get_attachment_image_src( $diid, [60, 60] );
 					if ( $image_background_src ) {
 						$image_background_url = $image_background_src[0];
+					} else {
+						$default_marker = shm_get_default_marker();
+						$image_background_url = '&quot;' . $default_marker['icon'] . '&quot;';
 					}
-					$icon	= "<div 
-						class='shm_type_icon' 
-						style='background-image:url(" . esc_attr( $image_background_url ) . ");'
-						>
-					</div>";	
+					$icon = '<div class="shm_type_icon" style="background-image:url(' . esc_attr( $image_background_url ) . ');">
+					</div>';
 					echo $icon;
 				}
 				break;
@@ -437,11 +437,20 @@ class ShmPoint extends SMC_Post
 			</div>	";
 		$point = $this->body;
 
-		$icon = '';
+		$color  = get_term_meta($term_id, "color", true) ? get_term_meta($term_id, "color", true) : '#f43724';
+
+		$default_marker = shm_get_default_marker( $color );
+
+		$icon = $default_marker["icon"];
 		$icon_src = ShMapPointType::get_icon_src( $term_id );
 		if ( $icon_src ) {
 			$icon = $icon_src[0];
 		}
+
+		$height = get_term_meta($term_id, "height", true) ? get_term_meta($term_id, "height", true) : $default_marker["height"];
+		$width  = get_term_meta($term_id, "width", true) ? get_term_meta($term_id, "width", true) : $default_marker["width"];
+		
+
 		$html 	.= "
 		<script type='text/javascript'>
 			jQuery(document).ready( function($)
@@ -454,13 +463,14 @@ class ShmPoint extends SMC_Post
 				p.latitude 		= '" . esc_attr( $latitude ) . "'; 
 				p.longitude 	= '" . esc_attr( $longitude ) . "'; 
 				p.location 		= '" . esc_js($location) . "'; 
-				p.draggable 	= " . ( is_admin() ? 1 : 0) . "; 
-				p.type 			= '" . $term_id . "'; 
-				p.height 		= '" . get_term_meta($term_id, "height", true) . "'; 
-				p.width 		= '" . get_term_meta($term_id, "width", true) . "'; 
+				p.draggable 	= " . ( is_admin() ? 1 : 0) . ";
 				p.term_id 		= '" . esc_attr( $term_id ) . "';
-				p.icon 			= '" . $icon . "'; 
-				p.color 		= '" . get_term_meta($term_id, 'color', true) . "';
+				p.type 			= '" . $term_id . "'; 
+				p.height 		= '" . $height . "'; 
+				p.width 		= '" . $width . "'; 
+				p.icon          = \"" . $icon . "\";
+				p.color 		= '" . $color . "';
+				p.default_icon  = \"" . $icon . "\";
 
 				points.push(p);
 

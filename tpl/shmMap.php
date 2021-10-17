@@ -147,6 +147,25 @@ function draw_shMap($map, $args )
 
 	//line javascript.
 	foreach ( $points as $point ) {
+
+		$icon = $point->icon;
+		$point_height = $point->height;
+		$point_width = $point->width;
+		if ( ! $point->icon ) {
+			$color = '#f43724';
+			if ( isset( $point->color ) && $point->color ) {
+				$color = $point->color;
+			}
+			$default_marker = shm_get_default_marker( $color );
+			$icon = $default_marker['icon'];
+			if ( ! $point_height ) {
+				$point_height = $default_marker['height'];
+			}
+			if ( ! $point_width ) {
+				$point_width = $default_marker['width'];
+			}
+		};
+
 		$p .= " 
 			var p = {}; 
 			p.post_id 	= '" . esc_attr( $point->ID ) . "';
@@ -157,10 +176,10 @@ function draw_shMap($map, $args )
 			p.location 		= '" . esc_js( $point->location ) . "';
 			p.type 			= '" . esc_attr( $point->type ) . "';
 			p.term_id 		= '" . esc_attr( $point->term_id ) . "';
-			p.icon 			= '" . esc_attr( $point->icon ) . "';
+			p.icon 			= \"" . $icon . "\";
 			p.color 		= '" . esc_attr( $point->color ) . "';
-			p.height 		= " . esc_attr( $point->height ) . ";
-			p.width 		= " . esc_attr( $point->width ) . ";
+			p.height 		= " . esc_attr( $point_height ) . ";
+			p.width 		= " . esc_attr( $point_width ) . ";
 			points.push(p);
 			";
 	}
@@ -178,7 +197,10 @@ function draw_shMap($map, $args )
 	$icon = '';
 	if ( wp_get_attachment_image_src($default_icon_id ) ) {
 		$icon = wp_get_attachment_image_src($default_icon_id, [60, 60] )[0];
+		$icon = SHM_URLPATH . 'assets/img/default-marker.svg';
 	}
+
+
 
 	$html .= "
 	<script type='text/javascript'>

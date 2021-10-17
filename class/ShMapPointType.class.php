@@ -226,7 +226,10 @@ class ShMapPointType
 		$color 		= get_term_meta($term->term_id, "color", true);
 		$icon  		= (int)get_term_meta($term->term_id, "icon", true);
 		$d 			= wp_get_attachment_image_src($icon, array(100, 100));
-		$cur_bgnd = '';
+
+		$default_marker = shm_get_default_marker( $color );
+
+		$cur_bgnd = '&quot;' . $default_marker['icon'] . '&quot;';
 		if ( $d ) {
 			$cur_bgnd = $d[0];
 		}
@@ -234,15 +237,12 @@ class ShMapPointType
 		if ( $cur_bgnd ) {
 			$color = 'transparent';
 		}
-		return "
-		<div class='ganre_picto $class' term='". SHM_POINT_TYPE ."' term_id='$term->term_id' >
-			<div 
-				class='shm_type_icon' 
-				style='background-color:$color; background-image:url($cur_bgnd);'
-				>
-			</div>
-			<div class='ganre_label'>" . $term->name . "</div>
-		</div>";
+
+		return '
+		<div class="ganre_picto ' . $class . '" term="' . SHM_POINT_TYPE . '" term_id="' . $term->term_id . '">
+			<div class="shm_type_icon" style="background-image:url(' . $cur_bgnd . ');"></div>
+			<div class="ganre_label">' . $term->name . '</div>
+		</div>';
 	}
 	static function get_all_ids()
 	{
@@ -305,16 +305,30 @@ class ShMapPointType
 
 	static function get_icon_default_marker( $color )
 	{
+
 		if ( ! $color ) {
-			$color = '#2f80ed';
+			$color = '#f43724';
 		}
-		$marker = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512">
-			<g>
-				<path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
-					c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719
-					c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z" fill="' . $color . '"/>
-			</g>
-		</svg>';
+		$color = str_replace('#', '', $color );
+		$color_second = shm_colour_brightness($color, 0.6);
+
+		$marker = '
+		<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="36px" viewBox="13 11 30 36">
+			<path fill="#' . $color_second . '" d="M42.929,24.838c-0.234-2.622-1.135-5.137-2.615-7.3c-1.48-2.163-3.489-3.899-5.829-5.039
+				c-2.341-1.14-4.933-1.644-7.523-1.463c-2.59,0.181-5.09,1.04-7.255,2.494c-1.854,1.257-3.411,2.915-4.558,4.855
+				c-1.147,1.94-1.856,4.113-2.077,6.364c-0.216,2.236,0.061,4.493,0.812,6.606s1.956,4.032,3.529,5.614l9.353,9.501
+				c0.164,0.168,0.359,0.301,0.574,0.392S27.785,47,28.018,47s0.464-0.047,0.679-0.138c0.215-0.091,0.41-0.224,0.574-0.392l9.317-9.501
+				c1.573-1.583,2.778-3.501,3.529-5.614c0.751-2.114,1.028-4.37,0.812-6.606V24.838z M36.117,34.447L28,42.677l-8.117-8.231
+				c-1.196-1.213-2.113-2.68-2.683-4.295c-0.571-1.615-0.781-3.338-0.617-5.045c0.166-1.734,0.709-3.408,1.591-4.903
+				c0.882-1.495,2.08-2.772,3.509-3.739c1.872-1.261,4.07-1.934,6.317-1.934s4.445,0.673,6.317,1.934
+				c1.424,0.964,2.62,2.235,3.502,3.723c0.882,1.488,1.428,3.156,1.598,4.883c0.17,1.713-0.038,3.443-0.609,5.065
+				C38.237,31.757,37.318,33.23,36.117,34.447z M36.117,34.447L28,42.677l-8.117-8.231c-1.196-1.213-2.113-2.68-2.683-4.295
+				c-0.571-1.615-0.781-3.338-0.617-5.045c0.166-1.734,0.709-3.408,1.591-4.903c0.882-1.495,2.08-2.772,3.509-3.739
+				c1.872-1.261,4.07-1.934,6.317-1.934s4.445,0.673,6.317,1.934c1.424,0.964,2.62,2.235,3.502,3.723
+				c0.882,1.488,1.428,3.156,1.598,4.883c0.17,1.713-0.038,3.443-0.609,5.065C38.237,31.757,37.318,33.23,36.117,34.447z"/>
+			<ellipse fill="#' . $color . '" cx="28" cy="26" rx="10.5" ry="10.5"/>
+		</svg>
+		';
 
 		return $marker;
 	}
@@ -368,30 +382,36 @@ class ShMapPointType
 			$icon 		= get_term_meta($ganre->term_id, "icon", true);
 			$color 		= get_term_meta($ganre->term_id, "color", true);
 			$d 			= wp_get_attachment_image_src($icon, array(100, 100));
+
+			$default_marker = shm_get_default_marker( $color );
+
+			$icon = '&quot;' . $default_marker['icon'] . '&quot;';
 			$cur_bgnd = '';
 			if ( $d ) {
 				$cur_bgnd = $d[0];
 			}
 			$before 	= "";
 			$after 		= "";
+
 			switch( $form_factor )
 			{
 				case "large":
+
+					$marker = $cur_bgnd ? '<img src="' . $cur_bgnd . '" alt="">' : '<div class="shm-marker-svg" style="background-image:url(&quot;' . $default_marker['icon'] . '&quot;);background-size: ' . $default_marker['width'] . 'px ' . $default_marker['height'] . 'px"></div>';
 					$class = "ganre_checkbox shm-marker-checkbox";
 					$before = "<div class='$col_width'>";
-					$after = "
-						<label for='" . $params['prefix'] . "_" . $ganre->term_id . "'>
-							" . $ganre->name . 
-							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr' style='background:$color;'></div>") .
-						"</label>
-					</div>";
+					$after = '
+						<label for="' . $params['prefix'] . '_' . $ganre->term_id . '">
+							' . $ganre->name . 
+							$marker .
+						'</label>
+					</div>';
 					break;
 				case "stroke":
 					$class = "ganre_checkbox2";
-					$after = "
-						<label for='" . $params['prefix'] . "_" . $ganre->term_id . "' title='" . $ganre->name . "'>".
-							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr-little' style='background:$color;'></div>").
-						"</label>";
+					$img = $cur_bgnd ? '<img src="' . $cur_bgnd . '" alt="">' : '<div class="shm-filter-item-svg" style="background-image:url(' . $icon . ');"></div>';
+					$after = '
+						<label for="' . $params['prefix'] . '_' . $ganre->term_id . '" title="' . $ganre->name . '">' . $img . '</label>';
 					break;
 				case "stroke-large":
 					$class = "ganre_checkbox";
@@ -422,6 +442,9 @@ class ShMapPointType
 			if ( ! isset( $class ) ) {
 				$class = 'ganre_checkbox';
 			}
+
+			$default_marker = shm_get_default_marker();
+			$marker_html = '<div class="shm-marker-svg" style="background-image:url(&quot;' . $default_marker['icon'] . '&quot;);background-size: ' . $default_marker['width'] . 'px ' . $default_marker['height'] . 'px"></div>';
 			$html .= "
 			<div class='$col_width'>
 				<input 
@@ -430,12 +453,13 @@ class ShMapPointType
 					"id='" . $params['prefix'] . "_" . 0 . "'
 					term_id='" . 0 . "'
 					class='$class'
-					value='" . 0 . "' ".
-					checked(1, in_array( 0, $selected) ? 1 : 0, false).
+					value='" . -1 . "' ".
+					checked( -1, $selected[0], false ).
 				"/>
 				<label for='" . $params['prefix'] . "_" . 0 . "'>" . 
-					__("None", SHMAPPER) . 
-					"<div class='shm-clr' style='background:#ffffff;'></div>" .
+					__("Default Marker", SHMAPPER) . 
+					//"<div class='shm-clr' style='background:#ffffff;'></div>" .
+					$marker_html .
 				"</label>
 			</div>";
 		}
