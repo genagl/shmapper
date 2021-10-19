@@ -112,11 +112,19 @@ jQuery(document).ready(function($)
 		evt.preventDefault();
 		shm_send(['shm_csv', $(evt.currentTarget).attr("map_id")]);
 	});
+
+
+	$(document).on( 'change', '[name="shm-new-type"]', function( e ) {
+		console.log(this.value);
+		$(this).parents('.point_type_swicher').find('[name="shm-new-point-type"]').val(this.value);
+	});
 	create_point = function()
 	{
 		$(".shm-alert").removeClass("shm-alert");
 		var s = ["shm-new-point-title", "shm-new-point-content"];
 		var alerting = [];
+
+		console.log($("[name='shm-new-type']").val());
 		s.forEach(function(elem)
 		{
 			if($("[name='" + elem + "']").val() == "")
@@ -129,6 +137,7 @@ jQuery(document).ready(function($)
 			alerting.forEach(function(elem) {$("[name='" + elem + "']").addClass("shm-alert") });
 			return;
 		}
+
 		shm_send(['shm_create_map_point', {
 			map_id: $("[name='shm_map_id']").val(),
 			latitude: $("[name='shm_x']").val(), 
@@ -173,27 +182,32 @@ jQuery(document).ready(function($)
 		if(map_type == 1)
 		{
 			var paramet;
+
 			if( elem.icon )
 			{
 				paramet = {
 					balloonMaxWidth: 250,
 					hideIconOnBalloonOpen: false,
-					iconColor:elem.color,
+					iconColor: elem.color,
 					iconLayout: 'default#image',
 					iconImageHref: elem.icon,
-					iconImageSize:[elem.height, elem.height], //[50,50], 
-					iconImageOffset: [-elem.height/2, -elem.height/2],
+					iconImageSize:[elem.width, elem.height], //[50,50], 
+					iconImageOffset: [-elem.width/2, -elem.height/2],
 					term_id:elem.term_id,
 					type:'point'
 				};
 			}
 			else
 			{
+
 				paramet = {
 					balloonMaxWidth: 250,
 					hideIconOnBalloonOpen: false,
-					iconColor: elem.color ? elem.color : '#FF0000',
-					preset: 'islands#dotIcon',
+					iconColor: elem.color,
+					iconLayout: 'default#image',
+					iconImageHref: elem.default_icon,
+					iconLayout: 'default#image',
+					//preset: 'islands#dotIcon',
 					term_id:elem.term_id,
 					type:'point',
 				}
@@ -221,11 +235,11 @@ jQuery(document).ready(function($)
 				icons[elem.term_id] = L.icon({
 					iconUrl: elem.icon,
 					shadowUrl: '',
-					iconSize:     [elem.height, elem.height], // size of the icon
-					shadowSize:   [elem.height, elem.height], // size of the shadow
-					iconAnchor:   [elem.height/2, elem.height/2], // point of the icon which will correspond to marker's location
+					iconSize:     [elem.width, elem.height], // size of the icon
+					shadowSize:   [elem.width, elem.height], // size of the shadow
+					iconAnchor:   [elem.width/2, elem.height/2], // point of the icon which will correspond to marker's location
 					shadowAnchor: [0, elem.height],  // the same for the shadow
-					popupAnchor:  [-elem.height/4, -elem.height/2] // point from which the popup should open relative to the iconAnchor
+					popupAnchor:  [-elem.width/4, -elem.height/2] // point from which the popup should open relative to the iconAnchor
 				});
 				var shoptions = elem.icon != '' ? {icon: icons[elem.term_id]} : {};		
 				var marker = L.marker([ elem.latitude, elem.longitude ], shoptions )
@@ -235,13 +249,24 @@ jQuery(document).ready(function($)
 			}
 			else
 			{
-				var clr = elem.color ? elem.color : '#FF0000'
-				var style = document.createElement('style');
-				style.type = 'text/css';
-				style.innerHTML = '.__class'+ elem.post_id + ' { color:' + clr + '; }';
-				document.getElementsByTagName('head')[0].appendChild(style);
-				var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
-				var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });//
+				// var clr = elem.color ? elem.color : '#FF0000'
+				// var style = document.createElement('style');
+				// style.type = 'text/css';
+				// style.innerHTML = '.__class'+ elem.post_id + ' { color:' + clr + '; }';
+				// document.getElementsByTagName('head')[0].appendChild(style);
+				// var classes = 'dashicons dashicons-location shm-size-40 __class'+ elem.post_id;
+				// var myIcon = L.divIcon({className: classes, iconSize:L.point(40, 40) });//
+
+				myIcon = L.icon({
+					iconUrl: elem.default_icon,
+					shadowUrl: '',
+					iconSize:     [elem.width, elem.height], // size of the icon
+					shadowSize:   [elem.width, elem.height], // size of the shadow
+					iconAnchor:   [elem.width/2, elem.height/2], // point of the icon which will correspond to marker's location
+					shadowAnchor: [0, elem.height],  // the same for the shadow
+					popupAnchor:  [-elem.width/4, -elem.height/2] // point from which the popup should open relative to the iconAnchor
+				});
+
 				L.marker([ elem.latitude, elem.longitude ], {icon: myIcon})
 					.addTo(shm_maps[elem.mapid])
 						.bindPopup('<div class=\"shml-title\">' + elem.post_title +'</div><div class=\"shml-body\">' + elem.post_content + '</div>');
@@ -382,6 +407,7 @@ jQuery(document).ready(function($)
 	//
 	shm_add_modal = function (data)
 	{
+		console.log(data);
 		if(typeof data == "string")
 		{
 			data={content: data};

@@ -367,15 +367,21 @@ class ShMapper_ajax
 				$point = ShmPoint::insert($data);
 				$type_term_id = sanitize_text_field($data['type']);
 				$type = get_term($type_term_id, SHM_POINT_TYPE);
+
+				$color = get_term_meta($type->term_id, "color", true) ? get_term_meta($type->term_id, "color", true) : '#f43724';
+				$default_marker = shm_get_default_marker( $color );
+
 				$pointdata = [
 					"post_title"	=> sanitize_text_field($data["post_title"]),
 					"post_content"	=> $data["post_content"],
 					"latitude"		=> sanitize_text_field($data["latitude"]),
 					"longitude"		=> sanitize_text_field($data["longitude"]),
 					"location"		=> sanitize_text_field($data["location"]),
-					"color"			=> get_term_meta($type->term_id, "color", true),
+					"color"			=> $color,
+					"width"		    => get_term_meta($type->term_id, "width", true),
 					"height"		=> get_term_meta($type->term_id, "height", true),
 					"icon"			=> ShMapPointType::get_icon_src($type->term_id)[0],
+					"default_icon" => $default_marker['icon'],
 					"term_id"		=> $type_term_id,
 					"mapid"			=> "ShmMap".sanitize_text_field($data['map_id']).sanitize_text_field($data['map_id'])
 				];
