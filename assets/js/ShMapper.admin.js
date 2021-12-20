@@ -48,7 +48,7 @@ jQuery(document).ready(function($)
 
 	/* ADMIN FROM CODEX */
 	/* https://codex.wordpress.org/Plugin_API/Action_Reference/bulk_edit_custom_box*/
-	if( inlineEditPost != undefined )
+	if (typeof inlineEditPost !== 'undefined')
 	{
 		// we create a copy of the WP inline edit post function
 		var $wp_inline_edit = inlineEditPost.edit;
