@@ -801,7 +801,7 @@ class ShmForm
 				$element_req = '<span class="shm-form-required-simbol" title="' . __("This required field", SHMAPPER) . '">*</span>';
 			}
 
-			$element_title = $element['title'] ? "<div class='shm-form-row-title ".(count($terms) > 1 ? "_hidden" : "")."' data-rel='shm_point_loc'>" . $element['title'] . $element_req . "</div>" : "";
+			$element_title = isset( $element['title'] ) ? "<div class='shm-form-row-title ".(count($terms) > 1 ? "_hidden" : "")."' data-rel='shm_point_loc'>" . $element['title'] . $element_req . "</div>" : "";
 
 			return "<div class='" . $container_class . "' $require >$icons</div>
 			<input type=hidden name='shm_point_type' class='sh-form shm-bg-transparent small' />

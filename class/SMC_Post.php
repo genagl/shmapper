@@ -386,9 +386,9 @@
 			$SMC_Object_type	= SMC_Object_Type::get_instance();
 			$obj				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];
 			$posts_columns = array(
-				"cb" 				=> " ",
-				//"IDs"	 			=> __("ID", 'smp'),
-				"title" 			=> __("Title")
+				"cb"    => " ",
+				"ids"   => __("ID", 'shmapper-by-teplitsa'),
+				"title" => __("Title", 'shmapper-by-teplitsa')
 			);
 			//insertLog("add_views_column", "----");
 			foreach($obj as $key=>$value)
@@ -411,12 +411,13 @@
 			
 			switch( $column_name) 
 			{		
-				case 'IDs':
-					$color				= $p->get_meta( "color" );
-					if($post_id)
-						echo "<div class='IDs'><span style='background-color:#$color;'>ID</span>".$post_id. "</div>
-					<p>";
-					break;	
+				case 'ids':
+					echo $post_id;
+					// $color				= $p->get_meta( "color" );
+					// if($post_id)
+					// 	echo "<div class='IDs'><span style='background-color:#$color;'>ID</span>".$post_id. "</div>
+					// <p>";
+					break;
 				default:
 					if(array_key_exists($column_name, $obj))
 					{
@@ -482,9 +483,8 @@
 										if($meta)
 										{
 											$p = get_post($meta);
-											$post_title = $p->post_title;
+											$post_title = isset( $p->post_title ) ? $p->post_title : '';
 											$color = get_post_meta($meta, "color", true);
-											
 											echo "
 											<strong>$post_title</strong>
 											<br>

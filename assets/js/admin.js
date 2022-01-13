@@ -59,8 +59,7 @@ jQuery(document).ready(function($)
 		showHideGPXParams();
 	});
 	showHideGPXParams();
-	
-	
+
 	/*
 	 *	Edit track
 	 */

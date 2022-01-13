@@ -1488,6 +1488,10 @@ tfoot .shm-notify2:after {
 	background-position: center;
 }
 
+.column-type .shm_type_icon {
+	background-size: contain;
+}
+
 .type-shm_point .shm_type_icon {
 	background-size: contain;
 	width: 30px;
