@@ -225,7 +225,7 @@ jQuery(document).ready(function($)
 				pseudoFullscreen: false
 			} : false,
 			zoomControl:mData.isZoomer,
-			dragging:!mData.isDesabled,
+			dragging:!mData.isDrag,
 			//boxZoom:true,
 		});
 
@@ -270,10 +270,11 @@ jQuery(document).ready(function($)
 		geocodeService = L.esri.Geocoding.geocodeService();
 		//L.esri.basemapLayer("Topographic").addTo(myMap);
 		
-		if(mData.isDesabled)
+		if( mData.isScrollZoom ) {
 			myMap.scrollWheelZoom.disable();
-		else
+		} else {
 			myMap.scrollWheelZoom.enabled();
+		}
 		
 		
 		//search 

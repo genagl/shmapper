@@ -15,33 +15,35 @@ function draw_shMap($map, $args )
 	$legend = "";
 	$p      = "";
 
-	$mapType	= $map->get_meta("map_type");
-	$mapType	= $mapType && ShMapper::$options['map_api']  == array_keys($mapType)[0]
-		? $mapType 
-		: ShmMap::get_map_types();
-	$mapType	= $mapType[ ShMapper::$options['map_api'] ][0];
-	$id 		= $map->id;
-	$muniq		= isset($args['uniq']) ? $args['uniq'] : $id;
-	$uniq		= "ShmMap$id$muniq";
-	$title		= $map->get("post_title");
-	$height		= isset($args['height']) ? $args['height'] : $map->get("height");
-	$width		= $map->get_meta("width");
-	$width 		= $width ? $width."px" : "100%";
-	$latitude	= $map->get_meta("latitude");
-	$longitude	= $map->get_meta("longitude");
-	$is_lock	= $map->get_meta("is_lock");
-	$is_layer_switcher	= $map->get_meta("is_layer_switcher");
-	$is_zoomer	= $map->get_meta("is_zoomer");
-	$is_search	= $map->get_meta("is_search");
-	$is_clustered= $map->get_meta("is_clustered");
-	$is_legend 	= $map->get_meta("is_legend");
-	$is_filtered = $map->get_meta("is_filtered");
-	$is_fullscreen = $map->get_meta("is_fullscreen");
-	$zoom		= $map->get_meta("zoom");
-	$latitude	= $latitude		? $latitude	 : 55;
-	$longitude	= $longitude	? $longitude : 55;
-	$zoom		=  $zoom ? $zoom : 4;
-	$leg 		= "";
+	$mapType           = $map->get_meta("map_type");
+	$mapType           = $mapType && ShMapper::$options['map_api'] == array_keys($mapType)[0] ? $mapType : ShmMap::get_map_types();
+	$mapType           = $mapType[ ShMapper::$options['map_api'] ][0];
+	$id                = $map->id;
+	$muniq             = isset($args['uniq']) ? $args['uniq'] : $id;
+	$uniq              = "ShmMap$id$muniq";
+	$title             = $map->get("post_title");
+	$height            = isset($args['height']) ? $args['height'] : $map->get("height");
+	$width             = $map->get_meta("width");
+	$width             = $width ? $width."px" : "100%";
+	$latitude          = $map->get_meta("latitude");
+	$longitude         = $map->get_meta("longitude");
+	$is_lock           = $map->get_meta("is_lock");
+
+	$is_scroll_zoom    = $map->get_meta("is_scroll_zoom");
+	$is_drag           = $map->get_meta("is_drag");
+
+	$is_layer_switcher = $map->get_meta("is_layer_switcher");
+	$is_zoomer         = $map->get_meta("is_zoomer");
+	$is_search         = $map->get_meta("is_search");
+	$is_clustered      = $map->get_meta("is_clustered");
+	$is_legend         = $map->get_meta("is_legend");
+	$is_filtered       = $map->get_meta("is_filtered");
+	$is_fullscreen     = $map->get_meta("is_fullscreen");
+	$zoom              = $map->get_meta("zoom");
+	$latitude          = $latitude ? $latitude : 55;
+	$longitude         = $longitude ? $longitude : 55;
+	$zoom              = $zoom ? $zoom : 4;
+	$leg               = "";
 	$highlight_country = $map->get_meta( 'highlight_country' );
 	$overlay_color     = $map->get_meta( 'overlay_color' );
 	$border_color      = $map->get_meta( 'border_color' );
@@ -232,7 +234,8 @@ function draw_shMap($map, $args )
 				isClausterer	: ". ($is_clustered ? 1 : 0). ",
 				isLayerSwitcher	: ". ($is_layer_switcher ? 1 : 0). ",
 				isFullscreen	: ". ($is_fullscreen ? 1 : 0). ",
-				isDesabled		: ". ($is_lock ? 1 : 0). ",
+				isScrollZoom    : ". ($is_scroll_zoom ? 1 : 0 ). ",
+				isDrag          : ". ($is_drag ? 1 : 0 ). ",
 				isSearch		: ". ($is_search ? 1 : 0). ",
 				isZoomer		: ". ($is_zoomer ? 1 : 0). ",
 				isAdmin			: ". (is_admin() ? 1 : 0). ",

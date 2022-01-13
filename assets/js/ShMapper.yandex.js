@@ -329,11 +329,14 @@ jQuery(document).ready(function($)
 				float: 'none'
 			});
 		}
-		
-		//config map behaviors
-		if(mData.isDesabled)
-		{
+
+		// Disable scoll zoom.
+		if ( mData.isScrollZoom ) {
 			myMap.behaviors.disable('scrollZoom');
+		}
+
+		// Disable dragging.
+		if ( mData.isDrag ) {
 			myMap.behaviors.disable('drag');
 		}
 

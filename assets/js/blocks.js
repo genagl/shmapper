@@ -92,8 +92,8 @@
 
 		// Register Block Type shmapper/map.
 		registerBlockType( 'shmapper/map', {
-			title: __( 'Shmapper Map', 'shmapper' ),
-			description: __( 'Display customizable map block with markers.', 'shmapper' ),
+			title: __( 'Shmapper Map', 'shmapper-by-teplitsa' ),
+			description: __( 'Display customizable map block with markers.', 'shmapper-by-teplitsa' ),
 			icon: icon,
 			category: 'shmapper',
 			keywords: [ 'shmapper', 'map', 'form' ],
@@ -148,7 +148,7 @@
 					}
 					return el( BaseControl, null,
 						el( __experimentalBoxControl, {
-							label: __( 'Form External Spacing', 'shmapper' ),
+							label: __( 'Form External Spacing', 'shmapper-by-teplitsa' ),
 							values: attributes.formSpacing,
 							units: [
 								{ value: 'px', label: 'px'},
@@ -170,19 +170,19 @@
 					return el( BaseControl, null,
 						el( SelectControl,
 							{
-								label: __( 'Form Align', 'shmapper' ),
+								label: __( 'Form Align', 'shmapper-by-teplitsa' ),
 								options : [
 									{
 										value: 'left',
-										label: __( 'Left', 'shmapper' )
+										label: __( 'Left', 'shmapper-by-teplitsa' )
 									},
 									{
 										value: 'center',
-										label: __( 'Center', 'shmapper' ),
+										label: __( 'Center', 'shmapper-by-teplitsa' ),
 									},
 									{
 										value: 'right',
-										label: __( 'Right', 'shmapper' ),
+										label: __( 'Right', 'shmapper-by-teplitsa' ),
 									}
 								],
 
@@ -202,7 +202,7 @@
 					return el( BaseControl, null,
 						el( __experimentalUnitControl,
 							{
-								label: __('Form Max Width', 'knd'),
+								label: __('Form Max Width', 'shmapper-by-teplitsa'),
 								value: attributes.formWidth,
 								onChange: ( val ) => {
 									setAttributes( { formWidth: val } );
@@ -232,7 +232,7 @@
 								null,
 								el( ToolbarButton, {
 									icon: 'edit',
-									label: __( 'Edit map', 'shmapper' ) + currentMapTitle,
+									label: __( 'Edit map', 'shmapper-by-teplitsa' ) + currentMapTitle,
 									href: 'post.php?post=' + currentMapId + '&action=edit',
 									target: '_blank'
 								})
@@ -250,7 +250,7 @@
 									{
 										href: 'edit.php?post_type=shm_map',
 									},
-									__( 'Configure or create a new map', 'knd' ),
+									__( 'Configure or create a new map', 'shmapper-by-teplitsa' ),
 								),
 								'.',
 							),
@@ -265,7 +265,7 @@
 										status: 'warning',
 										isDismissible: false,
 									},
-									'In edit mode, the preview of the interactive map is not available. ',
+									__( 'In edit mode, the preview of the interactive map is not available.', 'shmapper-by-teplitsa' ),
 									el( ExternalLink ,
 										{
 											href: select('core/editor').getEditedPostPreviewLink(),
@@ -278,14 +278,14 @@
 
 							el( PanelBody,
 								{
-									title: __( 'Map Options', 'shmapper' ),
+									title: __( 'Map Options', 'shmapper-by-teplitsa' ),
 									initialOpen: true,
 								},
 
 								el ( BaseControl, null,
 									el( SelectControl,
 										{
-											label: __( 'Select Map', 'shmapper' ),
+											label: __( 'Select Map', 'shmapper-by-teplitsa' ),
 											options : maps,
 											value: attributes.mapId,
 											onChange: ( val ) => {
@@ -297,15 +297,15 @@
 
 								el( SelectControl,
 									{
-										label: __( 'Map type', 'shmapper' ),
+										label: __( 'Map type', 'shmapper-by-teplitsa' ),
 										options : [
 											{
 												value: 'classic',
-												label: __( 'Classic', 'shmapper' )
+												label: __( 'Classic', 'shmapper-by-teplitsa' )
 											},
 											{
 												value: 'fullscreen',
-												label: __( 'Full Screen', 'shmapper' ),
+												label: __( 'Full Screen', 'shmapper-by-teplitsa' ),
 											}
 										],
 
@@ -323,7 +323,7 @@
 
 								el( __experimentalUnitControl,
 									{
-										label: __('Map Min Height', 'knd'),
+										label: __('Map Min Height', 'shmapper-by-teplitsa'),
 										value: attributes.minHeight,
 										onChange: ( val ) => {
 											setAttributes( { minHeight: val } );
@@ -346,14 +346,14 @@
 
 							el( PanelBody,
 								{
-									title: __( 'Form for submitting markers', 'shmapper' ),
+									title: __( 'Form for submitting markers', 'shmapper-by-teplitsa' ),
 									initialOpen: true,
 								},
 
 								el( BaseControl, null,
 									el( ToggleControl,
 										{
-											label: __('Show Form', 'shmapper'),
+											label: __('Show Form', 'shmapper-by-teplitsa'),
 											onChange: ( val ) => {
 												setAttributes( { isForm: val } );
 											},
@@ -369,20 +369,14 @@
 								paddingBoxControl(),
 
 								// 	},
-								// 	'7. После заполнения – человек видит сообщение, но остается на той же странице (в админке можно выбрать, что происходит – показ сообщения или переход на другую страницу).'
-								// ),
-
-
-								// 	},
 								// 	'8. Mobile First.'
 								// ),
-
 
 							),
 
 							el( PanelBody,
 								{
-									title: __( 'Map elements', 'shmapper' ),
+									title: __( 'Map elements', 'shmapper-by-teplitsa' ),
 									initialOpen: true,
 								},
 
@@ -390,11 +384,21 @@
 									null,
 									getMapKeys.map((item) => {
 										var key = item.key;
-										var value = __('Disabled', 'shmapper');
+										var value = __('Disabled', 'shmapper-by-teplitsa');
 										var className = 'is-disabled';
 										if (currentMap[key]) {
-											value = __('Enabled', 'shmapper');
-											className = 'is-enabled';
+											if ( key == 'is_scroll_zoom' || key == 'is_drag' ) {
+												value = __('Disabled', 'shmapper-by-teplitsa');
+												className = 'is-disabled';
+											} else {
+												value = __('Enabled', 'shmapper-by-teplitsa');
+												className = 'is-enabled';
+											}
+										} else {
+											if ( key == 'is_scroll_zoom' || key == 'is_drag' ) {
+												value = __('Enabled', 'shmapper-by-teplitsa');
+												className = 'is-enabled';
+											}
 										}
 										return el( 'p',
 											{
@@ -416,12 +420,12 @@
 									el( Button,
 										{
 											icon: 'edit',
-											label: __( 'Edit map', 'shmapper' ) + currentMapTitle,
+											label: __( 'Edit map', 'shmapper-by-teplitsa' ) + currentMapTitle,
 											href: 'post.php?post=' + currentMapId + '&action=edit',
 											target: '_blank',
 											isSecondary: true,
 										},
-										__( 'Edit this map', 'shmapper' )
+										__( 'Edit this map', 'shmapper-by-teplitsa' )
 									)
 								),
 

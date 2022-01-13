@@ -239,12 +239,19 @@ class ShmMap extends SMC_Post
 		$default_icon_id   = $obj->get_meta( 'default_icon_id' );
 		$is_clustered      = $obj->get_meta( 'is_clustered' );
 		$is_lock           = $obj->get_meta( 'is_lock' );
+		$is_scroll_zoom    = $obj->get_meta( 'is_scroll_zoom' );
+		$is_drag           = $obj->get_meta( 'is_drag' );
 		$form_title        = $obj->get_meta( 'form_title' );
 		$highlight_country = $obj->get_meta( 'highlight_country' );
 		$overlay_color     = $obj->get_meta( 'overlay_color' ) ? $obj->get_meta( 'overlay_color' ) : '#d1d1d1';
 		$border_color      = $obj->get_meta( 'border_color' ) ? $obj->get_meta( 'border_color' ) : '#d1d1d1';
 		$overlay_opacity   = $obj->get_meta( 'overlay_opacity' ) ? $obj->get_meta( 'overlay_opacity' ) : '0.8';
 		$kml_url           = $obj->get_meta( '_shm_kml_url' );
+
+		if ( ! $is_scroll_zoom && ! $is_drag && $is_lock ) {
+			$is_scroll_zoom = 1;
+			$is_drag        = 1;
+		}
 
 		$html 	= "
 			<div class='shm-row'>
@@ -288,29 +295,46 @@ class ShmMap extends SMC_Post
 						<input type='checkbox' value='1' ". checked(1, $is_search, false) ."' name='is_search' id='is_search'/>
 						<label for='is_search'>" . __("Map search", SHMAPPER) . "</label>
 					</div>
+
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_scroll_zoom, false) ."' name='is_scroll_zoom' id='is_scroll_zoom'/>
+						<label for='is_scroll_zoom'>" . __( "Disable scroll zoom", 'shmapper-by-teplitsa' ) . "</label>
+					</div>
+				</div>
+
+				<div class='shm-12'>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_zoomer, false) ."' name='is_zoomer' id='is_zoomer'/>
 						<label for='is_zoomer'>" . __("Map zoom slider enabled", SHMAPPER) . "</label>
 					</div>
+
+					<div class='shm-admin-block'>
+						<input type='checkbox' value='1' ". checked(1, $is_drag, false) ."' name='is_drag' id='is_drag'/>
+						<label for='is_drag'>" . __( "Disable dragging", 'shmapper-by-teplitsa' ) . "</label>
+					</div>
+				</div>
+
+				<div class='shm-12'>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_layer_switcher, false) ."' name='is_layer_switcher' id='is_layer_switcher'/>
 						<label for='is_layer_switcher'>" . __("Map layer switcher", SHMAPPER) . "</label>
 					</div>
 				</div>
+
 				<div class='shm-12'>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_fullscreen, false) ."' name='is_fullscreen' id='is_fullscreen'/>
 						<label for='is_fullscreen'>" . __("Map full screen", SHMAPPER) . "</label>
 					</div>
+				</div>
+
+				<div class='shm-12'>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_clustered, false) ."' name='is_clustered' id='is_clustered'/>
 						<label for='is_clustered'>" . __("Formating Marker to cluster", SHMAPPER) . "</label>
 					</div>
-					<div class='shm-admin-block'>
-						<input type='checkbox' value='1' ". checked(1, $is_lock, false) ."' name='is_lock' id='is_lock'/>
-						<label for='is_lock'>" . __("Lock zoom and drag", SHMAPPER) . "</label>
-					</div>
 				</div>
+
 				<div class='spacer-10'></div>
 				<h4 class='shm-12'>". __("Choose layers", SHMAPPER). "</h4>
 				<div class='shm-12'>".
@@ -581,14 +605,15 @@ class ShmMap extends SMC_Post
 					</div>
 				</div>
 			</div>";
-		
-		
-		
+
 		return $html;
 	}
 	static function save_admin_edit($obj)
 	{
-		return [
+		$is_scroll_zoom = empty($_POST['is_scroll_zoom']) ? 0 : 1;
+		$is_drag        = empty($_POST['is_drag']) ? 0 : 1;
+
+		$fields = array(
 			"map_type"			=> empty($_POST['map_type']) ? '' : $_POST['map_type'],
 			"latitude"			=> sanitize_text_field($_POST['latitude']),
 			"longitude"			=> sanitize_text_field($_POST['longitude']),
@@ -597,7 +622,11 @@ class ShmMap extends SMC_Post
 			"is_filtered"		=> empty($_POST['is_filtered']) ? 0 : 1,
 			"is_csv"			=> empty($_POST['is_csv']) ? 0 : 1,
 			"is_title"			=> empty($_POST['is_title']) ? 0 : 1,
+
 			"is_lock"			=> empty($_POST['is_lock']) ? 0 : 1,
+			"is_scroll_zoom"	=> $is_scroll_zoom,
+			"is_drag"			=> $is_drag,
+
 			"is_clustered"		=> empty($_POST['is_clustered']) ? 0 : 1,
 			"is_search"			=> empty($_POST['is_search']) ? 0 : 1,
 			"is_zoomer"			=> empty($_POST['is_zoomer']) ? 0 : 1,
@@ -628,7 +657,13 @@ class ShmMap extends SMC_Post
 			"is_phone_iclude"	=> sanitize_text_field(empty($_POST['is_phone_iclude']) ? '' : $_POST['is_phone_iclude']),
 			"personal_phone"	=> sanitize_text_field(empty($_POST['personal_phone']) ? '' : $_POST['personal_phone']),
 			"is_phone_required"	=> sanitize_text_field(empty($_POST['is_phone_required']) ? '' : $_POST['is_phone_required']),
-		];
+		);
+
+		if ( $is_scroll_zoom || $is_drag ) {
+			$fields['is_lock'] = 0;
+		}
+
+		return $fields;
 	}
 	static function post_row_actions($actions, $post)
 	{
@@ -931,7 +966,7 @@ class ShmMap extends SMC_Post
 		if( ShMapper::$options['map_api'] != 2 )
 		{
 			$html .= "<div class='shm-admin-block'>
-					<h3>" . esc_html__( 'Yandex Map', 'shmapper-by-teplitsa' ) . "</h3>";
+					<h3 class='shm-admin-layers-heading'>" . esc_html__( 'Yandex Map', 'shmapper-by-teplitsa' ) . "</h3>";
 			$i 		= 0;
 
 			foreach(static::get_map_types()[ 1 ] as $type)
@@ -953,7 +988,7 @@ class ShmMap extends SMC_Post
 		else
 		{
 			$html .= "<div class='shm-admin-block'>
-					<h3>" . esc_html__( 'Open Street Map', 'shmapper-by-teplitsa' ) . "</h3>";
+					<h3 class='shm-admin-layers-heading'>" . esc_html__( 'Open Street Map', 'shmapper-by-teplitsa' ) . "</h3>";
 
 			$i 		= 0;
 			

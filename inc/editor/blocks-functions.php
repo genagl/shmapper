@@ -13,31 +13,35 @@ function shm_get_map_meta_keys(){
 	$keys = array(
 		array(
 			'key' => 'is_filtered',
-			'label' => __( 'Filters', 'shmapper' ),
+			'label' => __( 'Filters', 'shmapper-by-teplitsa' ),
 		),
 		array(
 			'key' => 'is_csv',
-			'label' => __( 'Export csv', 'shmapper' ),
+			'label' => __( 'Export csv', 'shmapper-by-teplitsa' ),
 		),
 		array(
 			'key' => 'is_legend',
-			'label' => __( 'Legend', 'shmapper' ),
+			'label' => __( 'Legend', 'shmapper-by-teplitsa' ),
 		),
 		array(
 			'key' => 'is_search',
-			'label' => __( 'Map search', 'shmapper' ),
+			'label' => __( 'Map search', 'shmapper-by-teplitsa' ),
 		),
 		array(
 			'key' => 'is_zoomer',
-			'label' => __( 'Map zoom', 'shmapper' ),
+			'label' => __( 'Map zoom', 'shmapper-by-teplitsa' ),
 		),
 		array(
 			'key' => 'is_layer_switcher',
-			'label' => __( 'Map layer switcher', 'shmapper' ),
+			'label' => __( 'Map layer switcher', 'shmapper-by-teplitsa' ),
 		),
 		array(
-			'key' => 'is_lock',
-			'label' => __( 'Lock zoom and drag', 'shmapper' ),
+			'key' => 'is_scroll_zoom',
+			'label' => __( 'Scroll zoom', 'shmapper-by-teplitsa' ),
+		),
+		array(
+			'key' => 'is_drag',
+			'label' => __( 'Dragging', 'shmapper-by-teplitsa' ),
 		),
 	);
 

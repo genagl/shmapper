@@ -70,6 +70,10 @@
 	vertical-align: top;
 }
 
+.shm-admin-layers-heading {
+	margin-top: 0;
+}
+
 .shm-incblock {
 	position: relative;
 	float: left;

@@ -163,7 +163,11 @@ class ShMapper {
 		$map['is_fullscreen']		= ['type'=>'boolean', "distination" => "map", "name" => __("Map full screen", SHMAPPER)];	
 		$map['is_zoomer']			= ['type'=>'boolean', "distination" => "map", "name" => __("Map zoom slider", SHMAPPER)];	
 		$map['is_layer_switcher']	= ['type'=>'boolean',"distination"=>"map","name"=>__("Map layer switcher",SHMAPPER)];	
-		$map['is_lock']				= ['type'=>'boolean',"distination"=>"map","name"=>__("Lock zoom and drag",SHMAPPER)];	
+		$map['is_lock']				= ['type'=>'boolean',"distination"=>"map","name"=>__("Lock zoom and drag",SHMAPPER)];
+
+		$map['is_scroll_zoom']		= ['type'=>'boolean',"distination"=>"map","name"=>__("Disable scroll zoom",SHMAPPER)];
+		$map['is_drag']				= ['type'=>'boolean',"distination"=>"map","name"=>__("Disable dragging",SHMAPPER)];
+
 		$map['is_clustered']		= ['type'=>'boolean',"distination"=>"map","name"=>__("Formating Marker to cluster", SHMAPPER)];	
 		$map['default_icon_id']		= ['type'=>'boolean',"distination"=>"map","name"=>__("Default Marker icon", SHMAPPER)];	
 		
@@ -657,11 +661,11 @@ class ShMapper {
 						"</div>
 						<div class='shm-9' id='shm_voc'>
 							$vocabulary
-						</div>	
+						</div>
 						<div class='shm-1'>
 							
-						</div>	
-					</div>				
+						</div>
+					</div>
 				</li>
 
 
@@ -718,7 +722,8 @@ class ShMapper {
 										isClausterer	: 0,
 										isLayerSwitcher	: 0,
 										isFullscreen	: 1,
-										isDesabled		: 0,
+										isScrollZoom	: 0,
+										isDrag			: 0,
 										isSearch		: 1,
 										isZoomer		: 1,
 										isAdmin			: 1,
@@ -729,24 +734,10 @@ class ShMapper {
 
 								} else if (map_type == 2) {
 									// if is OpenStreetMap
-									var points 		= [],
-									p = {}; 
-									p.post_id       = '';
-									p.post_title    = '" . esc_html__( "Coordinates", SHMAPPER ) . "';
-									p.post_content  = '';
-									p.latitude      = '$latitude'; 
-									p.longitude     = '$longitude'; 
-									p.location      = '';
-									p.draggable     = 1;
-									p.type          = '-1';
-									p.term_id       = '-1';
-									p.height        = '" . $default_marker["height"] . "';
-									p.width         = '" . $default_marker["width"] . "';
-									p.icon          = \"" . $default_marker["icon"] . "\";
-									p.color         = '" . $default_marker["color"] . "';
-									p.default_icon  = \"" . $default_marker["icon"] . "\";
-
-									points.push(p);
+									var points      = [],
+									iconHeight      = '" . $default_marker["height"] . "',
+									iconWidth       = '" . $default_marker["width"] . "',
+									defaultIconUrl  = \"" . $default_marker["icon"] . "\";
 
 									var mData = {
 										mapType			: '$map_type',
@@ -759,7 +750,8 @@ class ShMapper {
 										isClausterer	: 0,
 										isLayerSwitcher	: 0,
 										isFullscreen	: 1,
-										isDesabled		: 0,
+										isScrollZoom	: 0,
+										isDrag			: 0,
 										isSearch		: 1,
 										isZoomer		: 1,
 										isAdmin			: 1,
@@ -773,12 +765,29 @@ class ShMapper {
 										$('[name=shm_default_zoom]').val( myMap.getZoom() ).trigger('change');
 									});
 
-									/*marker.on('dragend', function (e) {
+									var myIcon = L.icon({
+										iconUrl:    defaultIconUrl,
+										iconSize:   [iconWidth, iconHeight],
+										iconAnchor: [ 18, 32 ],
+									})
+
+									marker = L.marker(
+										[ '$latitude', '$longitude' ],
+										{
+											draggable: true,
+											icon: myIcon
+										}
+									)
+									.addTo(myMap);
+
+									marker.on('dragend', function (e) {
 										$('[name=shm_default_latitude]').val(marker.getLatLng().lat).trigger('change');
 										$('[name=shm_default_longitude]').val(marker.getLatLng().lng).trigger('change');
-									});*/
+										console.log('ooo');
+									});
+
 								}
-								
+
 							});
 						</script>
 
