@@ -128,6 +128,10 @@ jQuery(document).ready(function($)
 			}
 		});
 
+// 		$(document).resize(function() {
+//     alert('Handler for .resize() called!');
+// });
+
 
 	// $(document).on( "drag", ".shm-type-icon", function( event, ui ) {
 
@@ -543,6 +547,10 @@ jQuery(document).ready(function($)
 		var globalPixelPoint = map.converter.pageToGlobal( [evt.clientX, evt.clientY + window.scrollY] );
 		new_mark_coords = map.options.get('projection').fromGlobalPixels(globalPixelPoint, map.getZoom());
 		shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $this);
+		setTimeout( function(){
+			map.container.fitToViewport();
+		}, 200 );
+
 	}
 	
 	function shmapperPlaceMarkerOnMapByCoords(map, new_mark_coords, $markerIcon) {

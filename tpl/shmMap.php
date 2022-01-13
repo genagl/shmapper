@@ -137,11 +137,24 @@ function draw_shMap($map, $args )
 			</div>";
 	}
 
-	$shm_has_legend = '';
+	// CSS Classes.
+	$classes = 'shm-map-container shm_container';
 	if ( $legend ) {
-		$shm_has_legend = ' shm-map-has-legend';
+		$classes .= ' shm-map-has-legend';
 	}
-	$html .= '<div class="shm-map-container shm_container' . esc_attr( $shm_has_legend ) . '" id="' . esc_attr( $uniq ) . '" shm_map_id="' . esc_attr( $id ) . '" style="height:' . $height . 'px;"></div>';
+
+	if ( isset( $args['isEditor'] ) && $args['isEditor'] ) {
+		$classes .= ' is-server-side';
+	}
+
+	$css_height = $height . 'px';
+	if ( isset( $args['minheight'] ) && $args['minheight'] ) {
+		$css_height = $args['minheight'];
+	}
+
+	$css = 'height:' . $css_height . ';';
+
+	$html .= '<div class="' . esc_attr( $classes ) . '" id="' . esc_attr( $uniq ) . '" shm_map_id="' . esc_attr( $id ) . '" style="' . $css . '"></div>';
 
 	$html .= $legend;
 

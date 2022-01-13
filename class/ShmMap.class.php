@@ -265,16 +265,16 @@ class ShmMap extends SMC_Post
 				<h3 class='shm-12'>". __("1.2. Set size for map's div (per pixels)", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<div class='shm-admin-block'>
-						<label>" . __("Height") . "</albel> 
+						<label>" . __("Height") . "</label>
 						<input type='number' value='". $height ."' name='height' />
 						<p class='description'>" . __("Empty for ", SHMAPPER) . "400px</p>
 					</div>
 					<div class='shm-admin-block'>
-						<label>" . __("Width") . "</albel> 
-						<input type='number' value='". $width ."' name='width' />	
-						<p class='description'>" . __("Empty for ", SHMAPPER) . "100%</p>					
+						<label>" . __("Width") . "</label>
+						<input type='number' value='". $width ."' name='width' />
+						<p class='description'>" . __("Empty for ", SHMAPPER) . "100%</p>
 					</div>
-					<div class='shm-admin-block'>					
+					<div class='shm-admin-block'>
 					</div>
 				</div>
 			</div>
@@ -286,29 +286,29 @@ class ShmMap extends SMC_Post
 				<div class='shm-12'>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_search, false) ."' name='is_search' id='is_search'/>
-						<label for='is_search'>" . __("Map search", SHMAPPER) . "</albel> 
-					</div>					
+						<label for='is_search'>" . __("Map search", SHMAPPER) . "</label>
+					</div>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_zoomer, false) ."' name='is_zoomer' id='is_zoomer'/>
-						<label for='is_zoomer'>" . __("Map zoom slider enabled", SHMAPPER) . "</albel> 					
+						<label for='is_zoomer'>" . __("Map zoom slider enabled", SHMAPPER) . "</label>
 					</div>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_layer_switcher, false) ."' name='is_layer_switcher' id='is_layer_switcher'/>
-						<label for='is_layer_switcher'>" . __("Map layer switcher", SHMAPPER) . "</albel> 				
+						<label for='is_layer_switcher'>" . __("Map layer switcher", SHMAPPER) . "</label>
 					</div>
 				</div>
 				<div class='shm-12'>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_fullscreen, false) ."' name='is_fullscreen' id='is_fullscreen'/>
-						<label for='is_fullscreen'>" . __("Map full screen", SHMAPPER) . "</albel> 	
+						<label for='is_fullscreen'>" . __("Map full screen", SHMAPPER) . "</label>
 					</div>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_clustered, false) ."' name='is_clustered' id='is_clustered'/>
-						<label for='is_clustered'>" . __("Formating Marker to cluster", SHMAPPER) . "</albel> 	
+						<label for='is_clustered'>" . __("Formating Marker to cluster", SHMAPPER) . "</label>
 					</div>
 					<div class='shm-admin-block'>
 						<input type='checkbox' value='1' ". checked(1, $is_lock, false) ."' name='is_lock' id='is_lock'/>
-						<label for='is_lock'>" . __("Lock zoom and drag", SHMAPPER) . "</albel> 	
+						<label for='is_lock'>" . __("Lock zoom and drag", SHMAPPER) . "</label>
 					</div>
 				</div>
 				<div class='spacer-10'></div>
@@ -329,7 +329,7 @@ class ShmMap extends SMC_Post
 			<div class='shm-row'>
 				<h3 class='shm-12'>". __("1.4. Map title", SHMAPPER). "</h3>
 				<div class='shm-12'>
-					<label for='is_title'><input type='checkbox' value='1' " . checked( 1, $is_title, false ) . "' name='is_title' id='is_title'/> " . __( "Show map title", SHMAPPER ) . "</albel>
+					<label for='is_title'><input type='checkbox' value='1' " . checked( 1, $is_title, false ) . "' name='is_title' id='is_title'/> " . __( "Show map title", SHMAPPER ) . "</label>
 				</div>
 			</div>
 
@@ -341,7 +341,7 @@ class ShmMap extends SMC_Post
 				<h3 class='shm-12'>". __("1.5. May User download data in *.csv?", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_csv, false) ."' name='is_csv' id='is_csv'/>
-					<label for='is_csv'>" . __("Export csv", SHMAPPER) . "</albel> 
+					<label for='is_csv'>" . __("Export csv", SHMAPPER) . "</label>
 					
 				</div>
 			</div>
@@ -354,7 +354,7 @@ class ShmMap extends SMC_Post
 				<h3 class='shm-12'>". __("1.6. Will the legend be displayed?", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_legend, false) ."' name='is_legend' id='is_legend'/>
-					<label for='is_legend'>" . __("Legend exists", SHMAPPER) . "</albel> 
+					<label for='is_legend'>" . __("Legend exists", SHMAPPER) . "</label>
 					
 				</div>
 			</div>
@@ -365,7 +365,7 @@ class ShmMap extends SMC_Post
 				<h3 class='shm-12'>". __("1.7. Will Marker type filter be displayed?", SHMAPPER). "</h3>
 				<div class='shm-12'>
 					<input type='checkbox' value='1' ". checked(1, $is_filtered, false) ."' name='is_filtered' id='is_filtered'/>
-					<label for='is_filtered'>" . __("Filters exists", SHMAPPER) . "</albel> 
+					<label for='is_filtered'>" . __("Filters exists", SHMAPPER) . "</label>
 				</div>
 			</div>
 			<div class='spacer-5'></div>
@@ -377,7 +377,7 @@ class ShmMap extends SMC_Post
 					get_input_file_form2( "" , $default_icon_id, "default_icon_id").
 				"</div>
 				<p class='description shm-12'>".
-					__("Recommended size is 64х64 px, format is .png", SHMAPPER) . 
+					__("Recommended size is 64х64 px, format is .png", SHMAPPER) .
 				"</p>
 			</div>";
 
@@ -395,7 +395,7 @@ class ShmMap extends SMC_Post
 							<option>" . esc_html__( "Loading countries ... ", SHMAPPER ) . "</option>
 						</select>
 						<p class='description'>".
-							__("Select country", SHMAPPER) . 
+							__("Select country", SHMAPPER) .
 						"</p>
 						<div class='spacer-5'></div>
 						<div class='spacer-5'></div>
@@ -404,7 +404,7 @@ class ShmMap extends SMC_Post
 						<div class='shm-admin-block'>
 							<input type='text' name='overlay_color' value='" . esc_attr( $overlay_color ) . "'>
 							<p class='description'>".
-								__("Choose map overlay color", SHMAPPER) . 
+								__("Choose map overlay color", SHMAPPER) .
 							"</p>
 						</div>
 						<div class='shm-admin-block'>
@@ -416,7 +416,7 @@ class ShmMap extends SMC_Post
 						<div class='shm-admin-block'>
 							<input type='range' min='0.1' max='1' step='0.1' class='shm-range' name='overlay_opacity' value='" . esc_attr( $overlay_opacity ) . "'>
 							<p class='description'>".
-								__("Overlay opacity", SHMAPPER) . 
+								__("Overlay opacity", SHMAPPER) .
 							"</p>
 						</div>
 					</div>
@@ -487,9 +487,9 @@ class ShmMap extends SMC_Post
 				<div class='shm-12'>
 					<input type='checkbox' value='1' name='is_form' id='is_form' " . checked(1, $is_form, 0) . " /> 
 					<label for='is_form'>". __("Enable crowdsourcing function (free add Users new Markers)", SHMAPPER). "</label>
-				</div>				
+				</div>
 			</div>
-			<div class='shm-map-form-admin'> 
+			<div class='shm-map-form-admin'>
 				<div class='spacer-5'></div>
 				<div class='shm-row'>
 					<h3 class='shm-12'>". __("2.1. What is the name of your information form?", SHMAPPER). "</h3>
@@ -516,7 +516,7 @@ class ShmMap extends SMC_Post
 							__("You can create your own forms using form elements: Heading, Text field, Textarea, Upload file, Markers, Track drawer.", SHMAPPER) .
 						"</p>
 					</div>
-					<div class='shm-12'>".			
+					<div class='shm-12'>".
 						static::formEditor( $form_forms ? $form_forms : ShmForm::get_default() ).
 					"</div>
 				</div>
@@ -536,12 +536,12 @@ class ShmMap extends SMC_Post
 							<label for='is_name_iclude'>" . __("Include", SHMAPPER) . "</label><br>
 							<input type='checkbox' value='1' ". checked(1, $is_name_iclude, false) ."' name='is_name_iclude' id='is_name_iclude'/>
 						</div>
-						
+
 						<div class='shm-incblock'>
 							<label for='personal_name'>" . __("Personal name", SHMAPPER) . "</label><br>
 							<input type='text' value='$personal_name' name='personal_name' id='personal_name' class='shm-admin-block'/>
 						</div>
-						
+
 						<div class='shm-incblock'>
 							<label for='is_name_required'>" . __("Required", SHMAPPER) . "</label><br>
 							<input type='checkbox' value='1' ". checked(1, $is_name_required, false) ."' name='is_name_required' id='is_name_required'/>
@@ -552,12 +552,12 @@ class ShmMap extends SMC_Post
 							<label for='is_email_iclude'>" . __("Include", SHMAPPER) . "</label><br>
 							<input type='checkbox' value='1' ". checked(1, $is_email_iclude, false) ."' name='is_email_iclude' id='is_email_iclude'/>
 						</div>
-						
+
 						<div class='shm-incblock'>
 							<label for='personal_email'>" . __("Personal email", SHMAPPER) . "</label><br>
 							<input type='text' value='$personal_email' name='personal_email' id='personal_email' class='shm-admin-block'/>
 						</div>
-						
+
 						<div class='shm-incblock'>
 							<label for='is_email_required'>" . __("Required", SHMAPPER) . "</label><br>
 							<input type='checkbox' value='1' ". checked(1, $is_email_required, false) ."' name='is_email_required' id='is_email_required'/>
@@ -568,12 +568,12 @@ class ShmMap extends SMC_Post
 							<label for='is_phone_iclude'>" . __("Include", SHMAPPER) . "</label><br>
 							<input type='checkbox' value='1' ". checked(1, $is_phone_iclude, false) ."' name='is_phone_iclude' id='is_phone_iclude'/>
 						</div>
-						
+
 						<div class='shm-incblock'>
 							<label for='personal_phone'>" . __("Personal phone", SHMAPPER) . "</label><br>
 							<input type='text' value='$personal_phone' name='personal_phone' id='personal_phone' class='shm-admin-block'/>
 						</div>
-						
+
 						<div class='shm-incblock'>
 							<label for='is_phone_required'>" . __("Required", SHMAPPER) . "</label><br>
 							<input type='checkbox' value='1' ". checked(1, $is_phone_required, false) ."' name='is_phone_required' id='is_phone_required'/>
@@ -664,14 +664,14 @@ class ShmMap extends SMC_Post
 	static function formEditor($data)
 	{
 		$html 	= "
-		<div style='display:block;  border:#888 1px solid; padding:0px;' id='form_editor'>
+		<div style='display:block;border:#888 1px solid;padding:0px;' id='form_editor'>
 			<ul class='shm-card'>";
 		$i 		= 0;
 		foreach($data as $dat)
 		{
 			$html .= ShmForm::get_admin_element( $i, $dat );
 			$i++;
-		}				
+		}
 		$html .= ShmForm::wp_params_radio( -1, -1 ) . "
 			</ul>
 		</div>";
@@ -726,7 +726,7 @@ class ShmMap extends SMC_Post
 		$href		= $upload_dir['baseurl'] . "/shmapper-by-teplitsa/shmap_" . $p->id . ".csv";
 		file_put_contents( $path, $csv_data );		
 		return $href;
-			
+
 		if(class_exists("ZipArchive"))
 		{
 			$zip 		= new ZipArchive();
@@ -742,7 +742,7 @@ class ShmMap extends SMC_Post
 			else
 				return $href;
 		}
-		else		
+		else
 			return $href;
 	}
 	function get_points_args()
@@ -776,23 +776,23 @@ class ShmMap extends SMC_Post
 		$html ="
 		<div class='shm-row' shm_delete_map_id='" . $this->id . "' >
 			<div class='shm-12 small shm-color-grey'>" . 
-				__("What do with placemarks of deleting Map?", SHMAPPER) . 
+				__("What do with placemarks of deleting Map?", SHMAPPER) .
 			"</div>
 			<div class='shm-12'>
 				<div class='spacer-10'></div>
-				<input type='radio' class='radio' id='dd1' value='1'  name='shm_esc_points' checked /> 
+				<input type='radio' class='radio' id='dd1' value='1'  name='shm_esc_points' checked />
 				<label for='dd1'>" . __("Delete all Points", SHMAPPER) . "</label>
 				<div class='spacer-10'></div>
 			</div>
 			<div class='shm-12'>
 				<div class='spacer-10'></div>
-				<input type='radio' class='radio' id='dd2' value='2' name='shm_esc_points' /> 
+				<input type='radio' class='radio' id='dd2' value='2' name='shm_esc_points' />
 				<label for='dd2'>" . __("Escape all Points without Owner Map", SHMAPPER) . "</label>
 				<div class='spacer-10'></div>
 			</div>
 			<div class='shm-12'>
 				<div class='spacer-10'></div>
-				<input type='radio' class='radio' id='dd3' value='3'  name='shm_esc_points' /> 
+				<input type='radio' class='radio' id='dd3' value='3'  name='shm_esc_points' />
 				<label for='dd3'>" . __("Switch all Points to anover Map", SHMAPPER) . "</label>
 				<div class='spacer-10'></div>" .
 					ShmMap::wp_dropdown([
@@ -801,8 +801,7 @@ class ShmMap extends SMC_Post
 						"style"		=> "display:none;",
 						"posts"     => ShmMap::get_all(),
 						"exclude_post_id"   => $this->id,
-												
-					]) . 
+					]) .
 				"<div class='spacer-10'></div>
 			</div>
 		</div>
@@ -947,7 +946,7 @@ class ShmMap extends SMC_Post
 				</div>";
 				$i++;
 			}
-			
+
 			$html .= "
 					</div>";
 		}
@@ -955,7 +954,7 @@ class ShmMap extends SMC_Post
 		{
 			$html .= "<div class='shm-admin-block'>
 					<h3>" . esc_html__( 'Open Street Map', 'shmapper-by-teplitsa' ) . "</h3>";
-			
+
 			$i 		= 0;
 			
 			foreach(static::get_map_types()[ 2 ] as $type)

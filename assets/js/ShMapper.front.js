@@ -85,7 +85,7 @@ jQuery(document).ready(function($)
 				if( response.reload ) {
 					setTimeout( function(){
 						window.location.reload(window.location.href);
-					}, 3000 );
+					}, 5000 );
 				}
 
 			},

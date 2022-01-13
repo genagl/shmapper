@@ -6,6 +6,7 @@
 	--shm-color-primary-hover: #db3120;
 	--shm-form-background: #f7f8f8;
 	--shm-form-header-color: #183343;
+	--shm-form-width: 960px;
 	--shm-field-border-color: #8599a4;
 	--shm-field-border-color-active: var(--shm-form-header-color);
 	--shm-legend-background: #222;
@@ -882,7 +883,7 @@ textarea:-ms-input-placeholder {
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 960px;
+	max-width: var(--shm-form-width);
 }
 .shm-map-block .shm-form-request {
 	padding: 0;
@@ -1950,9 +1951,11 @@ input[type=radio].shm-marker-checkbox + label img {
 
 /** Map Container */
 .shm-map-block {
-	max-width: var(--shm-map-max-width);
 	margin-left: auto;
 	margin-right: auto;
+}
+.shm-map-block:not(.alignwide) {
+	max-width: var(--shm-map-max-width);
 }
 .shm-map-container {
 	display: block;
@@ -1994,4 +1997,63 @@ input[type=radio].shm-marker-checkbox + label img {
 	width: 26px;
 	height: 26px;
 	margin-right: -5px;
+}
+
+/** Map Container */
+.shm-block-map .shm-map-container.is-server-side {
+	background-image: url(../img/world.svg);
+	background-size: 80%;
+	background-position: center center;
+	background-color: #e6f0ff;
+}
+.shm-block-map:not(.is-map-type-fullscreen) .shm-map-container {
+	min-height: var(--shm-map-min-height);
+}
+.shm-block-map.is-map-type-fullscreen {
+	--shm-form-width: 380px;
+	height: auto;
+	min-height: var(--shm-map-min-height);
+	position: relative;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-top: 1px;
+	display: flex;
+	align-items: center;
+}
+.shm-block-map.is-map-type-fullscreen .shm-map-container,
+.shm-block-map.is-map-type-fullscreen .shm-legend {
+	border-radius: 0;
+	position: absolute;
+}
+.shm-block-map.is-map-type-fullscreen .shm-map-panel,
+.shm-block-map.is-map-type-fullscreen .shm-map-container,
+.shm-block-map.is-map-type-fullscreen .shm-legend {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+.shm-block-map.is-map-type-fullscreen .shm-map-panel {
+	padding: 10px 5px;
+	top: 0;
+}
+.shm-block-map.is-map-type-fullscreen .shm-map-container {
+	height: 100% !important;
+}
+.shm-block-map.is-map-type-fullscreen.is-map-legend {
+	padding-bottom: 40px;
+}
+.shm-block-map.is-map-type-fullscreen.is-map-legend .shm-map-container {
+	height: calc(100% - 40px) !important;
+}
+.shm-block-map.is-map-type-fullscreen .shm-legend {
+	bottom: 0;
+}
+.shm-block-map.is-map-type-fullscreen .shm-form-container {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	z-index: 2;
+	box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
 }
