@@ -58,6 +58,8 @@ No questions yet.
 
 == Changelog ==
 
+= 1.4.8 =
+* Add Gutenberg block ShMapper Map.
 
 = 1.4.1 =
 * Added: Support for importing data from Google Sheets.
