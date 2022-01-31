@@ -195,16 +195,19 @@ class ShmMap extends SMC_Post
 	static function shortcode_fields_box_func( $post )
 	{	
 		$lt = static::get_instance( $post );
-		echo static::shortcode_fields_edit($lt);			
+		echo static::shortcode_fields_edit($lt);
 	}
 	static function shortcode_fields_edit($obj)
 	{
-		$html = "
-		<p class='description'>" .
-			__("You can insert a card into a post or page by copying this shortcode.", SHMAPPER).
-		"</p>
-		<input type='text' disabled class='sh-form' value='[shmMap id=\"" . $obj->id . "\"]' />";
-		 
+		$html = '
+		<p class="description">' . __( 'You can insert a card into a post or page by copying this shortcode.', 'shmapper-by-teplitsa' ) . '</p>
+		<input type="text" disabled class="sh-form" value=\'[shmMap id="' . $obj->id . '"]\'>
+		<br>
+		<p class="description">' . __( 'And also you can use a Gutenberg block ShMapper Map.', 'shmapper-by-teplitsa' ) . '</p>
+		<div class="shm-metabox-block-example">
+			<img src="' . esc_url( SHM_URLPATH . 'assets/img/block-example.png' ) . '">
+		</div>
+		';
 		return $html;
 	}
 	

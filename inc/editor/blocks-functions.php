@@ -12,6 +12,10 @@ function shm_get_map_meta_keys(){
 
 	$keys = array(
 		array(
+			'key' => 'is_form',
+			'label' => __( 'Form for submitting markers', 'shmapper-by-teplitsa' ),
+		),
+		array(
 			'key' => 'is_filtered',
 			'label' => __( 'Filters', 'shmapper-by-teplitsa' ),
 		),

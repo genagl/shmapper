@@ -15,6 +15,11 @@
 	margin-top: 0;
 }
 
+.components-panel__body .shm-editor-block__notice .components-notice {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .shm-components-map-elements .is-enabled {
 	color: #007cba;
 }

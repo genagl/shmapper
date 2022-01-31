@@ -1,7 +1,7 @@
 /** Shmapper Styles */
 :root {
 	--shm-map-max-width: 100%;
-	--shm-border-radius: 20px;
+	--shm-border-radius: 10px;
 	--shm-color-primary: #f43724;
 	--shm-color-primary-hover: #db3120;
 	--shm-form-background: #f7f8f8;
@@ -1267,6 +1267,7 @@ tfoot .shm-notify2:after {
 	position: relative;
 	margin-left: -3px;
 	margin-right: -3px;
+	justify-content: stretch;
 }
 .shm-form-placemarks .shm-type-icon {
 	float: left;
@@ -1287,6 +1288,44 @@ tfoot .shm-notify2:after {
 }
 .shm-form-placemarks .shm-type-icon:active {
 	background-color: transparent;
+}
+.shm-form-placemarks .shm-marker-icon {
+	max-width: 120px;
+	min-width: 70px;
+	margin: 10px;
+	box-sizing: border-box;
+	flex: auto;
+	border: 1px dashed #8599A4;
+	border-radius: 4px;
+}
+.shm-form-placemarks .shm-marker-icon:hover {
+	background-color: #fff;
+}
+.shm-form-placemarks .shm-marker-icon .shm-type-icon {
+	margin: 0;
+	float: none;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+}
+.shm-form-placemarks .shm-marker-icon .shm-type-icon:hover {
+	background-color: transparent;
+}
+.shm-form-placemarks .shm-marker-title {
+	font-size: 12px;
+	text-align: center;
+	display: block;
+	line-height: 1;
+	margin-bottom: 6px;
+	padding-left: 6px;
+	padding-right: 6px;
+	opacity: 1;
+	transition: opacity 0.3s;
+}
+.shm-form-placemarks .ui-draggable-dragging + .shm-marker-title {
+	opacity: 0;
+	transition: opacity 0s;
 }
 
 .shm-type-icon,
@@ -1948,6 +1987,14 @@ input[type=radio].shm-marker-checkbox + label img {
 	background-repeat: no-repeat;
 }
 
+.shm-metabox-block-example img {
+	max-width: 100%;
+	height: auto;
+	width: auto;
+	display: block;
+	box-shadow: 0 0 0 1px #f0f0f0;
+}
+
 /** Map Panel */
 .shm-map-panel {
 	z-index: 3;
@@ -1962,7 +2009,7 @@ input[type=radio].shm-marker-checkbox + label img {
 	margin-left: auto;
 	margin-right: auto;
 }
-.shm-map-block:not(.alignwide) {
+.shm-map-block:not(.alignwide):not(.alignfull) {
 	max-width: var(--shm-map-max-width);
 }
 .shm-map-container {

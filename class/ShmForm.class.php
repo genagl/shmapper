@@ -25,7 +25,7 @@ class ShmForm
 			[ 
 				"type" 			=> SHMAPPER_TITLE_TYPE_ID,
 				"require"		=> 1, 
-				"title"			=> __("Put a title", SHMAPPER),
+				"title"			=> __("Insert a title", SHMAPPER),
 				"placeholde"	=> "",
 				"description"	=> "",
 			],	
@@ -46,7 +46,7 @@ class ShmForm
 			[ 
 				"type" 			=> SHMAPPER_TEXTAREA_TYPE_ID,
 				"require"		=> 1, 
-				"title"			=> __("Write description", SHMAPPER),
+				"title"			=> __("Write a description", SHMAPPER),
 				"placeholde"	=> "",
 				"description"	=> "",
 			],	
@@ -721,7 +721,6 @@ class ShmForm
 			{
 				$clr  = get_term_meta($term_id, "color", true);
 
-
 				$default_marker = shm_get_default_marker( $clr );
 
 				$icon = '&quot;' . $default_marker['icon'] . '&quot;';
@@ -729,10 +728,24 @@ class ShmForm
 					$icon = ShMapPointType::get_icon_src($term_id)[0];
 				}
 
+				$term_name = '';
+				$term      = get_term( $term_id );
+				if( $term && ! is_wp_error( $term ) ){
+					$term_name = '<span class="shm-marker-title">' . $term->name . '</span>';
+				}
+
 				if($icon)
 				{
 					$icon_width = get_term_meta( $term_id, "width", true );
 					$icon_height = get_term_meta( $term_id, "height", true );
+
+					if ( ! $icon_width ) {
+						$icon_width = 30;
+					}
+
+					if ( ! $icon_height ) {
+						$icon_height = 36;
+					}
 
 					$bg_width = $icon_width . 'px';
 					$bg_height = $icon_height . 'px';
@@ -749,9 +762,12 @@ class ShmForm
 
 					$style_attr = 'style="background-image:url(' . $icon . ');background-size: '. $bg_width . ' ' . $bg_height . ';"';
 
-					$icons .= "
+					$icons .= "<div class='shm-marker-icon'>
 					<div class='".$params["icon_class"]."' $style_attr shm_type_id='$term_id' shm_map_id='' shm_clr='$clr' data-icon-width='".$icon_width."' data-icon-height='".$icon_height."'>
-					</div>";
+					</div>
+						" . $term_name . "
+					</div>
+					";
 
 				}
 				else
