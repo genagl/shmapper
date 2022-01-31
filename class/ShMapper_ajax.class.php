@@ -476,7 +476,7 @@ class ShMapper_ajax
 				$d = array(	
 					$action,
 					array( 
-						"msg"	=> sanitize_text_field($params[1]) ? __("Reload mode", SHMAPPER ) : __("Not relaod mode", SHMAPPER),
+						"msg"	=> sanitize_text_field($params[1]) ? __("Reload mode", SHMAPPER ) : __("Not reload mode", SHMAPPER),
 					)
 				);
 				break; 
