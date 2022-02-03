@@ -4,9 +4,9 @@ Author URI: https://te-st.ru/
 Plugin URI: http://genagl.ru/?p=652
 Tags: map, OpenStreetMap, OSM, yandex.map, crowdsourcing, карта, Яндекс.карты, картирование, mapping, crowdsourced mapping, user mapping
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.4.6.1
+Stable tag: 1.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
