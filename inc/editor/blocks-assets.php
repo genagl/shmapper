@@ -40,5 +40,8 @@ function shm_enqueue_block_editor_assets() {
 	);
 
 	wp_enqueue_style( 'ShMapper', SHM_URLPATH . 'assets/css/ShMapper.css', array(), SHMAPPER_VERSION );
+
+	wp_set_script_translations( 'shmapper-blocks', 'shmapper-by-teplitsa' );
+
 }
 add_action('enqueue_block_editor_assets', 'shm_enqueue_block_editor_assets');

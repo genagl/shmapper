@@ -343,7 +343,7 @@
 										{
 											href: select('core/editor').getEditedPostPreviewLink(),
 										},
-										'Use the preview page for this', 
+										__( 'Use the preview page for this', 'shmapper-by-teplitsa' ),
 									),
 									'.',
 								),
@@ -397,6 +397,8 @@
 								el( __experimentalUnitControl,
 									{
 										label: __('Map Min Height', 'shmapper-by-teplitsa'),
+										shmapper-by-teplitsa
+										shmapper-by-teplitsa
 										value: attributes.minHeight,
 										onChange: ( val ) => {
 											setAttributes( { minHeight: val } );
