@@ -1265,8 +1265,8 @@ tfoot .shm-notify2:after {
 	flex-wrap: wrap;
 	padding: 0 0 10px 0;
 	position: relative;
-	margin-left: -3px;
-	margin-right: -3px;
+	margin-left: -10px;
+	margin-right: -10px;
 	justify-content: stretch;
 }
 .shm-form-placemarks .shm-type-icon {
@@ -1306,6 +1306,7 @@ tfoot .shm-notify2:after {
 	float: none;
 	width: auto;
 	max-width: 70px;
+	min-width: 70px;
 	margin-left: auto;
 	margin-right: auto;
 	border: none;
