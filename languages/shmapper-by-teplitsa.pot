@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: ShMapper by Teplitsa\n"
-"POT-Creation-Date: 2022-01-31 08:17+0200\n"
+"POT-Creation-Date: 2022-02-04 00:00+0200\n"
 "PO-Revision-Date: 2020-06-18 05:16+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1206,7 +1206,7 @@ msgid "Reload mode"
 msgstr ""
 
 #: class/ShMapper_ajax.class.php:479
-msgid "Not relaod mode"
+msgid "Not reload mode"
 msgstr ""
 
 #: class/ShMapper_ajax.class.php:489
