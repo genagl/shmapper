@@ -75,7 +75,6 @@ function shm_load_textdomain_mofile( $mofile, $domain ) {
 add_filter( 'load_textdomain_mofile', 'shm_load_textdomain_mofile', 10, 2 );
 
 require_once SHM_REAL_PATH . 'inc/shm-functions.php';
-
 require_once SHM_REAL_PATH . 'class/ShMapper.class.php';
 require_once SHM_REAL_PATH . 'class/ShMapper_ajax.class.php';
 if ( ! class_exists( 'SMC_Post' ) ) {
