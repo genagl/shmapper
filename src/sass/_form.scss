@@ -89,6 +89,7 @@
 		line-height: 1.2;
 		padding: 12px 20px;
 		background-image: none;
+		white-space: normal;
 
 		&:not(:hover):not(:active) {
 			&:not(.has-background) {

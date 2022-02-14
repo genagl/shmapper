@@ -956,6 +956,7 @@ textarea:-ms-input-placeholder {
 	line-height: 1.2;
 	padding: 12px 20px;
 	background-image: none;
+	white-space: normal;
 }
 .shm-map-block .shm-form-submit:not(:hover):not(:active):not(.has-background) {
 	background-color: var(--shm-color-primary);
