@@ -60,7 +60,7 @@ define( 'SHMAPPER_TITLE_TYPE_ID', 9 );
 define( 'SHM_CSV_STROKE_SEPARATOR', ';' );
 define( 'SHM_CSV_ROW_SEPARATOR', '
 ');
-define( 'SHMAPPER_VERSION', '1.4.10' );
+define( 'SHMAPPER_VERSION', '1.4.11' );
 
 /** Load textdomain */
 function shm_load_textdomain_mofile( $mofile, $domain ) {
