@@ -483,6 +483,11 @@ class ShMapperRequest extends SMC_Post
 	}
 	static function add_menu_notification()
 	{
+
+		if ( ! current_user_can( 'edit_others_posts' ) ){
+			return;
+		}
+
 		global $submenu ;
 		$not_approved = get_posts([
 			"numberposts" 	=> -1,
