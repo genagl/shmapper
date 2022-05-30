@@ -68,7 +68,7 @@ class ShMapTrackType
 			'shm_page', 
 			__("Map track types", SHMAPPER), 
 			__("Map track types", SHMAPPER), 
-			'manage_options', 
+			'edit_others_posts', 
 			'edit-tags.php?taxonomy=' . SHM_TRACK_TYPE
 		);
 	}

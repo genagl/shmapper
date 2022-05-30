@@ -78,7 +78,7 @@ class ShMapPointType
 			'shm_page', 
 			__("Map marker types", SHMAPPER), 
 			__("Map marker types", SHMAPPER), 
-			'manage_options', 
+			'edit_others_posts', 
 			'edit-tags.php?taxonomy=' . SHM_POINT_TYPE
 		);
     }

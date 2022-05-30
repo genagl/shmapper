@@ -475,7 +475,7 @@ class ShMapper {
 		add_menu_page( 
 			__('Shmapper', SHMAPPER), 
 			__('Shmapper', SHMAPPER),
-			'manage_options', 
+			'edit_others_posts', 
 			'shm_page', 
 			[ __CLASS__, 'setting_pages' ], 
 			SHM_URLPATH . "assets/img/shmapper_32x32_white.svg",//"dashicons-admin-site", // icon url  
@@ -488,7 +488,7 @@ class ShMapper {
 			'shm_page',
 			__("Settings"),
 			__("Settings"),
-			'manage_options',
+			'edit_others_posts',
 			'shm_settings_page',
 			[ __CLASS__, 'setting_pages' ]
 		);
