@@ -32,16 +32,27 @@
 }
 .callout-danger
 {
-	background-color: #f9abab;
-	border: 1px solid #ff8e8e;
-	padding:20px;
-	color:#FFF;
+	background-color: #fcf9e8;
+	border-left: 2px solid #dba617;
+	padding: 20px;
+	margin-bottom: 10px;
+}
+.callout-danger .shm-title {
+	margin-bottom: 10px;
+}
+.callout-danger ol {
+	margin-top: 7px;
 }
 .callout-danger li
 {
 	background-color:transparent!important;
 	padding:0!important;
 	border-bottom: 1px solid transparent!important;
+	display: list-item;
+}
+
+.shm-card .callout-danger li {
+	display: list-item;
 }
 .d-flex
 {

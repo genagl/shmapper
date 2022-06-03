@@ -129,7 +129,7 @@ class ShMapperDrive
 							__("Export from Google Sheet", SHMAPPER ) .
 						"</div>
 						<div class='shm-9'>
-							<div class='callout-danger mb-2'>
+							<div class='callout-danger'>
 								<div class='shm-title'>".
 									__("Attantion", SHMAPPER).
 								"</div>
