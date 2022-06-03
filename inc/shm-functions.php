@@ -42,6 +42,9 @@ function shm_is_local(){
  * Get Default Marker
  */
 function shm_get_default_marker( $hex = '#f43724'){
+	if ( ! $hex ) {
+		$hex = '#f43724';
+	}
 	$color = str_replace('#', '', $hex );
 	$color_second = shm_colour_brightness($color, 0.6);
 	$marker = array(

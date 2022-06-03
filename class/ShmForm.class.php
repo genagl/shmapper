@@ -719,7 +719,7 @@ class ShmForm
 		{
 			foreach($terms as $term_id)
 			{
-				$clr  = get_term_meta($term_id, "color", true);
+				$clr = get_term_meta( $term_id, 'color', true );
 
 				$default_marker = shm_get_default_marker( $clr );
 
