@@ -473,13 +473,13 @@ class ShMapper {
 	{
 		/**/
 		add_menu_page( 
-			__('Shmapper', SHMAPPER), 
-			__('Shmapper', SHMAPPER),
-			'edit_others_posts', 
-			'shm_page', 
-			[ __CLASS__, 'setting_pages' ], 
-			SHM_URLPATH . "assets/img/shmapper_32x32_white.svg",//"dashicons-admin-site", // icon url  
-			'19.123456'
+			__( 'Shmapper', 'shmapper-by-teplitsa' ),
+			__( 'Shmapper', 'shmapper-by-teplitsa' ),
+			'edit_others_posts',
+			'shm_page',
+			[ __CLASS__, 'setting_pages' ],
+			shm_get_menu_icon(),
+			'25'
 		);
 	}
 	static function admin_page_handler2()
