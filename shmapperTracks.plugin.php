@@ -8,14 +8,12 @@
  */
 
 // Paths.
-define( 'SHMTRACKS_URLPATH', WP_PLUGIN_URL . '/' . plugin_basename( dirname(__FILE__) ) . '/' );
 define( 'SHMTRACKS_REAL_PATH', WP_PLUGIN_DIR . '/' . plugin_basename(dirname(__FILE__) ) . '/' );
 define( 'SHMAPPER_TRACKS', 'shmapper-by-teplitsa' );
 define( 'SHM_TRACK_TYPE', 'shmapper_track_type' );
 define( 'SHMAPPER_TRACKS_TRACK', 'shmapper_track' );
 define( 'SHMAPPER_TRACKS_POINT', 'shmapper_track_point' );
 define( 'SHMAPPER_TRACKS_DRAW', 'shmapper_track_draw' );
-define( 'SHMAPPER_TRACKS_VERSION', '1.0.03' );
 
 require_once SHM_REAL_PATH . 'class/ShMapperTracks.class.php';
 require_once SHM_REAL_PATH . 'class/ShMapperTracksAjax.class.php'; 

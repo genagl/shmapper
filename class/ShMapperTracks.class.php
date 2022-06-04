@@ -167,41 +167,41 @@ class ShMapperTracks
 	static function add_frons_js_script()
 	{
 		//css
-		wp_register_style(SHMAPPER_TRACKS, SHMTRACKS_URLPATH . 'assets/css/ShmapperTracks.css', array( 'dashicons' ), SHMAPPER_VERSION );
+		wp_register_style(SHMAPPER_TRACKS, SHM_URLPATH . 'assets/css/ShmapperTracks.css', array( 'dashicons' ), SHMAPPER_VERSION );
 		wp_enqueue_style( SHMAPPER_TRACKS);
-		wp_register_style("rangeSlider", SHMTRACKS_URLPATH . 'assets/css/ion.rangeSlider.min.css', array( 'dashicons' ) );
+		wp_register_style("rangeSlider", SHM_URLPATH . 'assets/css/ion.rangeSlider.min.css', array( 'dashicons' ) );
 		wp_enqueue_style( "rangeSlider");
-		wp_register_script(SHMAPPER_TRACKS, plugins_url( '../assets/js/ShmapperTracks.js', __FILE__ ), array( 'jquery-ui-draggable', 'jquery-touch-punch'), SHMAPPER_VERSION);
+		wp_register_script(SHMAPPER_TRACKS, SHM_URLPATH . 'assets/js/ShmapperTracks.js', array( 'jquery-ui-draggable', 'jquery-touch-punch'), SHMAPPER_VERSION);
 		wp_enqueue_script(SHMAPPER_TRACKS);
-		wp_register_script("rangeSlider", plugins_url( '../assets/js/ion.rangeSlider.min.js', __FILE__ ), array( ));
+		wp_register_script("rangeSlider", SHM_URLPATH . 'assets/js/ion.rangeSlider.min.js', array( ));
 		wp_enqueue_script("rangeSlider");
 		wp_localize_script(
 			SHMAPPER_TRACKS,
 			'shmapper_track',
 			array(
-				'url'         => SHMTRACKS_URLPATH,
+				'url'         => SHM_URLPATH,
 				'downloadGpx' => __( 'Download GPX', 'shmapper-by-teplitsa' )
 			)
-		);	
+		);
 	}
 	static function add_admin_js_script()
 	{
 		//css
-		wp_register_style(SHMAPPER_TRACKS, SHMTRACKS_URLPATH . 'assets/css/ShmapperTracks.css', array( 'dashicons' ), SHMAPPER_VERSION );
-		wp_enqueue_style( SHMAPPER_TRACKS);	
-		wp_register_style("rangeSlider", SHMTRACKS_URLPATH . 'assets/css/ion.rangeSlider.min.css', array( 'dashicons' ) );
+		wp_register_style(SHMAPPER_TRACKS, SHM_URLPATH . 'assets/css/ShmapperTracks.css', array( 'dashicons' ), SHMAPPER_VERSION );
+		wp_enqueue_style( SHMAPPER_TRACKS);
+		wp_register_style("rangeSlider", SHM_URLPATH . 'assets/css/ion.rangeSlider.min.css', array( 'dashicons' ) );
 		wp_enqueue_style( "rangeSlider");
-		wp_register_style("rangeSlider.skinNice", SHMTRACKS_URLPATH . 'assets/css/ion.rangeSlider.skinNice.css', array( 'dashicons' ) );
+		wp_register_style("rangeSlider.skinNice", SHM_URLPATH . 'assets/css/ion.rangeSlider.skinNice.css', array( 'dashicons' ) );
 		wp_enqueue_style( "rangeSlider.skinNice"); 
-		wp_register_script("ShMapperTracks.admin", plugins_url( '../assets/js/admin.js', __FILE__ ), array(), SHMAPPER_VERSION);
+		wp_register_script("ShMapperTracks.admin", SHM_URLPATH . 'assets/js/admin.js', array(), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapperTracks.admin");
-		wp_register_script("rangeSlider", plugins_url( '../assets/js/ion.rangeSlider.min.js', __FILE__ ), array());
+		wp_register_script("rangeSlider", SHM_URLPATH . 'assets/js/ion.rangeSlider.min.js', array());
 		wp_enqueue_script("rangeSlider");
 		wp_localize_script(
 			'ShMapperTracks.admin',
 			'shmapper_track',
 			array(
-				'url' => SHMTRACKS_URLPATH,
+				'url' => SHM_URLPATH,
 				'updatePlacemark' => __( 'Update Placemark', 'shmapper-by-teplitsa' ),
 				'removePlacemark' => __( 'Remove Placemark', 'shmapper-by-teplitsa' )
 			)

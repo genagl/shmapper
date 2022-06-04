@@ -94,24 +94,24 @@ class ShMapper {
 			'parent' => false,
 			'id' => 'shmapper_panel', 
 			'title' => __('Shmapper', SHMAPPER), 
-			'href' => "/wp-admin/admin.php?page=shm_settings_page" 	
+			'href' => "/wp-admin/admin.php?page=shm_settings_page"
 		));
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'shmapper_panel',
 			'id' => 'shmapper_add_map', 
 			'title' => __('add Map', SHMAPPER), 
-			'href' => "/wp-admin/post-new.php?post_type=shm_map" 	
+			'href' => "/wp-admin/post-new.php?post_type=shm_map"
 		));
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'shmapper_panel',
 			'id' => 'shmapper_maps', 
 			'title' => __('Maps', SHMAPPER), 
-			'href' => "/wp-admin/edit.php?post_type=shm_map" 	
+			'href' => "/wp-admin/edit.php?post_type=shm_map"
 		));
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'shmapper_panel',
 			'id' => 'shmapper_edit_maps', 
-			'title' => __('edit Maps in page', SHMAPPER), 
+			'title' => __('edit Maps in page', SHMAPPER),
 			'href' => "#" 	
 		));
 		if(is_array($shm_all_maps))
@@ -131,7 +131,7 @@ class ShMapper {
 			'parent' => 'shmapper_panel',
 			'id' => 'shmapper_map_req', 
 			'title' => __("all Map Requests", SHMAPPER), 
-			'href' => "/wp-admin/edit.php?post_type=shm_request" 	
+			'href' => "/wp-admin/edit.php?post_type=shm_request"
 		));
 	}
 	
@@ -232,12 +232,12 @@ class ShMapper {
 		wp_register_style("ShMapper-admin", SHM_URLPATH . 'assets/css/ShMapper-admin.css', array(), SHMAPPER_VERSION);
 		wp_enqueue_style( "ShMapper-admin");
 		//js
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array('inline-edit-post'), SHMAPPER_VERSION);
+		wp_register_script("ShMapper", SHM_URLPATH . 'assets/js/ShMapper.js', array('inline-edit-post'), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapper");
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker');
 		wp_enqueue_script( 'wp-color-picker' );
-		wp_register_script("ShMapper.admin", plugins_url( '../assets/js/ShMapper.admin.js', __FILE__ ), array(), SHMAPPER_VERSION);
+		wp_register_script("ShMapper.admin", SHM_URLPATH . 'assets/js/ShMapper.admin.js', array(), SHMAPPER_VERSION);
 		wp_enqueue_script("ShMapper.admin");
 
 		if( static::$options['map_api'] == 1 )
@@ -248,7 +248,7 @@ class ShMapper {
 			}
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=" . $locale, array());
 			wp_enqueue_script("api-maps");
-			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array(), SHMAPPER_VERSION);
+			wp_register_script("ShMapper.yandex", SHM_URLPATH . 'assets/js/ShMapper.yandex.js', array(), SHMAPPER_VERSION);
 			wp_enqueue_script("ShMapper.yandex");
 		}
 		else if(  static::$options['map_api'] == 2 )
@@ -256,7 +256,7 @@ class ShMapper {
 			//css
 			wp_register_style("easyGeocoder", SHM_URLPATH . 'assets/css/easyGeocoder.css', array());
 			wp_enqueue_style( "easyGeocoder");
-			wp_register_style("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css", array());
+			wp_register_style("leaflet", SHM_URLPATH . 'assets/css/leaflet.css', array());
 			wp_enqueue_style( "leaflet");
 			wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
 			wp_enqueue_style( "layerSwitcher");
@@ -264,27 +264,27 @@ class ShMapper {
 			wp_enqueue_style( "MarkerCluster");
 			wp_register_style("MarkerClusterD", SHM_URLPATH . 'assets/css/MarkerCluster.Default.css', array());
 			wp_enqueue_style( "MarkerClusterD");
-			wp_register_style("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css", array());
+			wp_register_style("esri-leaflet-geocoder", SHM_URLPATH . 'assets/css/esri-leaflet-geocoder.css', array());
 			wp_enqueue_style( "esri-leaflet-geocoder");
 			//js
-			wp_register_script("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js", array());
+			wp_register_script("leaflet", SHM_URLPATH . 'assets/js/leaflet.js', array(), '1.3.4' );
 			wp_enqueue_script("leaflet");
-			wp_register_script("esri-leaflet", "https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js", array());
+			wp_register_script("esri-leaflet", SHM_URLPATH . 'assets/js/esri-leaflet.js', array(), '2.2.3');
 			wp_enqueue_script("esri-leaflet");
-			wp_register_script("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js", array());
-			wp_enqueue_script("esri-leaflet-geocoder");	
-			wp_register_script("leaflet.markercluster", plugins_url( '../assets/js/leaflet.markercluster-src.js', __FILE__ ), array());
-			wp_enqueue_script("leaflet.markercluster");	
-			wp_register_script("layerSwitcher", plugins_url( '../assets/js/Leaflet.layerSwitcher.js', __FILE__ ), array());
+			wp_register_script("esri-leaflet-geocoder", SHM_URLPATH . 'assets/js/esri-leaflet-geocoder.js', array(), '2.2.13');
+			wp_enqueue_script("esri-leaflet-geocoder");
+			wp_register_script("leaflet.markercluster", SHM_URLPATH . 'assets/js/leaflet.markercluster-src.js', array());
+			wp_enqueue_script("leaflet.markercluster");
+			wp_register_script("layerSwitcher", SHM_URLPATH . 'assets/js/Leaflet.layerSwitcher.js', array());
 			wp_enqueue_script("layerSwitcher");	
 			
-			wp_register_script("easyGeocoder", plugins_url( '../assets/js/easyGeocoder.js', __FILE__ ), array());
-			wp_enqueue_script("easyGeocoder");	
+			wp_register_script("easyGeocoder", SHM_URLPATH . 'assets/js/easyGeocoder.js', array());
+			wp_enqueue_script("easyGeocoder");
 			
-			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
+			wp_register_script("Leaflet.fs", SHM_URLPATH . 'assets/js/Leaflet.fullscreen.min.js', array());
 			wp_enqueue_script("Leaflet.fs");
-			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array(), SHMAPPER_VERSION);
-			wp_enqueue_script("ShMapper.osm");	
+			wp_register_script("ShMapper.osm", SHM_URLPATH . 'assets/js/ShMapper_osm.js', array(), SHMAPPER_VERSION);
+			wp_enqueue_script("ShMapper.osm");
 		}
 		wp_localize_script( "ShMapper", "map_type", array(static::$options['map_api']) );
 		
@@ -349,17 +349,17 @@ class ShMapper {
 		//css
 		wp_register_style("ShMapper", SHM_URLPATH . 'assets/css/ShMapper.css', array( 'dashicons' ), SHMAPPER_VERSION );
 		wp_enqueue_style( "ShMapper");
-		wp_register_script("ShMapper", plugins_url( '../assets/js/ShMapper.js', __FILE__ ), array( 'jquery-ui-draggable', 'jquery-touch-punch'), SHMAPPER_VERSION );
-		wp_enqueue_script("ShMapper");	
+		wp_register_script("ShMapper", SHM_URLPATH . 'assets/js/ShMapper.js', array( 'jquery-ui-draggable', 'jquery-touch-punch'), SHMAPPER_VERSION );
+		wp_enqueue_script("ShMapper");
 		wp_register_style("layerSwitcher", SHM_URLPATH . 'assets/css/layerSwitcher.css', array());
 		wp_enqueue_style( "layerSwitcher");
-		wp_register_script("ShMapper.front", plugins_url( '../assets/js/ShMapper.front.js', __FILE__ ), array(), SHMAPPER_VERSION );
-		wp_enqueue_script("ShMapper.front");	
+		wp_register_script("ShMapper.front", SHM_URLPATH . 'assets/js/ShMapper.front.js', array(), SHMAPPER_VERSION );
+		wp_enqueue_script("ShMapper.front");
 		if( static::$options['map_api'] == 1 )
 		{
 			wp_register_script("api-maps", "https://api-maps.yandex.ru/2.1/?apikey=" . esc_attr( $ymap_key ) . "&load=package.full&lang=" . $locale, array());
 			wp_enqueue_script("api-maps");
-			wp_register_script("ShMapper.yandex", plugins_url( '../assets/js/ShMapper.yandex.js', __FILE__ ), array(), SHMAPPER_VERSION );
+			wp_register_script("ShMapper.yandex", SHM_URLPATH . 'assets/js/ShMapper.yandex.js', array(), SHMAPPER_VERSION );
 			wp_enqueue_script("ShMapper.yandex");
 		}
 		else if( static::$options['map_api'] == 2 )
@@ -371,26 +371,26 @@ class ShMapper {
 			wp_enqueue_style( "MarkerCluster");
 			wp_register_style("MarkerClusterD", SHM_URLPATH . 'assets/css/MarkerCluster.Default.css', array());
 			wp_enqueue_style( "MarkerClusterD");
-			wp_register_style("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css", array());
+			wp_register_style("leaflet", SHM_URLPATH . 'assets/css/leaflet.css', array());
 			wp_enqueue_style( "leaflet");
-			wp_register_style("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css", array());
+			wp_register_style("esri-leaflet-geocoder", SHM_URLPATH . 'assets/css/esri-leaflet-geocoder.css', array());
 			wp_enqueue_style( "esri-leaflet-geocoder");
 			//js
-			wp_register_script("leaflet", "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js", array());
-			wp_enqueue_script("leaflet");	
-			wp_register_script("esri-leaflet", "https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js", array());
+			wp_register_script("leaflet", SHM_URLPATH . 'assets/js/leaflet.js', array(), '1.3.4' );
+			wp_enqueue_script("leaflet");
+			wp_register_script("esri-leaflet", SHM_URLPATH . 'assets/js/esri-leaflet.js', array(), '2.2.3');
 			wp_enqueue_script("esri-leaflet");
-			wp_register_script("esri-leaflet-geocoder", "https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js", array());
+			wp_register_script("esri-leaflet-geocoder", SHM_URLPATH . 'assets/js/esri-leaflet-geocoder.js', array(), '2.2.13');
 			wp_enqueue_script("esri-leaflet-geocoder");	
-			wp_register_script("easyGeocoder", plugins_url( '../assets/js/easyGeocoder.js', __FILE__ ), array());
-			wp_enqueue_script("easyGeocoder");	
-			wp_register_script("leaflet.markercluster", plugins_url( '../assets/js/leaflet.markercluster-src.js', __FILE__ ), array());
+			wp_register_script("easyGeocoder", SHM_URLPATH . 'assets/js/easyGeocoder.js', array());
+			wp_enqueue_script("easyGeocoder");
+			wp_register_script("leaflet.markercluster", SHM_URLPATH . 'assets/js/leaflet.markercluster-src.js', array());
 			wp_enqueue_script("leaflet.markercluster");	
-			wp_register_script("layerSwitcher", plugins_url( '../assets/js/Leaflet.layerSwitcher.js', __FILE__ ), array());
-			wp_enqueue_script("layerSwitcher");	
-			wp_register_script("Leaflet.fs", plugins_url( '../assets/js/Leaflet.fullscreen.min.js', __FILE__ ), array());
+			wp_register_script("layerSwitcher", SHM_URLPATH . 'assets/js/Leaflet.layerSwitcher.js', array());
+			wp_enqueue_script("layerSwitcher");
+			wp_register_script("Leaflet.fs", SHM_URLPATH . 'assets/js/Leaflet.fullscreen.min.js', array());
 			wp_enqueue_script("Leaflet.fs");
-			wp_register_script("ShMapper.osm", plugins_url( '../assets/js/ShMapper_osm.js', __FILE__ ), array(), SHMAPPER_VERSION );
+			wp_register_script("ShMapper.osm", SHM_URLPATH . 'assets/js/ShMapper_osm.js', array(), SHMAPPER_VERSION );
 			wp_enqueue_script("ShMapper.osm");
 
 		}

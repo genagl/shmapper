@@ -596,7 +596,7 @@ class ShmForm
 			$icon	= wp_get_attachment_image_src($diid, [60, 60])[0];
 			
 			if(!$icon)
-				$icon = ShMapper::$options['map_api'] == 2 ? "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"
+				$icon = ShMapper::$options['map_api'] == 2 ? SHM_URLPATH . 'assets/img/marker-icon.png'
 				: SHM_URLPATH . 'assets/img/ym_default.png';
 			$desc = "
 			<div class='shm-float-right'>
@@ -776,7 +776,7 @@ class ShmForm
 					$icon	= wp_get_attachment_image_url($diid, [60, 60]);
 					if(!$icon) {
 						if(ShMapper::$options['map_api'] == 2) {
-							$icon = "https://unpkg.com/leaflet@1.3.4/dist/images/marker-icon.png"; // 25 x 41
+							$icon = SHM_URLPATH . 'assets/img/marker-icon.png'; // 25 x 41
 							$icon_width = 25;
 							$icon_height = 41;
 						}
