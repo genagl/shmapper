@@ -7,11 +7,12 @@ var __ = function(text)
 function open_media_uploader_image()
 {
     media_uploader = wp.media({
-        frame:    "post", 
-        state:    "insert", 
+    	library: {
+			type: 'image'
+		},
         multiple: false
     });
-    media_uploader.on("insert", function()
+    media_uploader.on("select", function()
 	{
         var json = media_uploader.state().get("selection").first().toJSON();
 
@@ -347,8 +348,9 @@ jQuery(document).ready(function($)
 	{
 		prefix = $(this).attr("prefix");// "pic_example";
 		$( elem ).height( $("#" + prefix  + $(elem).attr("image_id")).height() + 0);
-	})
+	});
 	$(".my_image_delete").on( 'click', function(evt) {
+		console.log(evt);
 		var $prefix = $(evt.currentTarget).attr("prefix");
 		var $default = $(evt.currentTarget).attr("default");
 		var $targ = $("#" + $prefix + " > img");
