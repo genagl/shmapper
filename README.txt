@@ -4,9 +4,9 @@ Author URI: https://te-st.ru/
 Plugin URI: http://genagl.ru/?p=652
 Tags: map, OpenStreetMap, OSM, yandex.map, crowdsourcing, карта, Яндекс.карты, картирование, mapping, crowdsourced mapping, user mapping
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.4.11
+Stable tag: 1.4.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,10 @@ No questions yet.
 2.  Map and feedback form example
 
 == Changelog ==
+
+= 1.4.13 =
+* Improve Compatibility for WordPress 6.0
+* Improve a lot of minor tasks
 
 = 1.4.8 =
 * Add Gutenberg block ShMapper Map.
