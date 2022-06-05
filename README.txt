@@ -6,7 +6,7 @@ Tags: map, OpenStreetMap, OSM, yandex.map, crowdsourcing, карта, Яндек
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.4.13
+Stable tag: 1.4.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,7 +58,7 @@ No questions yet.
 
 == Changelog ==
 
-= 1.4.13 =
+= 1.4.12 =
 * Improve Compatibility for WordPress 6.0
 * Improve a lot of minor tasks
 

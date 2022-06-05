@@ -160,7 +160,7 @@ class ShmForm
 	}
 	
 	
-	static function wp_params_radio( $params=-1, $id, $post_id=1 )
+	static function wp_params_radio( $params=-1, $id = '', $post_id=1 )
 	{
 		$params		= is_array($params) ? $params : [];
 		$html 		= "
@@ -184,7 +184,7 @@ class ShmForm
 		return $html;
 	}
 	
-	static function get_admin_element( $id, $data=-1 )
+	static function get_admin_element( $id ='', $data=-1 )
 	{
 		$data 	= !is_array($data) ? [ "require"=>1, "selected" => 0 ] : $data;
 		if ( !isset( $data['require'] ) ) {

@@ -222,8 +222,14 @@ class ShMapPointType
 	}
 	static function get_icon($term, $is_locked=false)
 	{
-		$color    = get_term_meta($term->term_id, "color", true);
-		$icon     = (int)get_term_meta($term->term_id, "icon", true);
+		$term_id   = '';
+		$term_name = '';
+		if ( isset( $term->term_id ) ) {
+			$term_id = $term->term_id;
+			$term_name = $term->name;
+		}
+		$color    = get_term_meta( $term_id, "color", true);
+		$icon     = (int)get_term_meta( $term_id, "icon", true);
 		$icon_url = wp_get_attachment_image_url($icon, 'medium_large');
 
 		$default_marker = shm_get_default_marker( $color );
@@ -238,9 +244,9 @@ class ShMapPointType
 		}
 
 		return '
-		<div class="ganre_picto ' . $class . '" term="' . SHM_POINT_TYPE . '" term_id="' . $term->term_id . '">
+		<div class="ganre_picto ' . $class . '" term="' . SHM_POINT_TYPE . '" term_id="' . $term_id . '">
 			<div class="shm_type_icon" style="background-image:url(' . $cur_bgnd . ');"></div>
-			<div class="ganre_label">' . $term->name . '</div>
+			<div class="ganre_label">' . $term_name . '</div>
 		</div>';
 	}
 	static function get_all_ids()
