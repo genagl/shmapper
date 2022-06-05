@@ -423,18 +423,6 @@ class ShMaperTrack extends SMC_Post
 				<div>
 					<input type='hidden' style='width:100%;' value='[" . implode( ",", $mm ) . "]' name='track'>
 				</div> 
-				<div>".
-					ShmForm::getTypeSwitcher( 
-						[ "placemarks"	=> implode( ",", get_terms( [ 'taxonomy' => SHM_POINT_TYPE, 'hide_empty' => false, "fields" => "ids" ] ) ) ], 
-						$map, 
-						"",
-						["icon_class" => "shm-type-icon-1"]
-					) .
-					"
-					<div>" .
-						__("Add track's markers", SHMAPPER_TRACKS).
-					"</div>
-				</div>
 				<div class='spacer-10'></div> 
 			</div>
 			<script>

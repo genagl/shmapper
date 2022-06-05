@@ -103,9 +103,9 @@ class ShMapPointType
 				$icon = get_term_meta( $term_id, 'icon', true ); 
 				$color = get_term_meta( $term_id, 'color', true );
 				$logo = wp_get_attachment_image_url( $icon, "full" );
-				echo "<div>
-					<img src='$logo' style='width:auto; height:60px; margin:10px;' />
-					<div style='width:80px;height:5px;background-color:$color;'></div>
+				echo "<div class='hms-column-icon'>
+					<img src='$logo' alt=''>
+					<div class='hms-column-color' style='background-color:$color;'></div>
 				</div>";
 				break;
 			default:
@@ -222,18 +222,17 @@ class ShMapPointType
 	}
 	static function get_icon($term, $is_locked=false)
 	{
-		
-		$color 		= get_term_meta($term->term_id, "color", true);
-		$icon  		= (int)get_term_meta($term->term_id, "icon", true);
-		$d 			= wp_get_attachment_image_src($icon, array(100, 100));
+		$color    = get_term_meta($term->term_id, "color", true);
+		$icon     = (int)get_term_meta($term->term_id, "icon", true);
+		$icon_url = wp_get_attachment_image_url($icon, 'medium_large');
 
 		$default_marker = shm_get_default_marker( $color );
 
 		$cur_bgnd = '&quot;' . $default_marker['icon'] . '&quot;';
-		if ( $d ) {
-			$cur_bgnd = $d[0];
+		if ( $icon_url ) {
+			$cur_bgnd = $icon_url;
 		}
-		$class		= $is_locked ? " shm-muffle " : "";
+		$class = $is_locked ? " shm-muffle " : "";
 		if ( $cur_bgnd ) {
 			$color = 'transparent';
 		}
@@ -379,25 +378,29 @@ class ShMapPointType
 		foreach($ganres as $ganre) {
 			if( is_array($includes) && !in_array( $ganre->term_id, $includes ) ) continue;
 						
-			$icon 		= get_term_meta($ganre->term_id, "icon", true);
-			$color 		= get_term_meta($ganre->term_id, "color", true);
-			$d 			= wp_get_attachment_image_src($icon, array(100, 100));
+			$icon     = get_term_meta($ganre->term_id, "icon", true);
+			$color    = get_term_meta($ganre->term_id, "color", true);
+			$icon_url = wp_get_attachment_image_url($icon, 'medium_large');
 
 			$default_marker = shm_get_default_marker( $color );
 
 			$icon = '&quot;' . $default_marker['icon'] . '&quot;';
 			$cur_bgnd = '';
-			if ( $d ) {
-				$cur_bgnd = $d[0];
+			if ( $icon_url ) {
+				$cur_bgnd = $icon_url;
 			}
-			$before 	= "";
-			$after 		= "";
+			$before = "";
+			$after  = "";
 
 			switch( $form_factor )
 			{
 				case "large":
 
-					$marker = $cur_bgnd ? '<img src="' . $cur_bgnd . '" alt="">' : '<div class="shm-marker-svg" style="background-image:url(&quot;' . $default_marker['icon'] . '&quot;);background-size: ' . $default_marker['width'] . 'px ' . $default_marker['height'] . 'px"></div>';
+					$marker = $cur_bgnd ? '
+
+					<div class="shm-marker-image" style="background-image:url(' . $cur_bgnd. ');"></div>
+
+					' : '<div class="shm-marker-svg" style="background-image:url(&quot;' . $default_marker['icon'] . '&quot;);background-size: ' . $default_marker['width'] . 'px ' . $default_marker['height'] . 'px"></div>';
 					$class = "ganre_checkbox shm-marker-checkbox";
 					$before = "<div class='$col_width'>";
 					$after = '
@@ -420,6 +423,14 @@ class ShMapPointType
 							($cur_bgnd ? "<img src='$cur_bgnd' alt='' />" : "<div class='shm-clr' style='background:$color;'></div>").
 						"</label>";
 					break;
+
+				case "stroke-filter":
+					$class = "ganre_checkbox2";
+					$img = $cur_bgnd ? '<img src="' . $cur_bgnd . '" alt="">' : '<div class="shm-filter-item-svg" style="background-image:url(' . $icon . ');"></div>';
+					$after = '
+						<label for="' . $params['prefix'] . '_' . $ganre->term_id . '" title="' . $ganre->name . '"><div class="hms-filter-image">' . $img . '</div></label>';
+					break;
+
 				default:
 					$class = "ganre_checkbox";
 					break;

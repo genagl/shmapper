@@ -724,9 +724,13 @@ class ShmForm
 				$default_marker = shm_get_default_marker( $clr );
 
 				$icon = '&quot;' . $default_marker['icon'] . '&quot;';
-				if ( ShMapPointType::get_icon_src($term_id) ) {
-					$icon = ShMapPointType::get_icon_src($term_id)[0];
+				$icon_id  = get_term_meta( $term_id, 'icon', true );
+				if ( $icon_id ) {
+					$icon = wp_get_attachment_image_url( $icon_id, 'medium_large' );
 				}
+				// if ( ShMapPointType::get_icon_src($term_id) ) {
+				// 	$icon = ShMapPointType::get_icon_src($term_id)[0];
+				// }
 
 				$term_name = '';
 				$term      = get_term( $term_id );
@@ -740,11 +744,11 @@ class ShmForm
 					$icon_height = get_term_meta( $term_id, "height", true );
 
 					if ( ! $icon_width ) {
-						$icon_width = 30;
+						$icon_width = 'auto';
 					}
 
 					if ( ! $icon_height ) {
-						$icon_height = 36;
+						$icon_height = 'auto';
 					}
 
 					$bg_width = $icon_width . 'px';

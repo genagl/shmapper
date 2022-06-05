@@ -1311,6 +1311,9 @@ tfoot .shm-notify2:after {
 	margin-left: auto;
 	margin-right: auto;
 	border: none;
+	padding: 10px;
+	background-size: contain;
+	background-origin: content-box;
 }
 .shm-form-placemarks .shm-marker-icon .shm-type-icon:hover {
 	background-color: transparent;
@@ -1990,6 +1993,20 @@ input[type=radio].shm-marker-checkbox + label img {
 	background-repeat: no-repeat;
 }
 
+.shm-marker-image {
+	position: absolute;
+	top: 0px;
+	left: 0;
+	width: 52px;
+	height: 52px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-origin: content-box;
+	padding: 8px;
+	box-sizing: border-box;
+}
+
 .shm-metabox-block-example img {
 	max-width: 100%;
 	height: auto;
@@ -2050,11 +2067,42 @@ input[type=radio].shm-marker-checkbox + label img {
 	display: flex;
 	align-items: center;
 }
+.shm-legend__item .shm-icon {
+	max-width: 40px;
+}
+.shm-legend__item .shm-icon img {
+	max-height: 30px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 .shm-legend__item .shm-icon svg {
 	display: block;
 	width: 26px;
 	height: 26px;
 	margin-right: -5px;
+}
+
+/** Map Legend */
+.hms-filter-image {
+	position: absolute;
+	width: 26px;
+	height: 24px;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.hms-filter-image > img {
+	position: static !important;
+	top: auto !important;
+	left: auto !important;
+	max-height: 90% !important;
+	max-width: 90% !important;
+	height: auto !important;
+	width: auto !important;
 }
 
 /** Map Container */

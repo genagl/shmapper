@@ -56,6 +56,10 @@
 			margin-left: auto;
 			margin-right: auto;
 			border: none;
+			padding: 10px;
+			background-size: contain;
+			background-origin: content-box;
+
 
 			&:hover {
 				background-color: transparent;

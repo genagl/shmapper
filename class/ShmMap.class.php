@@ -879,9 +879,28 @@ class ShmMap extends SMC_Post
 
 			$pnt_icon = '';
 			if ( $type ) {
-				$pnt_icon_src = ShMapPointType::get_icon_src( $type->term_id );
-				if ( is_array( $pnt_icon_src ) ) {
-					$pnt_icon = $pnt_icon_src[0];
+				$icon_id = get_term_meta( $type->term_id, 'icon', true );
+
+				if ( $icon_id ) {
+					$pnt_icon = wp_get_attachment_image_url( $icon_id, 'medium_large');
+					$icon_src = wp_get_attachment_image_src( $icon_id, 'medium_large');
+					$icon_width  = $icon_src['1'];
+					$icon_height = $icon_src['2'];
+
+					if ( ! get_term_meta( $type->term_id, 'height', true) || ! get_term_meta( $type->term_id, 'width', true) ) {
+						if ( $icon_width > $icon_height ) {
+							$icon_scale  = $icon_width / 40;
+							$icon_width  = 40;
+							$icon_height = $icon_height / $icon_scale;
+						} else {
+							$icon_scale  = $icon_height / 40;
+							$icon_height = 40;
+							$icon_width  = $icon_width / $icon_scale;
+							
+						}
+						$pnt->width  = $icon_width;
+						$pnt->height = $icon_height;
+					}
 				}
 			}
 

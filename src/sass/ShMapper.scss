@@ -1537,6 +1537,20 @@ input[type=radio].shm-marker-checkbox + label img {
 	background-repeat: no-repeat;
 }
 
+.shm-marker-image {
+	position: absolute;
+	top: 0px;
+	left: 0;
+	width: 52px;
+	height: 52px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-origin: content-box;
+	padding: 8px;
+	box-sizing: border-box;
+}
+
 .shm-metabox-block-example img {
 	max-width: 100%;
 	height: auto;
@@ -1548,4 +1562,5 @@ input[type=radio].shm-marker-checkbox + label img {
 @import 'panel';
 @import 'map';
 @import 'legend';
+@import 'filter';
 @import 'block';

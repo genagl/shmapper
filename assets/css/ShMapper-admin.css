@@ -5,3 +5,19 @@
 .shm-form-inline > .button {
 	margin-left: 5px;
 }
+.wp-list-table .hms-column-icon {
+	width: 80px;
+	padding-top: 10px;
+}
+.wp-list-table .hms-column-icon > img {
+	display: block;
+	width: auto;
+	max-height:  60px;
+	max-width: 60px;
+	margin-bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.wp-list-table .hms-column-color {
+	height: 5px;
+}

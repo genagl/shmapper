@@ -74,10 +74,12 @@ function draw_shMap($map, $args )
 					$color = get_term_meta( $term_id, 'color', true);
 
 					$icon_image = ShMapPointType::get_icon_default_marker( $color );
+					$icon_id = get_term_meta( $term_id, 'icon', true);
 
-					$icon_url = ShMapPointType::get_icon_url( $term_id );
-					if ( $icon_url ) {
-						$icon_image = '<img src="' . esc_attr( $icon_url ) . '" width="20">';
+					$icon_url = wp_get_attachment_image_url( $icon_id, 'medium_large' );
+
+					if ( $icon_id ) {
+						$icon_image = '<img src="' . esc_attr( $icon_url ) . '" alt="' . esc_attr( $term->name ) . '">';
 					}
 
 					$icon_html = '<div class="shm-icon">' . $icon_image . '</div>';
@@ -119,7 +121,7 @@ function draw_shMap($map, $args )
 				"selected"		=> ShMapPointType::get_all_ids(),
 				"includes"		=> $includes,
 				"col_width"		=> 2
-			], "checkbox",  "stroke" );
+			], "checkbox",  "stroke-filter" );
 		}
 	}
 
