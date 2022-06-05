@@ -1428,8 +1428,18 @@ input[type=radio].shm-marker-checkbox + label img {
 .leaflet-popup-content .shml-title {
 }
 
-.leaflet-popup-content .shml-popup-post-content {
+
+.shml-popup-post-content {
+	p {
+		line-height: 1.3;
+
+		+ p {
+			margin-top: 5px;
+		}
+	}
+
 }
+
 
 .shm_container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
 	overflow: hidden;
