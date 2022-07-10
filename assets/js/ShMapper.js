@@ -304,7 +304,8 @@ jQuery(document).ready(function($)
 		$("[name='tax_input[shm_point_type][]']:checked").each( function(num, elem){$(elem).prop('checked', false)} );
 		$(evt.currentTarget).attr("checked", ch);
 	});
-	$("[name=shm_esc_points]").on( 'change', function(evt) {
+
+	$(document).on( 'change', '[name=shm_esc_points]', function(evt) {
 		if($(evt.currentTarget).val() == 3)
 		{
 			$("#shm_esc_points_id").show();
@@ -314,6 +315,7 @@ jQuery(document).ready(function($)
 			$("#shm_esc_points_id").hide();
 		}
 	});
+
 	//interface
 	$(".shm-close-btn").on( 'click', function(evt) {
 		$(evt.currentTarget).parents(".shm-win").hide();
