@@ -5,7 +5,7 @@
  * Description: Location and logistics services for NKO
  * Version: 1.4.14
  * Requires at least: 5.0
- * Requires PHP: 5.6
+ * Requires PHP: 7.4
  * Author: Teplitsa. Technologies for Social Good
  * Author URI: https://te-st.org
  * License: GPL2
