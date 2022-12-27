@@ -1741,5 +1741,5 @@ msgid "Teplitsa. Technologies for Social Good"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://te-st.ru"
+msgid "https://te-st.org"
 msgstr ""

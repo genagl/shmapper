@@ -964,8 +964,8 @@ msgid "No map on ID "
 msgstr "Karten-ID nicht angegeben"
 
 #. Author URI of the plugin
-msgid "https://te-st.ru"
-msgstr "https://te-st.ru"
+msgid "https://te-st.org"
+msgstr "https://te-st.org"
 
 #. Author of the plugin
 msgid "Teplitsa. Technologies for Social Good"

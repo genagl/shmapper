@@ -7,7 +7,7 @@
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Author: Teplitsa. Technologies for Social Good
- * Author URI:  https://te-st.ru
+ * Author URI: https://te-st.org
  * License: GPL2
  * Text Domain: shmapper-by-teplitsa
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
