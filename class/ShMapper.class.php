@@ -546,18 +546,20 @@ class ShMapper {
 							esc_html__("Map API", SHMAPPER ) .
 						"</div>
 						<div class='shm-10'>
-							<div class='shm-admin-block'>
-								<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" .
-									checked(1, (int)static::$options['map_api'], 0) .
-								"/>
-								<label for='radio_Yandex'>" . esc_html( "Yandex.Maps", SHMAPPER ) . "</label>
-							</div>
-							<div class='shm-admin-block'>
+
+							<label class='shm-admin-block'>
 								<input type='radio' class='radio' value='2' name='map_api' id='radio_OSM'" .
 									checked(2, (int)static::$options['map_api'], 0) . 
 								"/>
-								<label for='radio_OSM'>" . esc_html__( "OpenStreetMap", SHMAPPER ) . "</label>
-							</div>
+								<span >" . esc_html__( "OpenStreetMap", SHMAPPER ) . "</span>
+							</label>
+
+							<label class='shm-admin-block'>
+								<input type='radio' class='radio' value='1' name='map_api' id='radio_Yandex'" .
+									checked(1, (int)static::$options['map_api'], 0) .
+								"/>
+								<span>" . esc_html( "Yandex.Maps", SHMAPPER ) . "</span>
+							</label>
 
 							<div class='spacer-10'></div>
 
