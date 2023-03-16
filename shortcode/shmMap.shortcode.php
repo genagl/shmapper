@@ -55,8 +55,14 @@ function shmMap($args) {
 		$style = '--shm-map-max-width:' . $width . ';';
 	}
 
-	if ( $args['minheight'] ) {
+	if ( ! $args['isblock'] && $map->get_meta( 'height' ) ) {
+		$args['height']    = $map->get_meta( 'height' );
+		$args['minheight'] = $map->get_meta( 'height' ) . 'px';
+	}
+
+	if ( $args['isblock'] && $args['minheight'] ) {
 		$style .= '--shm-map-min-height:' . $args['minheight'] . ';';
+		$args['height'] = (int) $args['minheight'];
 	}
 
 	if ( $is_title && ! $args['isblock'] ) {
