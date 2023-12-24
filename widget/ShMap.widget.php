@@ -14,9 +14,10 @@ class ShmLocationNavigatorWidget extends WP_Widget {
 		add_action( 'init',				array($this, 'redirect_login_page'));
 	}
 	function redirect_login_page() 
-	{  
+	{
+		$request_uri = $_SERVER['REQUEST_URI'];
 		$login_page  	= home_url( '/' );  
-		$page_viewed 	= basename($_SERVER['REQUEST_URI']);  
+		$page_viewed 	= basename( $request_uri );
 		$this->name 	= __('Ermak Locations', SHMAPPER);
 		$this->widget_options['description'] 	= __('Player Cabinet', SHMAPPER);
 	}

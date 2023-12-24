@@ -92,20 +92,14 @@ class ShMapper_ajax
 			$msg	= ShMapper::$options['shm_succ_request_text'];
 			$grec = ShMapper_Assistants::shm_after_request_form("");
 		}
-		
-		//load image
-		// if( $res AND $res->id > 1 ) {
-			
-		// }
+
 		$form = ShmForm::form( get_post_meta( $data['id'], "form_forms", true ), ShmMap::get_instance($data['id'])  );
 		$answer = [
 			"reload"		=> ShMapper::$options['shm_reload'] ? 1 : 0,
 			'res'			=> $res,
 			'data'			=> $data,
 			"msg"			=> $msg,
-			//"form"		=> $form,
 			"grec"			=> $grec,
-			//"attach_id"	=> $attach_id,
 			'grecaptcha'	=> ShMapper::$options['shm_settings_captcha']
 		];
 		wp_die( json_encode( $answer ) );
@@ -118,15 +112,15 @@ class ShMapper_ajax
 		}
 		catch(Error $ex)
 		{
-			$d = [	
+			$d = [
 				"Error",
 				array(
 					'msg'	=> $ex->getMessage (),
 					'log'	=> $ex->getTrace ()
-				  )
+				)
 			];
 			$d_obj		= json_encode( $d );
-			print $d_obj;
+			echo wp_kses_post( $d_obj );
 			wp_die();
 		}
 		wp_die();
@@ -135,17 +129,23 @@ class ShMapper_ajax
 	{
 		global $wpdb;
 		$nonce = $_POST['nonce'];
-		if ( !wp_verify_nonce( $nonce, 'myajax-nonce' ) ) die ( $_POST['params'][0] );
-		
+		if ( ! wp_verify_nonce( $nonce, 'myajax-nonce' ) ) {
+			$params = '';
+			if ( isset( $_POST['params'][0] ) ) {
+				$params = $_POST['params'][0];
+			}
+			die( esc_html( $params ) );
+		}
+
 		$params	= $_POST['params'];
-		$action = sanitize_text_field($params[0]);
+		$action = sanitize_text_field( $params[0] );
 		$d		= array( $action, array() );
 		switch($action)
-		{				
-			case "test":	
-				$map_id = sanitize_text_field($params[1]);
-				$num = sanitize_text_field($params[2]);
-				$d = array(	
+		{
+			case "test":
+				$map_id = sanitize_text_field( $params[1] );
+				$num = sanitize_text_field( $params[2] );
+				$d = array(
 					$action,
 					array( 
 						"text"		=> 'testing',

@@ -260,14 +260,14 @@ class ShmPoint extends SMC_Post
 		switch($column_name)
 		{
 			case "ids":
-				echo $post_id;
+				echo esc_html( $post_id );
 				break;
 			case "location":
-				echo __("Latitude", SHMAPPER).": <strong>" . $obj->get_meta("latitude") ."</strong>".
+				echo esc_html__( 'Latitude', SHMAPPER ) . ": <strong>" . $obj->get_meta("latitude") ."</strong>".
 				"<br>".
-				 __("Longitude", SHMAPPER).": <strong>" . $obj->get_meta("longitude") ."</strong>".
+				esc_html__( 'Longitude', SHMAPPER ) . ": <strong>" . $obj->get_meta("longitude") ."</strong>".
 				"<br>".
-				 __("Location", SHMAPPER).": <strong>" . $obj->get_meta("location") ."</strong>";
+				esc_html__( 'Location', SHMAPPER ) . ": <strong>" . $obj->get_meta("location") ."</strong>";
 				break;
 			case "owner_map":
 				echo $obj->get_owner_list();
@@ -301,7 +301,7 @@ class ShmPoint extends SMC_Post
 				}
 				break;
 			case "thumb":
-				echo "<div class='shm_type_icon2' style='background-image:url(" . get_the_post_thumbnail_url( $post_id, [75, 75] ) .");'></div>" ;
+				echo "<div class='shm_type_icon2' style='background-image:url(" . esc_url( get_the_post_thumbnail_url( $post_id, [75, 75] ) ) . ");'></div>" ;
 				break;
 			default:
 				parent::fill_views_column($column_name, $post_id);
@@ -531,7 +531,7 @@ class ShmPoint extends SMC_Post
 		if($post_type != static::get_type())	return;
 		?>
 		<fieldset class="inline-edit-col-left inline-edit-shm_point">
-			<div class="inline-edit-col column-<?php echo $column_name; ?>">
+			<div class="inline-edit-col column-<?php echo esc_attr( $column_name ); ?>">
 			<?php 
 			 switch ( $column_name )
 			 {
@@ -559,6 +559,9 @@ class ShmPoint extends SMC_Post
 				static::update_map_owners($obj);
 			}
 		}
-		echo json_encode( $_POST );
+		if ( isset( $_POST ) ) {
+			$post_json = json_encode( $_POST );
+			echo wp_kses_post( $post_json );
+		}
 	}
 }

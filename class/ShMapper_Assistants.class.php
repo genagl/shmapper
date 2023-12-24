@@ -50,8 +50,8 @@ class ShMapper_Assistants
 				"select_none" 	=> __("all maps", SHMAPPER)
 			]);
 			?>
-			<input name="pagenum" 			type="hidden" value="<?php echo $wp_list_table->get_pagenum();?>" />
-			<input name="items_per_page" 	type="hidden" value="<?php echo $wp_list_table->get_items_per_page('per_page');?>" />
+			<input name="pagenum" 			type="hidden" value="<?php echo esc_attr( $wp_list_table->get_pagenum() ); ?>" />
+			<input name="items_per_page" 	type="hidden" value="<?php echo esc_attr( $wp_list_table->get_items_per_page('per_page') ); ?>" />
 			
 			<?php
 		}

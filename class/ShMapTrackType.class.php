@@ -7,8 +7,7 @@
 
 class ShMapTrackType
 {
-	static function init()
-	{
+	static function init() {
 		add_action('init',				array(__CLASS__, 'register_all'), 11 );
 		add_action( 'parent_file',		array(__CLASS__, 'tax_menu_correction'), 1);	
 		add_action( 'admin_menu', 		array(__CLASS__, 'tax_add_admin_menus'), 11);
@@ -20,8 +19,7 @@ class ShMapTrackType
 		add_action( 'create_'.SHM_TRACK_TYPE, 				array( __CLASS__, 'save_ctg'), 10); 
 
 	} 
-	static function register_all()
-	{
+	static function register_all() {
 		//Map track type
 		$labels = array(
 			'name'              => __("Map track type", SHMAPPER_TRACKS),
@@ -37,7 +35,7 @@ class ShMapTrackType
 			'new_item_name'     => __("New Map track type name", SHMAPPER_TRACKS),
 			'menu_name'         => __("Map track type", SHMAPPER_TRACKS),
 		);
-		register_taxonomy(SHM_TRACK_TYPE, [ ], 
+		register_taxonomy( SHM_TRACK_TYPE, [ ], 
 		[
 			'label'                 => '',
 			'labels'                => $labels,
@@ -91,7 +89,7 @@ class ShMapTrackType
 				break;
 			case 'color':
 				$color = get_term_meta( $term_id, 'color', true );
-				echo '<div style="width:80px;height:4px;background-color:' . $color . ';"></div>';
+				echo '<div style="width:80px;height:4px;background-color:' . esc_attr( $color ) . ';"></div>';
 				break;
 			default:
 				break;
@@ -109,15 +107,15 @@ class ShMapTrackType
 			<label for="color">
 				<?php echo __("Color", SHMAPPER);  ?>
 			</label> 
-			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color; ?>">
+			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo esc_attr( $color ); ?>">
 			</div>
-			<input type="color" name="color" value="<?php echo $color; ?>">
+			<input type="color" name="color" value="<?php echo esc_attr( $color ); ?>">
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="width">
-				<?php echo __("Width", SHMAPPER);  ?>
+				<?php echo esc_html__( 'Width', SHMAPPER ); ?>
 			</label> 
-			<input type="number" name="width" value="<?php echo empty($width) ? '4' : $width;?>" min="1" max="8">
+			<input type="number" name="width" value="<?php echo esc_attr( empty($width) ? '4' : $width ); ?>" min="1" max="8">
 		</div>
 	
 		<?php
@@ -128,32 +126,32 @@ class ShMapTrackType
 		if($term)
 		{
 			$term_id = $term->term_id;
-			$color = get_term_meta($term_id, "color", true);
-			$height = get_term_meta($term_id, "height", true);
-			$width = get_term_meta($term_id, "width", true);
-			$width = !$width ? 4 : $width;
+			$color   = get_term_meta($term_id, "color", true);
+			$height  = get_term_meta($term_id, "height", true);
+			$width   = get_term_meta($term_id, "width", true);
+			$width   = !$width ? 4 : $width;
 		}
 		?>
 		<tr class="form-field">
 			<th scope="row" valign="top">
 				<label for="color">
-					<?php echo __("Color", SHMAPPER);  ?>
+					<?php echo esc_html__( 'Color', SHMAPPER); ?>
 				</label> 
 			</th>
 			<td>
-				<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
+				<div class="bfh-colorpicker" data-name="color" data-color="<?php echo esc_attr( $color ); ?>">
 				</div>
-				<input type="color" name="color" value="<?php echo $color ?>" />
+				<input type="color" name="color" value="<?php echo esc_attr( $color ); ?>" />
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
 				<label for="width">
-					<?php echo __("Width", SHMAPPER);  ?>
+					<?php echo esc_html__( 'Width', SHMAPPER ); ?>
 				</label> 
 			</th>
 			<td>
-				<input type="number" name="width" value="<?php echo $width ?>" min="1" max="8">
+				<input type="number" name="width" value="<?php echo esc_attr( $width ); ?>" min="1" max="8">
 			</td>
 		</tr>
 		<?php

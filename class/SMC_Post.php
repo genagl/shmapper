@@ -412,11 +412,7 @@
 			switch( $column_name) 
 			{		
 				case 'ids':
-					echo $post_id;
-					// $color				= $p->get_meta( "color" );
-					// if($post_id)
-					// 	echo "<div class='IDs'><span style='background-color:#$color;'>ID</span>".$post_id. "</div>
-					// <p>";
+					echo esc_attr( $post_id );
 					break;
 				default:
 					if(array_key_exists($column_name, $obj))
@@ -426,10 +422,10 @@
 						{
 							case "number":
 							case "string":
-								echo $meta;
+								echo esc_attr( $meta );
 								break;
 							case "date":
-								echo $meta ? date("d.m.Y   H:i", $meta) : "";
+								echo esc_attr( $meta ? date("d.m.Y   H:i", $meta) : "" );
 								break;
 							case "boolean":
 								echo $meta 
@@ -457,8 +453,8 @@
 								if($term)
 								{
 									$term = get_term_by("term_id", $meta, $elem);
-									echo $term ? "<h6>".$term->name ."</h6> <div class='IDs'><span>ID</span>".$meta. "</div>
-										<div style='background-color:#$color; width:15px;height:15px;'></div>" : $meta;
+									echo wp_kses_post( $term ? "<h6>".$term->name ."</h6> <div class='IDs'><span>ID</span>".$meta. "</div>
+										<div style='background-color:#$color; width:15px;height:15px;'></div>" : $meta );
 								}
 								break;
 							case "id":
@@ -475,8 +471,8 @@
 										{
 											$user = get_user_by("id", $meta);
 											$display_name = $user ? $user->display_name : "==";
-											echo  $display_name."<br><div class='IDs'><span>ID</span>".$meta. "</div>
-												<div style='background-color:#$color; width:15px;height:15px;'></div>";
+											echo wp_kses_post( $display_name."<br><div class='IDs'><span>ID</span>".$meta. "</div>
+												<div style='background-color:#$color; width:15px;height:15px;'></div>" );
 										}
 										break;
 									case "post":
@@ -485,11 +481,11 @@
 											$p = get_post($meta);
 											$post_title = isset( $p->post_title ) ? $p->post_title : '';
 											$color = get_post_meta($meta, "color", true);
-											echo "
+											echo wp_kses_post("
 											<strong>$post_title</strong>
 											<br>
 											<div class='IDs'><span>ID</span>".$meta. "</div>
-											<div style='background-color:#$color; width:15px;height:15px;'></div>";
+											<div style='background-color:#$color; width:15px;height:15px;'></div>");
 										}
 										break;
 									case "taxonomy":
@@ -586,7 +582,7 @@
 			
 			?>
 			<fieldset class="inline-edit-col-left">
-			  <div class="inline-edit-col shm-column-<?php echo $column_name; ?>">
+			  <div class="inline-edit-col shm-column-<?php echo esc_attr( $column_name ); ?>">
 				<?php 
 				 switch ( $column_name ) {
 					 case 'owner_map':
@@ -672,7 +668,8 @@
 						}
 					}
 				}
-			echo json_encode( $_POST );
+			$post_json = $_POST;
+			echo wp_kses_post( $post_json );
 			wp_die();
 		}
 		

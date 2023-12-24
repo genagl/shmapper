@@ -97,16 +97,16 @@ class ShMapPointType
 	{
 		switch ($column_name) {
 			case 'id':
-				$out 		.= $term_id;
+				$out .= $term_id;
 				break;
 			case 'icon': 
 				$icon = get_term_meta( $term_id, 'icon', true ); 
 				$color = get_term_meta( $term_id, 'color', true );
 				$logo = wp_get_attachment_image_url( $icon, "full" );
-				echo "<div class='hms-column-icon'>
-					<img src='$logo' alt=''>
-					<div class='hms-column-color' style='background-color:$color;'></div>
-				</div>";
+				echo '<div class="hms-column-icon">
+					<img src="' . esc_url( $logo ) . '" alt="">
+					<div class="hms-column-color" style="background-color: ' . esc_attr( $color ) . ';"></div>
+				</div>';
 				break;
 			default:
 				break;
@@ -115,30 +115,30 @@ class ShMapPointType
 	}
 	static function new_ctg( $tax_name )
 	{
-		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
+		require_once( SHM_REAL_PATH . "tpl/input_file_form.php" );
 		if ( ! isset( $color ) ) {
 			$color = '';
 		}
 		?>
 		<div class="form-field term-description-wrap">
 			<label for="color">
-				<?php echo __("Color", SHMAPPER);  ?>
+				<?php echo esc_html__("Color", SHMAPPER);  ?>
 			</label> 
-			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
+			<div class="bfh-colorpicker" data-name="color" data-color="<?php echo esc_attr( $color ); ?>">
 			</div>
-			<input type="color" name="color" value="<?php echo empty($color) ? '' : $color; ?>" />
+			<input type="color" name="color" value="<?php echo esc_attr( empty($color) ? '' : $color ); ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="width">
 				<?php echo __("Width", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="width" value="<?php echo empty($width) ? '' : $width;?>" />
+			<input type="number" name="width" value="<?php echo esc_attr( empty($width) ? '' : $width );?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="height">
 				<?php echo __("Height", SHMAPPER);  ?>
 			</label> 
-			<input type="number" name="height" value="<?php echo empty($height) ? '' : $height; ?>" />
+			<input type="number" name="height" value="<?php echo esc_attr( empty($height) ? '' : $height ); ?>" />
 		</div>
 		<div class="form-field term-description-wrap">
 			<label for="icon">
@@ -155,54 +155,53 @@ class ShMapPointType
 	}
 	static function add_ctg( $term, $tax_name )
 	{
-		require_once(SHM_REAL_PATH."tpl/input_file_form.php");
-		if($term)
-		{
+		require_once( SHM_REAL_PATH . "tpl/input_file_form.php" );
+		if ( $term ) {
 			$term_id = $term->term_id;
-			$icon = get_term_meta($term_id, "icon", true);
-			$color = get_term_meta($term_id, "color", true);
-			$height = get_term_meta($term_id, "height", true);
-			$height = !$height ? 30 : $height;
-			$width = get_term_meta($term_id, "width", true);
-			$width = !$width ? 30 : $width;
+			$icon    = get_term_meta($term_id, "icon", true);
+			$color   = get_term_meta($term_id, "color", true);
+			$height  = get_term_meta($term_id, "height", true);
+			$height  = !$height ? 30 : $height;
+			$width   = get_term_meta($term_id, "width", true);
+			$width   = !$width ? 30 : $width;
 		}
 		?>
 		<tr class="form-field">
 			<th scope="row" valign="top">
 				<label for="color">
-					<?php echo __("Color", SHMAPPER);  ?>
+					<?php echo esc_html__("Color", SHMAPPER);  ?>
 				</label> 
 			</th>
 			<td>
-				<div class="bfh-colorpicker" data-name="color" data-color="<?php echo $color ?>">
+				<div class="bfh-colorpicker" data-name="color" data-color="<?php echo esc_attr( $color ); ?>">
 				</div>
-				<input type="color" name="color" value="<?php echo $color ?>" />
+				<input type="color" name="color" value="<?php echo esc_attr( $color ); ?>" />
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
 				<label for="height">
-					<?php echo __("Height", SHMAPPER);  ?>
+					<?php echo esc_html__( 'Height', SHMAPPER ); ?>
 				</label> 
 			</th>
 			<td>
-				<input type="number" name="height" value="<?php echo $height ?>" />
+				<input type="number" name="height" value="<?php echo esc_attr( $height ); ?>" />
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
 				<label for="width">
-					<?php echo __("Width", SHMAPPER);  ?>
+					<?php echo esc_html__( 'Width', SHMAPPER ); ?>
 				</label> 
 			</th>
 			<td>
-				<input type="number" name="width" value="<?php echo $width ?>" />
+				<input type="number" name="width" value="<?php echo esc_html( $width ); ?>" />
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
 				<label for="icon">
-					<?php echo __("Icon", SHMAPPER);  ?>
+					<?php echo esc_html__( 'Icon', SHMAPPER ); ?>
 				</label> 
 			</th>
 			<td>
@@ -213,12 +212,11 @@ class ShMapPointType
 		</tr>
 		<?php
 	}
-	static function save_ctg( $term_id ) 
-	{
-	    update_term_meta($term_id, "icon", 	sanitize_text_field($_POST['icon0']));
-	    update_term_meta($term_id, "color", sanitize_hex_color($_POST['color']));
-	    update_term_meta($term_id, "height", sanitize_text_field($_POST['height']));
-	    update_term_meta($term_id, "width", sanitize_text_field($_POST['width']));
+	static function save_ctg( $term_id ) {
+		update_term_meta($term_id, "icon", 	sanitize_text_field($_POST['icon0']));
+		update_term_meta($term_id, "color", sanitize_hex_color($_POST['color']));
+		update_term_meta($term_id, "height", sanitize_text_field($_POST['height']));
+		update_term_meta($term_id, "width", sanitize_text_field($_POST['width']));
 	}
 	static function get_icon($term, $is_locked=false)
 	{

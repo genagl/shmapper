@@ -139,10 +139,10 @@ class ShmMap extends SMC_Post
 		switch($column_name)
 		{
 			case "ids":
-				echo $post_id;
+				echo esc_html( $post_id );
 				break;
 			case "placemarks":
-				echo "<div class='shm-title-2'>" . $obj->get_point_count() . "</div>";
+				echo "<div class='shm-title-2'>" . esc_attr( $obj->get_point_count() ) . "</div>";
 				break;
 			case "shortcodes":
 				$html = "
@@ -740,7 +740,7 @@ class ShmMap extends SMC_Post
 			!file_exists($upload_dir['basedir']."/shmapper-by-teplitsa")
 			&& !wp_mkdir_p($upload_dir['basedir']."/shmapper-by-teplitsa")
 		) {
-			echo '<pre>'.print_r('FAIL', 1).'</pre>';
+			echo '<pre>' . esc_html( print_r( 'FAIL', 1 ) ) . '</pre>';
 			return false;
 		}
 
