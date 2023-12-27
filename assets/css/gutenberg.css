@@ -1,0 +1,29 @@
+/**
+ * Gutenberg
+ */
+
+.shm-editor-block__create-new-link {
+	padding: 0 16px 16px 52px;
+	margin-top: -12px;
+}
+
+.shm-editor-block__notice {
+	padding-bottom: 14px;
+}
+
+.shm-editor-block__notice .components-notice {
+	margin-top: 0;
+}
+
+.components-panel__body .shm-editor-block__notice .components-notice {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.shm-components-map-elements .is-enabled {
+	color: #007cba;
+}
+
+.shm-components-map-elements .is-disabled {
+	color: #cc1818;
+}

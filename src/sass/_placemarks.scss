@@ -1,0 +1,93 @@
+/** Placemarks */
+.shm-form-placemarks {
+	display: inline-flex;
+	flex-wrap: wrap;
+	padding: 0 0 10px 0;
+	position: relative;
+	margin-left: -10px;
+	margin-right: -10px;
+
+	justify-content: stretch;
+
+	.shm-type-icon {
+		float: left;
+		width: 70px;
+		height: 70px;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-color: transparent;
+		margin: 3px;
+		border: 1px dashed #8599A4;
+		border-radius: 4px;
+		cursor: pointer;
+		opacity: 1;
+		box-sizing: border-box;
+
+		&:hover {
+			background-color: #fff;
+		}
+		&:active {
+			background-color: transparent;
+		}
+	}
+
+	.shm-marker-icon {
+		//float: left;
+		//width: 70px;
+		max-width: 120px;
+		min-width: 70px;
+		margin: 10px;
+		box-sizing: border-box;
+		flex: auto;
+
+		border: 1px dashed #8599A4;
+		border-radius: 4px;
+
+		&:hover {
+			background-color: #fff;
+		}
+
+		.shm-type-icon {
+			margin: 0;
+			float: none;
+			width: auto;
+			max-width: 70px;
+			min-width: 70px;
+			margin-left: auto;
+			margin-right: auto;
+			border: none;
+			padding: 10px;
+			background-size: contain;
+			background-origin: content-box;
+
+
+			&:hover {
+				background-color: transparent;
+			}
+
+		}
+	}
+
+	.shm-marker-title {
+		font-size:12px;
+		text-align:center;
+		display:block;
+		line-height:1;
+		margin-bottom: 6px;
+		padding-left: 6px;
+		padding-right: 6px;
+		opacity: 1;
+		transition: opacity .3s;
+	}
+
+	.ui-draggable-dragging,
+	.shm-marker-icon:active {
+		//max-width: 70px;
+	}
+
+	.ui-draggable-dragging + .shm-marker-title {
+		opacity: 0;
+		transition: opacity 0s;
+	}
+
+}

@@ -1,0 +1,22 @@
+/** Map Legend */
+.hms-filter-image {
+	position: absolute;
+	width: 26px;
+	height: 24px;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+	> img {
+		position: static !important;
+		top: auto !important;
+		left: auto !important;
+		max-height: 90% !important;
+		max-width: 90% !important;
+		height: auto !important;
+		width: auto !important;
+	}
+}

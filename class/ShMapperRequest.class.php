@@ -1,4 +1,9 @@
-<?php 
+<?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
 
 class ShMapperRequest extends SMC_Post
 {
@@ -65,6 +70,7 @@ class ShMapperRequest extends SMC_Post
 					break;
 				case "session":
 					$new["session"] = __("Author");
+					break;
 				case "latitude":
 					$new["location"] = __("GEO location", SHMAPPER);
 					break;
@@ -92,7 +98,7 @@ class ShMapperRequest extends SMC_Post
 				break;
 			case "type":
 				$term_id = $obj->get_meta("type");
-				$term = get_term($term_id, SHM_POINT_TYPE);				
+				$term = get_term($term_id, SHM_POINT_TYPE);
 				if($term_id)
 				{
 					$icon = ShMapPointType::get_icon($term , $obj->get_meta("notified"));
@@ -101,10 +107,7 @@ class ShMapperRequest extends SMC_Post
 				{
 					$map_id = $obj->get_meta("map");
 					$diid = get_post_meta($map_id, "default_icon_id", true);
-					$icon	= "<div 
-						class='shm_type_icon' 
-						style='background-color:$color; background-image:url(" . wp_get_attachment_image_src($diid, [60, 60])[0] . ");'
-						>
+					$icon	= "<div class='shm_type_icon' style='background-image:url(" . wp_get_attachment_image_url($diid, [60, 60]).");'>
 					</div>";	
 				}
 				echo $icon;
@@ -121,29 +124,36 @@ class ShMapperRequest extends SMC_Post
 				break;
 		}
 	}
+
 	static function view_admin_edit($obj)
-	{			
-		require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
+	{
+
+	    require_once(SHM_REAL_PATH."class/SMC_Object_type.php");
+
 		$SMC_Object_type	= SMC_Object_Type::get_instance();
-		$bb				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];	
-		foreach($bb as $key=>$value)
+		$bb				= $SMC_Object_type->object [forward_static_call_array( array( get_called_class(),"get_type"), array()) ];
+        $html = '';
+
+		foreach($bb as $key => $value)
 		{
 			if($key == 't' || $key == 'class' || $key == 'contacts' || $key == 'notify_user' ) continue;
 			$meta = get_post_meta( $obj->id, $key, true);
-			$$key = $meta;
+
+//			$$key = $meta;
+
 			switch( $value['type'] )
 			{
 				case "number":
 					$h = "<input type='number' name='$key' id='$key' value='$meta' class='sh-form'/>";
 					break;
 				case "boolean":
-					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0) . "/><label for='$key'></label>$meta";
+					$h = "<input type='checkbox' class='checkbox' name='$key' id='$key' value='1' " . checked(1, $meta, 0)."><label for='$key'>".(mb_strlen($meta) > 1 ? $meta : '')."</label>";
 					break;
 				case "post":
 					$h = "$meta";
 					break;
 				default:
-					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'/>";
+					$h = "<input type='' name='$key' id='$key' value='$meta' class='sh-form'>";
 			}
 			switch($key)
 			{
@@ -153,6 +163,7 @@ class ShMapperRequest extends SMC_Post
 						"class"		=> "sh-form",
 						"name"		=> "map",
 						"id"		=> "map",
+						"posts"     => ShmMap::get_all(),
 					]);
 					break;
 				case "type":
@@ -168,7 +179,8 @@ class ShMapperRequest extends SMC_Post
 					$h = "<textarea name='$key' id='$key' class='sh-form'>$meta</textarea>";
 					break;
 			}
-			$html .="<div class='shm-row'>
+
+			$html .= "<div class='shm-row'>
 				<div class='shm-3 shm-md-12 sh-right sh-align-middle'>".$value['name'] . "</div>
 				<div class='shm-9 shm-md-12 '>
 					$h
@@ -176,7 +188,9 @@ class ShMapperRequest extends SMC_Post
 			</div>
 			<div class='spacer-5'></div>";
 		}
-		echo $html;
+
+		echo empty($html) ? '' : $html;
+
 	}
 	static function save_admin_edit($obj)
 	{
@@ -190,31 +204,33 @@ class ShMapperRequest extends SMC_Post
 			if($key == "notified" && $_POST[$key] != 1)
 				$arr[$key] = -1;
 			else
-				$arr[$key] = $_POST[$key];
+			    $arr[$key] = sanitize_text_field($_POST[$key]);
 		}
 		
 		return $arr;
 	}
 	static function insert($data)
 	{
-		$h = [];
+		$h = array();
 		$map 			= ShmMap::get_instance((int)$data['id']);
-		$h['map_id'] 	= $map->get("post_title");
-		$contents		= [];
-		$form			= $map->get_meta("form_forms");
-		$emails			= [];
-		$contacts		= [];
+		$h['map_id'] 	= $map->get('post_title');
+		$contents		= array();
+		$form			= $map->get_meta('form_forms');
+		$emails			= array();
+		$contacts		= array();
+		$title = $description = '';
+
 		if( $data['shm_form_name'] )
 		{
-			$contacts[] = $data['shm_form_name'];
-			$author		= $data['shm_form_name'];
+		    $contacts[] = sanitize_text_field($data['shm_form_name']);
+		    $author		= sanitize_text_field($data['shm_form_name']);
 		}
 		if( $data['shm_form_phone'] )
-			$contacts[] = $data['shm_form_phone'];
+		    $contacts[] = sanitize_text_field($data['shm_form_phone']);
 		if( $data['shm_form_email'])
 		{
-			$contacts[] = $data['shm_form_email'];
-			$emails[] 	= $data['shm_form_email'];
+		    $contacts[] = sanitize_email($data['shm_form_email']);
+		    $emails[] 	= sanitize_email($data['shm_form_email']);
 		}
 		foreach($form as $key => $val)
 		{
@@ -222,19 +238,19 @@ class ShMapperRequest extends SMC_Post
 				continue;
 			if($val['type'] == SHMAPPER_EMAIL_TYPE_ID)
 			{
-				$emails[] 	= $data['elem'][$key];
-				$contacts[] = $data['elem'][$key];					
+			    $emails[] 	= sanitize_email($data['elem'][$key]);
+			    $contacts[] = sanitize_email($data['elem'][$key]);					
 			}	
 			if(
 				$val['type'] == SHMAPPER_PHONE_TYPE_ID ||
 				$val['type'] == SHMAPPER_NAME_TYPE_ID 
 			)
-				$contacts[] = $data['elem'][$key];
+			    $contacts[] = sanitize_text_field($data['elem'][$key]);
 			if($val['type'] == SHMAPPER_NAME_TYPE_ID)
-				$author		= $data['elem'][$key];
+			    $author		= sanitize_text_field($data['elem'][$key]);
 			if($val['type'] == SHMAPPER_TEXTAREA_TYPE_ID)
 			{
-				$description .= "<p>" . $data['elem'][$key];
+				$description .= $data['elem'][$key];
 			}
 			if($key == 1)
 			{
@@ -242,30 +258,56 @@ class ShMapperRequest extends SMC_Post
 			}
 			if($val['type'] == SHMAPPER_TITLE_TYPE_ID)
 			{
-				$title .= $data['elem'][$key];
+			    $title .= sanitize_text_field($data['elem'][$key]);
 			}
 			$tpp  = ShmForm::get_type_by( "id", $val['type'] );
 			if(SHMAPPER_IMAGE_TYPE_ID != $val['type'] )
-				$contents[] =  "<small>".$tpp['title'].":</small> <strong>".$data['elem'][$key]."</strong>";
+			    $contents[] =  "<small>".$tpp['title'].":</small> <strong>".sanitize_text_field($data['elem'][$key])."</strong>";
 		}
-		$contents[] =  "<div>" . $data['shm_point_loc'] . "</div>";
+		$contents[] =  "<div>" . sanitize_text_field($data['shm_point_loc']) . "</div>";
 		$h['contents'] 		= implode("<br>", $contents);
-		$arr = [
-			"post_type" 	=> static::get_type(),
-			"post_name" 	=> $title ? $title : $map->get("post_name"),
-			"post_title" 	=> $title ? $title : $map->get("post_title"),
-			"post_content"	=> sanitize_text_field( $h['contents'] ),
-			"map"			=> (int)$data['id'],
-			"location"		=> $data['shm_point_loc'],
-			"latitude"		=> ( (int) ($data['shm_point_lat'] * 10000)) / 10000,
-			"longitude"		=> ( (int) ($data['shm_point_lon'] * 10000)) / 10000,
-			"type"			=> $data['shm_point_type'],
-			"contacts"		=> $contacts,
-			"description"	=> $description,
-			"author"		=> $author
-		];
-		$new_req = parent::insert($arr);
 		
+		$arr = apply_filters(
+			"shm_before_insert_request", 
+			[
+				"post_type" 	=> static::get_type(),
+				"post_name" 	=> $title ? $title : $map->get("post_name"),
+				"post_title" 	=> $title ? $title : $map->get("post_title"),
+				"post_content"	=> sanitize_text_field( $h['contents'] ),
+				"map"			=> (int)$data['id'],
+				"location"		=> sanitize_text_field($data['shm_point_loc']),
+				"latitude"		=> ( (int) ($data['shm_point_lat'] * 10000)) / 10000,
+				"longitude"		=> ( (int) ($data['shm_point_lon'] * 10000)) / 10000,
+				"type"			=> sanitize_text_field($data['shm_point_type']),
+				"contacts"		=> $contacts,
+				"description"	=> $description,
+				"author"		=> $author
+			],  
+			$data
+		);
+		
+		if(!$arr['forbiddance'])
+			$new_req = parent::insert($arr);
+
+		$arr = apply_filters(
+			"shm_after_insert_request", 
+			[
+				"post_type" 	=> static::get_type(),
+				"post_name" 	=> $title ? $title : $map->get("post_name"),
+				"post_title" 	=> $title ? $title : $map->get("post_title"),
+				"post_content"	=> sanitize_text_field( $h['contents'] ),
+				"map"			=> (int)$data['id'],
+				"location"		=> sanitize_text_field($data['shm_point_loc']),
+				"latitude"		=> ( (int) ($data['shm_point_lat'] * 10000)) / 10000,
+				"longitude"		=> ( (int) ($data['shm_point_lon'] * 10000)) / 10000,
+				"type"			=> sanitize_text_field($data['shm_point_type']),
+				"contacts"		=> $contacts,
+				"description"	=> $description,
+				"author"		=> $author
+			],
+			$new_req, 
+			$data
+		);		
 		//attach
 		require_once( ABSPATH . 'wp-admin/includes/image.php' );
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -299,7 +341,7 @@ class ShMapperRequest extends SMC_Post
 			} 
 			else 
 			{
-				//echo "Возможны атаки при загрузке файла!\n";
+				//echo "File upload attacks are possible!\n";
 			}
 			
 		}
@@ -311,9 +353,8 @@ class ShMapperRequest extends SMC_Post
 		{
 			$author_id 	= $map->get("post_author");
 			$user 		= get_user_by("id", $author_id);
-			$email	 	= "genag1@list.ru";//$user->get('user_email');
+			$email	 	= $user->get('user_email');
 			$semail  	=  get_bloginfo( "admin_email" );
-			//$semail1	= "admin@" . substr( get_bloginfo("url"), strpos(get_bloginfo("url"), "://") + 3 );
 			$suser		= $author ? $author : __("Uknown User", SHMAPPER);
 			$site		= get_bloginfo("name");
 			$headers = array(
@@ -323,8 +364,9 @@ class ShMapperRequest extends SMC_Post
 			$is = wp_mail(
 				$email,
 				sprintf(__("<%s> Request to your Map from [%s] [%s]", SHMAPPER), $site, $suser, $map->get("post_title")) ,
-				$h['contents']. "<p>" . 
-				sprintf(__("You may see this %s", SHMAPPER), get_bloginfo("url") . "/wp-admin/edit.php?post_type=shm_request"),
+				$h['contents']. "\n\n<p>" . 
+				sprintf(__("You may see this %s", SHMAPPER), get_bloginfo("url") . "/wp-admin/edit.php?post_type=shm_request")
+			    . "</p>",
 				$headers
 			);
 		}
@@ -333,10 +375,21 @@ class ShMapperRequest extends SMC_Post
 	}
 	function get_notified_form()
 	{
-		if($notify = $this->get_meta("notified") > 0)
-		{
+		if($notify = $this->get_meta("notified") > 0) {
+
 			$user = get_user_by("id", $this->get_meta("notify_user"));
-			$html = "<p>" . $user->display_name . "</p><p>" . date("j.n.Y H:m", $this->get_meta("notify_date"));
+			$user_name = '';
+
+			$html = '';
+			if ( $user ) {
+				$html .= "<p>" . $user_name . "</p>";
+			} else {
+				$user_name = esc_html__( 'Visitor', 'shmapper-by-teplitsa' );
+			}
+			if ( $this->get_meta("notify_date") ) {
+				$html .= "<p>" . date("j.n.Y H:m", $this->get_meta("notify_date"));
+			}
+
 		}
 		else
 		{
@@ -430,6 +483,11 @@ class ShMapperRequest extends SMC_Post
 	}
 	static function add_menu_notification()
 	{
+
+		if ( ! current_user_can( 'edit_others_posts' ) ){
+			return;
+		}
+
 		global $submenu ;
 		$not_approved = get_posts([
 			"numberposts" 	=> -1,

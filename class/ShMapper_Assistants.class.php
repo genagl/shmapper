@@ -1,4 +1,10 @@
 <?php
+/**
+ * ShMapper
+ *
+ * @package teplitsa
+ */
+
 class ShMapper_Assistants
 {
 	static $instance;
@@ -33,7 +39,7 @@ class ShMapper_Assistants
 	{
 		global $wpdb, $post, $wp_list_table, $map_dropdown;
 		$current 			= isset($_GET['ADMIN_FILTER_FIELD'])? $_GET['ADMIN_FILTER_FIELD']:'';
-		if($post->post_type == SHM_POINT)
+		if($post && $post->post_type == SHM_POINT)
 		{
 			$map_dropdown = $map_dropdown ? $map_dropdown : ShmMap::get_all();
 			echo ShmMap::wp_dropdown([
@@ -44,8 +50,8 @@ class ShMapper_Assistants
 				"select_none" 	=> __("all maps", SHMAPPER)
 			]);
 			?>
-			<input name="pagenum" 			type="hidden" value="<?php echo $wp_list_table->get_pagenum();?>" />
-			<input name="items_per_page" 	type="hidden" value="<?php echo $wp_list_table->get_items_per_page('per_page');?>" />
+			<input name="pagenum" 			type="hidden" value="<?php echo esc_attr( $wp_list_table->get_pagenum() ); ?>" />
+			<input name="items_per_page" 	type="hidden" value="<?php echo esc_attr( $wp_list_table->get_items_per_page('per_page') ); ?>" />
 			
 			<?php
 		}
@@ -54,21 +60,24 @@ class ShMapper_Assistants
 	
 	static function shm_after_request_form( $text )
 	{
-		if( !ShMapper::$options['shm_settings_captcha'] ) return $text;
+		if( empty(ShMapper::$options['shm_settings_captcha']) ) {
+		    return $text;
+		}
+
 		//require_once( SHM_REAL_PATH .'assets/recaptcha-php-1.11/recaptchalib.php');			
 		// Register API keys at https://www.google.com/recaptcha/admin
-		$siteKey = ShMapper::$options['shm_captcha_siteKey'];
-		$secret = ShMapper::$options['shm_captcha_secretKey'];
+		$siteKey = isset( ShMapper::$options['shm_captcha_siteKey'] ) ? ShMapper::$options['shm_captcha_siteKey'] : '';
+		$secret = isset( ShMapper::$options['shm_captcha_secretKey'] ) ? ShMapper::$options['shm_captcha_secretKey'] : '';
+		
 		// reCAPTCHA supported 40+ languages listed here: https://developers.google.com/recaptcha/docs/language
-		$lang = "ru";
-		$html .= '
-		<div class="shm-form-element" id="grec">
+		$html = '<div class="shm-form-element" id="grec">
 			<div class="g-recaptcha" data-sitekey="'.$siteKey.'"></div>
 			<script type="text/javascript"
-				src="https://www.google.com/recaptcha/api.js?hl='.$lang.'">
+				src="https://www.google.com/recaptcha/api.js?hl=ru">
 			</script>
 		</div>';
-		return $txt.$html;
+		return $text.$html;
+
 	}
 	static function get_recaptcha_form()
 	{
